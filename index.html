@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUNA — Твой персональный AI-проводник</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-space: #06070B;
+    --card-bg: rgba(18, 17, 30, 0.72);
+    --card-border: rgba(220, 185, 126, 0.22);
+    --card-glow: rgba(142, 92, 180, 0.15);
+    --gold: #E5C378;
+    --gold-bright: #FFE8A3;
+    --gold-glow: rgba(229, 195, 120, 0.35);
+    --text-white: #FFFFFF;
+    --text-sub: #A8AEC1;
+    --accent-mystic: #8A4F9E;
+    --accent-green: #50E3C2;
+    --accent-focus: #D8B4F8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+  
+  body {
+    background: #020204;
+    color: var(--text-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 15px;
+  }
+
+  /* Phone Mockup Frame */
+  .phone-frame {
+    width: 390px;
+    height: 844px;
+    background: radial-gradient(circle at 50% 15%, #1A132B 0%, #07070D 65%, #040406 100%);
+    border-radius: 48px;
+    border: 7px solid #1C1D26;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.95), 0 0 80px rgba(138, 79, 158, 0.25);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Dynamic Island / Notch */
+  .notch {
+    width: 120px;
+    height: 26px;
+    background: #000;
+    border-radius: 20px;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+  }
+
+  /* Magic Nebula Background Glow */
+  .nebula-glow {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, rgba(138, 79, 158, 0.22) 0%, rgba(229, 195, 120, 0.12) 40%, transparent 70%);
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 1;
+    animation: pulseNebula 8s ease-in-out infinite alternate;
+  }
+  @keyframes pulseNebula {
+    0% { transform: translateX(-50%) scale(0.95); opacity: 0.8; }
+    100% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+  }
+
+  /* Subtle Star Sparkles */
+  .stars-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1.5px 1.5px at 80px 140px, var(--gold-bright), rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 290px 70px, #fff, rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 320px 220px, var(--gold), rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 150px 320px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1.5px 1.5px at 50px 480px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 330px 520px, var(--gold-bright), rgba(0,0,0,0));
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Screens Container */
+  .screens-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding: 44px 18px 85px;
+    scrollbar-width: none;
+    position: relative;
+    z-index: 2;
+  }
+  .screens-wrapper::-webkit-scrollbar { display: none; }
+
+  /* Header */
+  .app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .brand-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .brand-logo {
+    font-size: 16px;
+    color: var(--gold);
+    filter: drop-shadow(0 0 6px var(--gold-glow));
+  }
+  .brand-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--gold-bright);
+    text-shadow: 0 0 12px rgba(229, 195, 120, 0.4);
+  }
+  .status-pill {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--card-border);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--gold-bright);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    backdrop-filter: blur(10px);
+  }
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-green);
+  }
+
+  /* Hero Card (LUNA Avatar) */
+  .luna-hero {
+    background: linear-gradient(180deg, rgba(30, 23, 46, 0.75) 0%, rgba(14, 15, 24, 0.85) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 26px;
+    padding: 22px 16px 18px;
+    text-align: center;
+    position: relative;
+    backdrop-filter: blur(25px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+    margin-bottom: 16px;
+  }
+  
+  .avatar-ring {
+    width: 116px;
+    height: 116px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, var(--gold-bright), var(--accent-mystic) 60%, var(--gold));
+    box-shadow: 0 0 30px var(--gold-glow), 0 0 15px rgba(138, 79, 158, 0.5);
+    position: relative;
+  }
+  .avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    border: 2px solid #0B0C10;
+  }
+
+  .luna-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #FFF;
+    margin-bottom: 2px;
+  }
+  .luna-sub {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 14px;
+    opacity: 0.9;
+  }
+
+  /* User Natal Snapshot Bar (Надин) */
+  .user-astro-bar {
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(229, 195, 120, 0.2);
+    border-radius: 16px;
+    padding: 10px 6px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .astro-tag { text-align: center; }
+  .astro-label { 
+    font-size: 9px; 
+    color: var(--text-sub); 
+    text-transform: uppercase; 
+    letter-spacing: 0.8px; 
+    margin-bottom: 3px; 
+  }
+  .astro-val { 
+    font-size: 12px; 
+    font-weight: 600; 
+    color: var(--gold-bright); 
+    letter-spacing: 0.3px;
+  }
+
+  /* AI Question Action Button / Banner */
+  .ai-action-card {
+    background: linear-gradient(135deg, rgba(138, 79, 158, 0.35) 0%, rgba(26, 22, 40, 0.85) 100%);
+    border: 1px solid rgba(229, 195, 120, 0.35);
+    border-radius: 20px;
+    padding: 15px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 15px rgba(138, 79, 158, 0.15);
+    transition: transform 0.2s ease;
+  }
+  .ai-action-card:active { transform: scale(0.98); }
+  .ai-left { display: flex; align-items: center; gap: 12px; }
+  .ai-icon-bubble {
+    width: 40px;
+    height: 40px;
+    background: rgba(229, 195, 120, 0.15);
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    color: var(--gold-bright);
+    box-shadow: 0 0 10px rgba(229, 195, 120, 0.2);
+  }
+  .ai-txt-main { font-size: 13px; font-weight: 600; color: #FFF; letter-spacing: 0.2px; }
+  .ai-txt-sub { font-size: 10px; color: var(--gold-bright); margin-top: 2px; opacity: 0.85; }
+  .ai-btn {
+    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 100%);
+    color: #0E0C16;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 0 12px var(--gold-glow);
+  }
+
+  /* Section Title */
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--gold-bright);
+  }
+  .section-more { font-size: 11px; color: var(--gold); cursor: pointer; opacity: 0.85; }
+
+  /* Weekly Forecast Banner (Redesigned) */
+  .weekly-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 22px;
+    padding: 18px 16px;
+    margin-bottom: 18px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    position: relative;
+    overflow: hidden;
+  }
+  .weekly-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-glow), transparent);
+  }
+  .wc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .wc-dates { 
+    font-size: 11px; 
+    color: var(--gold); 
+    text-transform: uppercase; 
+    font-weight: 600; 
+    letter-spacing: 1px; 
+  }
+  .wc-badge { 
+    background: rgba(216, 180, 248, 0.15); 
+    border: 1px solid rgba(216, 180, 248, 0.3);
+    color: var(--accent-focus); 
+    font-size: 9px; 
+    font-weight: 600;
+    padding: 3px 9px; 
+    border-radius: 12px; 
+  }
+  .wc-main-title { 
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; 
+    font-weight: 600; 
+    margin-bottom: 12px; 
+    color: #FFF; 
+    letter-spacing: 0.5px;
+  }
+
+  /* Weekly Focus Points List */
+  .focus-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .focus-item {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 9px 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .focus-icon {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+  .focus-content {
+    flex: 1;
+  }
+  .focus-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold-bright);
+    margin-bottom: 2px;
+  }
+  .focus-desc {
+    font-size: 10.5px;
+    color: var(--text-sub);
+    line-height: 1.4;
+  }
+
+  /* Services / Reports Grid */
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  .catalog-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 110px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    position: relative;
+    transition: transform 0.2s ease;
+  }
+  .catalog-card:active { transform: scale(0.98); }
+  .cc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .cc-icon { font-size: 22px; filter: drop-shadow(0 0 8px var(--gold-glow)); }
+  .cc-tag { 
+    font-size: 8px; 
+    background: rgba(255,255,255,0.06); 
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 2px 6px; 
+    border-radius: 6px; 
+    color: var(--text-sub); 
+    text-transform: uppercase;
+  }
+  .cc-title { font-size: 12px; font-weight: 600; color: #F0F2F8; line-height: 1.35; margin-bottom: 6px; }
+  .cc-price { font-size: 12px; font-weight: 700; color: var(--gold-bright); }
+
+  /* Bottom Navigation */
+  .bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    background: rgba(8, 9, 14, 0.94);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--card-border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 10px;
+    z-index: 10;
+  }
+  .nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    color: var(--text-sub);
+    font-size: 10px;
+    cursor: pointer;
+  }
+  .nav-btn.active { color: var(--gold-bright); text-shadow: 0 0 8px var(--gold-glow); }
+  .nav-btn span.ico { font-size: 18px; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="notch"></div>
+  <div class="nebula-glow"></div>
+  <div class="stars-overlay"></div>
+
+  <div class="screens-wrapper">
+    
+    <!-- Header -->
+    <div class="app-header">
+      <div class="brand-group">
+        <span class="brand-logo">✦</span>
+        <span class="brand-title">LUNA</span>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>AI Онлайн</span>
+      </div>
+    </div>
+
+    <!-- LUNA Persona Hero Card -->
+    <div class="luna-hero">
+      <div class="avatar-ring">
+        <img class="avatar-img" src="luna_avatar.jpg" alt="LUNA" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'116\' height=\'116\' viewBox=\'0 0 116 116\'><circle cx=\'58\' cy=\'58\' r=\'58\' fill=\'%231a1528\'/><text x=\'50%25\' y=\'54%25\' font-size=\'40\' text-anchor=\'middle\' fill=\'%23e5c378\' font-family=\'serif\'>🌙</text></svg>'">
+      </div>
+      <div class="luna-name">Luna</div>
+      <div class="luna-sub">Твой AI-проводник к звёздам</div>
+
+      <!-- User Natal Snapshot Bar -->
+      <div class="user-astro-bar">
+        <div class="astro-tag">
+          <div class="astro-label">Солнце</div>
+          <div class="astro-val">♑ Козерог</div>
+        </div>
+        <div class="astro-tag">
+          <div class="astro-label">Луна</div>
+          <div class="astro-val">♋ Рак</div>
+        </div>
+        <div class="astro-tag">
+          <div class="astro-label">Асцендент</div>
+          <div class="astro-val">♊ Близнецы</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Question Action -->
+    <div class="ai-action-card">
+      <div class="ai-left">
+        <div class="ai-icon-bubble">✦</div>
+        <div>
+          <div class="ai-txt-main">Спросить у LUNA</div>
+          <div class="ai-txt-sub">1 персональный ответ доступен</div>
+        </div>
+      </div>
+      <button class="ai-btn">Задать</button>
+    </div>
+
+    <!-- Section: Weekly Focus Forecast -->
+    <div class="section-head">
+      <div class="section-title">Твой фокус недели</div>
+      <div class="section-more">Вся неделя →</div>
+    </div>
+
+    <!-- Weekly Forecast Card with 3 Key Focus Areas -->
+    <div class="weekly-card">
+      <div class="wc-header">
+        <div class="wc-dates">29 сен — 5 окт • Прогноз</div>
+        <div class="wc-badge">Энергия роста</div>
+      </div>
+      <div class="wc-main-title">Гармония структуры и чувств</div>
+      
+      <div class="focus-list">
+        <div class="focus-item">
+          <span class="focus-icon">🎯</span>
+          <div class="focus-content">
+            <div class="focus-label">Главный фокус недели</div>
+            <div class="focus-desc">Запуск новых идей без суеты. Мягкая дисциплина вместо жесткого контроля.</div>
+          </div>
+        </div>
+        <div class="focus-item">
+          <span class="focus-icon">🕯️</span>
+          <div class="focus-content">
+            <div class="focus-label">Где черпать ресурс</div>
+            <div class="focus-desc">Тёплый вечер дома, контакт с водой, спокойные ритуалы заботы о теле.</div>
+          </div>
+        </div>
+        <div class="focus-item">
+          <span class="focus-icon">⚠️</span>
+          <div class="focus-content">
+            <div class="focus-label">Чего избегать</div>
+            <div class="focus-desc">Попыток успеть всё сразу в четверг-пятницу — делегируй или отложи.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Deep Analysis Catalog -->
+    <div class="section-head">
+      <div class="section-title">Глубокие разборы</div>
+      <div class="section-more">Все 6 →</div>
+    </div>
+
+    <div class="catalog-grid">
+      <div class="catalog-card">
+        <div class="cc-top">
+          <span class="cc-icon">🪐</span>
+          <span class="cc-tag">Ядро</span>
+        </div>
+        <div>
+          <div class="cc-title">Полная натальная карта</div>
+          <div class="cc-price">1 490 ₽</div>
+        </div>
+      </div>
+
+      <div class="catalog-card">
+        <div class="cc-top">
+          <span class="cc-icon">💎</span>
+          <span class="cc-tag">Деньги</span>
+        </div>
+        <div>
+          <div class="cc-title">Финансовый &amp; Карьерный код</div>
+          <div class="cc-price">690 ₽</div>
+        </div>
+      </div>
+
+      <div class="catalog-card">
+        <div class="cc-top">
+          <span class="cc-icon">✨</span>
+          <span class="cc-tag">Дети</span>
+        </div>
+        <div>
+          <div class="cc-title">Детская карта &amp; Таланты</div>
+          <div class="cc-price">1 490 ₽</div>
+        </div>
+      </div>
+
+      <div class="catalog-card">
+        <div class="cc-top">
+          <span class="cc-icon">💫</span>
+          <span class="cc-tag">Соляр</span>
+        </div>
+        <div>
+          <div class="cc-title">Персональный год 2027</div>
+          <div class="cc-price">2 990 ₽</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-bar">
+    <div class="nav-btn active">
+      <span class="ico">✦</span>
+      <span>Главная</span>
+    </div>
+    <div class="nav-btn">
+      <span class="ico">🔮</span>
+      <span>Чат с Луной</span>
+    </div>
+    <div class="nav-btn">
+      <span class="ico">📜</span>
+      <span>Разборы</span>
+    </div>
+    <div class="nav-btn">
+      <span class="ico">👤</span>
+      <span>Профиль</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
