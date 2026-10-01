@@ -572,6 +572,71 @@
       </div>
     </div>
 
+    
+    <!-- Section: Personal Free Natal Reading -->
+    <div class="section-head" style="margin-top: 14px;">
+      <div class="section-title">✨ Твой натальный разбор</div>
+      <div class="section-more" onclick="showFullFreeReading()">Читать всё →</div>
+    </div>
+
+    <!-- Rich Free Reading Card -->
+    <div class="weekly-card" style="background: linear-gradient(180deg, rgba(229,195,120,0.08) 0%, rgba(22,20,36,0.9) 100%); border-color: rgba(229,195,120,0.35);">
+      <div class="wc-header">
+        <div class="wc-dates">Базовый расчёт • Natal Core</div>
+        <div class="wc-badge" style="background: rgba(229,195,120,0.2); color: var(--gold); border-color: rgba(229,195,120,0.5);">Бесплатно</div>
+      </div>
+      
+      <div class="focus-list" style="margin-top: 12px;">
+        <!-- Sun -->
+        <div class="focus-item" style="cursor: pointer; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 8px;" onclick="showPlanetModal('☀️ Солнце в Козероге (10°)', '<b>Вектор реализации и характер:</b><br>Твоё Солнце даёт колоссальный внутренний стержень, стратегическое видение и умение доводить любые проекты до совершенства.<br><br>• <b>Главная сила:</b> системность, надёжность, природный авторитет.<br>• <b>В чём ловушка:</b> избыточный перфекционизм и гиперответственность. Твой ключ — учиться отпускать контроль и кайфовать от процесса.')">
+          <span class="focus-icon" style="font-size: 20px;">☀️</span>
+          <div class="focus-content">
+            <div class="focus-label" style="color: #FFE8A3; font-size: 13px; font-weight: 600;">Солнце в Козероге • Вектор реализации</div>
+            <div class="focus-desc" style="font-size: 12px; line-height: 1.45; color: var(--text-main); margin-top: 3px;">
+              Внутренний стержень и способность масштабировать проекты. Ты видишь структуру там, где другие видят хаос. Твоя суперсила — доводить идеи до идеального результата. <span style="color: var(--gold); font-size: 11px;">(нажми для деталей)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Moon -->
+        <div class="focus-item" style="cursor: pointer; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 8px;" onclick="showPlanetModal('🌙 Луна в Раке (28° — обитель)', '<b>Психика, интуиция и подсознание:</b><br>Луна в самом сильном положении (в обители). Это даёт редкую эмпатию, глубокую чувствительность и способность считывать людей без слов.<br><br>• <b>Где твоя энергия:</b> дом, вода, эстетика, уют и забота о близких.<br>• <b>В творчестве:</b> люди идут именно на твою искренность, душевную теплоту и глубину.')">
+          <span class="focus-icon" style="font-size: 20px;">🌙</span>
+          <div class="focus-content">
+            <div class="focus-label" style="color: #C4B5FD; font-size: 13px; font-weight: 600;">Луна в Раке (Обитель) • Интуиция и чувства</div>
+            <div class="focus-desc" style="font-size: 12px; line-height: 1.45; color: var(--text-main); margin-top: 3px;">
+              Максимальная природная интуиция и чуткость к пространству. Твоя главная подзарядка — тёплая атмосфера и ритуалы заботы о себе. <span style="color: var(--gold); font-size: 11px;">(нажми для деталей)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ascendant -->
+        <div class="focus-item" style="cursor: pointer; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 12px; margin-bottom: 8px;" onclick="showPlanetModal('💫 Асцендент в Близнецах (14°)', '<b>Социальная маска и проявление в мире:</b><br>Мир видит тебя лёгкой, стильной, обаятельной и живой. Ты моментально вызываешь симпатию и располагаешь к общению.<br><br>• <b>Визуальный код:</b> эстетика, свобода, открытый взгляд, вкус к деталям.<br>• <b>Талант:</b> легко объяснять сложные вещи и вдохновлять людей.')">
+          <span class="focus-icon" style="font-size: 20px;">💫</span>
+          <div class="focus-content">
+            <div class="focus-label" style="color: #93C5FD; font-size: 13px; font-weight: 600;">Асцендент в Близнецах • Образ в социуме</div>
+            <div class="focus-desc" style="font-size: 12px; line-height: 1.45; color: var(--text-main); margin-top: 3px;">
+              Лёгкость в общении, врождённый визуальный вкус и магнетизм. Твоя маска — вдохновительница со стилем и открытым взглядом на мир. <span style="color: var(--gold); font-size: 11px;">(нажми для деталей)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Synthesized Insight -->
+        <div class="focus-item" style="cursor: pointer; padding: 10px; background: rgba(229,195,120,0.08); border-radius: 12px; border: 1px dashed rgba(229,195,120,0.3);" onclick="showFullFreeReading()">
+          <span class="focus-icon" style="font-size: 20px;">💎</span>
+          <div class="focus-content">
+            <div class="focus-label" style="color: var(--gold); font-size: 13px; font-weight: 600;">Твоя суперсила • Баланс 3 стихий</div>
+            <div class="focus-desc" style="font-size: 12px; line-height: 1.45; color: var(--text-main); margin-top: 3px;">
+              Редкий синтез: земная надёжность + глубинная водная эмпатия + воздушная лёгкость. Умение превращать смыслы в осязаемый результат.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="sheet-btn" style="margin-top: 12px; padding: 11px 16px; background: rgba(229,195,120,0.18); border: 1px solid rgba(229,195,120,0.4); color: #fff; font-size: 13px; font-weight: 600;" onclick="showFullFreeReading()">
+        📖 Читать полный разбор (все разделы)
+      </button>
+    </div>
+
     <!-- AI Question Action -->
     <div class="ai-action-card" onclick="openAskModal('🔮 Задать сокровенный вопрос Луне')">
       <div class="ai-left">
@@ -671,6 +736,15 @@
         <div>
           <div class="cc-title">Персональный год 2027</div>
           <div class="cc-price">2 990 ₽</div>
+      <div class="catalog-card" onclick="showProductModal('👥 Окружение & Дружба', '590 ₽', 'Глубокий разбор 11-го дома, Венеры и Луны: твой типаж в дружбе, люди твоей силы, кармические встречи и красные флаги в окружении.')">
+        <div class="cc-top">
+          <span class="cc-tag">Глубокий разбор</span>
+          <span class="cc-price">590 ₽</span>
+        </div>
+        <div class="cc-title">👥 Окружение & Дружба</div>
+        <div class="cc-desc">Люди силы, твое племя, точки роста и скрытые триггеры в общении.</div>
+      </div>
+
         </div>
       </div>
     </div>
@@ -868,10 +942,57 @@
 
   let currentModalAction = null;
 
+  
+  function showFullFreeReading() {
+    haptic();
+    document.getElementById('modal-title').innerText = '✨ Твой персональный натальный разбор';
+    document.getElementById('modal-desc').innerHTML = `
+      <div style="font-size: 13px; line-height: 1.6; color: var(--text-main); text-align: left;">
+        <p style="margin-bottom: 12px;"><b>Привет!</b> Твоя натальная карта — это персональный путеводитель по твоим врождённым талантам и точкам роста. Вот подробная расшифровка твоей ключевой триады:</p>
+        
+        <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 12px; border-left: 3px solid #FFE8A3;">
+          <b style="color: #FFE8A3; font-size: 14px;">☀️ Солнце в Козероге (Вектор силы и реализация)</b><br>
+          <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+            Ты умеешь видеть конечный результат и выстраивать путь к нему шаг за шагом. Ты не боишься масштаба и умеешь создавать качество высшей пробы. Твой главный урок — не тащить всё в одиночку, а доверять команде и пространству.
+          </span>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 12px; border-left: 3px solid #C4B5FD;">
+          <b style="color: #C4B5FD; font-size: 14px;">🌙 Луна в Раке (Подсознание, эмоции и ресурс)</b><br>
+          <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+            Положение в обители — это дар сверхчувствительности. Ты моментально считываешь настроение людей. Твой внутренний источник энергии — уют, эстетика, вода, вкусная еда и моменты тишины.
+          </span>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 12px; border-left: 3px solid #93C5FD;">
+          <b style="color: #93C5FD; font-size: 14px;">💫 Асцендент в Близнецах (Социальный код)</b><br>
+          <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+            Твоя харизма — в лёгкости, любознательности и открытости. Люди видят в тебе вдохновляющего человека с отличным вкусом, с которым легко и приятно начать любой диалог.
+          </span>
+        </div>
+
+        <div style="background: rgba(229,195,120,0.12); padding: 12px; border-radius: 12px; margin-top: 14px; border: 1px solid rgba(229,195,120,0.3);">
+          <b style="color: var(--gold); font-size: 13px;">💡 Рекомендация LUNA на текущий этап:</b><br>
+          <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+            Соединяй стратегию Козерога с душевностью Рака. Когда ты создаёшь проекты не из «надо», а из любви и красоты — они взлетают быстрее и приносят максимальный доход.
+          </span>
+        </div>
+      </div>
+    `;
+    document.getElementById('modal-input-wrap').style.display = 'none';
+    document.getElementById('modal-action-btn').style.display = 'block';
+    document.getElementById('modal-action-btn').innerText = '🔮 Задать вопрос астрологу LUNA';
+    document.getElementById('modal-action-btn').onclick = function() {
+      closeModal();
+      openAskModal('Уточнить детали по моему натальному разбору');
+    };
+    openModal();
+  }
+
   function showPlanetModal(title, desc) {
     haptic();
     document.getElementById('modal-title').innerText = title;
-    document.getElementById('modal-desc').innerText = desc;
+    document.getElementById('modal-desc').innerHTML = desc;
     document.getElementById('modal-input-wrap').style.display = 'none';
     document.getElementById('modal-action-btn').innerText = 'Понятно ✦';
     currentModalAction = () => closeModal();
@@ -888,16 +1009,151 @@
     openModal();
   }
 
+  const readingSamples = {
+    'natal': {
+      title: '🪐 Полный натальный разбор',
+      content: `
+        <div style="font-size: 13px; line-height: 1.6; color: var(--text-main); text-align: left;">
+          <div style="background: rgba(229,195,120,0.12); padding: 10px 14px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(229,195,120,0.3); text-align: center;">
+            <b style="color: var(--gold); font-size: 12px;">✦ ТЕСТОВЫЙ ДОСТУП: ПОЛНЫЙ РАЗБОР ✦</b>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #FFE8A3;">
+            <b style="color: #FFE8A3; font-size: 13px;">☀️ Ядро и вектор силы (Солнце)</b><br>
+            <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+              Ты обладаешь редким даром видеть конечную архитектуру любого замысла. Твоя сила — в структурности и бескомпромиссном качестве. Когда ты не суетишься и держишь фокус, любые двери открываются.
+            </span>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #C4B5FD;">
+            <b style="color: #C4B5FD; font-size: 13px;">🌙 Эмоциональный ресурс (Луна)</b><br>
+            <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+              Положение в обители дает сверхчувствительность. Твой ресурс — эстетика, тактильный комфорт, вкусная еда и моменты тишины наедине с собой.
+            </span>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #50E3C2;">
+            <b style="color: #50E3C2; font-size: 13px;">💎 Кармическая задача (Раху)</b><br>
+            <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+              Выход из тени в публичность, создание авторских проектов и масштабирование без чувства вины за свой высокий уровень.
+            </span>
+          </div>
+        </div>
+      `
+    },
+    'finance': {
+      title: '💎 Финансовый & Карьерный код',
+      content: `
+        <div style="font-size: 13px; line-height: 1.6; color: var(--text-main); text-align: left;">
+          <div style="background: rgba(80,227,194,0.12); padding: 10px 14px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(80,227,194,0.3); text-align: center;">
+            <b style="color: #50E3C2; font-size: 12px;">✦ ТЕСТОВЫЙ ДОСТУП: ФИНАНСОВЫЙ КОД ✦</b>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #50E3C2;">
+            <b style="color: #50E3C2; font-size: 13px;">💰 2-й Дом: Канал самых легких денег</b><br>
+            <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+              Твой денежный архетип раскрывается через премиальный визуал, глубокую атмосферу и эстетику. Чем выше чек и уровень клиентов — тем легче и органичнее совершаются сделки.
+            </span>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #FFE8A3;">
+            <b style="color: #FFE8A3; font-size: 13px;">🚧 Финансовые блоки и слив дохода</b><br>
+            <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+              Соглашаться на компромиссы из вежливости, занижать стоимость своего времени и делать дешевую механическую работу вместо творчества и стратегии.
+            </span>
+          </div>
+        </div>
+      `
+    },
+    'friendship': {
+      title: '👥 Окружение & Дружба',
+      content: `
+        <div style="font-size: 13px; line-height: 1.6; color: var(--text-main); text-align: left;">
+          <div style="background: rgba(216,180,248,0.12); padding: 10px 14px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(216,180,248,0.3); text-align: center;">
+            <b style="color: #D8B4F8; font-size: 12px;">✦ ТЕСТОВЫЙ ДОСТУП: ОКРУЖЕНИЕ & ДРУЖБА ✦</b>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #D8B4F8;">
+            <b style="color: #D8B4F8; font-size: 13px;">👥 11-й Дом: Люди твоей силы</b><br>
+            <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+              Твое племя — люди с живым умом, предприниматели, художники, люди дела с чувством юмора и самоиронией. С ними ты растёшь, обмениваешься вдохновением и не тратишь силы на оправдания.
+            </span>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #FCA5A5;">
+            <b style="color: #FCA5A5; font-size: 13px;">🚩 Красные флаги и утечки энергии</b><br>
+            <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+              Жалобы без желания менять жизнь, пассивная зависть к успехам и «игра в одни ворота». Твое право — мягко дистанцироваться без чувства вины.
+            </span>
+          </div>
+        </div>
+      `
+    },
+    'synastry': {
+      title: '❤️ Совместимость & Отношения',
+      content: `
+        <div style="font-size: 13px; line-height: 1.6; color: var(--text-main); text-align: left;">
+          <div style="background: rgba(244,114,182,0.12); padding: 10px 14px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(244,114,182,0.3); text-align: center;">
+            <b style="color: #F472B6; font-size: 12px;">✦ ТЕСТОВЫЙ ДОСТУП: СИНАСТРИЯ ✦</b>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #F472B6;">
+            <b style="color: #F472B6; font-size: 13px;">❤️ Точки притяжения и командный дух</b><br>
+            <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+              Ваш союз держится на синергии: сочетание практической опоры и эмоциональной нежности. Совместные поездки, эстетичный быт и общие цели скрепляют связь сильнее любых слов.
+            </span>
+          </div>
+        </div>
+      `
+    },
+    'kids': {
+      title: '✨ Детская карта & Таланты',
+      content: `
+        <div style="font-size: 13px; line-height: 1.6; color: var(--text-main); text-align: left;">
+          <div style="background: rgba(251,191,36,0.12); padding: 10px 14px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(251,191,36,0.3); text-align: center;">
+            <b style="color: #FBBF24; font-size: 12px;">✦ ТЕСТОВЫЙ ДОСТУП: ДЕТСКАЯ КАРТА ✦</b>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #FBBF24;">
+            <b style="color: #FBBF24; font-size: 13px;">🌟 Природный темперамент и таланты</b><br>
+            <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+              Творческая натура с выраженной чувствительностью к похвале и признанию. Идеальный подход — поддержка через живой интерес, свободу выбора занятий и мягкое направление без давления.
+            </span>
+          </div>
+        </div>
+      `
+    },
+    'solar': {
+      title: '💫 Персональный год 2027 (Соляр)',
+      content: `
+        <div style="font-size: 13px; line-height: 1.6; color: var(--text-main); text-align: left;">
+          <div style="background: rgba(167,139,250,0.12); padding: 10px 14px; border-radius: 12px; margin-bottom: 12px; border: 1px solid rgba(167,139,250,0.3); text-align: center;">
+            <b style="color: #A78BFA; font-size: 12px;">✦ ТЕСТОВЫЙ ДОСТУП: СОЛЯРНЫЙ ГОД ✦</b>
+          </div>
+          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #A78BFA;">
+            <b style="color: #A78BFA; font-size: 13px;">⚡ Точки квантового роста</b><br>
+            <span style="font-size: 12px; line-height: 1.5; display: block; margin-top: 4px;">
+              Год качественного расширения масштаба влияния. Первая половина года — упаковка и запуск новых направлений; вторая — сбор финансового урожая и закрепление авторитета.
+            </span>
+          </div>
+        </div>
+      `
+    }
+  };
+
   function showProductModal(title, price, desc) {
     haptic();
+    let key = 'natal';
+    if (title.includes('Финанс')) key = 'finance';
+    else if (title.includes('Окружение') || title.includes('Дружб')) key = 'friendship';
+    else if (title.includes('Совместим')) key = 'synastry';
+    else if (title.includes('Детск')) key = 'kids';
+    else if (title.includes('Соляр') || title.includes('2027')) key = 'solar';
+
     document.getElementById('modal-title').innerText = title + ' • ' + price;
-    document.getElementById('modal-desc').innerHTML = desc + '<br><br><b>Формат:</b> PDF-гайд + интерактивный AI-разбор прямо в Telegram.';
+    document.getElementById('modal-desc').innerHTML = desc + '<br><br><b>Формат:</b> PDF-гайд + интерактивный AI-разбор прямо в приложении.<br><br><span style="color: var(--gold); font-size: 12px;">🧪 <b>Тест-режим активен:</b> можно сразу открыть и прочитать весь разбор без оплаты!</span>';
     document.getElementById('modal-input-wrap').style.display = 'none';
-    document.getElementById('modal-action-btn').innerText = 'Оформить разбор (' + price + ')';
+    document.getElementById('modal-action-btn').style.display = 'block';
+    document.getElementById('modal-action-btn').innerText = '✨ Открыть полный разбор (Тест)';
+    
     currentModalAction = () => {
       haptic();
-      alert('✦ Онлайн-оплата (СБП / Карты РФ) подключается. В течение 24 часов станет доступна прямо в боте!');
-      closeModal();
+      const sample = readingSamples[key] || readingSamples['natal'];
+      document.getElementById('modal-title').innerText = sample.title;
+      document.getElementById('modal-desc').innerHTML = sample.content;
+      document.getElementById('modal-action-btn').innerText = 'Закрыть разбор ✦';
+      currentModalAction = () => closeModal();
     };
     openModal();
   }
