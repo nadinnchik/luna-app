@@ -718,6 +718,105 @@
       margin: 8px 0 14px 0;
     }
   </style>
+
+<style id="heroMiniNatalStyles">
+  .hero-natal-card {
+    background: linear-gradient(145deg, rgba(35, 24, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%) !important;
+    border: 1.5px solid rgba(229, 195, 120, 0.5) !important;
+    border-radius: 22px !important;
+    padding: 20px 18px !important;
+    margin-bottom: 20px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: 0 0 35px rgba(138, 79, 158, 0.4), 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  }
+  .hero-natal-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 25%, rgba(255, 232, 163, 0.15) 0%, rgba(138, 79, 158, 0.1) 45%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-natal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(229, 195, 120, 0.18);
+    border: 1px solid rgba(229, 195, 120, 0.5);
+    color: #FFE8A3;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .hero-natal-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #FFF;
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+  }
+  .hero-natal-subtitle {
+    font-size: 12.5px;
+    color: var(--text-sub);
+    margin-bottom: 14px;
+    line-height: 1.45;
+  }
+  .triad-box-hero {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 14px 0 16px;
+  }
+  .triad-hero-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(229, 195, 120, 0.25);
+    border-radius: 12px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+  .triad-hero-icon {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+  .triad-hero-label {
+    font-size: 10.5px;
+    color: var(--text-sub);
+    margin-bottom: 2px;
+  }
+  .triad-hero-val {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #FFF;
+  }
+  .hero-natal-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #FFE8A3 0%, #E5C378 50%, #C49B45 100%);
+    color: #120C22;
+    font-weight: 800;
+    font-size: 14.5px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(229, 195, 120, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: transform 0.15s ease;
+  }
+  .hero-natal-btn:active {
+    transform: scale(0.98);
+  }
+</style>
+
 </head>
 <body>
 
@@ -785,30 +884,37 @@
     <!-- STATE 2: ACTIVE DASHBOARD (FOR USERS WITH PROFILE) -->
     <div id="activeDashboard" style="display: none;">
 
-      <!-- 1. GREETING & PLANETARY TRIAD -->
-      <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <div style="font-size: 14.5px; font-weight: 600; color: #FFF;" id="greetingName">Здравствуй ✨</div>
-          <button style="background: none; border: none; color: var(--gold); font-size: 11.5px; cursor: pointer; text-decoration: underline;" onclick="openEditNatalModal()">Изменить данные ✎</button>
+      <!-- ② ⭐ 1. МИНИ-НАТАЛЬНАЯ КАРТА (ГЛАВНЫЙ АКЦЕНТНЫЙ БЛОК) -->
+      <div class="hero-natal-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div class="hero-natal-badge">⭐ Бесплатный разбор</div>
+          <button style="background: none; border: none; color: var(--gold); font-size: 11.5px; cursor: pointer; text-decoration: underline; padding-top: 2px;" onclick="openEditNatalModal()">Изменить ✎</button>
         </div>
-        
-        <div class="triad-grid">
-          <div class="triad-item">
-            <div class="triad-icon">☀️</div>
-            <div class="triad-label">Солнце</div>
-            <div class="triad-val" id="triadSun">—</div>
+        <div class="hero-natal-title" id="greetingName">✨ Твоя мини-натальная карта</div>
+        <div class="hero-natal-subtitle">Твой базовый астрологический портрет по данным рождения:</div>
+
+        <div class="triad-box-hero">
+          <div class="triad-hero-item">
+            <div class="triad-hero-icon">☀️</div>
+            <div class="triad-hero-label">Солнце</div>
+            <div class="triad-hero-val" id="triadSun">Козерог</div>
           </div>
-          <div class="triad-item">
-            <div class="triad-icon">🌙</div>
-            <div class="triad-label">Луна</div>
-            <div class="triad-val" id="triadMoon">—</div>
+          <div class="triad-hero-item">
+            <div class="triad-hero-icon">🌙</div>
+            <div class="triad-hero-label">Луна</div>
+            <div class="triad-hero-val" id="triadMoon">Козерог</div>
           </div>
-          <div class="triad-item">
-            <div class="triad-icon">💫</div>
-            <div class="triad-label">Асцендент</div>
-            <div class="triad-val" id="triadAsc">—</div>
+          <div class="triad-hero-item">
+            <div class="triad-hero-icon">↑</div>
+            <div class="triad-hero-label">Асцендент</div>
+            <div class="triad-hero-val" id="triadAsc">Стрелец</div>
           </div>
         </div>
+
+        <button class="hero-natal-btn" onclick="openMiniNatalModal()">
+          Открыть мини-карту →
+        </button>
+      </div>
       </div>
 
       <!-- 2. 🌙 СОВЕТ ОТ ЛУНЫ НА СЕГОДНЯ -->
