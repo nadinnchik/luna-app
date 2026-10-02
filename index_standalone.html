@@ -764,7 +764,7 @@
   </div>
 
   <!-- ==================== TAB 1: TODAY / MAIN ==================== -->
-  <div id="tab-today" class="tab-view">
+  <div id="tab-today" class="tab-view" style="display: block;">
 
     <!-- STATE 1: ONBOARDING -->
     <div id="onboardingScreen" style="display: none;">
@@ -1548,13 +1548,19 @@
 
   function openModal() {
     const m = document.getElementById('appModal');
-    m.classList.add('active');
+    if (m) {
+      m.style.display = 'flex';
+      m.classList.add('active');
+    }
   }
 
   function closeModal(e) {
-    haptic();
+    if (e) e.stopPropagation();
     const m = document.getElementById('appModal');
-    m.classList.remove('active');
+    if (m) {
+      m.style.display = 'none';
+      m.classList.remove('active');
+    }
   }
 
   function showLegal(type) {
