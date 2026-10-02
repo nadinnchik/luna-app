@@ -681,17 +681,17 @@
         <div class="astro-card-item" onclick="showPlanetModal('☀️ Солнце в знаке', getSunDescription())">
           <div class="ac-icon">☀️</div>
           <div class="ac-label">Солнце</div>
-          <div class="ac-val" id="heroSunVal" style="color: #FFE8A3;">Козерог</div>
+          <div class="ac-val" id="heroSunVal" style="color: #FFE8A3;">—</div>
         </div>
         <div class="astro-card-item" onclick="showPlanetModal('🌙 Луна в знаке', getMoonDescription())">
           <div class="ac-icon">🌙</div>
           <div class="ac-label">Луна</div>
-          <div class="ac-val" id="heroMoonVal" style="color: #C4B5FD;">Рак</div>
+          <div class="ac-val" id="heroMoonVal" style="color: #C4B5FD;">—</div>
         </div>
         <div class="astro-card-item" onclick="showPlanetModal('💫 Асцендент в знаке', getAscDescription())">
           <div class="ac-icon">💫</div>
           <div class="ac-label">Асцендент</div>
-          <div class="ac-val" id="heroAscVal" style="color: #93C5FD;">Близнецы</div>
+          <div class="ac-val" id="heroAscVal" style="color: #93C5FD;">—</div>
         </div>
       </div>
 
@@ -888,19 +888,19 @@
       </div>
       <div class="profile-row">
         <span class="profile-label">Имя:</span>
-        <span class="profile-value" id="profileNameVal">Пользователь</span>
+        <span class="profile-value" id="profileNameVal">Не указано</span>
       </div>
       <div class="profile-row">
         <span class="profile-label">Дата рождения:</span>
-        <span class="profile-value" id="profileBirthDateVal">07.01.1990</span>
+        <span class="profile-value" id="profileBirthDateVal">—</span>
       </div>
       <div class="profile-row">
         <span class="profile-label">Город рождения:</span>
-        <span class="profile-value" id="profileBirthPlaceVal">Екатеринбург</span>
+        <span class="profile-value" id="profileBirthPlaceVal">—</span>
       </div>
       <div class="profile-row">
         <span class="profile-label">Время рождения:</span>
-        <span class="profile-value" id="profileBirthTimeVal">12:30</span>
+        <span class="profile-value" id="profileBirthTimeVal">—</span>
       </div>
     </div>
 
@@ -908,15 +908,15 @@
     <div class="profile-card">
       <div class="profile-row">
         <span class="profile-label">☀️ Солнце (Ядро воли):</span>
-        <span class="profile-value" id="profileSunVal" style="color: #FFE8A3;">Козерог (10-й дом)</span>
+        <span class="profile-value" id="profileSunVal" style="color: #FFE8A3;">—</span>
       </div>
       <div class="profile-row">
         <span class="profile-label">🌙 Луна (Эмоции & Ресурс):</span>
-        <span class="profile-value" id="profileMoonVal" style="color: #C4B5FD;">Рак (Обитель)</span>
+        <span class="profile-value" id="profileMoonVal" style="color: #C4B5FD;">—</span>
       </div>
       <div class="profile-row">
         <span class="profile-label">💫 Асцендент (Социальный код):</span>
-        <span class="profile-value" id="profileAscVal" style="color: #93C5FD;">Близнецы</span>
+        <span class="profile-value" id="profileAscVal" style="color: #93C5FD;">—</span>
       </div>
       <div class="profile-row">
         <span class="profile-label">Статус анкеты сфер:</span>
@@ -1065,7 +1065,7 @@
       userNatalData = Object.assign(userNatalData, JSON.parse(savedNatal));
     }
 
-    updateNatalUI();
+    renderHomeView();
 
     const dayOfWeek = new Date().getDay();
     const advHeader = document.getElementById('dailyAdviceHeader');
@@ -1194,7 +1194,7 @@
     };
 
     localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData));
-    updateNatalUI();
+    renderHomeView();
     updateProfileStatus();
     closeModal();
   }
