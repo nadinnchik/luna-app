@@ -1117,34 +1117,44 @@
     if (hAsc) hAsc.innerText = userNatalData.asc;
   }
 
-  function openEditNatalModal() {
+    function openEditNatalModal() {
     haptic();
     const content = document.getElementById('modalContent');
+    const data = userNatalData || { name: '', birthDate: '', birthTime: '', birthPlace: '' };
+
     content.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div class="sheet-title" style="margin: 0; font-size: 18px;">✏️ Твои натальные координаты</div>
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">✨ ${userNatalData ? 'Изменить Astro Profile' : 'Создай свою Astro Profile'}</div>
         <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
       </div>
-      <div class="sheet-desc" style="margin-bottom: 12px;">
-        Введи свои точные данные рождения для автоматического пересчета всех домов и планет:
+      <div class="sheet-desc" style="margin-bottom: 14px;">
+        ${userNatalData ? 'Отредактируй данные для мгновенного перерасчёта натальной карты:' : 'Чтобы получить персональный разбор, укажи свои данные рождения:'}
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Твое Имя:</label>
-        <input type="text" id="editUserName" class="input-field" value="` + userNatalData.name + `">
+      <div style="display: flex; flex-direction: column; gap: 11px; margin-bottom: 16px;">
+        <div>
+          <label style="font-size: 11px; color: var(--gold); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 4px;">Имя</label>
+          <input type="text" id="inputNatalName" value="${data.name}" placeholder="Например, Анна" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: #FFF; font-size: 14px; outline: none;">
+        </div>
 
-        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Дата рождения (ДД.ММ.ГГГГ):</label>
-        <input type="text" id="editUserDate" class="input-field" value="` + userNatalData.birthDate + `">
+        <div>
+          <label style="font-size: 11px; color: var(--gold); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 4px;">Дата рождения (ДД.ММ.ГГГГ)</label>
+          <input type="text" id="inputNatalDate" value="${data.birthDate}" placeholder="Например, 15.08.1994" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: #FFF; font-size: 14px; outline: none;">
+        </div>
 
-        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Город рождения:</label>
-        <input type="text" id="editUserPlace" class="input-field" value="` + userNatalData.birthPlace + `">
+        <div>
+          <label style="font-size: 11px; color: var(--gold); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 4px;">Время рождения (если известно)</label>
+          <input type="text" id="inputNatalTime" value="${data.birthTime}" placeholder="Например, 14:30 (или 12:00)" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: #FFF; font-size: 14px; outline: none;">
+        </div>
 
-        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Время рождения (ЧЧ:ММ):</label>
-        <input type="text" id="editUserTime" class="input-field" value="` + userNatalData.birthTime + `">
+        <div>
+          <label style="font-size: 11px; color: var(--gold); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 4px;">Город рождения</label>
+          <input type="text" id="inputNatalPlace" value="${data.birthPlace}" placeholder="Например, Москва" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: #FFF; font-size: 14px; outline: none;">
+        </div>
       </div>
 
-      <button class="sheet-btn" style="margin-top: 10px;" onclick="saveUserNatalData()">
-        Рассчитать мою натальную карту ✦
+      <button class="sheet-btn" onclick="saveUserNatalData()">
+        ✨ ${userNatalData ? 'Сохранить и пересчитать карту' : 'Создать мою карту ✨'}
       </button>
     `;
     openModal();
@@ -1152,350 +1162,36 @@
 
   function saveUserNatalData() {
     haptic();
-    const name = document.getElementById('editUserName').value.trim() || 'Пользователь';
-    const bDate = document.getElementById('editUserDate').value.trim() || '07.01.1990';
-    const bPlace = document.getElementById('editUserPlace').value.trim() || 'Екатеринбург';
-    const bTime = document.getElementById('editUserTime').value.trim() || '12:00';
+    const name = document.getElementById('inputNatalName').value.trim();
+    const bDate = document.getElementById('inputNatalDate').value.trim();
+    const bTime = document.getElementById('inputNatalTime').value.trim() || '12:00';
+    const bPlace = document.getElementById('inputNatalPlace').value.trim();
 
-    let parts = bDate.split(/[\.\-\/]/);
-    let day = parseInt(parts[0]) || 7;
-    let month = parseInt(parts[1]) || 1;
+    if (!name || !bDate || !bPlace) {
+      alert('Пожалуйста, укажи имя, дату и город рождения.');
+      return;
+    }
 
-    let timeParts = bTime.split(/[\:\-\.]/);
-    let hour = parseInt(timeParts[0]) || 12;
-
-    const sunSign = calculateZodiacSign(day, month);
-    const moonSign = calculateMoonSign(day, month);
-    const ascSign = calculateAscendantSign(hour);
+    const sun = getSunSignFromDate(bDate);
+    const moon = getMoonSignFromDate(bDate);
+    const asc = getAscendantFromTime(bDate, bTime);
 
     userNatalData = {
       name: name,
       birthDate: bDate,
-      birthPlace: bPlace,
       birthTime: bTime,
-      sun: sunSign,
-      moon: moonSign,
-      asc: ascSign
+      birthPlace: bPlace,
+      sun: sun,
+      moon: moon,
+      asc: asc
     };
 
     localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData));
-    updateNatalUI();
+    updateHomeProfileHeader();
     closeModal();
   }
 
-  function getSunDescription() {
-    return '<b>Солнце в знаке ' + userNatalData.sun + '</b>.<br><br>Ядро твоей воли, масштаба и самореализации. Определяет, через какие действия ты зажигаешь свою энергию и выстраиваешь авторитет в обществе.';
-  }
-
-  function getMoonDescription() {
-    return '<b>Луна в знаке ' + userNatalData.moon + '</b>.<br><br>Твой эмоциональный мир, глубинная интуиция и адаптивность. Показывает, как ты восстанавливаешь силы, чувствуешь безопасность и считываешь пространство.';
-  }
-
-  function getAscDescription() {
-    return '<b>Асцендент в знаке ' + userNatalData.asc + '</b>.<br><br>Твоя социальная маска, визуальный стиль и первое впечатление в социуме. То, как мир безошибочно узнает твою уникальную энергию.';
-  }
-
-  function updateProfileStatus() {
-    const done = localStorage.getItem('luna_user_quiz_done') === 'true';
-    const stEl = document.getElementById('profileQuizStatus');
-    if (stEl) {
-      stEl.innerText = done ? '✨ Активен (Заполнен)' : 'Не пройден';
-      stEl.style.color = done ? '#50E3C2' : '#FFE8A3';
-    }
-  }
-
-  
-  function renderSavedChildren() {
-    const list = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
-    const card = document.getElementById('savedChildrenCard');
-    const container = document.getElementById('savedChildrenList');
-    if (!card || !container) return;
-
-    if (list.length === 0) {
-      card.style.display = 'none';
-      return;
-    }
-    card.style.display = 'block';
-    container.innerHTML = list.map((c, idx) => `
-      <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(229,195,120,0.2); padding: 10px 12px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-        <div style="flex: 1;">
-          <b style="color: #FFE8A3; font-size: 13px;">` + (c.name || 'Ребенок ' + (idx+1)) + `</b>
-          <div style="font-size: 11px; color: var(--text-sub);">` + c.birthDate + ` • ` + (c.ageCategory || getAgeCategoryFromDate(c.birthDate)) + `</div>
-        </div>
-        <div style="display: flex; gap: 6px; align-items: center;">
-          <button style="background: rgba(229,195,120,0.15); border: 1px solid var(--gold); color: var(--gold); border-radius: 8px; padding: 5px 10px; font-size: 11px; font-weight: 600; cursor: pointer;" onclick="openChildReport('` + c.name + `', '` + c.birthDate + `', '` + c.birthPlace + `', '` + c.birthTime + `')">Разбор →</button>
-          <button style="background: rgba(255,70,70,0.15); border: 1px solid rgba(255,70,70,0.4); color: #FF7B7B; border-radius: 8px; padding: 5px 8px; font-size: 11px; cursor: pointer;" onclick="deleteChild(` + idx + `)" title="Удалить">🗑</button>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function deleteChild(index) {
-    haptic();
-    let list = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
-    list.splice(index, 1);
-    localStorage.setItem('luna_saved_children', JSON.stringify(list));
-    renderSavedChildren();
-    if (list.length === 0) {
-      closeModal();
-    }
-  }
-
-  function showProductModal(title, price, desc) {
-    haptic();
-    let key = 'natal';
-    if (title.includes('Финанс') || title.includes('Деньги')) key = 'finance';
-    else if (title.includes('Совместим') || title.includes('Синастр') || title.includes('Любовь')) key = 'synastry';
-    else if (title.includes('Детск') || title.includes('Ребенок')) key = 'kids';
-    else if (title.includes('Предназначен')) key = 'purpose';
-    else if (title.includes('Друзь') || title.includes('Окружен')) key = 'friends';
-    else if (title.includes('Соляр') || title.includes('2027')) key = 'solar';
-
-    targetProduct = { title: title, price: price, desc: desc, key: key };
-
-    // If KIDS: check if children already exist! If yes, show list with option to view or add new
-    if (key === 'kids') {
-      const savedList = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
-      if (savedList.length > 0) {
-        showSavedChildrenChoiceModal();
-      } else {
-        openChildQuizModal();
-      }
-      return;
-    }
-
-    if (!userQuizDone) {
-      quizStep = 1;
-      renderLifeQuizStep();
-      openModal();
-    } else {
-      renderPaidReportView();
-      openModal();
-    }
-  }
-
-  function showSavedChildrenChoiceModal() {
-    const list = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
-    const content = document.getElementById('modalContent');
-    content.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div class="sheet-title" style="margin: 0; font-size: 18px;">👶 Детские карты PRO</div>
-        <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
-      </div>
-      <div class="sheet-desc" style="margin-bottom: 12px;">
-        Выбери ребёнка для просмотра разбора или добавь нового:
-      </div>
-
-      <div style="margin-bottom: 14px;">
-        ` + list.map((c, idx) => `
-          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(229,195,120,0.22); padding: 12px; border-radius: 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <b style="color: #FFE8A3; font-size: 13.5px;">` + (c.name || 'Ребенок ' + (idx+1)) + `</b>
-              <div style="font-size: 11px; color: var(--text-sub);">` + c.birthDate + ` • ` + (c.ageCategory || getAgeCategoryFromDate(c.birthDate)) + `</div>
-            </div>
-            <div style="display: flex; gap: 6px;">
-              <button class="sheet-btn" style="padding: 6px 12px; font-size: 11px; width: auto;" onclick="openChildReport('` + c.name + `', '` + c.birthDate + `', '` + c.birthPlace + `', '` + c.birthTime + `')">Открыть →</button>
-              <button style="background: rgba(255,70,70,0.15); border: 1px solid rgba(255,70,70,0.4); color: #FF7B7B; border-radius: 8px; padding: 6px 10px; font-size: 11px; cursor: pointer;" onclick="deleteChild(` + idx + `); showSavedChildrenChoiceModal();">🗑</button>
-            </div>
-          </div>
-        `).join('') + `
-      </div>
-
-      <button class="sheet-btn" onclick="openChildQuizModal()">
-        + Добавить нового ребёнка ✦
-      </button>
-    `;
-    openModal();
-  }
-
-  function resetAndRestartQuiz() {
-    haptic();
-    localStorage.removeItem('luna_user_quiz_done');
-    localStorage.removeItem('luna_user_quiz_profile');
-    userQuizDone = false;
-    updateProfileStatus();
-    quizStep = 1;
-    renderLifeQuizStep();
-    openModal();
-  }
-
-  function haptic() {
-    if (tg && tg.HapticFeedback) {
-      tg.HapticFeedback.impactOccurred('light');
-    }
-  }
-
-  function switchTab(tab) {
-    haptic();
-    document.querySelectorAll('.tab-view').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-
-    document.getElementById('tab-' + tab).style.display = 'block';
-    const navBtn = document.getElementById('nav-' + tab);
-    if (navBtn) navBtn.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function openModal() {
-    const m = document.getElementById('appModal');
-    m.classList.add('active');
-  }
-
-  function closeModal(e) {
-    haptic();
-    const m = document.getElementById('appModal');
-    m.classList.remove('active');
-  }
-
-  function showLegal(type) {
-    haptic();
-    const content = document.getElementById('modalContent');
-    if (type === 'privacy') {
-      content.innerHTML = `
-        <div class="sheet-title">Политика конфиденциальности</div>
-        <div class="sheet-desc">Мы бережно храним персональные астрологические данные. Дата и время рождения используются исключительно для математического расчета натальных домов и планетарных аспектов в защищенном контуре.</div>
-        <button class="sheet-btn" onclick="closeModal()">Закрыть</button>
-      `;
-    } else {
-      content.innerHTML = `
-        <div class="sheet-title">Публичная оферта</div>
-        <div class="sheet-desc">Сервис LUNA предоставляет информационно-консультационные услуги по составлению персональных астрологических разборов. Оплата производится через сертифицированные российские платежные шлюзы (СБП, банковские карты).</div>
-        <button class="sheet-btn" onclick="closeModal()">Закрыть</button>
-      `;
-    }
-    openModal();
-  }
-
-  // --- BASE FREE NATAL READING (5-7 SCREENS LAYER) ---
-  function showFullFreeReading() {
-    haptic();
-    const content = document.getElementById('modalContent');
-    content.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <div class="sheet-title" style="margin: 0;">✨ Базовый натальный разбор (FREE)</div>
-        <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
-      </div>
-
-      <div style="background: rgba(229,195,120,0.08); padding: 12px; border-radius: 14px; border: 1px solid rgba(229,195,120,0.25); margin-bottom: 16px;">
-        <p style="margin: 0; font-size: 12px; color: #FFE8A3; line-height: 1.5;">
-          <b>Базовый космический паспорт ` + userNatalData.name + `:</b> Расшифровка натальной триады (` + userNatalData.sun + `, ` + userNatalData.moon + `, ` + userNatalData.asc + `) и верхнего слоя характера.
-        </p>
-      </div>
-
-      <!-- 1. Солнце -->
-      <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #FFE8A3;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <b style="color: #FFE8A3; font-size: 14px;">☀️ Солнце в знаке ` + userNatalData.sun + ` (10-й дом)</b>
-          <span style="font-size: 10px; background: rgba(255,232,163,0.15); color: #FFE8A3; padding: 2px 6px; border-radius: 6px;">Ядро воли</span>
-        </div>
-        <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
-          <b>Твоя суперсила:</b> Способность видеть конечный грандиозный результат и собирать его из хаоса, шаг за шагом. Архитектор смыслов и масштабных проектов.<br>
-          <b>В чем ловушка:</b> Брать на себя тотальный гиперконтроль и тащить все в одиночку.
-        </span>
-      </div>
-
-      <!-- 2. Луна -->
-      <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #C4B5FD;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <b style="color: #C4B5FD; font-size: 14px;">🌙 Луна в знаке ` + userNatalData.moon + ` (Обитель)</b>
-          <span style="font-size: 10px; background: rgba(196,181,253,0.15); color: #C4B5FD; padding: 2px 6px; border-radius: 6px;">Эмоции & Ресурс</span>
-        </div>
-        <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
-          <b>Интуиция и душа:</b> Луна в сильнейшем положении дает феноменальную сенсорику — способность считывать людей без слов.<br>
-          <b>Где твой ресурс:</b> Вода, тактильная эстетика, теплый уют, моменты тишины наедине с собой.
-        </span>
-      </div>
-
-      <!-- 3. Асцендент -->
-      <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #93C5FD;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <b style="color: #93C5FD; font-size: 14px;">💫 Асцендент в знаке ` + userNatalData.asc + `</b>
-          <span style="font-size: 10px; background: rgba(147,197,253,0.15); color: #93C5FD; padding: 2px 6px; border-radius: 6px;">Социальная маска</span>
-        </div>
-        <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
-          <b>Как тебя видит мир:</b> Динамичной, стильной, с искрометным юмором и живым умом. Способность легко заводить контакт с любым окружением.
-        </span>
-      </div>
-
-      <!-- 4. Финансы -->
-      <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #50E3C2;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <b style="color: #50E3C2; font-size: 14px;">💰 Финансовый потенциал (Базовый срез)</b>
-          <span style="font-size: 10px; background: rgba(80,227,194,0.15); color: #50E3C2; padding: 2px 6px; border-radius: 6px;">2-й дом</span>
-        </div>
-        <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
-          <b>Где легкие деньги:</b> Монетизация визуала, авторского почерка и управления проектами.
-        </span>
-      </div>
-
-      <!-- 5. Тизер перехода в PRO -->
-      <div style="background: linear-gradient(135deg, rgba(229,195,120,0.2) 0%, rgba(138,79,158,0.2) 100%); padding: 16px; border-radius: 16px; border: 1px solid rgba(229,195,120,0.45); margin-top: 14px; margin-bottom: 16px; text-align: center;">
-        <b style="color: var(--gold); font-size: 14px; display: block; margin-bottom: 6px;">📖 Хотите узнать себя на 100% глубже?</b>
-        <span style="font-size: 12px; line-height: 1.55; display: block; color: #FFF; margin-bottom: 12px;">
-          В полной книге <b>Натальная карта PRO (35–45 страниц)</b>: синтез планет, все 12 домов, кармические узлы судьбы, скрытые паттерны и 7 опор жизни.
-        </span>
-        <button class="sheet-btn" onclick="closeModal(); showProductModal('🪐 Полная натальная карта PRO', '1 490 ₽', 'Фундаментальный разбор личности');">
-          Открыть Натальную книгу PRO (1 490 ₽) →
-        </button>
-      </div>
-    `;
-    openModal();
-  }
-
-  function showPlanetModal(title, text) {
-    haptic();
-    const content = document.getElementById('modalContent');
-    content.innerHTML = `
-      <div class="sheet-title">` + title + `</div>
-      <div class="sheet-desc">` + text + `</div>
-      <button class="sheet-btn" onclick="closeModal()">Понятно ✦</button>
-    `;
-    openModal();
-  }
-
-  function showWeeklyModal() {
-    showPlanetModal('🔮 Магические знаки недели', '<b>Энергетический код недели:</b><br><br>• <b>Число синхронности:</b> 21 (Завершение цикла и переход на новый уровень).<br>• <b>Знаки пространства:</b> белые перья, птицы у окна, зеркальные цифры (11:11, 21:21).<br>• <b>Камень и растение:</b> Лунный камень и Лаванда для ясности интуиции.');
-  }
-
-  // ==================== LIFE QUIZ FLOW ====================
-  let userQuizDone = localStorage.getItem('luna_user_quiz_done') === 'true';
-  let quizStep = 1;
-  let userProfile = {
-    relationships: '',
-    kids: '',
-    money: '',
-    focus: ''
-  };
-  let targetProduct = null;
-
-  function showProductModal(title, price, desc) {
-    haptic();
-    let key = 'natal';
-    if (title.includes('Финанс') || title.includes('Деньги')) key = 'finance';
-    else if (title.includes('Совместим') || title.includes('Синастр') || title.includes('Любовь')) key = 'synastry';
-    else if (title.includes('Детск') || title.includes('Ребенок')) key = 'kids';
-    else if (title.includes('Предназначен')) key = 'purpose';
-    else if (title.includes('Друзь') || title.includes('Окружен')) key = 'friends';
-    else if (title.includes('Соляр') || title.includes('2027')) key = 'solar';
-
-    targetProduct = { title: title, price: price, desc: desc, key: key };
-
-    if (key === 'kids') {
-      openChildQuizModal();
-      return;
-    }
-
-    if (!userQuizDone) {
-      quizStep = 1;
-      renderLifeQuizStep();
-      openModal();
-    } else {
-      renderPaidReportView();
-      openModal();
-    }
-  }
-
-  function openChildQuizModal() {
+function openChildQuizModal() {
     const content = document.getElementById('modalContent');
     content.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
