@@ -650,6 +650,36 @@
     </div>
 
     <!-- Section: Weekly Focus Forecast -->
+    
+    <!-- Section: Magic & Sync -->
+    <div class="section-head" style="margin-top: 18px;">
+      <div class="section-title">✨ Магия и знаки недели</div>
+      <div class="section-more" onclick="showPlanetModal('🔮 Тайные знаки недели', '<b>Энергетический код недели:</b><br><br>• <b>Число удачи:</b> 21 (Синхронность, завершение важного цикла и открытые двери).<br>• <b>Знаки судьбы:</b> птицы у окна, парные зеркальные цифры на часах (11:11, 22:22), аромат мяты и белых цветов.<br>• <b>Фокус интуиции:</b> не соглашаться из вежливости, слушать первый телесный импульс.')">Подробнее →</div>
+    </div>
+
+    <div class="weekly-card" style="background: linear-gradient(135deg, rgba(138,79,158,0.18) 0%, rgba(22,20,36,0.95) 100%); border-color: rgba(180,130,230,0.35);">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center;">
+        <div style="background: rgba(255,255,255,0.04); padding: 10px 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); cursor: pointer;" onclick="showPlanetModal('🔢 Число удачи: 21', '<b>Число силы этой недели — 21</b>.<br><br>Аркан «Мир» и число гармонии. Означает благоприятный исход затянувшихся вопросов, удачные поездки и выгодные договорённости.')">
+          <div style="font-size: 18px; margin-bottom: 2px;">🔢</div>
+          <div style="font-size: 15px; font-weight: 700; color: #FFE8A3;">21</div>
+          <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">Число удачи</div>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.04); padding: 10px 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); cursor: pointer;" onclick="showPlanetModal('🕊 Знаки судьбы', '<b>Знаки пространства вокруг тебя:</b><br><br>• Повторяющиеся числа (11:11, 21:21)<br>• Случайные фразы незнакомцев, отвечающие на твой вопрос<br>• Ощущение тепла в ладонях при правильном выборе')">
+          <div style="font-size: 18px; margin-bottom: 2px;">🕊</div>
+          <div style="font-size: 13px; font-weight: 600; color: #D8B4F8;">Синхрон</div>
+          <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">Знаки судьбы</div>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.04); padding: 10px 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); cursor: pointer;" onclick="showPlanetModal('👁 Фокус интуиции', '<b>Твоя суперсила сейчас:</b><br><br>Доверяй первому импульсу до того, как включится логический анализ Козерога. Твоя Луна в Раке всегда чувствует правду раньше головы.')">
+          <div style="font-size: 18px; margin-bottom: 2px;">👁</div>
+          <div style="font-size: 13px; font-weight: 600; color: #50E3C2;">Чувство</div>
+          <div style="font-size: 10px; color: var(--text-sub); margin-top: 2px;">Интуиция</div>
+        </div>
+      </div>
+    </div>
+
+
     <div class="section-head">
       <div class="section-title">Твой фокус недели</div>
       <div class="section-more" onclick="showWeeklyDetails()">Детальнее →</div>
@@ -688,14 +718,15 @@
       </div>
     </div>
 
+    
     <!-- Section: Deep Analysis Catalog -->
-    <div class="section-head">
+    <div class="section-head" style="margin-top: 20px;">
       <div class="section-title">Глубокие разборы</div>
       <div class="section-more" onclick="switchTab('catalog')">Все 6 →</div>
     </div>
 
     <div class="catalog-grid">
-      <div class="catalog-card" onclick="showProductModal('🪐 Полная натальная карта', '1 490 ₽', 'Глубокий персональный путеводитель на 25+ страниц: ядро личности, кармические узлы, таланты, скрытые блоки и ключевые точки роста по домам Плацидуса.')">
+      <div class="catalog-card" onclick="startProductQuiz('🪐 Полная натальная карта', '1 490 ₽', 'Глубокий персональный путеводитель на 25+ страниц: ядро личности, кармические узлы, таланты, скрытые блоки и ключевые точки роста по домам Плацидуса.')">
         <div class="cc-top">
           <span class="cc-icon">🪐</span>
           <span class="cc-tag">Ядро</span>
@@ -706,7 +737,7 @@
         </div>
       </div>
 
-      <div class="catalog-card" onclick="showProductModal('💎 Финансовый & Карьерный код', '690 ₽', 'Точный астрологический расчет 2-го и 10-го домов: в каких нишах твои самые легкие деньги, что блокирует изобилие и как масштабировать доход.')">
+      <div class="catalog-card" onclick="startProductQuiz('💎 Финансовый & Карьерный код', '690 ₽', 'Точный астрологический расчет 2-го и 10-го домов: в каких нишах твои самые легкие деньги, что блокирует изобилие и как масштабировать доход.')">
         <div class="cc-top">
           <span class="cc-icon">💎</span>
           <span class="cc-tag">Деньги</span>
@@ -717,7 +748,29 @@
         </div>
       </div>
 
-      <div class="catalog-card" onclick="showProductModal('✨ Детская карта & Таланты', '1 490 ₽', 'Разбор природы ребенка (эмоции, обучаемость, сильные стороны, скрытые таланты) и подсказки для гармоничного воспитания без давления.')">
+      <div class="catalog-card" onclick="startProductQuiz('👥 Окружение & Дружба', '590 ₽', 'Глубокий разбор 11-го дома, Венеры и Луны: твой типаж в дружбе, люди твоей силы, кармические встречи и красные флаги в окружении.')">
+        <div class="cc-top">
+          <span class="cc-icon">👥</span>
+          <span class="cc-tag">Люди</span>
+        </div>
+        <div>
+          <div class="cc-title">Окружение &amp; Дружба</div>
+          <div class="cc-price">590 ₽</div>
+        </div>
+      </div>
+
+      <div class="catalog-card" onclick="startProductQuiz('❤️ Совместимость & Отношения (Синастрия)', '690 ₽', 'Глубокий разбор синастрии: точки притяжения, эмоциональный контакт, кармические задачи и триггеры в паре.')">
+        <div class="cc-top">
+          <span class="cc-icon">❤️</span>
+          <span class="cc-tag">Любовь</span>
+        </div>
+        <div>
+          <div class="cc-title">Совместимость &amp; Отношения</div>
+          <div class="cc-price">690 ₽</div>
+        </div>
+      </div>
+
+      <div class="catalog-card" onclick="startProductQuiz('✨ Детская карта & Таланты', '1 490 ₽', 'Разбор природы ребенка (эмоции, обучаемость, сильные стороны, скрытые таланты) и подсказки для гармоничного воспитания без давления.')">
         <div class="cc-top">
           <span class="cc-icon">✨</span>
           <span class="cc-tag">Дети</span>
@@ -728,7 +781,7 @@
         </div>
       </div>
 
-      <div class="catalog-card" onclick="showProductModal('💫 Персональный год 2027 (Соляр)', '2 990 ₽', 'Полный разбор персонального астрологического года: ключевые месяцы для прорыва, точки взлета в карьере и личной жизни, дни силы.')">
+      <div class="catalog-card" onclick="startProductQuiz('💫 Персональный год 2027 (Соляр)', '2 990 ₽', 'Полный разбор персонального астрологического года: ключевые месяцы для прорыва, точки взлета в карьере и личной жизни, дни силы.')">
         <div class="cc-top">
           <span class="cc-icon">💫</span>
           <span class="cc-tag">Соляр</span>
@@ -736,27 +789,13 @@
         <div>
           <div class="cc-title">Персональный год 2027</div>
           <div class="cc-price">2 990 ₽</div>
-      <div class="catalog-card" onclick="showProductModal('👥 Окружение & Дружба', '590 ₽', 'Глубокий разбор 11-го дома, Венеры и Луны: твой типаж в дружбе, люди твоей силы, кармические встречи и красные флаги в окружении.')">
-        <div class="cc-top">
-          <span class="cc-tag">Глубокий разбор</span>
-          <span class="cc-price">590 ₽</span>
-        </div>
-        <div class="cc-title">👥 Окружение & Дружба</div>
-        <div class="cc-desc">Люди силы, твое племя, точки роста и скрытые триггеры в общении.</div>
-      </div>
-
         </div>
       </div>
     </div>
 
-    <!-- Legal Footer -->
-    <div class="legal-footer">
-      Нажимая кнопки приложения, вы соглашаетесь с <a onclick="showLegalModal('terms')">Офертой</a> и <a onclick="showLegalModal('privacy')">Политикой конфиденциальности (152-ФЗ)</a>.<br>
-      © 2026 LUNA AI • Самозанятость Торопова Н.
-    </div>
   </div>
 
-  <!-- ==================== CATALOG SCREEN ==================== -->
+<!-- ==================== CATALOG SCREEN ==================== -->
   <div id="screen-catalog" class="view-screen">
     <div class="app-header">
       <div class="brand-group">
@@ -1131,6 +1170,48 @@
       `
     }
   };
+
+  
+  function startProductQuiz(title, price, desc) {
+    haptic();
+    let key = 'natal';
+    if (title.includes('Финанс')) key = 'finance';
+    else if (title.includes('Окружение') || title.includes('Дружб')) key = 'friendship';
+    else if (title.includes('Совместим')) key = 'synastry';
+    else if (title.includes('Детск')) key = 'kids';
+    else if (title.includes('Соляр') || title.includes('2027')) key = 'solar';
+
+    document.getElementById('modal-title').innerText = title + ' • ' + price;
+    document.getElementById('modal-desc').innerHTML = `
+      <div style="font-size: 13px; line-height: 1.5; color: var(--text-main); text-align: left;">
+        <p style="margin-bottom: 10px;">${desc}</p>
+        <div style="background: rgba(229,195,120,0.1); padding: 12px; border-radius: 12px; border: 1px solid rgba(229,195,120,0.3); margin-top: 10px;">
+          <b style="color: var(--gold); font-size: 12px;">✦ ОПРОСНИК ПЕРЕД РАСЧЁТОМ:</b>
+          <div style="font-size: 12px; margin-top: 6px; color: var(--text-sub);">
+            1. Твой главный фокус / запрос прямо сейчас?<br>
+            2. Уточнить точное время рождения (если известно).
+          </div>
+        </div>
+        <p style="font-size: 11px; color: var(--accent-green); margin-top: 10px;">🧪 <b>Тест-режим:</b> нажми кнопку ниже, чтобы сгенерировать готовый демо-отчет!</p>
+      </div>
+    `;
+    document.getElementById('modal-input-wrap').style.display = 'block';
+    document.getElementById('modal-input').value = '';
+    document.getElementById('modal-input').placeholder = 'Напиши запрос (или нажми Рассчитать)...';
+    document.getElementById('modal-action-btn').style.display = 'block';
+    document.getElementById('modal-action-btn').innerText = '✨ Сгенерировать отчёт (Тест)';
+    
+    currentModalAction = () => {
+      haptic();
+      document.getElementById('modal-input-wrap').style.display = 'none';
+      const sample = readingSamples[key] || readingSamples['natal'];
+      document.getElementById('modal-title').innerText = sample.title;
+      document.getElementById('modal-desc').innerHTML = sample.content;
+      document.getElementById('modal-action-btn').innerText = 'Закрыть разбор ✦';
+      currentModalAction = () => closeModal();
+    };
+    openModal();
+  }
 
   function showProductModal(title, price, desc) {
     haptic();
