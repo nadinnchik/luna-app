@@ -820,6 +820,9 @@
 </head>
 <body>
 
+  <canvas id="starsCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></canvas>
+
+
 <div class="stars-bg"></div>
 
 <div class="container">
@@ -1664,6 +1667,9 @@
 
   function handleKidsCardClick() {
     if (!userChildrenList || userChildrenList.length === 0) {
+      openMissingChildModal();
+      return;
+    }
       const html = `
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px;">
           👶 Детская карта PRO
@@ -1913,6 +1919,45 @@
     localStorage.setItem(STORAGE_KEY_NATAL, JSON.stringify(userNatalData));
     localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData));
     updateNatalUI();
+  }
+
+  
+  function openMissingDataModal() {
+    haptic('warning');
+    const contentHtml = `
+      <div style="text-align: center; padding: 24px 12px 30px;">
+        <div style="font-size: 36px; margin-bottom: 12px;">🪐</div>
+        <div style="font-size: 19px; font-weight: 800; color: #FFF; margin-bottom: 8px;">
+          Нужны данные рождения
+        </div>
+        <p style="font-size: 13.5px; color: var(--text-sub); line-height: 1.55; margin-bottom: 24px;">
+          Чтобы составить точный персональный разбор, сначала укажи свои имя, дату, время и город рождения.
+        </p>
+        <button onclick="closeModal(); openEditNatalModal();" class="sheet-btn" style="width: 100%; padding: 14px; font-weight: 800; font-size: 15px;">
+          Заполнить данные →
+        </button>
+      </div>
+    `;
+    openModal(contentHtml);
+  }
+
+  function openMissingChildModal() {
+    haptic('warning');
+    const contentHtml = `
+      <div style="text-align: center; padding: 24px 12px 30px;">
+        <div style="font-size: 36px; margin-bottom: 12px;">👶</div>
+        <div style="font-size: 19px; font-weight: 800; color: #FFF; margin-bottom: 8px;">
+          Сначала добавьте ребёнка
+        </div>
+        <p style="font-size: 13.5px; color: var(--text-sub); line-height: 1.55; margin-bottom: 24px;">
+          Для создания детского разбора добавьте профиль ребёнка с именем, датой и городом рождения.
+        </p>
+        <button onclick="closeModal(); openAddChildModal();" class="sheet-btn" style="width: 100%; padding: 14px; font-weight: 800; font-size: 15px;">
+          Добавить ребёнка →
+        </button>
+      </div>
+    `;
+    openModal(contentHtml);
   }
 
   function openEditNatalModal() {
@@ -2323,8 +2368,8 @@
   }
 
   function generateAndShowReport(prodKey) {
-    if (!userNatalData) {
-      alert('Сначала укажи свои данные рождения на главном экране');
+    if (!userNatalData || !userNatalData.birthDate || !userNatalData.name) {
+      openMissingDataModal();
       return;
     }
 
