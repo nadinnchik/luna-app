@@ -1009,12 +1009,17 @@ const tg = window.Telegram ? window.Telegram.WebApp : null;
   ];
 
   // Global Astro Profile
-    // ==================== NATAL CALCULATION & STORAGE ENGINE ====================
+  
+  // ==================== NATAL CALCULATION & STORAGE ENGINE ====================
   let userNatalData = null;
   try {
     const rawSaved = localStorage.getItem('luna_user_natal_data');
     if (rawSaved) {
-      userNatalData = JSON.parse(rawSaved);
+      const parsed = JSON.parse(rawSaved);
+      // Ensure it is a valid saved profile
+      if (parsed && parsed.name && parsed.birthDate) {
+        userNatalData = parsed;
+      }
     }
   } catch (e) {
     userNatalData = null;
@@ -1255,6 +1260,17 @@ const tg = window.Telegram ? window.Telegram.WebApp : null;
     updateProfileStatus();
     renderHomeView();
     closeModal();
+  }
+
+  function resetUserProfile() {
+    if (confirm('Сбросить профиль и пройти регистрацию заново?')) {
+      localStorage.removeItem('luna_user_natal_data');
+      localStorage.removeItem('luna_user_quiz_done');
+      localStorage.removeItem('luna_user_quiz_profile');
+      userNatalData = null;
+      renderHomeView();
+      updateProfileStatus();
+    }
   }
 
 
@@ -1618,37 +1634,142 @@ const tg = window.Telegram ? window.Telegram.WebApp : null;
     openChildReport(name, birthDate, birthPlace, birthTime);
   }
 
-  function openChildReport(name, birthDate, birthPlace, birthTime) {
+  
+  function openChildReport(name, bDate, bPlace, bTime) {
     haptic();
-    const ageCategory = getAgeCategoryFromDate(birthDate);
+    const ageCategory = getAgeCategoryFromDate(bDate);
+    const sunSign = getSunSignFromDate(bDate);
+    const moonSign = getMoonSignFromDate(bDate);
+    const ascSign = getAscendantFromTime(bDate, bTime || '12:00');
+
+    let ageContext = '';
+    if (ageCategory.includes('0–3')) {
+      ageContext = 'В раннем детстве (0–3 года) ведущую роль играет эмоциональное поле вокруг ребёнка и ощущение базовой защищённости. Познание мира идёт через тактильность, голос мамы и мягкий ритм.';
+    } else if (ageCategory.includes('4–6')) {
+      ageContext = 'В дошкольном возрасте (4–6 лет) активно раскрывается инициатива: ребёнок пробует границы, развивает сюжетно-ролевую игру и учится выражать собственные желания.';
+    } else if (ageCategory.includes('7–10')) {
+      ageContext = 'В младшем школьном возрасте (7–10 лет) ключевым становится развитие интереса к результатам своего труда, формирование самооценки и адаптация в коллективе сверстников.';
+    } else if (ageCategory.includes('11–14')) {
+      ageContext = 'В предподростковом периоде (11–14 лет) на первый план выходит потребность в личном пространстве, признании автономии и поиске своих авторитетов.';
+    } else {
+      ageContext = 'В старшем подростковом возрасте (15–17 лет) формируется осознанное самоопределение, личные ценности и выбор профессионального направления.';
+    }
+
     const content = document.getElementById('modalContent');
     content.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div class="sheet-title" style="margin: 0; font-size: 18px;">👶 Детская карта PRO: ` + name + `</div>
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">👶 Детская натальная карта PRO</div>
         <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
       </div>
 
-      <div style="background: rgba(229,195,120,0.12); padding: 12px 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.3); font-size: 11.5px; line-height: 1.6; color: #FFE8A3;">
-        👶 <b>Персональный астро-профиль ребёнка:</b><br>
-        • Имя: <b>` + name + `</b> | Возрастная категория: <b>` + ageCategory + `</b><br>
-        • Дата рождения: ` + birthDate + ` | Город: ` + birthPlace + ` | Время: ` + birthTime + `
+      <div style="background: linear-gradient(135deg, rgba(229,195,120,0.2) 0%, rgba(138,79,158,0.2) 100%); padding: 16px; border-radius: 16px; border: 1px solid rgba(229,195,120,0.4); margin-bottom: 16px; color: #FFE8A3;">
+        <div style="font-size: 15px; font-weight: 700; color: #FFF; margin-bottom: 4px;">ПОРТРЕТ РЕБЁНКА: ${name.toUpperCase()}</div>
+        <div style="font-size: 11.5px; color: var(--gold); line-height: 1.5;">
+          ${bDate} (${ageCategory}) • ${bPlace} • Ядро: <b>${sunSign} / ${moonSign} / ${ascSign}</b>
+        </div>
       </div>
 
-      ` + fullReports.kids.body + `
-
-      <div style="display: flex; gap: 8px; margin-top: 16px;">
-        <button class="sheet-btn" style="flex: 1;" onclick="openChildQuizModal()">
-          + Рассчитать еще ребенка
-        </button>
-        <button class="sheet-btn" style="flex: 1; background: rgba(255,255,255,0.08); color: #FFF; border: 1px solid rgba(255,255,255,0.2);" onclick="closeModal()">
-          Закрыть
-        </button>
+      <!-- ЗОЛОТОЙ БЛОК: РЕБЁНОК ГЛАЗАМИ РОДИТЕЛЯ -->
+      <div style="background: linear-gradient(135deg, rgba(255,232,163,0.18) 0%, rgba(80,227,194,0.12) 100%); border: 1.5px solid var(--gold); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+        <div style="font-size: 14.5px; font-weight: 700; color: #FFF; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+          <span>✨</span> <span>ЕСЛИ ОЧЕНЬ КОРОТКО: КАКОЙ ЭТО РЕБЁНОК?</span>
+        </div>
+        <div style="font-size: 12.5px; color: #FFE8A3; line-height: 1.8;">
+          <div>🌱 <b>Что ему особенно важно:</b> Чувствовать искреннее эмоциональное принятие, право на свои чувства и безопасную семейную гавань.</div>
+          <div style="margin-top: 6px;">🧠 <b>Как лучше всего воспринимает информацию:</b> Через живые визуальные образы, диалог и интересные практические примеры, без сухой монотонности.</div>
+          <div style="margin-top: 6px;">❤️ <b>Что даёт ощущение безопасности:</b> Предсказуемый ритм дня, эмоциональное спокойствие мамы и теплое подтверждение близости.</div>
+          <div style="margin-top: 6px;">🎨 <b>Где может проявляться талант:</b> В творческом самовыражении, образном мышлении, визуальном вкусе и организаторских способностях.</div>
+          <div style="margin-top: 6px;">🗣 <b>Как лучше с ним разговаривать:</b> Спокойным, уважительным тоном на равных, проговаривая чувства и логику решений вместо директивных указаний.</div>
+          <div style="margin-top: 6px;">⚡ <b>Что может быстро его перегружать:</b> Шумная суета, резкая критика, избыток гаджетов перед сном и спешка.</div>
+          <div style="margin-top: 6px;">🤝 <b>Как взаимодействует со сверстниками:</b> Проявляет избирательность: важнее 1–2 верных друга с общими интересами, чем большая случайная компания.</div>
+          <div style="margin-top: 6px;">🌟 <b>Что особенно важно поддерживать:</b> Веру в собственные силы, любознательность и право на ошибки без страха оценки.</div>
+        </div>
       </div>
+
+      <div style="line-height: 1.85; font-size: 13px; color: var(--text-sub);">
+        
+        <!-- 1. ТЕМПЕРАМЕНТ -->
+        <div class="report-chapter" style="border-left: 4px solid var(--gold);">
+          <div class="report-chapter-title">🌟 1. ТЕМПЕРАМЕНТ И ВНУТРЕННИЙ МИР</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Особенности личности и поведение:</span>
+            <p>${name} обладает наблюдательной и чуткой натурой. При первом знакомстве с новой обстановкой проявляет осмотрительность: сначала изучает пространство и только затем спокойно включается в контакт.</p>
+            <p>${ageContext}</p>
+          </div>
+          <div class="report-callout" style="background: rgba(229,195,120,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Давать ребёнку немного времени на адаптацию в новых местах, не торопить и поддерживать его естественный темп включения.
+          </div>
+        </div>
+
+        <!-- 2. ЭМОЦИИ -->
+        <div class="report-chapter" style="border-left: 4px solid #F472B6;">
+          <div class="report-chapter-title">🌙 2. ЭМОЦИОНАЛЬНЫЕ РЕАКЦИИ И ПОТРЕБНОСТИ</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Как ребёнок проживает чувства:</span>
+            <p>Натальная Луна в знаке ${moonSign} указывает на высокую восприимчивость к настроению в семье. Ребёнок тонко улавливает состояние родителей: внутреннее спокойствие взрослых мгновенно возвращает ребёнку уверенность.</p>
+          </div>
+          <div class="report-callout" style="background: rgba(244,114,182,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Называть эмоции ребёнка словами («ты расстроился, потому что…») и давать теплое подтверждение, что любые его чувства нормальны.
+          </div>
+        </div>
+
+        <!-- 3. ОБУЧЕНИЕ -->
+        <div class="report-chapter" style="border-left: 4px solid #50E3C2;">
+          <div class="report-chapter-title">🧠 3. СТИЛЬ МЫШЛЕНИЯ И ВОСПРИЯТИЕ ИНФОРМАЦИИ</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Особенности познавательного процесса:</span>
+            <p>Мышление устроено наглядно и ассоциативно. Скорость усвоения знаний вырастает в разы, когда тема подается через практический интерес, наглядные примеры и живые истории.</p>
+          </div>
+          <div class="report-callout" style="background: rgba(80,227,194,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Связывать школьные или развивающие задачи с тем, что ребёнку искренне любопытно, и хвалить за конкретные старания.
+          </div>
+        </div>
+
+        <!-- 4. ЭНЕРГИЯ И РЕЖИМ -->
+        <div class="report-chapter" style="border-left: 4px solid #FFE8A3;">
+          <div class="report-chapter-title">⚡ 4. АКТИВНОСТЬ, ЭНЕРГИЯ И СБРОС НАПРЯЖЕНИЯ</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Особенности жизненного тонуса:</span>
+            <p>Энергия распределяется волнообразно: периоды яркой подвижности сменяются моментами тишины. Переутомление от шума или экранов может проявляться как внезапная капризность.</p>
+          </div>
+          <div class="report-callout" style="background: rgba(255,232,163,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Поддерживать предсказуемый вечерний распорядок, снижать экранное время перед сном и мягко переключать внимание на спокойные тактильные игры или чтение.
+          </div>
+        </div>
+
+        <!-- 5. ДРУЖБА -->
+        <div class="report-chapter" style="border-left: 4px solid #C4B5FD;">
+          <div class="report-chapter-title">🤝 5. ОБЩЕНИЕ И ДРУЖБА СО СВЕРСТНИКАМИ</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Взаимодействие со сверстниками:</span>
+            <p>В общении ценит искренность и справедливость. Ребёнку важно чувствовать уважение к своим границам и интересам.</p>
+          </div>
+          <div class="report-callout" style="background: rgba(196,181,253,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Поддерживать качественную дружбу с близкими по духу ребятами и обучать мягкому умению говорить «нет».
+          </div>
+        </div>
+
+        <!-- 6. ТАЛАНТЫ -->
+        <div class="report-chapter" style="border-left: 4px solid #93C5FD;">
+          <div class="report-chapter-title">🎨 6. ТВОРЧЕСКИЙ ПОТЕНЦИАЛ И СПОСОБНОСТИ</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Зоны природной одаренности:</span>
+            <p>Выражен интерес к сферам, где есть цвет, форма, образ, музыка или создание собственных маленьких миров.</p>
+          </div>
+          <div class="report-callout" style="background: rgba(147,197,253,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Предлагать разнообразные творческие направления, давая возможность пробовать без давления на обязательный результат.
+          </div>
+        </div>
+
+      </div>
+
+      <button class="sheet-btn" style="margin-top: 16px;" onclick="closeModal()">
+        Закрыть карту ребёнка ✦
+      </button>
     `;
     openModal();
   }
 
-  
   function renderLifeQuizStep() {
     const content = document.getElementById('modalContent');
     
@@ -3636,31 +3757,8 @@ charset="UTF-8">
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      userNatalData.name = tg.initDataUnsafe.user.first_name || 'Гость';
-    }
-
-    const savedNatal = localStorage.getItem('luna_user_natal_data');
-    if (savedNatal) {
-      userNatalData = Object.assign(userNatalData, JSON.parse(savedNatal));
-    }
-
-    updateNatalUI();
-
-    const dayOfWeek = new Date().getDay();
-    const advHeader = document.getElementById('dailyAdviceHeader');
-    const advText = document.getElementById('dailyAdviceText');
-    if (advHeader) {
-      if (userNatalData.name && userNatalData.name !== 'Гость') {
-        advHeader.innerText = "Совет от Луны на сегодня для " + userNatalData.name;
-      } else {
-        advHeader.innerText = "Совет от Луны на сегодня";
-      }
-    }
-    if (advText) {
-      advText.innerText = dailyAdvices[dayOfWeek] || dailyAdvices[0];
-    }
-
+    // 1. Check if user already exists
+    renderHomeView();
     updateProfileStatus();
     renderSavedChildren();
   });
@@ -4123,37 +4221,142 @@ charset="UTF-8">
     openChildReport(name, birthDate, birthPlace, birthTime);
   }
 
-  function openChildReport(name, birthDate, birthPlace, birthTime) {
+  
+  function openChildReport(name, bDate, bPlace, bTime) {
     haptic();
-    const ageCategory = getAgeCategoryFromDate(birthDate);
+    const ageCategory = getAgeCategoryFromDate(bDate);
+    const sunSign = getSunSignFromDate(bDate);
+    const moonSign = getMoonSignFromDate(bDate);
+    const ascSign = getAscendantFromTime(bDate, bTime || '12:00');
+
+    let ageContext = '';
+    if (ageCategory.includes('0–3')) {
+      ageContext = 'В раннем детстве (0–3 года) ведущую роль играет эмоциональное поле вокруг ребёнка и ощущение базовой защищённости. Познание мира идёт через тактильность, голос мамы и мягкий ритм.';
+    } else if (ageCategory.includes('4–6')) {
+      ageContext = 'В дошкольном возрасте (4–6 лет) активно раскрывается инициатива: ребёнок пробует границы, развивает сюжетно-ролевую игру и учится выражать собственные желания.';
+    } else if (ageCategory.includes('7–10')) {
+      ageContext = 'В младшем школьном возрасте (7–10 лет) ключевым становится развитие интереса к результатам своего труда, формирование самооценки и адаптация в коллективе сверстников.';
+    } else if (ageCategory.includes('11–14')) {
+      ageContext = 'В предподростковом периоде (11–14 лет) на первый план выходит потребность в личном пространстве, признании автономии и поиске своих авторитетов.';
+    } else {
+      ageContext = 'В старшем подростковом возрасте (15–17 лет) формируется осознанное самоопределение, личные ценности и выбор профессионального направления.';
+    }
+
     const content = document.getElementById('modalContent');
     content.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div class="sheet-title" style="margin: 0; font-size: 18px;">👶 Детская карта PRO: ` + name + `</div>
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">👶 Детская натальная карта PRO</div>
         <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
       </div>
 
-      <div style="background: rgba(229,195,120,0.12); padding: 12px 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.3); font-size: 11.5px; line-height: 1.6; color: #FFE8A3;">
-        👶 <b>Персональный астро-профиль ребёнка:</b><br>
-        • Имя: <b>` + name + `</b> | Возрастная категория: <b>` + ageCategory + `</b><br>
-        • Дата рождения: ` + birthDate + ` | Город: ` + birthPlace + ` | Время: ` + birthTime + `
+      <div style="background: linear-gradient(135deg, rgba(229,195,120,0.2) 0%, rgba(138,79,158,0.2) 100%); padding: 16px; border-radius: 16px; border: 1px solid rgba(229,195,120,0.4); margin-bottom: 16px; color: #FFE8A3;">
+        <div style="font-size: 15px; font-weight: 700; color: #FFF; margin-bottom: 4px;">ПОРТРЕТ РЕБЁНКА: ${name.toUpperCase()}</div>
+        <div style="font-size: 11.5px; color: var(--gold); line-height: 1.5;">
+          ${bDate} (${ageCategory}) • ${bPlace} • Ядро: <b>${sunSign} / ${moonSign} / ${ascSign}</b>
+        </div>
       </div>
 
-      ` + fullReports.kids.body + `
-
-      <div style="display: flex; gap: 8px; margin-top: 16px;">
-        <button class="sheet-btn" style="flex: 1;" onclick="openChildQuizModal()">
-          + Рассчитать еще ребенка
-        </button>
-        <button class="sheet-btn" style="flex: 1; background: rgba(255,255,255,0.08); color: #FFF; border: 1px solid rgba(255,255,255,0.2);" onclick="closeModal()">
-          Закрыть
-        </button>
+      <!-- ЗОЛОТОЙ БЛОК: РЕБЁНОК ГЛАЗАМИ РОДИТЕЛЯ -->
+      <div style="background: linear-gradient(135deg, rgba(255,232,163,0.18) 0%, rgba(80,227,194,0.12) 100%); border: 1.5px solid var(--gold); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+        <div style="font-size: 14.5px; font-weight: 700; color: #FFF; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+          <span>✨</span> <span>ЕСЛИ ОЧЕНЬ КОРОТКО: КАКОЙ ЭТО РЕБЁНОК?</span>
+        </div>
+        <div style="font-size: 12.5px; color: #FFE8A3; line-height: 1.8;">
+          <div>🌱 <b>Что ему особенно важно:</b> Чувствовать искреннее эмоциональное принятие, право на свои чувства и безопасную семейную гавань.</div>
+          <div style="margin-top: 6px;">🧠 <b>Как лучше всего воспринимает информацию:</b> Через живые визуальные образы, диалог и интересные практические примеры, без сухой монотонности.</div>
+          <div style="margin-top: 6px;">❤️ <b>Что даёт ощущение безопасности:</b> Предсказуемый ритм дня, эмоциональное спокойствие мамы и теплое подтверждение близости.</div>
+          <div style="margin-top: 6px;">🎨 <b>Где может проявляться талант:</b> В творческом самовыражении, образном мышлении, визуальном вкусе и организаторских способностях.</div>
+          <div style="margin-top: 6px;">🗣 <b>Как лучше с ним разговаривать:</b> Спокойным, уважительным тоном на равных, проговаривая чувства и логику решений вместо директивных указаний.</div>
+          <div style="margin-top: 6px;">⚡ <b>Что может быстро его перегружать:</b> Шумная суета, резкая критика, избыток гаджетов перед сном и спешка.</div>
+          <div style="margin-top: 6px;">🤝 <b>Как взаимодействует со сверстниками:</b> Проявляет избирательность: важнее 1–2 верных друга с общими интересами, чем большая случайная компания.</div>
+          <div style="margin-top: 6px;">🌟 <b>Что особенно важно поддерживать:</b> Веру в собственные силы, любознательность и право на ошибки без страха оценки.</div>
+        </div>
       </div>
+
+      <div style="line-height: 1.85; font-size: 13px; color: var(--text-sub);">
+        
+        <!-- 1. ТЕМПЕРАМЕНТ -->
+        <div class="report-chapter" style="border-left: 4px solid var(--gold);">
+          <div class="report-chapter-title">🌟 1. ТЕМПЕРАМЕНТ И ВНУТРЕННИЙ МИР</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Особенности личности и поведение:</span>
+            <p>${name} обладает наблюдательной и чуткой натурой. При первом знакомстве с новой обстановкой проявляет осмотрительность: сначала изучает пространство и только затем спокойно включается в контакт.</p>
+            <p>${ageContext}</p>
+          </div>
+          <div class="report-callout" style="background: rgba(229,195,120,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Давать ребёнку немного времени на адаптацию в новых местах, не торопить и поддерживать его естественный темп включения.
+          </div>
+        </div>
+
+        <!-- 2. ЭМОЦИИ -->
+        <div class="report-chapter" style="border-left: 4px solid #F472B6;">
+          <div class="report-chapter-title">🌙 2. ЭМОЦИОНАЛЬНЫЕ РЕАКЦИИ И ПОТРЕБНОСТИ</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Как ребёнок проживает чувства:</span>
+            <p>Натальная Луна в знаке ${moonSign} указывает на высокую восприимчивость к настроению в семье. Ребёнок тонко улавливает состояние родителей: внутреннее спокойствие взрослых мгновенно возвращает ребёнку уверенность.</p>
+          </div>
+          <div class="report-callout" style="background: rgba(244,114,182,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Называть эмоции ребёнка словами («ты расстроился, потому что…») и давать теплое подтверждение, что любые его чувства нормальны.
+          </div>
+        </div>
+
+        <!-- 3. ОБУЧЕНИЕ -->
+        <div class="report-chapter" style="border-left: 4px solid #50E3C2;">
+          <div class="report-chapter-title">🧠 3. СТИЛЬ МЫШЛЕНИЯ И ВОСПРИЯТИЕ ИНФОРМАЦИИ</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Особенности познавательного процесса:</span>
+            <p>Мышление устроено наглядно и ассоциативно. Скорость усвоения знаний вырастает в разы, когда тема подается через практический интерес, наглядные примеры и живые истории.</p>
+          </div>
+          <div class="report-callout" style="background: rgba(80,227,194,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Связывать школьные или развивающие задачи с тем, что ребёнку искренне любопытно, и хвалить за конкретные старания.
+          </div>
+        </div>
+
+        <!-- 4. ЭНЕРГИЯ И РЕЖИМ -->
+        <div class="report-chapter" style="border-left: 4px solid #FFE8A3;">
+          <div class="report-chapter-title">⚡ 4. АКТИВНОСТЬ, ЭНЕРГИЯ И СБРОС НАПРЯЖЕНИЯ</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Особенности жизненного тонуса:</span>
+            <p>Энергия распределяется волнообразно: периоды яркой подвижности сменяются моментами тишины. Переутомление от шума или экранов может проявляться как внезапная капризность.</p>
+          </div>
+          <div class="report-callout" style="background: rgba(255,232,163,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Поддерживать предсказуемый вечерний распорядок, снижать экранное время перед сном и мягко переключать внимание на спокойные тактильные игры или чтение.
+          </div>
+        </div>
+
+        <!-- 5. ДРУЖБА -->
+        <div class="report-chapter" style="border-left: 4px solid #C4B5FD;">
+          <div class="report-chapter-title">🤝 5. ОБЩЕНИЕ И ДРУЖБА СО СВЕРСТНИКАМИ</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Взаимодействие со сверстниками:</span>
+            <p>В общении ценит искренность и справедливость. Ребёнку важно чувствовать уважение к своим границам и интересам.</p>
+          </div>
+          <div class="report-callout" style="background: rgba(196,181,253,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Поддерживать качественную дружбу с близкими по духу ребятами и обучать мягкому умению говорить «нет».
+          </div>
+        </div>
+
+        <!-- 6. ТАЛАНТЫ -->
+        <div class="report-chapter" style="border-left: 4px solid #93C5FD;">
+          <div class="report-chapter-title">🎨 6. ТВОРЧЕСКИЙ ПОТЕНЦИАЛ И СПОСОБНОСТИ</div>
+          <div class="report-sub-block">
+            <span class="report-sub-head">Зоны природной одаренности:</span>
+            <p>Выражен интерес к сферам, где есть цвет, форма, образ, музыка или создание собственных маленьких миров.</p>
+          </div>
+          <div class="report-callout" style="background: rgba(147,197,253,0.12);">
+            💡 <b>Что могут учитывать родители:</b> Предлагать разнообразные творческие направления, давая возможность пробовать без давления на обязательный результат.
+          </div>
+        </div>
+
+      </div>
+
+      <button class="sheet-btn" style="margin-top: 16px;" onclick="closeModal()">
+        Закрыть карту ребёнка ✦
+      </button>
     `;
     openModal();
   }
 
-  
   function renderLifeQuizStep() {
     const content = document.getElementById('modalContent');
     
