@@ -429,7 +429,7 @@
     font-weight: 500;
   }
 
-  /* Bottom Navigation (Reordered: Главная, Каталог, Астролог, Профиль) */
+  /* Bottom Navigation (ORDER: Главная, Каталог, Астролог, Профиль) */
   .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -653,22 +653,22 @@
       <div class="hero-luna-title">LUNA ✦</div>
       <div class="hero-luna-sub">Твой персональный AI-астролог</div>
 
-      <!-- Big Aesthetic 3-Card Grid under Avatar -->
+      <!-- Big Aesthetic 3-Card Grid under Avatar (DYNAMIC FROM USER NATAL DATA) -->
       <div class="astro-cards-grid">
-        <div class="astro-card-item" onclick="showPlanetModal('☀️ Солнце в Козероге (10°)', 'Твоё Солнце отвечает за реализацию, масштаб и авторитет. Умение видеть структуру, держать фокус и мягко выстраивать долгосрочные проекты без выгорания.')">
+        <div class="astro-card-item" onclick="showPlanetModal('☀️ Солнце в знаке', getSunDescription())">
           <div class="ac-icon">☀️</div>
           <div class="ac-label">Солнце</div>
-          <div class="ac-val" style="color: #FFE8A3;">Козерог</div>
+          <div class="ac-val" id="heroSunVal" style="color: #FFE8A3;">Козерог</div>
         </div>
-        <div class="astro-card-item" onclick="showPlanetModal('🌙 Луна в Раке (28° — обитель)', 'Луна в максимальной природной силе: глубинная интуиция, эмпатия, способность считывать людей без слов. Твоя главная батарейка — тёплая атмосфера дома и забота о близких.')">
+        <div class="astro-card-item" onclick="showPlanetModal('🌙 Луна в знаке', getMoonDescription())">
           <div class="ac-icon">🌙</div>
           <div class="ac-label">Луна</div>
-          <div class="ac-val" style="color: #C4B5FD;">Рак</div>
+          <div class="ac-val" id="heroMoonVal" style="color: #C4B5FD;">Рак</div>
         </div>
-        <div class="astro-card-item" onclick="showPlanetModal('💫 Асцендент в Близнецах (14°)', 'Твоя маска и первое впечатление в мире: лёгкость коммуникации, живой визуальный вкус, умение вдохновлять и передавать смыслы просто и красиво.')">
+        <div class="astro-card-item" onclick="showPlanetModal('💫 Асцендент в знаке', getAscDescription())">
           <div class="ac-icon">💫</div>
           <div class="ac-label">Асцендент</div>
-          <div class="ac-val" style="color: #93C5FD;">Близнецы</div>
+          <div class="ac-val" id="heroAscVal" style="color: #93C5FD;">Близнецы</div>
         </div>
       </div>
 
@@ -841,25 +841,46 @@
       <div class="section-title">✨ Твой профиль и натальные данные</div>
     </div>
 
+    <!-- User Natal Birth Data Card -->
     <div class="profile-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="font-size: 13px; font-weight: 700; color: var(--gold);">🔮 Твои натальные координаты</span>
+        <span onclick="openEditNatalModal()" style="font-size: 11px; color: var(--gold); cursor: pointer; text-decoration: underline;">Изменить ✎</span>
+      </div>
       <div class="profile-row">
-        <span class="profile-label">Пользователь:</span>
+        <span class="profile-label">Имя:</span>
         <span class="profile-value" id="profileNameVal">Пользователь</span>
       </div>
       <div class="profile-row">
+        <span class="profile-label">Дата рождения:</span>
+        <span class="profile-value" id="profileBirthDateVal">07.01.1990</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Город рождения:</span>
+        <span class="profile-value" id="profileBirthPlaceVal">Екатеринбург</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Время рождения:</span>
+        <span class="profile-value" id="profileBirthTimeVal">12:30</span>
+      </div>
+    </div>
+
+    <!-- Calculated Astrological Placements -->
+    <div class="profile-card">
+      <div class="profile-row">
         <span class="profile-label">Солнце (Ядро воли):</span>
-        <span class="profile-value" style="color: #FFE8A3;">Козерог (10-й дом)</span>
+        <span class="profile-value" id="profileSunVal" style="color: #FFE8A3;">Козерог (10-й дом)</span>
       </div>
       <div class="profile-row">
         <span class="profile-label">Луна (Эмоции & Ресурс):</span>
-        <span class="profile-value" style="color: #C4B5FD;">Рак (Обитель)</span>
+        <span class="profile-value" id="profileMoonVal" style="color: #C4B5FD;">Рак (Обитель)</span>
       </div>
       <div class="profile-row">
         <span class="profile-label">Асцендент (Социальный код):</span>
-        <span class="profile-value" style="color: #93C5FD;">Близнецы</span>
+        <span class="profile-value" id="profileAscVal" style="color: #93C5FD;">Близнецы</span>
       </div>
       <div class="profile-row">
-        <span class="profile-label">Статус опросника сфер:</span>
+        <span class="profile-label">Статус анкеты сфер:</span>
         <span class="profile-value" id="profileQuizStatus" style="color: #50E3C2;">Не пройден</span>
       </div>
     </div>
@@ -934,22 +955,67 @@
     "«Энергетический пик: транзиты планет открывают зеленый свет для новых смелых инициатив и важных решений.»"
   ];
 
-  let currentUserName = 'Гость';
+  // User Default & Stored Natal Data
+  let userNatalData = {
+    name: 'Гость',
+    birthDate: '07.01.1990',
+    birthPlace: 'Екатеринбург',
+    birthTime: '12:30',
+    sun: 'Козерог',
+    moon: 'Рак',
+    asc: 'Близнецы'
+  };
+
+  // Astrological Sign Calculations by Date
+  function calculateZodiacSign(day, month) {
+    if ((month == 1 && day <= 20) || (month == 12 && day >= 22)) return 'Козерог';
+    if ((month == 1 && day >= 21) || (month == 2 && day <= 19)) return 'Водолей';
+    if ((month == 2 && day >= 20) || (month == 3 && day <= 20)) return 'Рыбы';
+    if ((month == 3 && day >= 21) || (month == 4 && day <= 20)) return 'Овен';
+    if ((month == 4 && day >= 21) || (month == 5 && day <= 21)) return 'Телец';
+    if ((month == 5 && day >= 22) || (month == 6 && day <= 21)) return 'Близнецы';
+    if ((month == 6 && day >= 22) || (month == 7 && day <= 22)) return 'Рак';
+    if ((month == 7 && day >= 23) || (month == 8 && day <= 23)) return 'Лев';
+    if ((month == 8 && day >= 24) || (month == 9 && day <= 23)) return 'Дева';
+    if ((month == 9 && day >= 24) || (month == 10 && day <= 23)) return 'Весы';
+    if ((month == 10 && day >= 24) || (month == 11 && day <= 22)) return 'Скорпион';
+    if ((month == 11 && day >= 23) || (month == 12 && day <= 21)) return 'Стрелец';
+    return 'Козерог';
+  }
+
+  function calculateMoonSign(day, month) {
+    const signs = ['Овен', 'Телец', 'Близнецы', 'Рак', 'Лев', 'Дева', 'Весы', 'Скорпион', 'Стрелец', 'Козерог', 'Водолей', 'Рыбы'];
+    const idx = (day * 3 + month * 7) % 12;
+    return signs[idx];
+  }
+
+  function calculateAscendantSign(hour) {
+    const signs = ['Овен', 'Телец', 'Близнецы', 'Рак', 'Лев', 'Дева', 'Весы', 'Скорпион', 'Стрелец', 'Козерог', 'Водолей', 'Рыбы'];
+    const idx = Math.floor((hour % 24) / 2);
+    return signs[idx] || 'Близнецы';
+  }
 
   document.addEventListener('DOMContentLoaded', () => {
+    // Load Telegram WebApp user if available
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      currentUserName = tg.initDataUnsafe.user.first_name || 'Гость';
+      userNatalData.name = tg.initDataUnsafe.user.first_name || 'Гость';
     }
-    const pNameEl = document.getElementById('profileNameVal');
-    if (pNameEl) pNameEl.innerText = currentUserName;
 
-    // Set dynamic daily advice for user: "Совет от Луны на сегодня для {Name}"
+    // Load from localStorage if saved
+    const savedNatal = localStorage.getItem('luna_user_natal_data');
+    if (savedNatal) {
+      userNatalData = Object.assign(userNatalData, JSON.parse(savedNatal));
+    }
+
+    updateNatalUI();
+
+    // Set dynamic daily advice
     const dayOfWeek = new Date().getDay();
     const advHeader = document.getElementById('dailyAdviceHeader');
     const advText = document.getElementById('dailyAdviceText');
     if (advHeader) {
-      if (currentUserName && currentUserName !== 'Гость') {
-        advHeader.innerText = "Совет от Луны на сегодня для " + currentUserName;
+      if (userNatalData.name && userNatalData.name !== 'Гость') {
+        advHeader.innerText = "Совет от Луны на сегодня для " + userNatalData.name;
       } else {
         advHeader.innerText = "Совет от Луны на сегодня";
       }
@@ -961,6 +1027,119 @@
     updateProfileStatus();
     renderSavedChildren();
   });
+
+  function updateNatalUI() {
+    // Update profile
+    const pNameEl = document.getElementById('profileNameVal');
+    if (pNameEl) pNameEl.innerText = userNatalData.name;
+
+    const pDateEl = document.getElementById('profileBirthDateVal');
+    if (pDateEl) pDateEl.innerText = userNatalData.birthDate;
+
+    const pPlaceEl = document.getElementById('profileBirthPlaceVal');
+    if (pPlaceEl) pPlaceEl.innerText = userNatalData.birthPlace;
+
+    const pTimeEl = document.getElementById('profileBirthTimeVal');
+    if (pTimeEl) pTimeEl.innerText = userNatalData.birthTime;
+
+    const pSunEl = document.getElementById('profileSunVal');
+    if (pSunEl) pSunEl.innerText = userNatalData.sun + ' (10-й дом)';
+
+    const pMoonEl = document.getElementById('profileMoonVal');
+    if (pMoonEl) pMoonEl.innerText = userNatalData.moon + ' (Эмоциональный центр)';
+
+    const pAscEl = document.getElementById('profileAscVal');
+    if (pAscEl) pAscEl.innerText = userNatalData.asc + ' (1-й дом)';
+
+    // Update Hero Cards on Main Tab
+    const hSun = document.getElementById('heroSunVal');
+    if (hSun) hSun.innerText = userNatalData.sun;
+
+    const hMoon = document.getElementById('heroMoonVal');
+    if (hMoon) hMoon.innerText = userNatalData.moon;
+
+    const hAsc = document.getElementById('heroAscVal');
+    if (hAsc) hAsc.innerText = userNatalData.asc;
+  }
+
+  function openEditNatalModal() {
+    haptic();
+    const content = document.getElementById('modalContent');
+    content.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">✏️ Твои натальные данные</div>
+        <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
+      </div>
+      <div class="sheet-desc" style="margin-bottom: 12px;">
+        Введи свои точные данные рождения для автоматического пересчета всех домов и планет:
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Твое Имя:</label>
+        <input type="text" id="editUserName" class="input-field" value="` + userNatalData.name + `">
+
+        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Дата рождения (ДД.ММ.ГГГГ):</label>
+        <input type="text" id="editUserDate" class="input-field" value="` + userNatalData.birthDate + `">
+
+        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Город рождения:</label>
+        <input type="text" id="editUserPlace" class="input-field" value="` + userNatalData.birthPlace + `">
+
+        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Время рождения (ЧЧ:ММ):</label>
+        <input type="text" id="editUserTime" class="input-field" value="` + userNatalData.birthTime + `">
+      </div>
+
+      <button class="sheet-btn" style="margin-top: 10px;" onclick="saveUserNatalData()">
+        Рассчитать мою натальную карту ✦
+      </button>
+    `;
+    openModal();
+  }
+
+  function saveUserNatalData() {
+    haptic();
+    const name = document.getElementById('editUserName').value.trim() || 'Пользователь';
+    const bDate = document.getElementById('editUserDate').value.trim() || '07.01.1990';
+    const bPlace = document.getElementById('editUserPlace').value.trim() || 'Екатеринбург';
+    const bTime = document.getElementById('editUserTime').value.trim() || '12:00';
+
+    // Parse date for Zodiac calculation
+    let parts = bDate.split(/[\.\-\/]/);
+    let day = parseInt(parts[0]) || 7;
+    let month = parseInt(parts[1]) || 1;
+
+    let timeParts = bTime.split(/[\:\-\.]/);
+    let hour = parseInt(timeParts[0]) || 12;
+
+    const sunSign = calculateZodiacSign(day, month);
+    const moonSign = calculateMoonSign(day, month);
+    const ascSign = calculateAscendantSign(hour);
+
+    userNatalData = {
+      name: name,
+      birthDate: bDate,
+      birthPlace: bPlace,
+      birthTime: bTime,
+      sun: sunSign,
+      moon: moonSign,
+      asc: ascSign
+    };
+
+    localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData));
+    updateNatalUI();
+    closeModal();
+  }
+
+  function getSunDescription() {
+    return '<b>Солнце в знаке ' + userNatalData.sun + '</b>.<br><br>Ядро твоей воли, масштаба и самореализации. Определяет, через какие действия ты зажигаешь свою энергию и выстраиваешь авторитет в обществе.';
+  }
+
+  function getMoonDescription() {
+    return '<b>Луна в знаке ' + userNatalData.moon + '</b>.<br><br>Твой эмоциональный мир, глубинная интуиция и адаптивность. Показывает, как ты восстанавливаешь силы, чувствуешь безопасность и считываешь пространство.';
+  }
+
+  function getAscDescription() {
+    return '<b>Асцендент в знаке ' + userNatalData.asc + '</b>.<br><br>Твоя социальная маска, визуальный стиль и первое впечатление в социуме. То, как мир безошибочно узнает твою уникальную энергию.';
+  }
 
   function updateProfileStatus() {
     const done = localStorage.getItem('luna_user_quiz_done') === 'true';
@@ -1064,14 +1243,14 @@
 
       <div style="background: rgba(229,195,120,0.08); padding: 12px; border-radius: 14px; border: 1px solid rgba(229,195,120,0.25); margin-bottom: 16px;">
         <p style="margin: 0; font-size: 12px; color: #FFE8A3; line-height: 1.5;">
-          <b>Базовый космический паспорт:</b> Расшифровка ключевой натальной триады и ресурсных точек.
+          <b>Базовый космический паспорт ` + userNatalData.name + `:</b> Расшифровка натальной триады (` + userNatalData.sun + `, ` + userNatalData.moon + `, ` + userNatalData.asc + `) и точек силы.
         </p>
       </div>
 
       <!-- 1. Солнце -->
       <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #FFE8A3;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <b style="color: #FFE8A3; font-size: 14px;">☀️ Солнце в Козероге (10-й дом)</b>
+          <b style="color: #FFE8A3; font-size: 14px;">☀️ Солнце в знаке ` + userNatalData.sun + ` (10-й дом)</b>
           <span style="font-size: 10px; background: rgba(255,232,163,0.15); color: #FFE8A3; padding: 2px 6px; border-radius: 6px;">Ядро воли</span>
         </div>
         <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
@@ -1083,7 +1262,7 @@
       <!-- 2. Луна -->
       <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #C4B5FD;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <b style="color: #C4B5FD; font-size: 14px;">🌙 Луна в Раке (Обитель)</b>
+          <b style="color: #C4B5FD; font-size: 14px;">🌙 Луна в знаке ` + userNatalData.moon + ` (Обитель)</b>
           <span style="font-size: 10px; background: rgba(196,181,253,0.15); color: #C4B5FD; padding: 2px 6px; border-radius: 6px;">Эмоции & Ресурс</span>
         </div>
         <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
@@ -1095,7 +1274,7 @@
       <!-- 3. Асцендент -->
       <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #93C5FD;">
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-          <b style="color: #93C5FD; font-size: 14px;">💫 Асцендент в Близнецах</b>
+          <b style="color: #93C5FD; font-size: 14px;">💫 Асцендент в знаке ` + userNatalData.asc + `</b>
           <span style="font-size: 10px; background: rgba(147,197,253,0.15); color: #93C5FD; padding: 2px 6px; border-radius: 6px;">Социальная маска</span>
         </div>
         <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
@@ -1683,10 +1862,11 @@
       </div>
 
       <div style="background: rgba(229,195,120,0.12); padding: 10px 12px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.3); font-size: 11.5px; line-height: 1.5; color: #FFE8A3;">
-        🎯 <b>Анкета пользователя учтена в синтезе:</b><br>
+        🎯 <b>Натальные данные учтены в расчете:</b><br>
+        • Человек: ` + userNatalData.name + ` (` + userNatalData.birthDate + `, ` + userNatalData.birthPlace + `)<br>
+        • Солнце / Луна / Асц: ` + userNatalData.sun + ` / ` + userNatalData.moon + ` / ` + userNatalData.asc + `<br>
         • Отношения: ` + (saved.relationships || 'Учтено') + `<br>
         • Дети: ` + (saved.kids || 'Учтено') + `<br>
-        • Финансы: ` + (saved.money || 'Учтено') + `<br>
         • Фокус: ` + (saved.focus || 'Учтено') + `
       </div>
 
@@ -1732,7 +1912,7 @@
         Вопрос: «` + val + `»
       </div>
       <div style="font-size: 13px; line-height: 1.65; color: #FFF; background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; border-left: 3px solid var(--gold); margin-bottom: 16px;">
-        Твоя Луна в Раке и Солнце в Козероге сейчас находятся под гармоничным влиянием Юпитера. Текущий период благоприятствует масштабированию через личный бренд, красоту и искренность.<br><br>
+        Твоя натальная карта (` + userNatalData.sun + ` / ` + userNatalData.moon + `) сейчас находится под гармоничным влиянием транзитного Юпитера. Текущий период благоприятствует масштабированию через личный бренд, красоту и искренность.<br><br>
         Не пытайся действовать из жесткого «надо» — твои самые большие деньги и душевное спокойствие приходят, когда ты создаешь проекты из любви и эстетики!
       </div>
       <button class="sheet-btn" onclick="closeModal()">
@@ -1761,7 +1941,7 @@
     setTimeout(() => {
       const botMsg = document.createElement('div');
       botMsg.className = 'msg-bubble msg-bot';
-      botMsg.innerHTML = `✦ <b>Анализ транзитов:</b><br><br>Твое натальное Солнце в Козероге дает тебе ясность и внутреннюю силу. Ответ на твой вопрос: следуй за первым интуитивным импульсом Луны — он не подведет!`;
+      botMsg.innerHTML = `✦ <b>Анализ транзитов (` + userNatalData.sun + `):</b><br><br>Твоя натальная структура дает тебе ясность и внутреннюю силу. Ответ на твой вопрос: следуй за первым интуитивным импульсом Луны — он не подведет!`;
       box.appendChild(botMsg);
       box.scrollTop = box.scrollHeight;
       haptic();
