@@ -1056,8 +1056,8 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      userNatalData.name = tg.initDataUnsafe.user.first_name || 'Гость';
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && userNatalData) {
+      userNatalData.name = tg.initDataUnsafe.user.first_name || userNatalData.name;
     }
 
     const savedNatal = localStorage.getItem('luna_user_natal_data');
