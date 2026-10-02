@@ -135,7 +135,7 @@
     box-shadow: 0 0 6px var(--accent-green);
   }
 
-  /* Hero Avatar Card */
+  /* Beautiful Top Astrological Profile Card (User-neutral / Dynamic from Telegram) */
   .hero-card {
     background: linear-gradient(165deg, rgba(34, 26, 54, 0.75) 0%, rgba(16, 14, 26, 0.85) 100%);
     border: 1px solid var(--card-border);
@@ -250,6 +250,7 @@
     border-radius: 12px;
     text-align: center;
     border: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
   }
   .teaser-item .icon {
     font-size: 16px;
@@ -395,8 +396,8 @@
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(12px);
     z-index: 999;
     display: none;
     align-items: flex-end;
@@ -414,7 +415,7 @@
     border-radius: 28px 28px 0 0;
     width: 100%;
     max-width: 500px;
-    max-height: 88vh;
+    max-height: 90vh;
     overflow-y: auto;
     padding: 20px 20px 34px;
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
@@ -457,7 +458,7 @@
     box-shadow: 0 4px 15px rgba(229,195,120,0.3);
   }
   .quiz-option-btn {
-    padding: 13px 14px;
+    padding: 12px 14px;
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(229,195,120,0.22);
     border-radius: 14px;
@@ -556,7 +557,7 @@
     </div>
   </div>
 
-  <!-- Hero Profile Card -->
+  <!-- Hero Profile Card (Dynamic from Telegram user) -->
   <div class="hero-card">
     <div class="hero-content">
       <div class="avatar-ring" onclick="openAskModal('✦ Спросить у LUNA')">
@@ -564,8 +565,8 @@
       </div>
       <div class="hero-info">
         <div class="hero-greeting">Твой проводник</div>
-        <div class="hero-name">Надин ✦</div>
-        <div class="hero-sub">Солнце в Козероге • Луна в Раке • Асцендент в Близнецах</div>
+        <div class="hero-name" id="userNameLabel">Гость ✦</div>
+        <div class="hero-sub" id="userAstroSummary">Натальная карта рассчитана по твоим транзитам</div>
       </div>
     </div>
   </div>
@@ -573,7 +574,7 @@
   <!-- ==================== TAB 1: TODAY / MAIN ==================== -->
   <div id="tab-today" class="tab-view">
     
-    <!-- 1. COMPACT MAGICAL TEASER CARD (No duplicate text, clean & mysterious) -->
+    <!-- 1. COMPACT MAGICAL TEASER CARD -->
     <div class="section-head">
       <div class="section-title">🔮 Твой космический код</div>
       <div class="section-more" onclick="showFullFreeReading()">Читать всё →</div>
@@ -586,20 +587,20 @@
       </div>
 
       <div class="teaser-grid">
-        <div class="teaser-item">
+        <div class="teaser-item" onclick="showFullFreeReading()">
           <div class="icon">☀️</div>
           <div class="label">Солнце</div>
-          <div class="val">Козерог</div>
+          <div class="val" id="teaserSunVal">Козерог</div>
         </div>
-        <div class="teaser-item">
+        <div class="teaser-item" onclick="showFullFreeReading()">
           <div class="icon">🌙</div>
           <div class="label">Луна</div>
-          <div class="val">Рак</div>
+          <div class="val" id="teaserMoonVal">Рак</div>
         </div>
-        <div class="teaser-item">
+        <div class="teaser-item" onclick="showFullFreeReading()">
           <div class="icon">💫</div>
           <div class="label">Асцендент</div>
-          <div class="val">Близнецы</div>
+          <div class="val" id="teaserAscVal">Близнецы</div>
         </div>
       </div>
 
@@ -707,7 +708,7 @@
     <div class="chat-wrap">
       <div class="chat-messages" id="chatBox">
         <div class="msg-bubble msg-bot">
-          Здравствуй, Надин ✦ Я рассчитываю твои натальные аспекты и планетарные транзиты. О чем ты хочешь спросить меня сегодня?
+          Здравствуй ✦ Я рассчитываю твои натальные аспекты и планетарные транзиты. О чем ты хочешь спросить меня сегодня?
         </div>
       </div>
       <div class="chat-input-bar">
@@ -749,6 +750,16 @@
     tg.expand();
     tg.ready();
   }
+
+  // Read Telegram User info dynamically
+  document.addEventListener('DOMContentLoaded', () => {
+    let name = 'Гость';
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      name = tg.initDataUnsafe.user.first_name || 'Гость';
+    }
+    const nameEl = document.getElementById('userNameLabel');
+    if (nameEl) nameEl.innerText = name + ' ✦';
+  });
 
   function haptic() {
     if (tg && tg.HapticFeedback) {
@@ -882,12 +893,15 @@
     showPlanetModal('🔮 Магические знаки недели', '<b>Энергетический код недели:</b><br><br>• <b>Число синхронности:</b> 21 (Завершение цикла и переход на новый уровень).<br>• <b>Знаки пространства:</b> белые перья, птицы у окна, зеркальные цифры (11:11, 21:21).<br>• <b>Камень и растение:</b> Лунный камень и Лаванда для ясности интуиции.');
   }
 
-  // ==================== INTERACTIVE QUIZ & PAID REPORTS ====================
+  // ==================== COMPREHENSIVE LIFE QUIZ (Relationships, Money, Kids, Status) ====================
   let userQuizDone = localStorage.getItem('luna_user_quiz_done') === 'true';
   let quizStep = 1;
-  let quizSphere = '';
-  let quizState = '';
-  let quizGoal = '';
+  let userProfile = {
+    relationships: '',
+    kids: '',
+    money: '',
+    focus: ''
+  };
   let targetProduct = null;
 
   function showProductModal(title, price, desc) {
@@ -902,7 +916,7 @@
 
     if (!userQuizDone) {
       quizStep = 1;
-      renderQuizStep();
+      renderLifeQuizStep();
       openModal();
     } else {
       renderPaidReportView();
@@ -910,130 +924,134 @@
     }
   }
 
-  function renderQuizStep() {
+  function renderLifeQuizStep() {
     const content = document.getElementById('modalContent');
     
+    // STEP 1: Отношения
     if (quizStep === 1) {
       content.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">Вопрос 1 из 3 • Настройка</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">1/4 • Отношения</span>
           <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
         </div>
-        <div class="sheet-title">Какая сфера сейчас в максимальном фокусе?</div>
-        <div class="sheet-desc">LUNA адаптирует персональный астрологический расчет под твой главный приоритет:</div>
+        <div class="sheet-title">Какой твой текущий статус в отношениях?</div>
+        <div class="sheet-desc">Это важно для точного синастрического и натального расчёта:</div>
 
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
-          <div class="quiz-option-btn" onclick="handleQuizAnswer('sphere', '❤️ Отношения и любовь')">
-            <span style="font-size: 22px;">❤️</span>
-            <div>
-              <div style="color: #FFF; font-size: 13px;">Любовь & Отношения</div>
-              <div style="color: var(--text-sub); font-size: 11px;">Гармония в паре, совместимость, близость</div>
-            </div>
+        <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 12px;">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('relationships', 'В счастливом браке / длительном союзе')">
+            <span>💍</span>
+            <span>В браке / крепких отношениях</span>
           </div>
-          <div class="quiz-option-btn" onclick="handleQuizAnswer('sphere', '💎 Деньги, карьера и масштаб')">
-            <span style="font-size: 22px;">💎</span>
-            <div>
-              <div style="color: #FFF; font-size: 13px;">Деньги & Реализация</div>
-              <div style="color: var(--text-sub); font-size: 11px;">Прорыв в доходе, монетизация талантов, проекты</div>
-            </div>
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('relationships', 'В отношениях, есть зоны для улучшения')">
+            <span>❤️</span>
+            <span>В отношениях, есть сложности / кризис</span>
           </div>
-          <div class="quiz-option-btn" onclick="handleQuizAnswer('sphere', '✨ Дети и семья')">
-            <span style="font-size: 22px;">✨</span>
-            <div>
-              <div style="color: #FFF; font-size: 13px;">Дети & Семья</div>
-              <div style="color: var(--text-sub); font-size: 11px;">Таланты детей, материнство, домашний уют</div>
-            </div>
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('relationships', 'В поиске своего идеального партнера')">
+            <span>✨</span>
+            <span>Свободна / в поиске своего человека</span>
           </div>
-          <div class="quiz-option-btn" onclick="handleQuizAnswer('sphere', '🌿 Поиск себя и ресурс')">
-            <span style="font-size: 22px;">🌿</span>
-            <div>
-              <div style="color: #FFF; font-size: 13px;">Поиск себя & Энергия</div>
-              <div style="color: var(--text-sub); font-size: 11px;">Снятие выгорания, предназначение, опора</div>
-            </div>
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('relationships', 'Фокус на себе и своем пути')">
+            <span>🕊</span>
+            <span>Сейчас фокус на себе, отношения не в приоритете</span>
           </div>
         </div>
       `;
-    } else if (quizStep === 2) {
+    }
+    // STEP 2: Дети
+    else if (quizStep === 2) {
       content.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">Вопрос 2 из 3 • Твоя точка А</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">2/4 • Дети & Семья</span>
           <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
         </div>
-        <div class="sheet-title">Что точнее всего описывает ситуацию?</div>
-        <div class="sheet-desc">Чтобы прогноз точно попал в твою текущую фазу жизни:</div>
+        <div class="sheet-title">Есть ли у тебя дети?</div>
+        <div class="sheet-desc">Для активации анализа 5-го дома творчества и родительства:</div>
 
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
-          <div class="quiz-option-btn" onclick="handleQuizAnswer('state', 'Чувствую застой и паузу')">
-            <span style="font-size: 20px;">⏳</span>
-            <div>
-              <div style="color: #FFF; font-size: 13px;">Ощущение паузы / застоя</div>
-              <div style="color: var(--text-sub); font-size: 11px;">Много мыслей, но трудно сделать первый шаг</div>
-            </div>
+        <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 12px;">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('kids', 'Да, один ребенок')">
+            <span>👼</span>
+            <span>Да, один ребёнок</span>
           </div>
-          <div class="quiz-option-btn" onclick="handleQuizAnswer('state', 'Готова к новому масштабу')">
-            <span style="font-size: 20px;">🚀</span>
-            <div>
-              <div style="color: #FFF; font-size: 13px;">Готовность к прорыву</div>
-              <div style="color: var(--text-sub); font-size: 11px;">Хочу масштаба и выхода на новый уровень</div>
-            </div>
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('kids', 'Да, двое или больше детей')">
+            <span>👨👩👧👦</span>
+            <span>Да, двое или больше детей</span>
           </div>
-          <div class="quiz-option-btn" onclick="handleQuizAnswer('state', 'Стою перед выбором')">
-            <span style="font-size: 20px;">⚖️</span>
-            <div>
-              <div style="color: #FFF; font-size: 13px;">Стою перед выбором</div>
-              <div style="color: var(--text-sub); font-size: 11px;">Нужна подсказка звезд и кристальная ясность</div>
-            </div>
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('kids', 'Планирую детей в будущем')">
+            <span>🌱</span>
+            <span>Пока нет, планирую в будущем</span>
+          </div>
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('kids', 'Нет детей')">
+            <span>💫</span>
+            <span>Детей нет</span>
           </div>
         </div>
       `;
-    } else if (quizStep === 3) {
+    }
+    // STEP 3: Деньги и реализация
+    else if (quizStep === 3) {
       content.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">Вопрос 3 из 3 • Результат</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">3/4 • Финансы & Карьера</span>
           <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
         </div>
-        <div class="sheet-title">Какой результат для тебя идеален?</div>
-        <div class="sheet-desc">На что сделать главный акцент в расшифровке:</div>
+        <div class="sheet-title">Твоя текущая финансовая точка:</div>
+        <div class="sheet-desc">Для точной калибровки 2-го и 10-го домов изобилия:</div>
 
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
-          <div class="quiz-option-btn" onclick="handleQuizAnswer('goal', 'Пошаговый план и ключевые даты')">
-            <span style="font-size: 20px;">📅</span>
-            <div>
-              <div style="color: #FFF; font-size: 13px;">Четкие даты и пошаговый план</div>
-            </div>
+        <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 12px;">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('money', 'Свое дело / фриланс, хочу прорыва в чеке')">
+            <span>💎</span>
+            <span>Свое дело / блог / фриланс (хочу рост дохода)</span>
           </div>
-          <div class="quiz-option-btn" onclick="handleQuizAnswer('goal', 'Глубокая психологическая ясность')">
-            <span style="font-size: 20px;">🧘♀️</span>
-            <div>
-              <div style="color: #FFF; font-size: 13px;">Психологическая и душевная глубина</div>
-            </div>
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('money', 'Работа в найме, хочу больше свободы')">
+            <span>🏢</span>
+            <span>Работа в найме (хочу больше свободы/дохода)</span>
           </div>
-          <div class="quiz-option-btn" onclick="handleQuizAnswer('goal', 'Точные денежные и карьерные связки')">
-            <span style="font-size: 20px;">💸</span>
-            <div>
-              <div style="color: #FFF; font-size: 13px;">Точные финансовые и карьерные ниши</div>
-            </div>
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('money', 'В поиске своего истинного призвания')">
+            <span>🧭</span>
+            <span>В поиске своего истинного призвания</span>
+          </div>
+        </div>
+      `;
+    }
+    // STEP 4: Главный текущий запрос
+    else if (quizStep === 4) {
+      content.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">4/4 • Запрос к LUNA</span>
+          <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
+        </div>
+        <div class="sheet-title">Какой главный вопрос требует ответа прямо сейчас?</div>
+        <div class="sheet-desc">Звезды сделают ключевой акцент отчёта на этом ответе:</div>
+
+        <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 12px;">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('focus', 'Масштаб, деньги и новые проекты')">
+            <span>🚀</span>
+            <span>Как выйти на новый масштаб и пробить потолок?</span>
+          </div>
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('focus', 'Глубокая гармония в отношениях и семье')">
+            <span>❤️</span>
+            <span>Как выстроить глубокую гармонию и близость?</span>
+          </div>
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('focus', 'Снятие тревоги, ресурс и уверенность')">
+            <span>🔋</span>
+            <span>Как вернуть энергию, ресурс и снять выгорание?</span>
           </div>
         </div>
       `;
     }
   }
 
-  function handleQuizAnswer(key, val) {
+  function saveQuizAnswer(key, val) {
     haptic();
-    if (key === 'sphere') quizSphere = val;
-    if (key === 'state') quizState = val;
-    if (key === 'goal') quizGoal = val;
+    userProfile[key] = val;
 
-    if (quizStep < 3) {
+    if (quizStep < 4) {
       quizStep++;
-      renderQuizStep();
+      renderLifeQuizStep();
     } else {
       userQuizDone = true;
       localStorage.setItem('luna_user_quiz_done', 'true');
-      localStorage.setItem('luna_user_quiz_sphere', quizSphere);
-      localStorage.setItem('luna_user_quiz_state', quizState);
-      localStorage.setItem('luna_user_quiz_goal', quizGoal);
+      localStorage.setItem('luna_user_quiz_profile', JSON.stringify(userProfile));
       renderPaidReportView();
     }
   }
@@ -1045,7 +1063,7 @@
       body: `
         <div style="line-height: 1.65; font-size: 12.5px; color: var(--text-sub);">
           <div style="background: rgba(229,195,120,0.12); padding: 12px; border-radius: 12px; border: 1px solid rgba(229,195,120,0.3); margin-bottom: 14px; color: #FFE8A3;">
-            ✨ <b>Персональный расчет готов:</b> Твоя карта рассчитана с учетом натального времени и твоих ответов.
+            ✨ <b>Персональный расчёт готов:</b> Твоя карта рассчитана с учетом натального времени и ответов по сферам (отношения, дети, доход).
           </div>
 
           <p style="margin-bottom: 12px;"><b style="color: #FFF; font-size: 13px;">1. Кармическая ось (Раху в 10-м доме / Кету в 4-м):</b><br>
@@ -1059,7 +1077,7 @@
 
           <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; border-left: 3px solid var(--gold); margin-top: 14px;">
             <b style="color: var(--gold);">🔮 Практическая рекомендация LUNA:</b><br>
-            В ближайшие 3 месяца идеальное время для запуска своего флагманского авторского продукта!
+            В ближайшие месяцы идеальное время для запуска своего флагманского авторского продукта!
           </div>
         </div>
       `
@@ -1123,7 +1141,7 @@
 
   function renderPaidReportView() {
     const p = targetProduct || { title: '🪐 Натальная карта', price: '1 490 ₽', key: 'natal' };
-    const savedSphere = localStorage.getItem('luna_user_quiz_sphere') || 'Все сферы';
+    const saved = JSON.parse(localStorage.getItem('luna_user_quiz_profile') || '{}');
     const content = document.getElementById('modalContent');
     const reportData = fullReports[p.key] || fullReports['natal'];
 
@@ -1133,8 +1151,11 @@
         <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
       </div>
 
-      <div style="display: inline-block; font-size: 11px; background: rgba(229,195,120,0.15); color: #FFE8A3; padding: 3px 10px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.3);">
-        🎯 Фокус персонализации: <b>${savedSphere}</b>
+      <div style="background: rgba(229,195,120,0.12); padding: 10px 12px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.3); font-size: 11.5px; line-height: 1.5; color: #FFE8A3;">
+        🎯 <b>Персональный профиль учтен:</b><br>
+        • Отношения: ${saved.relationships || 'Учтено'}<br>
+        • Дети: ${saved.kids || 'Учтено'}<br>
+        • Финансы: ${saved.money || 'Учтено'}
       </div>
 
       ${reportData.body}
@@ -1208,7 +1229,7 @@
     setTimeout(() => {
       const botMsg = document.createElement('div');
       botMsg.className = 'msg-bubble msg-bot';
-      botMsg.innerHTML = `✦ <b>Анализ транзитов для Надин:</b><br><br>Твое натальное Солнце в Козероге дает тебе ясность и внутреннюю силу. Ответ на твой вопрос: следуй за первым интуитивным импульсом Луны в Раке — он не подведет!`;
+      botMsg.innerHTML = `✦ <b>Анализ транзитов:</b><br><br>Твое натальное Солнце в Козероге дает тебе ясность и внутреннюю силу. Ответ на твой вопрос: следуй за первым интуитивным импульсом Луны — он не подведет!`;
       box.appendChild(botMsg);
       box.scrollTop = box.scrollHeight;
       haptic();
