@@ -1271,6 +1271,18 @@
 
 <!-- ================= APPLICATION ENGINE ================= -->
 <script>
+  function haptic(type = 'light') {
+    try {
+      if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+        if (type === 'success' || type === 'error' || type === 'warning') {
+          window.Telegram.WebApp.HapticFeedback.notificationOccurred(type);
+        } else {
+          window.Telegram.WebApp.HapticFeedback.impactOccurred(type);
+        }
+      }
+    } catch (e) {}
+  }
+
   const tg = window.Telegram ? window.Telegram.WebApp : null;
   if (tg) {
     tg.expand();
@@ -1460,6 +1472,76 @@
       m.style.display = 'flex';
       m.classList.add('active');
     }
+  }
+
+  function openMiniNatalModal() {
+    haptic();
+    const data = userNatalData || {
+      name: 'Надин',
+      sun: 'Козерог',
+      moon: 'Козерог',
+      asc: 'Стрелец'
+    };
+    const name = data.name || 'Надин';
+    const sun = data.sun || 'Козерог';
+    const moon = data.moon || 'Козерог';
+    const asc = data.asc || 'Стрелец';
+
+    const contentHtml = `
+      <div style="padding: 10px 4px 20px;">
+        <div style="font-size: 20px; font-weight: 800; color: #FFF; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+          <span>✨</span> Твоя мини-натальная карта
+        </div>
+        <div style="font-size: 13px; color: var(--gold); font-weight: 600; margin-bottom: 16px;">
+          ${name} • ☀️ ${sun} • 🌙 ${moon} • ↑ ${asc}
+        </div>
+
+        <div style="background: rgba(229, 195, 120, 0.08); border: 1px solid rgba(229, 195, 120, 0.25); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
+            ✦ Бесплатный персональный портрет
+          </div>
+          <div style="font-size: 13px; color: var(--text-sub); line-height: 1.5;">
+            Твоя ключевая астрологическая триада: характер, эмоциональный мир и проявление во внешнем окружении.
+          </div>
+        </div>
+
+        <div style="margin-bottom: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; padding: 15px;">
+          <div style="font-size: 15px; font-weight: 700; color: #FFE8A3; margin-bottom: 4px;">☀️ Солнце в знаке ${sun}</div>
+          <div style="font-size: 11.5px; color: var(--gold); font-weight: 600; margin-bottom: 8px; text-transform: uppercase;">Твой характер и способ проявляться</div>
+          <p style="margin: 0; color: #CBD5E1; font-size: 13.5px; line-height: 1.55;">
+            Солнце определяет твою внутреннюю силу, витальную энергию и то, где ты черпаешь уверенность. В знаке <b>${sun}</b> твоя суть раскрывается через целеустремленность, структурность, способность выдерживать масштабные задачи и доводить начатое до совершенства.
+          </p>
+        </div>
+
+        <div style="margin-bottom: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; padding: 15px;">
+          <div style="font-size: 15px; font-weight: 700; color: #FFE8A3; margin-bottom: 4px;">🌙 Луна в знаке ${moon}</div>
+          <div style="font-size: 11.5px; color: var(--gold); font-weight: 600; margin-bottom: 8px; text-transform: uppercase;">Эмоции и внутренний мир</div>
+          <p style="margin: 0; color: #CBD5E1; font-size: 13.5px; line-height: 1.55;">
+            Луна отвечает за твою эмоциональную безопасность, адаптивность и то, как ты отдыхаешь. С Луной в <b>${moon}</b> твой внутренний покой опирается на ясность, порядок и ощущение контроля над своей жизнью. Тебе важно давать себе право на паузу без самокритики.
+          </p>
+        </div>
+
+        <div style="margin-bottom: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; padding: 15px;">
+          <div style="font-size: 15px; font-weight: 700; color: #FFE8A3; margin-bottom: 4px;">↑ Асцендент в знаке ${asc}</div>
+          <div style="font-size: 11.5px; color: var(--gold); font-weight: 600; margin-bottom: 8px; text-transform: uppercase;">Как ты проявляешь себя внешне</div>
+          <p style="margin: 0; color: #CBD5E1; font-size: 13.5px; line-height: 1.55;">
+            Асцендент — это твоя визитная карточка, первое впечатление и манера шагать в новое. Асцендент в <b>${asc}</b> наделяет тебя открытостью, широким кругозором, заразительным оптимизмом и эстетическим чутьем, которое сразу считывают окружающие.
+          </p>
+        </div>
+
+        <div style="background: linear-gradient(135deg, rgba(138, 79, 158, 0.22) 0%, rgba(229, 195, 120, 0.16) 100%); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 16px; padding: 16px; text-align: center; margin-top: 20px;">
+          <div style="font-size: 14.5px; font-weight: 700; color: #FFF; margin-bottom: 6px;">Хочешь узнать всё до деталей? 📖</div>
+          <div style="font-size: 12.5px; color: var(--text-sub); margin-bottom: 14px; line-height: 1.45;">
+            Полная натальная карта PRO содержит глубокий разбор всех 10 планет, 12 домов, кармической оси и внутренних противоречий.
+          </div>
+          <button onclick="closeModal(); switchTab('catalog');" class="sheet-btn" style="width: 100%; padding: 13px; font-weight: 700; font-size: 14px;">
+            Смотреть в каталоге →
+          </button>
+        </div>
+      </div>
+    `;
+
+    openModal(contentHtml);
   }
 
   function closeModal(e) {
