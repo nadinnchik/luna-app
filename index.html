@@ -135,7 +135,7 @@
     box-shadow: 0 0 6px #50E3C2;
   }
 
-  /* Centered Magical Hero Section with Big Aesthetic Grid Cards */
+  /* Centered Magical Hero Section (Only on Main Screen) */
   .hero-centered-card {
     background: linear-gradient(180deg, rgba(34, 26, 54, 0.85) 0%, rgba(16, 14, 26, 0.95) 100%);
     border: 1px solid var(--card-border);
@@ -468,7 +468,7 @@
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.82);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(12px);
     z-index: 999;
     display: none;
@@ -487,9 +487,9 @@
     border-radius: 28px 28px 0 0;
     width: 100%;
     max-width: 500px;
-    max-height: 90vh;
+    max-height: 92vh;
     overflow-y: auto;
-    padding: 20px 20px 34px;
+    padding: 20px 20px 36px;
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
     animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -660,9 +660,9 @@
         </div>
       </div>
 
-      <!-- Daily Advice Box (Dynamic by day & personalized with username) -->
+      <!-- Daily Advice Box (Dynamic by day & personalized: "Совет от Луны на сегодня для {Name}") -->
       <div class="hero-quote-box">
-        <div style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--gold); font-weight: 600; margin-bottom: 4px;" id="dailyAdviceHeader">Совет LUNA на сегодня</div>
+        <div style="font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--gold); font-weight: 600; margin-bottom: 4px;" id="dailyAdviceHeader">Совет от Луны на сегодня</div>
         <p class="hero-quote-text" id="dailyAdviceText">
           «В тебе заложена редкая синергия: железная воля созидателя и глубинная интуиция. Доверяй первому импульсу души — он безошибочен.»
         </p>
@@ -735,11 +735,11 @@
         <div class="pm-price">1 490 ₽ →</div>
       </div>
 
-      <div class="product-mini-card" onclick="showProductModal('🪐 Полная натальная карта PRO', '1 490 ₽', 'Глубокий персональный интерактивный разбор: ядро личности, кармические узлы, таланты, скрытые блоки и ключевые точки роста.')">
+      <div class="product-mini-card" onclick="showProductModal('🪐 Полная натальная карта PRO', '1 490 ₽', 'Фундаментальный интерактивный разбор: 12 глав, кармическая ось судьбы, планетарные аспекты, сценарии прорыва и теневые блоки.')">
         <div>
           <div class="pm-icon">🪐</div>
           <div class="pm-title">Натальная карта PRO</div>
-          <div style="font-size: 11px; color: var(--text-sub);">Глубокий интерактивный разбор</div>
+          <div style="font-size: 11px; color: var(--text-sub);">Большой глубокий разбор</div>
         </div>
         <div class="pm-price">1 490 ₽ →</div>
       </div>
@@ -766,12 +766,12 @@
     </div>
 
     <div class="catalog-grid">
-      <div class="catalog-card" onclick="showProductModal('🪐 Полная натальная карта PRO', '1 490 ₽', 'Глубокий персональный интерактивный разбор: ядро личности, кармические узлы, таланты, скрытые блоки и ключевые точки роста.')">
+      <div class="catalog-card" onclick="showProductModal('🪐 Полная натальная карта PRO', '1 490 ₽', 'Фундаментальный астрологический разбор: 10 планет, 12 домов, кармическая ось судьбы, точки скрытого ресурса и сценарии реализации.')">
         <div class="card-top">
           <span class="card-title">🪐 Полная натальная карта PRO</span>
           <span class="card-price">1 490 ₽</span>
         </div>
-        <div class="card-desc">Все 12 домов, планеты в знаках и кармические аспекты прямо в приложении.</div>
+        <div class="card-desc">Большой и подробный разбор личности, кармических задач, блоков и финансово-любовных сценариев.</div>
       </div>
 
       <div class="catalog-card" onclick="showProductModal('💎 Финансовый & Карьерный код', '690 ₽', 'Точный астрологический расчет 2-го и 10-го домов: в каких нишах твои самые легкие деньги, что блокирует финансовый поток.')">
@@ -779,7 +779,7 @@
           <span class="card-title">💎 Финансовый & Карьерный код</span>
           <span class="card-price">690 ₽</span>
         </div>
-        <div class="card-desc">Где твои легкие деньги, финансовая емкость и точки карьерного взлета.</div>
+        <div class="card-desc">Где твои легкие деньги, финансовая емкость, ниши для прорыва и снятие денежных блоков.</div>
       </div>
 
       <div class="catalog-card" onclick="showProductModal('❤️ Совместимость & Отношения (Синастрия)', '690 ₽', 'Анализ точек притяжения, кармических связей и зон роста в паре. Как углубить понимание и доверие.')">
@@ -787,7 +787,7 @@
           <span class="card-title">❤️ Совместимость & Синастрия</span>
           <span class="card-price">690 ₽</span>
         </div>
-        <div class="card-desc">Точки притяжения, кармические завязки и ключ к гармонии в паре.</div>
+        <div class="card-desc">Точки притяжения, сценарии 7-го дома, кармические завязки и ключ к гармонии в паре.</div>
       </div>
 
       <div class="catalog-card" onclick="showProductModal('✨ Детская карта & Таланты', '1 490 ₽', 'Разбор природы ребенка, сильных сторон и талантов. Подсказки для гармоничного развития.')">
@@ -795,7 +795,7 @@
           <span class="card-title">✨ Детская карта & Таланты</span>
           <span class="card-price">1 490 ₽</span>
         </div>
-        <div class="card-desc">Врожденные таланты ребенка, эмоциональный код и точки раскрытия потенциала.</div>
+        <div class="card-desc">Врожденные таланты ребенка, эмоциональный код, профориентация и точки раскрытия потенциала.</div>
       </div>
 
       <div class="catalog-card" onclick="showProductModal('💫 Персональный год 2027 (Соляр)', '2 990 ₽', 'Полный разбор персонального года: ключевые месяцы для прорыва, финансовые и личные точки силы.')">
@@ -803,7 +803,7 @@
           <span class="card-title">💫 Персональный Соляр</span>
           <span class="card-price">2 990 ₽</span>
         </div>
-        <div class="card-desc">Главный вектор года: благоприятные месяцы для инвестиций, переездов и проектов.</div>
+        <div class="card-desc">Главный вектор года: благоприятные месяцы для инвестиций, переездов, запусков и трансформаций.</div>
       </div>
     </div>
   </div>
@@ -905,7 +905,7 @@
     tg.ready();
   }
 
-  // Personalized Advice Bank (Changes daily & addresses user)
+  // Personalized Advice Bank
   const dailyAdvices = [
     "«В тебе соединена редкая синергия: железная воля созидателя и глубинная интуиция. Доверяй первому импульсу души — он безошибочен.»",
     "«Сегодня идеальный день, чтобы отпустить избыточный контроль. Твоя энергия раскрывается в разы сильнее, когда ты доверяешь потоку.»",
@@ -916,20 +916,25 @@
     "«Энергетический пик: транзиты планет открывают зеленый свет для новых смелых инициатив и важных решений.»"
   ];
 
+  let currentUserName = 'Гость';
+
   document.addEventListener('DOMContentLoaded', () => {
-    let name = 'Гость';
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-      name = tg.initDataUnsafe.user.first_name || 'Гость';
+      currentUserName = tg.initDataUnsafe.user.first_name || 'Гость';
     }
     const pNameEl = document.getElementById('profileNameVal');
-    if (pNameEl) pNameEl.innerText = name;
+    if (pNameEl) pNameEl.innerText = currentUserName;
 
-    // Set dynamic daily advice for user
+    // Set dynamic daily advice for user: "Совет от Луны на сегодня для {Name}"
     const dayOfWeek = new Date().getDay();
     const advHeader = document.getElementById('dailyAdviceHeader');
     const advText = document.getElementById('dailyAdviceText');
-    if (advHeader && name !== 'Гость') {
-      advHeader.innerText = `Совет LUNA на сегодня для ${name}`;
+    if (advHeader) {
+      if (currentUserName && currentUserName !== 'Гость') {
+        advHeader.innerText = "Совет от Луны на сегодня для " + currentUserName;
+      } else {
+        advHeader.innerText = "Совет от Луны на сегодня";
+      }
     }
     if (advText) {
       advText.innerText = dailyAdvices[dayOfWeek] || dailyAdvices[0];
@@ -1006,7 +1011,7 @@
     openModal();
   }
 
-  // --- BASE FREE NATAL READING (CLEAR & STRUCTURED) ---
+  // --- BASE FREE NATAL READING ---
   function showFullFreeReading() {
     haptic();
     const content = document.getElementById('modalContent');
@@ -1018,7 +1023,7 @@
 
       <div style="background: rgba(229,195,120,0.08); padding: 12px; border-radius: 14px; border: 1px solid rgba(229,195,120,0.25); margin-bottom: 16px;">
         <p style="margin: 0; font-size: 12px; color: #FFE8A3; line-height: 1.5;">
-          <b>Базовый космический паспорт:</b> Расшифровка твоей ключевой натальной триады и ресурсных точек.
+          <b>Базовый космический паспорт:</b> Расшифровка ключевой натальной триады и ресурсных точек.
         </p>
       </div>
 
@@ -1029,8 +1034,8 @@
           <span style="font-size: 10px; background: rgba(255,232,163,0.15); color: #FFE8A3; padding: 2px 6px; border-radius: 6px;">Ядро воли</span>
         </div>
         <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
-          <b>Твоя суперсила:</b> Способность видеть конечный грандиозный результат и собирать его из хаоса, шаг за шагом. Ты прирожденный архитектор смыслов, проектов и своего окружения.<br>
-          <b>В чем ловушка:</b> Брать на себя тотальный гиперконтроль и тащить все в одиночку. Твой масштаб раскрывается, когда ты делегируешь рутину и держишь только визионерский вектор.
+          <b>Твоя суперсила:</b> Способность видеть конечный грандиозный результат и собирать его из хаоса, шаг за шагом. Архитектор смыслов и масштабных проектов.<br>
+          <b>В чем ловушка:</b> Брать на себя тотальный гиперконтроль и тащить все в одиночку. Твой масштаб раскрывается, когда ты делегируешь рутину.
         </span>
       </div>
 
@@ -1041,8 +1046,8 @@
           <span style="font-size: 10px; background: rgba(196,181,253,0.15); color: #C4B5FD; padding: 2px 6px; border-radius: 6px;">Эмоции & Ресурс</span>
         </div>
         <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
-          <b>Интуиция и душа:</b> Луна в своем сильнейшем положении дает тебе феноменальную сенсорику — ты считываешь фальшь и настроение людей еще до того, как они заговорят.<br>
-          <b>Где твой ресурс:</b> Вода, тактильная эстетика, теплый уют, моменты тишины наедине с собой и вкусная еда. Чтобы не выгорать, тебе жизненно необходимо время без гаджетов.
+          <b>Интуиция и душа:</b> Луна в сильнейшем положении дает феноменальную сенсорику — способность считывать людей без слов.<br>
+          <b>Где твой ресурс:</b> Вода, тактильная эстетика, теплый уют, моменты тишины наедине с собой.
         </span>
       </div>
 
@@ -1053,7 +1058,7 @@
           <span style="font-size: 10px; background: rgba(147,197,253,0.15); color: #93C5FD; padding: 2px 6px; border-radius: 6px;">Социальная маска</span>
         </div>
         <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
-          <b>Как тебя видит мир:</b> Молодой, стильной, динамичной и невероятно легкой на подъем. Ты мгновенно очаровываешь людей живым умом, остроумием и способностью найти общий язык с кем угодно.
+          <b>Как тебя видит мир:</b> Динамичной, стильной, с искрометным юмором и живым умом. Способность легко заводить контакт с любым окружением.
         </span>
       </div>
 
@@ -1064,7 +1069,7 @@
           <span style="font-size: 10px; background: rgba(80,227,194,0.15); color: #50E3C2; padding: 2px 6px; border-radius: 6px;">2-й и 10-й дома</span>
         </div>
         <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
-          <b>Где твои легкие деньги:</b> Твой доход растет в разы, когда ты монетизируешь визуал, авторский стиль, эстетику и работу с людьми. Деньги блокируются, когда ты соглашаешься на дешевые рутинные задачи.
+          <b>Где легкие деньги:</b> Монетизация визуала, эстетики, авторского почерка и работы с людьми. Деньги блокируются соглашениями на низкие чеки.
         </span>
       </div>
 
@@ -1075,7 +1080,7 @@
           <span style="font-size: 10px; background: rgba(244,114,182,0.15); color: #F472B6; padding: 2px 6px; border-radius: 6px;">7-й дом</span>
         </div>
         <span style="font-size: 12px; line-height: 1.6; display: block; color: var(--text-sub);">
-          <b>Секрет гармонии:</b> Для тебя важен партнер, который одновременно дает каменную стену безопасности и не ограничивает творческую свободу.
+          <b>Секрет гармонии:</b> Баланс каменной стены безопасности со стороны партнера и свободы для собственного творчества.
         </span>
       </div>
 
@@ -1098,8 +1103,8 @@
     haptic();
     const content = document.getElementById('modalContent');
     content.innerHTML = `
-      <div class="sheet-title">${title}</div>
-      <div class="sheet-desc">${text}</div>
+      <div class="sheet-title">` + title + `</div>
+      <div class="sheet-desc">` + text + `</div>
       <button class="sheet-btn" onclick="closeModal()">Понятно ✦</button>
     `;
     openModal();
@@ -1109,7 +1114,7 @@
     showPlanetModal('🔮 Магические знаки недели', '<b>Энергетический код недели:</b><br><br>• <b>Число синхронности:</b> 21 (Завершение цикла и переход на новый уровень).<br>• <b>Знаки пространства:</b> белые перья, птицы у окна, зеркальные цифры (11:11, 21:21).<br>• <b>Камень и растение:</b> Лунный камень и Лаванда для ясности интуиции.');
   }
 
-  // ==================== COMPREHENSIVE LIFE QUIZ (Relationships, Kids, Money, Focus) ====================
+  // ==================== COMPREHENSIVE LIFE QUIZ ====================
   let userQuizDone = localStorage.getItem('luna_user_quiz_done') === 'true';
   let quizStep = 1;
   let userProfile = {
@@ -1128,7 +1133,7 @@
     else if (title.includes('Детск')) key = 'kids';
     else if (title.includes('Соляр') || title.includes('2027')) key = 'solar';
 
-    targetProduct = { title, price, desc, key };
+    targetProduct = { title: title, price: price, desc: desc, key: key };
 
     if (!userQuizDone) {
       quizStep = 1;
@@ -1273,136 +1278,195 @@
     }
   }
 
-  // --- RICH MULTI-SECTION PERSONALIZED REPORTS (IN-APP) ---
+  // ==================== MASSIVE, DEEP, IN-DEPTH ASTROLOGICAL CHAPTERS ====================
   const fullReports = {
     natal: {
-      title: '🪐 Натальная карта PRO (Персональный разбор)',
+      title: '🪐 Натальная карта PRO (Фундаментальный разбор)',
       body: `
-        <div style="line-height: 1.65; font-size: 12.5px; color: var(--text-sub);">
-          <div style="background: rgba(229,195,120,0.12); padding: 12px; border-radius: 12px; border: 1px solid rgba(229,195,120,0.3); margin-bottom: 14px; color: #FFE8A3;">
-            ✨ <b>Интерактивный расчет сформирован:</b> Карта полностью адаптирована под твои натальные транзиты и ответы анкеты.
+        <div style="line-height: 1.72; font-size: 12.5px; color: var(--text-sub);">
+          
+          <div style="background: rgba(229,195,120,0.12); padding: 14px; border-radius: 14px; border: 1px solid rgba(229,195,120,0.3); margin-bottom: 16px; color: #FFE8A3;">
+            ✨ <b>Полный расчет натального полотна:</b> Разбор 12 домов, планетарных ядер, кармических узлов и точек судьбоносного прорыва, откалиброванный под твои натальные транзиты.
           </div>
 
-          <!-- Section 1 -->
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #FFE8A3;">
-            <b style="color: #FFF; font-size: 13px;">1. Кармическая ось судьбы (Раху в 10-м доме / Кету в 4-м):</b><br>
-            <span style="font-size: 12px; display: block; margin-top: 4px;">
-              Твоя высшая точка роста — выход из зоны привычного затворничества в масштабное лидерство. Пространство требует от тебя стать видимой, открыто заявлять о своих продуктах и не бояться публичности.
-            </span>
+          <!-- ГЛАВА 1 -->
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 14px; border-left: 4px solid #FFE8A3;">
+            <b style="color: #FFE8A3; font-size: 13.5px; display: block; margin-bottom: 6px;">ГЛАВА 1. ЯДРО ЛИЧНОСТИ И АРХИТЕКТУРА ВОЛИ (Солнце в Козероге, 10-й дом)</b>
+            <p style="margin-bottom: 8px;">
+              <b>Позиция в натале:</b> Твое Солнце занимает высшую точку гороскопа (MC — Середина Неба). В натальной астрологии это показатель прирожденного стратега, визионера и создателя собственных систем.
+            </p>
+            <p style="margin-bottom: 8px;">
+              <b>Глубинная психология:</b> У тебя феноменальная способность видеть конечную цель там, где другие видят лишь хаос и неизвестность. Ты мыслишь не сиюминутными импульсами, а десятилетиями. Но обратная сторона сильного 10-го дома — склонность брать на себя гиперответственность за весь мир и обесценивать промежуточные победы.
+            </p>
+            <p style="color: #FFF; background: rgba(255,232,163,0.08); padding: 8px 10px; border-radius: 8px;">
+              💡 <b>Ключ к раскрытию:</b> Перестать делать всё своими руками. Твоя эволюционная роль — задавать смыслы, структуру и вектор, передавая рутинное исполнение команде.
+            </p>
           </div>
 
-          <!-- Section 2 -->
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #C4B5FD;">
-            <b style="color: #FFF; font-size: 13px;">2. Архитектура мышления (Меркурий в Стрельце):</b><br>
-            <span style="font-size: 12px; display: block; margin-top: 4px;">
-              Ты мыслишь масштабно, концептами и вдохновляющими образами. Тебе легко упаковывать глубокие смыслы в красивый визуал и вести за собой людей.
-            </span>
+          <!-- ГЛАВА 2 -->
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 14px; border-left: 4px solid #C4B5FD;">
+            <b style="color: #C4B5FD; font-size: 13.5px; display: block; margin-bottom: 6px;">ГЛАВА 2. ЭМОЦИОНАЛЬНЫЙ КОД И ИСТОЧНИК СИЛЫ (Луна в Раке в 4-м доме — Обитель)</b>
+            <p style="margin-bottom: 8px;">
+              <b>Природная сила:</b> Луна находится в своей высшей силе (знак управления). Это дает тебе редчайший уровень сенсорной интуиции. Ты мгновенно считываешь истинные намерения людей, фальшь, скрытое напряжение в коллективе или в семье.
+            </p>
+            <p style="margin-bottom: 8px;">
+              <b>Точки эмоционального истощения:</b> Из-за высокой эмпатии ты впитываешь чужие тревоги как губка. Когда накапливается перегруз, включается защитная реакция «уйти в раковину» и замкнуться.
+            </p>
+            <p style="color: #FFF; background: rgba(196,181,253,0.08); padding: 8px 10px; border-radius: 8px;">
+              🌊 <b>Практика восстановления ресурса:</b> Прямой контакт с водой (ванны, водоемы), дни информационного детокса без чужих голосов и эстетическое оформление домашнего пространства. Дом для тебя — священный алтарь силы.
+            </p>
           </div>
 
-          <!-- Section 3 -->
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #50E3C2;">
-            <b style="color: #FFF; font-size: 13px;">3. Венера в Водолее (Эстетический код):</b><br>
-            <span style="font-size: 12px; display: block; margin-top: 4px;">
-              Твой вкус — нестандартный, трендовый, опережающий моду. Твои проекты зажигают людей именно своей самобытностью и смелостью.
-            </span>
+          <!-- ГЛАВА 3 -->
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 14px; border-left: 4px solid #93C5FD;">
+            <b style="color: #93C5FD; font-size: 13.5px; display: block; margin-bottom: 6px;">ГЛАВА 3. СОЦИАЛЬНЫЙ КОД И ПЕРВОЕ ВПЕЧАТЛЕНИЕ (Асцендент в Близнецах)</b>
+            <p style="margin-bottom: 8px;">
+              <b>Маска в обществе:</b> Твой первый контакт с миром пропитан легкостью, искрометным юмором, живостью ума и невероятным природным обаянием. Тебя мгновенно считывают как человека современного, гибкого и ультрастильного.
+            </p>
+            <p style="margin-bottom: 8px;">
+              <b>Парадокс карты:</b> Внешняя легкость (Близнецы) скрывает колоссальную внутреннюю монументальность и требовательность (Козерог). Этот контраст делает твой образ невероятно притягательным и глубоким для окружающих.
+            </p>
           </div>
 
-          <!-- Section 4 -->
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #93C5FD;">
-            <b style="color: #FFF; font-size: 13px;">4. Плутон и Сатурн (Точки трансформации):</b><br>
-            <span style="font-size: 12px; display: block; margin-top: 4px;">
-              Любые кризисы в твоей жизни служат катапультами к новому качеству жизни. Когда старое рушится — это всегда освобождение места под x3 результат.
-            </span>
+          <!-- ГЛАВА 4 -->
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 14px; border-left: 4px solid #50E3C2;">
+            <b style="color: #50E3C2; font-size: 13.5px; display: block; margin-bottom: 6px;">ГЛАВА 4. КАРМИЧЕСКАЯ ОСЬ СУДЬБЫ (Раху в 10-м / Кету в 4-м)</b>
+            <p style="margin-bottom: 8px;">
+              <b>Прошлый опыт души (Южный узел):</b> В прошлых воплощениях твоя душа отработала сценарий полной замкнутости на семье и быте. Сидеть дома в тени для тебя комфортно, но это путь стагнации и угасания энергии.
+            </p>
+            <p style="margin-bottom: 8px;">
+              <b>Эволюционный вектор (Северный узел):</b> Выход в масштабную публичность, авторское проявление, создание собственного бренда и влияния на массы. Пространство буквально выталкивает тебя на сцену жизни.
+            </p>
           </div>
 
-          <div style="background: rgba(229,195,120,0.14); padding: 12px; border-radius: 12px; border: 1px solid rgba(229,195,120,0.4); margin-top: 14px;">
-            <b style="color: var(--gold);">🔮 Главная рекомендация LUNA:</b><br>
-            В ближайшие 3 месяца запускай новые форматы и флагманские проекты — аспекты планет дают максимальную поддержку!
+          <!-- ГЛАВА 5 -->
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 14px; border-left: 4px solid #F472B6;">
+            <b style="color: #F472B6; font-size: 13.5px; display: block; margin-bottom: 6px;">ГЛАВА 5. ЭСТЕТИКА, ОТНОШЕНИЯ И ВЕНЕРА В ВОДОЛЕЕ</b>
+            <p style="margin-bottom: 8px;">
+              <b>Любовь и вкус:</b> Венера в Водолее дает свободолюбие, нестандартный визуальный почерк и отказ от шаблонных рамок. В отношениях тебе жизненно необходимо уважение личных границ и партнер-единомышленник.
+            </p>
+            <p style="margin-bottom: 8px;">
+              <b>Творчество:</b> Твои работы, кадры и проекты всегда несут дух свободы и легкости. Твой визуальный стиль невозможно скопировать, потому что он рожден из интуитивного чувства будущего.
+            </p>
           </div>
+
+          <!-- ГЛАВА 6 -->
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 14px; border-left: 4px solid #E879F9;">
+            <b style="color: #E879F9; font-size: 13.5px; display: block; margin-bottom: 6px;">ГЛАВА 6. ПЛУТОН И ТОЧКИ СВЕРХСИЛЫ (Трансформация кризисов)</b>
+            <p style="margin-bottom: 8px;">
+              <b>Как работает твоя трансформация:</b> Любые периоды турбулентности или резких перемен для тебя — не катастрофа, а генератор колоссальной энергии. Ты обладаешь способностью возрождаться из пепла с многократным усилением своего статуса и дохода.
+            </p>
+          </div>
+
+          <!-- ГЛАВА 7: ИТОГОВЫЙ СИНТЕЗ LUNA -->
+          <div style="background: linear-gradient(135deg, rgba(229,195,120,0.2) 0%, rgba(138,79,158,0.2) 100%); padding: 16px; border-radius: 16px; border: 1px solid rgba(229,195,120,0.45); margin-top: 16px; margin-bottom: 16px;">
+            <b style="color: var(--gold); font-size: 14px;">🌀 ИТОГОВОЕ ПОСЛАНИЕ И НАВИГАЦИЯ LUNA:</b>
+            <p style="color: #FFF; margin-top: 8px; line-height: 1.65; font-size: 12.5px;">
+              Твоя натальная карта — это карта создателя премиальной эстетики и лидера мнений. Перестань сомневаться в своем авторском праве на масштаб. Твоя интуиция Луны в Раке вместе с целеустремленностью Солнца в Козероге дают идеальный сплав для абсолютного успеха в любых начинаниях!
+            </p>
+          </div>
+
         </div>
       `
     },
     finance: {
-      title: '💎 Финансовый & Карьерный код',
+      title: '💎 Финансовый & Карьерный код (Полный разбор)',
       body: `
-        <div style="line-height: 1.65; font-size: 12.5px; color: var(--text-sub);">
-          <div style="background: rgba(80,227,194,0.12); padding: 12px; border-radius: 12px; border: 1px solid rgba(80,227,194,0.3); margin-bottom: 14px; color: #50E3C2;">
-            💰 <b>Ключ к изобилию:</b> Расчет 2-го дома денег и 10-го дома статуса.
+        <div style="line-height: 1.72; font-size: 12.5px; color: var(--text-sub);">
+          <div style="background: rgba(80,227,194,0.12); padding: 14px; border-radius: 14px; border: 1px solid rgba(80,227,194,0.3); margin-bottom: 16px; color: #50E3C2;">
+            💰 <b>Астрологическая матрица изобилия:</b> Анализ 2-го дома личных доходов, 8-го дома чужих ресурсов и 10-го дома карьерного Олимпа.
           </div>
 
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #50E3C2;">
-            <b style="color: #FFF; font-size: 13px;">1. Твои главные денежные каналы:</b><br>
-            <span style="font-size: 12px; display: block; margin-top: 4px;">
-              Деньги приходят через эстетику, визуал, авторское продюсирование, работу с премиум-сегментом и персональное наставничество.
-            </span>
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #50E3C2;">
+            <b style="color: #50E3C2; font-size: 13.5px; display: block; margin-bottom: 6px;">1. Твои главные золотые жилы (Источники x2-x5 дохода):</b>
+            <p style="margin-bottom: 6px;">• <b>Премиальный визуал & контент:</b> Монетизация эстетического вкуса, съемка для брендов и статусных персон.</p>
+            <p style="margin-bottom: 6px;">• <b>Обучающие и авторские продукты:</b> Передача своего уникального опыта и мастерства через наставничество и курсы.</p>
+            <p>• <b>Продюсирование смыслов:</b> Упаковка личных брендов других людей под ключ.</p>
           </div>
 
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #FFE8A3;">
-            <b style="color: #FFF; font-size: 13px;">2. Что блокирует доход:</b><br>
-            <span style="font-size: 12px; display: block; margin-top: 4px;">
-              Синдром самозванца и привычка делать скидки из вежливости. Как только ты повышаешь чек — моментально отсекается токсичная аудитория и приходят осознанные клиенты.
-            </span>
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #FFE8A3;">
+            <b style="color: #FFE8A3; font-size: 13.5px; display: block; margin-bottom: 6px;">2. Главные блоки и финансовые ловушки:</b>
+            <p style="margin-bottom: 6px;">• <b>Синдром дешевого чека:</b> Попытка быть хорошей для всех и соглашаться на скидки сливает твой финансовый потенциал.</p>
+            <p>• <b>Рутина:</b> Когда ты тратишь время на механическую работу вместо генерации идей, денежный поток сужается.</p>
           </div>
 
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #C4B5FD;">
-            <b style="color: #FFF; font-size: 13px;">3. Финансовая емкость:</b><br>
-            <span style="font-size: 12px; display: block; margin-top: 4px;">
-              Твоя емкость масштабируется через создание системных продуктов, не требующих твоего круглосуточного физического участия.
-            </span>
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #C4B5FD;">
+            <b style="color: #C4B5FD; font-size: 13.5px; display: block; margin-bottom: 6px;">3. Формула расширения финансовой емкости:</b>
+            <p>
+              Каждое повышение чека должно сопровождаться усилением сервиса и эстетической подачи. Твоя платежеспособная аудитория покупает не просто услугу, а состояние легкости и эстетики рядом с тобой.
+            </p>
           </div>
         </div>
       `
     },
     synastry: {
-      title: '❤️ Совместимость & Отношения',
+      title: '❤️ Синастрия & Отношения (Глубокий анализ)',
       body: `
-        <div style="line-height: 1.65; font-size: 12.5px; color: var(--text-sub);">
-          <div style="background: rgba(244,114,182,0.12); padding: 12px; border-radius: 12px; border: 1px solid rgba(244,114,182,0.3); margin-bottom: 14px; color: #F472B6;">
-            ❤️ <b>Синастрический анализ:</b> Венера, Марс и 7-й дом партнерства.
+        <div style="line-height: 1.72; font-size: 12.5px; color: var(--text-sub);">
+          <div style="background: rgba(244,114,182,0.12); padding: 14px; border-radius: 14px; border: 1px solid rgba(244,114,182,0.3); margin-bottom: 16px; color: #F472B6;">
+            ❤️ <b>Анализ 7-го дома партнерства и синастрических аспектов:</b> Кармические привязки, язык любви и точки гармонии в паре.
           </div>
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #F472B6;">
-            <b style="color: #FFF; font-size: 13px;">1. Точки притяжения:</b><br>
-            Глубокое эмоциональное взаимопонимание и обоюдная потребность в надежном, безопасном тыле.
+
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #F472B6;">
+            <b style="color: #F472B6; font-size: 13.5px; display: block; margin-bottom: 6px;">1. Твой истинный язык любви:</b>
+            <p>
+              Для тебя критически важны два фактора: абсолютная безопасность (знать, что партнер надежен как скала) и полное отсутствие удушающего контроля твоей свободы и творчества.
+            </p>
           </div>
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #FFE8A3;">
-            <b style="color: #FFF; font-size: 13px;">2. Кармическая задача пары:</b><br>
-            Учиться открыто проговаривать чувства в моменте, не накапливая скрытых обид.
+
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #FFE8A3;">
+            <b style="color: #FFE8A3; font-size: 13.5px; display: block; margin-bottom: 6px;">2. Зоны роста и снятие кризисов:</b>
+            <p>
+              Не уходи в молчание, когда что-то задевает. Открытый разговор на равных без накопления скрытых обид моментально разряжает любое синастрическое напряжение.
+            </p>
           </div>
         </div>
       `
     },
     kids: {
-      title: '✨ Детская карта & Таланты',
+      title: '✨ Детская карта & Таланты (Фундаментальный разбор)',
       body: `
-        <div style="line-height: 1.65; font-size: 12.5px; color: var(--text-sub);">
-          <div style="background: rgba(229,195,120,0.12); padding: 12px; border-radius: 12px; border: 1px solid rgba(229,195,120,0.3); margin-bottom: 14px; color: #FFE8A3;">
-            ✨ <b>Таланты ребенка:</b> Разбор натального потенциала и эмоционального типа.
+        <div style="line-height: 1.72; font-size: 12.5px; color: var(--text-sub);">
+          <div style="background: rgba(229,195,120,0.12); padding: 14px; border-radius: 14px; border: 1px solid rgba(229,195,120,0.3); margin-bottom: 16px; color: #FFE8A3;">
+            ✨ <b>Анализ натального потенциала ребенка:</b> Врожденные дары, тип восприятия информации, психологические опоры и векторы развития.
           </div>
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #FFE8A3;">
-            <b style="color: #FFF; font-size: 13px;">1. Врожденный дар:</b><br>
-            Яркая творческая одаренность, пластика, богатое воображение и артистизм.
+
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #FFE8A3;">
+            <b style="color: #FFE8A3; font-size: 13.5px; display: block; margin-bottom: 6px;">1. Врожденный талант и творческий канал:</b>
+            <p>
+              Тонкая эмоциональная восприимчивость, артистизм, тяга к пластике, движению, визуалу и сценическому проявлению.
+            </p>
           </div>
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #93C5FD;">
-            <b style="color: #FFF; font-size: 13px;">2. Эмоциональная опора:</b><br>
-            Ребенку критически важно признание его самостоятельности и теплая поддержка без давления.
+
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #93C5FD;">
+            <b style="color: #93C5FD; font-size: 13.5px; display: block; margin-bottom: 6px;">2. Ключ к мотивации и обучению:</b>
+            <p>
+              Не через давление и строгость, а через игровой интерес, похвалу уникальности и создание поддерживающей среды доверия.
+            </p>
           </div>
         </div>
       `
     },
     solar: {
-      title: '💫 Персональный Соляр',
+      title: '💫 Персональный Соляр (Прогноз года)',
       body: `
-        <div style="line-height: 1.65; font-size: 12.5px; color: var(--text-sub);">
-          <div style="background: rgba(147,197,253,0.12); padding: 12px; border-radius: 12px; border: 1px solid rgba(147,197,253,0.3); margin-bottom: 14px; color: #93C5FD;">
-            💫 <b>Вектор года:</b> Твой астрологический солярный цикл.
+        <div style="line-height: 1.72; font-size: 12.5px; color: var(--text-sub);">
+          <div style="background: rgba(147,197,253,0.12); padding: 14px; border-radius: 14px; border: 1px solid rgba(147,197,253,0.3); margin-bottom: 16px; color: #93C5FD;">
+            💫 <b>Солярная карта года:</b> Астрологическая карта ключевых возможностей, точек роста капитала и периодов перезагрузки.
           </div>
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #93C5FD;">
-            <b style="color: #FFF; font-size: 13px;">1. Главная тема года:</b><br>
-            Период качественного скачка в доходах и укрепления социального признания.
+
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #93C5FD;">
+            <b style="color: #93C5FD; font-size: 13.5px; display: block; margin-bottom: 6px;">1. Лейтмотив солярного года:</b>
+            <p>
+              Год качественного перехода в новый социальный статус. Закладывается фундамент для мощного финансового роста на следующие 3-5 лет.
+            </p>
           </div>
-          <div style="background: rgba(255,255,255,0.04); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #50E3C2;">
-            <b style="color: #FFF; font-size: 13px;">2. Пиковые месяцы возможностей:</b><br>
-            Весенний и осенний сезоны — идеальное время для запуска масштабных проектов.
+
+          <div style="background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; margin-bottom: 12px; border-left: 4px solid #50E3C2;">
+            <b style="color: #50E3C2; font-size: 13.5px; display: block; margin-bottom: 6px;">2. Золотые месяцы для действий:</b>
+            <p>
+              Периоды максимальной поддержки планет для смелых запусков, крупных покупок, инвестиций и путешествий.
+            </p>
           </div>
         </div>
       `
@@ -1417,19 +1481,19 @@
 
     content.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div class="sheet-title" style="margin: 0;">${reportData.title}</div>
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">` + reportData.title + `</div>
         <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
       </div>
 
       <div style="background: rgba(229,195,120,0.12); padding: 10px 12px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.3); font-size: 11.5px; line-height: 1.5; color: #FFE8A3;">
-        🎯 <b>Твой профиль учтён в расчёте:</b><br>
-        • Отношения: ${saved.relationships || 'Учтено'}<br>
-        • Дети: ${saved.kids || 'Учтено'}<br>
-        • Финансы: ${saved.money || 'Учтено'}<br>
-        • Фокус: ${saved.focus || 'Учтено'}
+        🎯 <b>Анкета пользователя учтена в синтезе:</b><br>
+        • Отношения: ` + (saved.relationships || 'Учтено') + `<br>
+        • Дети: ` + (saved.kids || 'Учтено') + `<br>
+        • Финансы: ` + (saved.money || 'Учтено') + `<br>
+        • Фокус: ` + (saved.focus || 'Учтено') + `
       </div>
 
-      ${reportData.body}
+      ` + reportData.body + `
 
       <button class="sheet-btn" style="margin-top: 16px;" onclick="closeModal()">
         Закрыть разбор ✦
@@ -1443,7 +1507,7 @@
     const content = document.getElementById('modalContent');
     content.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div class="sheet-title" style="margin: 0;">${title || '🔮 Спросить у LUNA'}</div>
+        <div class="sheet-title" style="margin: 0;">` + (title || '🔮 Спросить у LUNA') + `</div>
         <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
       </div>
       <div class="sheet-desc">Задай сокровенный вопрос об отношениях, деньгах или текущем этапе:</div>
@@ -1468,7 +1532,7 @@
     content.innerHTML = `
       <div class="sheet-title">✨ Ответ AI-астролога LUNA</div>
       <div style="font-size: 12px; color: var(--gold); margin-bottom: 12px; font-style: italic;">
-        Вопрос: «${val}»
+        Вопрос: «` + val + `»
       </div>
       <div style="font-size: 13px; line-height: 1.65; color: #FFF; background: rgba(255,255,255,0.04); padding: 14px; border-radius: 14px; border-left: 3px solid var(--gold); margin-bottom: 16px;">
         Твоя Луна в Раке и Солнце в Козероге сейчас находятся под гармоничным влиянием Юпитера. Текущий период благоприятствует масштабированию через личный бренд, красоту и искренность.<br><br>
