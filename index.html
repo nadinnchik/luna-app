@@ -453,7 +453,8 @@
     inset: 0;
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(12px);
-    z-index: 999;
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 99999;
     display: none;
     align-items: flex-end;
     justify-content: center;
@@ -461,8 +462,9 @@
     transition: opacity 0.25s ease;
   }
   .modal-overlay.active {
-    display: flex;
-    opacity: 1;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
   .modal-sheet {
     background: #110F1C;
@@ -475,6 +477,8 @@
     padding: 20px 20px 40px;
     box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
     animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    z-index: 100000;
   }
   @keyframes slideUp {
     from { transform: translateY(100%); }
@@ -983,6 +987,35 @@
     tg.ready();
   }
 
+  // Pure Global State for user profile
+  let userNatalData = JSON.parse(localStorage.getItem('luna_user_natal_data') || 'null');
+
+  // Modal Core Open / Close functions
+  function openModal() {
+    const modal = document.getElementById('appModal');
+    if (modal) {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeModal(e) {
+    if (e && e.target && e.target !== e.currentTarget && !e.target.hasAttribute('onclick')) {
+      // clicked inside modal content
+    }
+    const modal = document.getElementById('appModal');
+    if (modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  function haptic(type = 'light') {
+    if (tg && tg.HapticFeedback) {
+      tg.HapticFeedback.impactOccurred(type);
+    }
+  }
+
   const dailyAdvices = [
     "«В тебе соединена редкая синергия: железная воля созидателя и глубинная интуиция. Доверяй первому импульсу души — он безошибочен.»",
     "«Сегодня идеальный день, чтобы отпустить избыточный контроль. Твоя энергия раскрывается в разы сильнее, когда ты доверяешь потоку.»",
@@ -994,15 +1027,7 @@
   ];
 
   // Global Astro Profile
-  let userNatalData = {
-    name: 'Гость',
-    birthDate: '07.01.1990',
-    birthPlace: 'Екатеринбург',
-    birthTime: '12:30',
-    sun: 'Козерог',
-    moon: 'Рак',
-    asc: 'Близнецы'
-  };
+  
 
   function calculateZodiacSign(day, month) {
     if ((month == 1 && day <= 20) || (month == 12 && day >= 22)) return 'Козерог';
