@@ -574,17 +574,47 @@
 
     
     <!-- Section: Personal Free Natal Reading -->
-    <div class="section-head" style="margin-top: 14px;">
-      <div class="section-title">✨ Твой натальный разбор</div>
+    
+    <!-- Section: Compact Magical Free Natal Teaser -->
+    <div class="section-head" style="margin-top: 16px;">
+      <div class="section-title">🔮 Твой космический код</div>
       <div class="section-more" onclick="showFullFreeReading()">Читать всё →</div>
     </div>
 
-    <!-- Rich Free Reading Card -->
-    <div class="weekly-card" style="background: linear-gradient(180deg, rgba(229,195,120,0.08) 0%, rgba(22,20,36,0.9) 100%); border-color: rgba(229,195,120,0.35);">
-      <div class="wc-header">
-        <div class="wc-dates">Базовый расчёт • Natal Core</div>
-        <div class="wc-badge" style="background: rgba(229,195,120,0.2); color: var(--gold); border-color: rgba(229,195,120,0.5);">Бесплатно</div>
+    <div class="weekly-card" style="background: linear-gradient(135deg, rgba(229,195,120,0.12) 0%, rgba(22,20,36,0.92) 100%); border: 1px solid rgba(229,195,120,0.35); padding: 16px; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); font-weight: 600;">Базовый расчёт • Natal Core</span>
+        <span style="font-size: 11px; background: rgba(229,195,120,0.15); color: #FFE8A3; padding: 2px 8px; border-radius: 20px; border: 1px solid rgba(229,195,120,0.3);">✨ Доступно</span>
       </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px;">
+        <div style="background: rgba(255,255,255,0.04); padding: 10px 6px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.06);">
+          <div style="font-size: 16px; margin-bottom: 2px;">☀️</div>
+          <div style="font-size: 10px; color: var(--text-sub);">Солнце</div>
+          <div style="font-size: 11px; font-weight: 600; color: #FFE8A3;">Козерог</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.04); padding: 10px 6px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.06);">
+          <div style="font-size: 16px; margin-bottom: 2px;">🌙</div>
+          <div style="font-size: 10px; color: var(--text-sub);">Луна</div>
+          <div style="font-size: 11px; font-weight: 600; color: #C4B5FD;">Рак</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.04); padding: 10px 6px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.06);">
+          <div style="font-size: 16px; margin-bottom: 2px;">💫</div>
+          <div style="font-size: 10px; color: var(--text-sub);">Асцендент</div>
+          <div style="font-size: 11px; font-weight: 600; color: #93C5FD;">Близнецы</div>
+        </div>
+      </div>
+
+      <p style="font-size: 12px; line-height: 1.5; color: var(--text-sub); margin-bottom: 14px; font-style: italic;">
+        «В тебе заложена редкая синергия: железная воля созидателя и глубинная интуиция, способная чувствовать скрытые течения людей и событий...»
+      </p>
+
+      <button onclick="showFullFreeReading()" style="width: 100%; padding: 12px; border-radius: 14px; background: linear-gradient(135deg, #E5C378 0%, #C49B45 100%); color: #111; font-weight: 700; font-size: 13px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(229,195,120,0.35);">
+        <span>Читать полный натальный разбор</span>
+        <span>→</span>
+      </button>
+    </div>
+
       
       <div class="focus-list" style="margin-top: 12px;">
         <!-- Sun -->
