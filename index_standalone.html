@@ -1243,6 +1243,14 @@
     openModal();
   }
 
+  // --- ASTROLOGY INTERACTIVE QUIZ & FLOW ---
+  let userQuizDone = localStorage.getItem('luna_quiz_done') === 'true';
+  let quizCurrentStep = 1;
+  let selectedSphere = '';
+  let selectedState = '';
+  let selectedGoal = '';
+  let pendingProduct = null;
+
   function showProductModal(title, price, desc) {
     haptic();
     let key = 'natal';
@@ -1252,35 +1260,142 @@
     else if (title.includes('Детск')) key = 'kids';
     else if (title.includes('Соляр') || title.includes('2027')) key = 'solar';
 
-    document.getElementById('modal-title').innerText = title + ' • ' + price;
-    document.getElementById('modal-desc').innerHTML = desc + '<br><br><b>Формат:</b> PDF-гайд + интерактивный AI-разбор прямо в приложении.<br><br><span style="color: var(--gold); font-size: 12px;">🧪 <b>Тест-режим активен:</b> можно сразу открыть и прочитать весь разбор без оплаты!</span>';
-    document.getElementById('modal-input-wrap').style.display = 'none';
-    document.getElementById('modal-action-btn').style.display = 'block';
-    document.getElementById('modal-action-btn').innerText = '✨ Открыть полный разбор (Тест)';
-    
-    currentModalAction = () => {
-      haptic();
-      const sample = readingSamples[key] || readingSamples['natal'];
-      document.getElementById('modal-title').innerText = sample.title;
-      document.getElementById('modal-desc').innerHTML = sample.content;
-      document.getElementById('modal-action-btn').innerText = 'Закрыть разбор ✦';
-      currentModalAction = () => closeModal();
-    };
+    pendingProduct = { title, price, desc, key };
+
+    if (!userQuizDone) {
+      startAstrologyQuiz();
+    } else {
+      openFinalProductSheet();
+    }
+  }
+
+  function startAstrologyQuiz() {
+    quizCurrentStep = 1;
+    renderQuiz();
     openModal();
   }
 
-  function showLegalModal(type) {
-    haptic();
-    if (type === 'privacy') {
-      document.getElementById('modal-title').innerText = 'Политика конфиденциальности (152-ФЗ)';
-      document.getElementById('modal-desc').innerText = 'Мы бережно относимся к вашим персональным данным. Дата, время и город рождения используются исключительно для математического расчета натальной карты и генерации персональных астрологических ответов в закрытом контуре.';
-    } else {
-      document.getElementById('modal-title').innerText = 'Публичная оферта';
-      document.getElementById('modal-desc').innerText = 'Исполнитель предоставляет информационно-консультационные услуги по составлению персональных астрологических разборов. Оплата производится через сертифицированные российские платежные шлюзы (СБП, банковские карты).';
-    }
+  function renderQuiz() {
     document.getElementById('modal-input-wrap').style.display = 'none';
-    document.getElementById('modal-action-btn').innerText = 'Закрыть';
-    currentModalAction = () => closeModal();
+    
+    if (quizCurrentStep === 1) {
+      document.getElementById('modal-title').innerText = '✨ Персональный фокус (1/3)';
+      document.getElementById('modal-desc').innerHTML = `
+        <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 14px;">
+          Чтобы отчет был точным, выбери сферу, которая сейчас волнует сильнее всего:
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button onclick="handleQuizPick('sphere', '❤️ Отношения и любовь')" style="padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.25); border-radius: 12px; color: #FFF; font-weight: 600; text-align: left; cursor: pointer;">
+            ❤️ Отношения, любовь и гармония
+          </button>
+          <button onclick="handleQuizPick('sphere', '💎 Деньги, карьера и масштаб')" style="padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.25); border-radius: 12px; color: #FFF; font-weight: 600; text-align: left; cursor: pointer;">
+            💎 Деньги, прорыв в доходе и масштаб
+          </button>
+          <button onclick="handleQuizPick('sphere', '✨ Дети, материнство и семья')" style="padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.25); border-radius: 12px; color: #FFF; font-weight: 600; text-align: left; cursor: pointer;">
+            ✨ Дети, семья и таланты ребенка
+          </button>
+          <button onclick="handleQuizPick('sphere', '🌿 Поиск себя и внутренний ресурс')" style="padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.25); border-radius: 12px; color: #FFF; font-weight: 600; text-align: left; cursor: pointer;">
+            🌿 Поиск себя, снятие выгорания и ресурс
+          </button>
+        </div>
+      `;
+      document.getElementById('modal-action-btn').style.display = 'none';
+    } else if (quizCurrentStep === 2) {
+      document.getElementById('modal-title').innerText = '⏳ Твоя точка А (2/3)';
+      document.getElementById('modal-desc').innerHTML = `
+        <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 14px;">
+          Что точнее всего описывает твое состояние прямо сейчас?
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button onclick="handleQuizPick('state', 'Чувствую застой')" style="padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.25); border-radius: 12px; color: #FFF; font-weight: 600; text-align: left; cursor: pointer;">
+            ⏳ Ощущение паузы и пробуксовки
+          </button>
+          <button onclick="handleQuizPick('state', 'Готова к росту')" style="padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.25); border-radius: 12px; color: #FFF; font-weight: 600; text-align: left; cursor: pointer;">
+            🚀 Готова к новому уровню и прорыву
+          </button>
+          <button onclick="handleQuizPick('state', 'Стою перед выбором')" style="padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.25); border-radius: 12px; color: #FFF; font-weight: 600; text-align: left; cursor: pointer;">
+            ⚖️ Стою перед важным решением
+          </button>
+        </div>
+      `;
+      document.getElementById('modal-action-btn').style.display = 'none';
+    } else if (quizCurrentStep === 3) {
+      document.getElementById('modal-title').innerText = '🔮 Твой запрос к звездам (3/3)';
+      document.getElementById('modal-desc').innerHTML = `
+        <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 14px;">
+          Какой главный результат ты хочешь получить от LUNA?
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button onclick="handleQuizPick('goal', 'Пошаговый план и ключевые даты')" style="padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.25); border-radius: 12px; color: #FFF; font-weight: 600; text-align: left; cursor: pointer;">
+            📅 Четкие даты и пошаговый план действий
+          </button>
+          <button onclick="handleQuizPick('goal', 'Глубокая психологическая ясность')" style="padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.25); border-radius: 12px; color: #FFF; font-weight: 600; text-align: left; cursor: pointer;">
+            🧘♀️ Глубокая ясность и снятие тревоги
+          </button>
+          <button onclick="handleQuizPick('goal', 'Точные финансовые и карьерные связки')" style="padding: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.25); border-radius: 12px; color: #FFF; font-weight: 600; text-align: left; cursor: pointer;">
+            💸 Точные денежные связки и ниши
+          </button>
+        </div>
+      `;
+      document.getElementById('modal-action-btn').style.display = 'none';
+    }
+  }
+
+  function handleQuizPick(type, val) {
+    haptic();
+    if (type === 'sphere') selectedSphere = val;
+    if (type === 'state') selectedState = val;
+    if (type === 'goal') selectedGoal = val;
+
+    if (quizCurrentStep < 3) {
+      quizCurrentStep++;
+      renderQuiz();
+    } else {
+      userQuizDone = true;
+      localStorage.setItem('luna_quiz_done', 'true');
+      localStorage.setItem('luna_quiz_sphere', selectedSphere);
+      localStorage.setItem('luna_quiz_state', selectedState);
+      localStorage.setItem('luna_quiz_goal', selectedGoal);
+      openFinalProductSheet();
+    }
+  }
+
+  function openFinalProductSheet() {
+    haptic();
+    const p = pendingProduct || { title: '🪐 Натальная карта', price: '1 490 ₽', desc: 'Персональный разбор', key: 'natal' };
+    const sphere = localStorage.getItem('luna_quiz_sphere') || selectedSphere || 'Все сферы жизни';
+    
+    document.getElementById('modal-title').innerText = p.title + ' • ' + p.price;
+    document.getElementById('modal-desc').innerHTML = `
+      <div style="background: rgba(229,195,120,0.12); padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(229,195,120,0.3); margin-bottom: 12px;">
+        <span style="font-size: 11px; color: var(--gold); font-weight: 600; text-transform: uppercase;">🎯 Твой фокус:</span>
+        <div style="font-size: 13px; color: #FFF; font-weight: 500; margin-top: 2px;">${sphere}</div>
+      </div>
+      <div style="font-size: 13px; line-height: 1.55; color: var(--text-main); margin-bottom: 12px;">
+        ${p.desc}
+      </div>
+      <div style="background: rgba(255,255,255,0.04); padding: 10px 12px; border-radius: 12px; font-size: 12px; line-height: 1.5; color: var(--text-sub);">
+        ✨ <b>Формат:</b> Интерактивный AI-отчёт + PDF гайд для сохранения.<br>
+        <span style="color: var(--gold);">🧪 <b>Тест-режим:</b> нажми кнопку ниже, чтобы мгновенно прочитать разбор!</span>
+      </div>
+    `;
+    document.getElementById('modal-input-wrap').style.display = 'none';
+    document.getElementById('modal-action-btn').style.display = 'block';
+    document.getElementById('modal-action-btn').innerText = '✨ Открыть персональный разбор (Тест)';
+    
+    currentModalAction = () => {
+      haptic();
+      const sample = readingSamples[p.key] || readingSamples['natal'];
+      document.getElementById('modal-title').innerText = sample.title;
+      document.getElementById('modal-desc').innerHTML = `
+        <div style="background: rgba(229,195,120,0.15); padding: 8px 12px; border-radius: 10px; margin-bottom: 12px; font-size: 12px; color: #FFE8A3;">
+          ✨ Разбор персонализирован под фокус: <b>${sphere}</b>
+        </div>
+        ${sample.content}
+      `;
+      document.getElementById('modal-action-btn').innerText = 'Закрыть разбор ✦';
+      currentModalAction = () => closeModal();
+    };
     openModal();
   }
 
