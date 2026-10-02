@@ -1011,6 +1011,14 @@ const tg = window.Telegram ? window.Telegram.WebApp : null;
   // Global Astro Profile
   
   // ==================== NATAL CALCULATION & STORAGE ENGINE ====================
+  
+  // Auto-reset if URL has ?reset=1 or #reset
+  if (window.location.search.includes('reset=1') || window.location.hash.includes('reset')) {
+    localStorage.removeItem('luna_user_natal_data');
+    localStorage.removeItem('luna_user_quiz_done');
+    localStorage.removeItem('luna_user_quiz_profile');
+  }
+
   let userNatalData = null;
   try {
     const rawSaved = localStorage.getItem('luna_user_natal_data');
