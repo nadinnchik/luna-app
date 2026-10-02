@@ -1666,23 +1666,9 @@
   }
 
   function handleKidsCardClick() {
+    haptic();
     if (!userChildrenList || userChildrenList.length === 0) {
       openMissingChildModal();
-      return;
-    }
-      const html = `
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px;">
-          👶 Детская карта PRO
-        </div>
-        <div style="font-size: 13px; color: #D1CCDE; margin-bottom: 16px; line-height: 1.5;">
-          <b>Сначала добавьте ребёнка</b><br>
-          Чтобы создать персональный психологический разбор без шаблонных догадок, укажите данные ребёнка:
-        </div>
-        <button class="btn-gold" onclick="openAddChildModal()">
-          + Добавить ребёнка
-        </button>
-      `;
-      openModal(html);
       return;
     }
 
@@ -1691,15 +1677,14 @@
       return;
     }
 
-    // Multiple children picker
-    let buttonsHtml = userChildrenList.map((c, i) => `
+    const buttonsHtml = userChildrenList.map((c, i) => `
       <button class="btn-outline" style="margin-bottom: 8px; justify-content: space-between;" onclick="openKidsQuestionnaire(userChildrenList[${i}])">
         <span>👧 ${c.name} (${calculateAge(c.birthDate)})</span>
         <span>→</span>
       </button>
     `).join('');
 
-    const html = `
+    const modalHtml = `
       <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px;">
         👶 Для кого создаём разбор?
       </div>
@@ -1711,7 +1696,7 @@
         + Добавить ещё ребёнка
       </button>
     `;
-    openModal(html);
+    openModal(modalHtml);
   }
 
   function openKidsQuestionnaire(child) {
