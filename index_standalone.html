@@ -1204,6 +1204,7 @@
     }
   }
 
+  
   function renderSavedChildren() {
     const list = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
     const card = document.getElementById('savedChildrenCard');
@@ -1216,14 +1217,95 @@
     }
     card.style.display = 'block';
     container.innerHTML = list.map((c, idx) => `
-      <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(229,195,120,0.2); padding: 10px; border-radius: 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
-        <div>
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(229,195,120,0.2); padding: 10px 12px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="flex: 1;">
           <b style="color: #FFE8A3; font-size: 13px;">` + (c.name || 'Ребенок ' + (idx+1)) + `</b>
-          <div style="font-size: 11px; color: var(--text-sub);">` + c.birthDate + ` • ` + (c.ageCategory || 'Авто-расчет') + `</div>
+          <div style="font-size: 11px; color: var(--text-sub);">` + c.birthDate + ` • ` + (c.ageCategory || getAgeCategoryFromDate(c.birthDate)) + `</div>
         </div>
-        <button style="background: rgba(229,195,120,0.15); border: 1px solid var(--gold); color: var(--gold); border-radius: 8px; padding: 4px 8px; font-size: 11px; cursor: pointer;" onclick="openChildReport('` + c.name + `', '` + c.birthDate + `', '` + c.birthPlace + `', '` + c.birthTime + `')">Разбор →</button>
+        <div style="display: flex; gap: 6px; align-items: center;">
+          <button style="background: rgba(229,195,120,0.15); border: 1px solid var(--gold); color: var(--gold); border-radius: 8px; padding: 5px 10px; font-size: 11px; font-weight: 600; cursor: pointer;" onclick="openChildReport('` + c.name + `', '` + c.birthDate + `', '` + c.birthPlace + `', '` + c.birthTime + `')">Разбор →</button>
+          <button style="background: rgba(255,70,70,0.15); border: 1px solid rgba(255,70,70,0.4); color: #FF7B7B; border-radius: 8px; padding: 5px 8px; font-size: 11px; cursor: pointer;" onclick="deleteChild(` + idx + `)" title="Удалить">🗑</button>
+        </div>
       </div>
     `).join('');
+  }
+
+  function deleteChild(index) {
+    haptic();
+    let list = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
+    list.splice(index, 1);
+    localStorage.setItem('luna_saved_children', JSON.stringify(list));
+    renderSavedChildren();
+    if (list.length === 0) {
+      closeModal();
+    }
+  }
+
+  function showProductModal(title, price, desc) {
+    haptic();
+    let key = 'natal';
+    if (title.includes('Финанс') || title.includes('Деньги')) key = 'finance';
+    else if (title.includes('Совместим') || title.includes('Синастр') || title.includes('Любовь')) key = 'synastry';
+    else if (title.includes('Детск') || title.includes('Ребенок')) key = 'kids';
+    else if (title.includes('Предназначен')) key = 'purpose';
+    else if (title.includes('Друзь') || title.includes('Окружен')) key = 'friends';
+    else if (title.includes('Соляр') || title.includes('2027')) key = 'solar';
+
+    targetProduct = { title: title, price: price, desc: desc, key: key };
+
+    // If KIDS: check if children already exist! If yes, show list with option to view or add new
+    if (key === 'kids') {
+      const savedList = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
+      if (savedList.length > 0) {
+        showSavedChildrenChoiceModal();
+      } else {
+        openChildQuizModal();
+      }
+      return;
+    }
+
+    if (!userQuizDone) {
+      quizStep = 1;
+      renderLifeQuizStep();
+      openModal();
+    } else {
+      renderPaidReportView();
+      openModal();
+    }
+  }
+
+  function showSavedChildrenChoiceModal() {
+    const list = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
+    const content = document.getElementById('modalContent');
+    content.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">👶 Детские карты PRO</div>
+        <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
+      </div>
+      <div class="sheet-desc" style="margin-bottom: 12px;">
+        Выбери ребёнка для просмотра разбора или добавь нового:
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        ` + list.map((c, idx) => `
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(229,195,120,0.22); padding: 12px; border-radius: 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <b style="color: #FFE8A3; font-size: 13.5px;">` + (c.name || 'Ребенок ' + (idx+1)) + `</b>
+              <div style="font-size: 11px; color: var(--text-sub);">` + c.birthDate + ` • ` + (c.ageCategory || getAgeCategoryFromDate(c.birthDate)) + `</div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="sheet-btn" style="padding: 6px 12px; font-size: 11px; width: auto;" onclick="openChildReport('` + c.name + `', '` + c.birthDate + `', '` + c.birthPlace + `', '` + c.birthTime + `')">Открыть →</button>
+              <button style="background: rgba(255,70,70,0.15); border: 1px solid rgba(255,70,70,0.4); color: #FF7B7B; border-radius: 8px; padding: 6px 10px; font-size: 11px; cursor: pointer;" onclick="deleteChild(` + idx + `); showSavedChildrenChoiceModal();">🗑</button>
+            </div>
+          </div>
+        `).join('') + `
+      </div>
+
+      <button class="sheet-btn" onclick="openChildQuizModal()">
+        + Добавить нового ребёнка ✦
+      </button>
+    `;
+    openModal();
   }
 
   function resetAndRestartQuiz() {
@@ -1491,14 +1573,24 @@
     openModal();
   }
 
+  
   function renderLifeQuizStep() {
     const content = document.getElementById('modalContent');
     
+    let backButtonHtml = '';
+    if (quizStep > 1) {
+      backButtonHtml = `<button onclick="prevQuizStep()" style="background: none; border: none; color: var(--gold); font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 0;">← Назад</button>`;
+    } else {
+      backButtonHtml = `<span></span>`;
+    }
+
+    // STEP 1: Отношения
     if (quizStep === 1) {
       content.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          ${backButtonHtml}
           <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">1/4 • Отношения</span>
-          <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
+          <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer; padding: 4px;">✕</span>
         </div>
         <div class="sheet-title">Какой твой текущий статус в отношениях?</div>
         <div class="sheet-desc">Это необходимо для точной синастрической настройки карты:</div>
@@ -1523,11 +1615,13 @@
         </div>
       `;
     }
+    // STEP 2: Дети
     else if (quizStep === 2) {
       content.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          ${backButtonHtml}
           <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">2/4 • Дети & Семья</span>
-          <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
+          <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer; padding: 4px;">✕</span>
         </div>
         <div class="sheet-title">Есть ли у тебя дети?</div>
         <div class="sheet-desc">Для активации анализа 5-го дома творчества и родительства:</div>
@@ -1552,11 +1646,13 @@
         </div>
       `;
     }
+    // STEP 3: Деньги
     else if (quizStep === 3) {
       content.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          ${backButtonHtml}
           <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">3/4 • Финансы & Карьера</span>
-          <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
+          <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer; padding: 4px;">✕</span>
         </div>
         <div class="sheet-title">Твоя текущая точка в доходе:</div>
         <div class="sheet-desc">Для точной калибровки 2-го и 10-го домов изобилия:</div>
@@ -1577,11 +1673,13 @@
         </div>
       `;
     }
+    // STEP 4: Главный фокус
     else if (quizStep === 4) {
       content.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          ${backButtonHtml}
           <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">4/4 • Запрос к LUNA</span>
-          <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
+          <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer; padding: 4px;">✕</span>
         </div>
         <div class="sheet-title">Какой главный вопрос волнует сильнее всего?</div>
         <div class="sheet-desc">Звезды сделают ключевой акцент отчёта на этом ответе:</div>
@@ -1601,6 +1699,14 @@
           </div>
         </div>
       `;
+    }
+  }
+
+  function prevQuizStep() {
+    haptic();
+    if (quizStep > 1) {
+      quizStep--;
+      renderLifeQuizStep();
     }
   }
 
