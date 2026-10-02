@@ -90,7 +90,7 @@
     padding: 16px 16px 20px;
   }
 
-  /* Header */
+  /* Top Header */
   .app-header {
     display: flex;
     justify-content: space-between;
@@ -109,35 +109,35 @@
   }
   .brand-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     background: linear-gradient(135deg, #FFE8A3 0%, #E5C378 50%, #C49B45 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   .header-badge {
     font-size: 11px;
-    background: rgba(229, 195, 120, 0.12);
-    border: 1px solid var(--card-border);
+    background: rgba(80, 227, 194, 0.12);
+    border: 1px solid rgba(80, 227, 194, 0.3);
     padding: 4px 10px;
     border-radius: 20px;
-    color: var(--gold);
+    color: #50E3C2;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
   }
   .header-badge .dot {
     width: 6px;
     height: 6px;
-    background: var(--accent-green);
+    background: #50E3C2;
     border-radius: 50%;
-    box-shadow: 0 0 6px var(--accent-green);
+    box-shadow: 0 0 6px #50E3C2;
   }
 
-  /* Beautiful Top Astrological Profile Card (User-neutral / Dynamic from Telegram) */
+  /* Gorgeous Top Hero Card (The original beloved design) */
   .hero-card {
-    background: linear-gradient(165deg, rgba(34, 26, 54, 0.75) 0%, rgba(16, 14, 26, 0.85) 100%);
+    background: linear-gradient(165deg, rgba(34, 26, 54, 0.85) 0%, rgba(16, 14, 26, 0.95) 100%);
     border: 1px solid var(--card-border);
     border-radius: 24px;
     padding: 18px 16px;
@@ -154,7 +154,7 @@
     right: -20%;
     width: 180px;
     height: 180px;
-    background: radial-gradient(circle, rgba(229, 195, 120, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(229, 195, 120, 0.18) 0%, transparent 70%);
     pointer-events: none;
   }
   .hero-content {
@@ -170,7 +170,7 @@
     background: linear-gradient(135deg, #FFE8A3, #8A4F9E, #E5C378);
     position: relative;
     flex-shrink: 0;
-    box-shadow: 0 0 16px rgba(138, 79, 158, 0.4);
+    box-shadow: 0 0 18px rgba(138, 79, 158, 0.45);
     cursor: pointer;
   }
   .avatar-img {
@@ -186,7 +186,7 @@
   .hero-greeting {
     font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
+    letter-spacing: 1.5px;
     color: var(--gold);
     font-weight: 600;
     margin-bottom: 2px;
@@ -310,7 +310,47 @@
     background: rgba(255,255,255,0.08);
   }
 
-  /* Catalog Cards Grid */
+  /* Product Preview Cards Grid on Home & Catalog */
+  .product-mini-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .product-mini-card {
+    background: linear-gradient(145deg, rgba(30, 26, 46, 0.75) 0%, rgba(18, 16, 28, 0.85) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .product-mini-card:active {
+    transform: scale(0.97);
+    border-color: var(--gold);
+  }
+  .pm-icon {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+  .pm-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #FFF;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .pm-price {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-top: 6px;
+  }
+
+  /* Full Catalog List */
   .catalog-grid {
     display: flex;
     flex-direction: column;
@@ -357,6 +397,34 @@
     line-height: 1.45;
   }
 
+  /* Profile Card & Info */
+  .profile-card {
+    background: linear-gradient(145deg, rgba(30, 26, 46, 0.8) 0%, rgba(18, 16, 28, 0.9) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .profile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .profile-row:last-child {
+    border-bottom: none;
+  }
+  .profile-label {
+    font-size: 12px;
+    color: var(--text-sub);
+  }
+  .profile-value {
+    font-size: 12.5px;
+    color: #FFF;
+    font-weight: 500;
+  }
+
   /* Bottom Navigation */
   .bottom-nav {
     position: fixed;
@@ -364,7 +432,7 @@
     left: 0;
     right: 0;
     height: var(--nav-height);
-    background: rgba(10, 9, 18, 0.92);
+    background: rgba(10, 9, 18, 0.94);
     border-top: 1px solid rgba(229, 195, 120, 0.2);
     backdrop-filter: blur(20px);
     display: flex;
@@ -383,7 +451,7 @@
     color: var(--text-sub);
     font-size: 10px;
     cursor: pointer;
-    padding: 6px 12px;
+    padding: 6px 10px;
   }
   .nav-btn.active {
     color: var(--gold);
@@ -545,7 +613,7 @@
 
 <div class="app-container">
 
-  <!-- Header -->
+  <!-- Header with Online Badge -->
   <div class="app-header">
     <div class="brand-group">
       <span class="brand-logo">✦</span>
@@ -553,11 +621,11 @@
     </div>
     <div class="header-badge">
       <span class="dot"></span>
-      <span>Синхронизировано</span>
+      <span>Онлайн</span>
     </div>
   </div>
 
-  <!-- Hero Profile Card (Dynamic from Telegram user) -->
+  <!-- Hero Profile Card (Original Beautiful Layout) -->
   <div class="hero-card">
     <div class="hero-content">
       <div class="avatar-ring" onclick="openAskModal('✦ Спросить у LUNA')">
@@ -565,8 +633,8 @@
       </div>
       <div class="hero-info">
         <div class="hero-greeting">Твой проводник</div>
-        <div class="hero-name" id="userNameLabel">Гость ✦</div>
-        <div class="hero-sub" id="userAstroSummary">Натальная карта рассчитана по твоим транзитам</div>
+        <div class="hero-name" id="userNameLabel">Звёздный гость ✦</div>
+        <div class="hero-sub">Персональная натальная карта и транзиты</div>
       </div>
     </div>
   </div>
@@ -590,17 +658,17 @@
         <div class="teaser-item" onclick="showFullFreeReading()">
           <div class="icon">☀️</div>
           <div class="label">Солнце</div>
-          <div class="val" id="teaserSunVal">Козерог</div>
+          <div class="val">Козерог</div>
         </div>
         <div class="teaser-item" onclick="showFullFreeReading()">
           <div class="icon">🌙</div>
           <div class="label">Луна</div>
-          <div class="val" id="teaserMoonVal">Рак</div>
+          <div class="val">Рак</div>
         </div>
         <div class="teaser-item" onclick="showFullFreeReading()">
           <div class="icon">💫</div>
           <div class="label">Асцендент</div>
-          <div class="val" id="teaserAscVal">Близнецы</div>
+          <div class="val">Близнецы</div>
         </div>
       </div>
 
@@ -640,8 +708,52 @@
       </div>
     </div>
 
-    <!-- 3. QUICK ASK LUNA CTA -->
-    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(229,195,120,0.2); border-radius: 16px; padding: 14px; margin-top: 14px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="openAskModal('🔮 Сокровенный вопрос Луне')">
+    <!-- 3. MINI PAID PRODUCTS CARDS ON MAIN SCREEN -->
+    <div class="section-head" style="margin-top: 20px;">
+      <div class="section-title">🪐 Персональные отчёты</div>
+      <div class="section-more" onclick="switchTab('catalog')">Все отчёты →</div>
+    </div>
+
+    <div class="product-mini-grid">
+      <div class="product-mini-card" onclick="showProductModal('💎 Финансовый & Карьерный код', '690 ₽', 'Точный астрологический расчет 2-го и 10-го домов: в каких нишах твои самые легкие деньги, что блокирует финансовый поток.')">
+        <div>
+          <div class="pm-icon">💎</div>
+          <div class="pm-title">Финансовый код</div>
+          <div style="font-size: 11px; color: var(--text-sub);">Точки прорыва в деньгах</div>
+        </div>
+        <div class="pm-price">690 ₽ →</div>
+      </div>
+
+      <div class="product-mini-card" onclick="showProductModal('❤️ Совместимость & Отношения (Синастрия)', '690 ₽', 'Анализ точек притяжения, кармических связей и зон роста в паре. Как углубить понимание и доверие.')">
+        <div>
+          <div class="pm-icon">❤️</div>
+          <div class="pm-title">Синастрия & Любовь</div>
+          <div style="font-size: 11px; color: var(--text-sub);">Ключ к гармонии в паре</div>
+        </div>
+        <div class="pm-price">690 ₽ →</div>
+      </div>
+
+      <div class="product-mini-card" onclick="showProductModal('✨ Детская карта & Таланты', '1 490 ₽', 'Разбор природы ребенка, сильных сторон и талантов. Подсказки для гармоничного развития.')">
+        <div>
+          <div class="pm-icon">✨</div>
+          <div class="pm-title">Детская карта</div>
+          <div style="font-size: 11px; color: var(--text-sub);">Таланты и потенциал</div>
+        </div>
+        <div class="pm-price">1 490 ₽ →</div>
+      </div>
+
+      <div class="product-mini-card" onclick="showProductModal('🪐 Полная натальная карта', '1 490 ₽', 'Глубокий персональный путеводитель на 25+ страниц: ядро личности, кармические узлы, таланты, скрытые блоки и ключевые точки роста.')">
+        <div>
+          <div class="pm-icon">🪐</div>
+          <div class="pm-title">Натальная карта PRO</div>
+          <div style="font-size: 11px; color: var(--text-sub);">Полный путеводитель 25+ стр.</div>
+        </div>
+        <div class="pm-price">1 490 ₽ →</div>
+      </div>
+    </div>
+
+    <!-- 4. QUICK ASK LUNA CTA -->
+    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(229,195,120,0.2); border-radius: 16px; padding: 14px; margin-top: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="openAskModal('🔮 Сокровенный вопрос Луне')">
       <div style="display: flex; align-items: center; gap: 10px;">
         <span style="font-size: 24px;">🔮</span>
         <div>
@@ -703,7 +815,52 @@
     </div>
   </div>
 
-  <!-- ==================== TAB 3: CHAT ==================== -->
+  <!-- ==================== TAB 3: PROFILE ==================== -->
+  <div id="tab-profile" class="tab-view" style="display: none;">
+    <div class="section-head">
+      <div class="section-title">✨ Твой профиль и карта</div>
+    </div>
+
+    <div class="profile-card">
+      <div class="profile-row">
+        <span class="profile-label">Имя в Telegram:</span>
+        <span class="profile-value" id="profileNameVal">Пользователь</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Солнце (Воля):</span>
+        <span class="profile-value" style="color: #FFE8A3;">Козерог (10° • 10-й дом)</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Луна (Душа):</span>
+        <span class="profile-value" style="color: #C4B5FD;">Рак (28° • Обитель)</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Асцендент (Маска):</span>
+        <span class="profile-value" style="color: #93C5FD;">Близнецы (14°)</span>
+      </div>
+      <div class="profile-row">
+        <span class="profile-label">Статус опросника:</span>
+        <span class="profile-value" id="profileQuizStatus" style="color: #50E3C2;">Не пройден</span>
+      </div>
+    </div>
+
+    <button class="sheet-btn" style="margin-bottom: 12px;" onclick="resetAndRestartQuiz()">
+      🔄 Пройти / обновить опросник сфер
+    </button>
+
+    <div class="profile-card" style="margin-top: 10px;">
+      <div class="profile-row" onclick="showLegal('privacy')" style="cursor: pointer;">
+        <span class="profile-label">Политика конфиденциальности</span>
+        <span class="profile-value" style="color: var(--gold);">→</span>
+      </div>
+      <div class="profile-row" onclick="showLegal('terms')" style="cursor: pointer;">
+        <span class="profile-label">Публичная оферта</span>
+        <span class="profile-value" style="color: var(--gold);">→</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TAB 4: CHAT ==================== -->
   <div id="tab-chat" class="tab-view" style="display: none;">
     <div class="chat-wrap">
       <div class="chat-messages" id="chatBox">
@@ -720,7 +877,7 @@
 
 </div>
 
-<!-- Bottom Navigation Bar -->
+<!-- Bottom Navigation Bar (4 tabs: Главная, Каталог, Профиль, Чат) -->
 <div class="bottom-nav">
   <button class="nav-btn active" id="nav-today" onclick="switchTab('today')">
     <span class="nav-icon">✨</span>
@@ -729,6 +886,10 @@
   <button class="nav-btn" id="nav-catalog" onclick="switchTab('catalog')">
     <span class="nav-icon">🪐</span>
     <span>Каталог</span>
+  </button>
+  <button class="nav-btn" id="nav-profile" onclick="switchTab('profile')">
+    <span class="nav-icon">👤</span>
+    <span>Профиль</span>
   </button>
   <button class="nav-btn" id="nav-chat" onclick="switchTab('chat')">
     <span class="nav-icon">💬</span>
@@ -759,7 +920,32 @@
     }
     const nameEl = document.getElementById('userNameLabel');
     if (nameEl) nameEl.innerText = name + ' ✦';
+
+    const pNameEl = document.getElementById('profileNameVal');
+    if (pNameEl) pNameEl.innerText = name;
+
+    updateProfileStatus();
   });
+
+  function updateProfileStatus() {
+    const done = localStorage.getItem('luna_user_quiz_done') === 'true';
+    const stEl = document.getElementById('profileQuizStatus');
+    if (stEl) {
+      stEl.innerText = done ? '✨ Активен (Заполнен)' : 'Не пройден';
+      stEl.style.color = done ? '#50E3C2' : '#FFE8A3';
+    }
+  }
+
+  function resetAndRestartQuiz() {
+    haptic();
+    localStorage.removeItem('luna_user_quiz_done');
+    localStorage.removeItem('luna_user_quiz_profile');
+    userQuizDone = false;
+    updateProfileStatus();
+    quizStep = 1;
+    renderLifeQuizStep();
+    openModal();
+  }
 
   function haptic() {
     if (tg && tg.HapticFeedback) {
@@ -788,6 +974,25 @@
     haptic();
     const m = document.getElementById('appModal');
     m.classList.remove('active');
+  }
+
+  function showLegal(type) {
+    haptic();
+    const content = document.getElementById('modalContent');
+    if (type === 'privacy') {
+      content.innerHTML = `
+        <div class="sheet-title">Политика конфиденциальности</div>
+        <div class="sheet-desc">Мы бережно храним персональные астрологические данные. Дата и время рождения используются исключительно для математического расчета натальных домов и планетарных аспектов в защищенном контуре.</div>
+        <button class="sheet-btn" onclick="closeModal()">Закрыть</button>
+      `;
+    } else {
+      content.innerHTML = `
+        <div class="sheet-title">Публичная оферта</div>
+        <div class="sheet-desc">Сервис LUNA предоставляет информационно-консультационные услуги по составлению персональных астрологических разборов. Оплата производится через сертифицированные российские платежные шлюзы (СБП, банковские карты).</div>
+        <button class="sheet-btn" onclick="closeModal()">Закрыть</button>
+      `;
+    }
+    openModal();
   }
 
   // --- FULL FREE NATAL READING (MASSIVE & DEEP) ---
@@ -893,7 +1098,7 @@
     showPlanetModal('🔮 Магические знаки недели', '<b>Энергетический код недели:</b><br><br>• <b>Число синхронности:</b> 21 (Завершение цикла и переход на новый уровень).<br>• <b>Знаки пространства:</b> белые перья, птицы у окна, зеркальные цифры (11:11, 21:21).<br>• <b>Камень и растение:</b> Лунный камень и Лаванда для ясности интуиции.');
   }
 
-  // ==================== COMPREHENSIVE LIFE QUIZ (Relationships, Money, Kids, Status) ====================
+  // ==================== COMPREHENSIVE LIFE QUIZ (Relationships, Kids, Money, Focus) ====================
   let userQuizDone = localStorage.getItem('luna_user_quiz_done') === 'true';
   let quizStep = 1;
   let userProfile = {
@@ -935,18 +1140,18 @@
           <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
         </div>
         <div class="sheet-title">Какой твой текущий статус в отношениях?</div>
-        <div class="sheet-desc">Это важно для точного синастрического и натального расчёта:</div>
+        <div class="sheet-desc">Это необходимо для точной синастрической настройки карты:</div>
 
         <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 12px;">
-          <div class="quiz-option-btn" onclick="saveQuizAnswer('relationships', 'В счастливом браке / длительном союзе')">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('relationships', 'В браке / крепких отношениях')">
             <span>💍</span>
             <span>В браке / крепких отношениях</span>
           </div>
-          <div class="quiz-option-btn" onclick="saveQuizAnswer('relationships', 'В отношениях, есть зоны для улучшения')">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('relationships', 'В отношениях, есть сложности / кризис')">
             <span>❤️</span>
             <span>В отношениях, есть сложности / кризис</span>
           </div>
-          <div class="quiz-option-btn" onclick="saveQuizAnswer('relationships', 'В поиске своего идеального партнера')">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('relationships', 'Свободна / в поиске своего человека')">
             <span>✨</span>
             <span>Свободна / в поиске своего человека</span>
           </div>
@@ -980,7 +1185,7 @@
             <span>🌱</span>
             <span>Пока нет, планирую в будущем</span>
           </div>
-          <div class="quiz-option-btn" onclick="saveQuizAnswer('kids', 'Нет детей')">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('kids', 'Детей нет')">
             <span>💫</span>
             <span>Детей нет</span>
           </div>
@@ -994,19 +1199,19 @@
           <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">3/4 • Финансы & Карьера</span>
           <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
         </div>
-        <div class="sheet-title">Твоя текущая финансовая точка:</div>
+        <div class="sheet-title">Твоя текущая точка в доходе:</div>
         <div class="sheet-desc">Для точной калибровки 2-го и 10-го домов изобилия:</div>
 
         <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 12px;">
-          <div class="quiz-option-btn" onclick="saveQuizAnswer('money', 'Свое дело / фриланс, хочу прорыва в чеке')">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('money', 'Свое дело / блог / фриланс')">
             <span>💎</span>
             <span>Свое дело / блог / фриланс (хочу рост дохода)</span>
           </div>
-          <div class="quiz-option-btn" onclick="saveQuizAnswer('money', 'Работа в найме, хочу больше свободы')">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('money', 'Работа в найме')">
             <span>🏢</span>
             <span>Работа в найме (хочу больше свободы/дохода)</span>
           </div>
-          <div class="quiz-option-btn" onclick="saveQuizAnswer('money', 'В поиске своего истинного призвания')">
+          <div class="quiz-option-btn" onclick="saveQuizAnswer('money', 'В поиске своего призвания')">
             <span>🧭</span>
             <span>В поиске своего истинного призвания</span>
           </div>
@@ -1020,7 +1225,7 @@
           <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600;">4/4 • Запрос к LUNA</span>
           <span onclick="closeModal()" style="color: var(--text-sub); font-size: 20px; cursor: pointer;">✕</span>
         </div>
-        <div class="sheet-title">Какой главный вопрос требует ответа прямо сейчас?</div>
+        <div class="sheet-title">Какой главный вопрос волнует сильнее всего?</div>
         <div class="sheet-desc">Звезды сделают ключевой акцент отчёта на этом ответе:</div>
 
         <div style="display: flex; flex-direction: column; gap: 9px; margin-top: 12px;">
@@ -1052,6 +1257,7 @@
       userQuizDone = true;
       localStorage.setItem('luna_user_quiz_done', 'true');
       localStorage.setItem('luna_user_quiz_profile', JSON.stringify(userProfile));
+      updateProfileStatus();
       renderPaidReportView();
     }
   }
@@ -1063,7 +1269,7 @@
       body: `
         <div style="line-height: 1.65; font-size: 12.5px; color: var(--text-sub);">
           <div style="background: rgba(229,195,120,0.12); padding: 12px; border-radius: 12px; border: 1px solid rgba(229,195,120,0.3); margin-bottom: 14px; color: #FFE8A3;">
-            ✨ <b>Персональный расчёт готов:</b> Твоя карта рассчитана с учетом натального времени и ответов по сферам (отношения, дети, доход).
+            ✨ <b>Персональный расчёт сформирован:</b> Твоя карта рассчитана с учетом натального времени и ответов по сферам (отношения, дети, доход).
           </div>
 
           <p style="margin-bottom: 12px;"><b style="color: #FFF; font-size: 13px;">1. Кармическая ось (Раху в 10-м доме / Кету в 4-м):</b><br>
@@ -1152,10 +1358,11 @@
       </div>
 
       <div style="background: rgba(229,195,120,0.12); padding: 10px 12px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.3); font-size: 11.5px; line-height: 1.5; color: #FFE8A3;">
-        🎯 <b>Персональный профиль учтен:</b><br>
+        🎯 <b>Твой профиль учтён в расчёте:</b><br>
         • Отношения: ${saved.relationships || 'Учтено'}<br>
         • Дети: ${saved.kids || 'Учтено'}<br>
-        • Финансы: ${saved.money || 'Учтено'}
+        • Финансы: ${saved.money || 'Учтено'}<br>
+        • Фокус: ${saved.focus || 'Учтено'}
       </div>
 
       ${reportData.body}
