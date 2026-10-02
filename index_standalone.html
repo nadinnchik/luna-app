@@ -2118,131 +2118,302 @@
   };
 
   
+  
+  // Comprehensive Pervasive Personalization Engine
+  function generatePervasiveNatalReport(user, saved) {
+    const rel = saved.relationships || '';
+    const kids = saved.kids || '';
+    const money = saved.money || '';
+    const focus = saved.focus || '';
+
+    // Contextual text branches throughout ALL chapters:
+    
+    // 1. Chapter 1: Psychological portrait in context of current life setup
+    let ch1_context = '';
+    if (rel.includes('браке') || rel.includes('крепких')) {
+      ch1_context = 'С учётом того, что вы находитесь в сложившемся союзе, ваша потребность в надежности проявляется в стремлении создать общее крепкое семейное пространство, где каждый партнер уважает личные цели другого.';
+    } else if (rel.includes('кризис') || rel.includes('сложност')) {
+      ch1_context = 'В текущий период, когда в личной сфере ощущаются вопросы и поиск баланса, ваша карта проявляет тенденцию к глубокой внутренней рефлексии: вам важно не закрываться в себе, а спокойно исследовать истинные потребности души.';
+    } else if (rel.includes('Свободна') || rel.includes('поиске')) {
+      ch1_context = 'На текущем жизненном этапе, когда вы открыты новому, ваша личность проявляет особую внутреннюю независимость: вы ориентируетесь на партнера, способного уважать вашу автономию и разделять масштабные планы.';
+    } else {
+      ch1_context = 'В данный период фокуса на себе ваша внутренняя энергия направлена на кристаллизацию собственных ценностей и укрепление внутреннего стержня.';
+    }
+
+    // 2. Chapter 2: Sun & Moon in context of work and kids
+    let sun_career_context = '';
+    if (money.includes('Свое дело') || money.includes('блог') || money.includes('фриланс')) {
+      sun_career_context = 'Поскольку вы развиваете собственное дело, ваше Солнце в 10-м доме реализуется через создание авторского почерка и управление собственными проектами. Это положение поддерживает самостоятельность, где качество продукта говорит само за себя.';
+    } else if (money.includes('найме')) {
+      sun_career_context = 'В условиях работы в организации показатели 10-го дома часто подталкивают к расширению зоны личной ответственности или созданию параллельных авторских инициатив, где вы можете проявлять лидерский потенциал.';
+    } else {
+      sun_career_context = 'В процессе поиска призвания 10-й дом указывает на благоприятность сфер, связанных с организацией, визуальной эстетикой и передачей структурированного опыта.';
+    }
+
+    let moon_family_context = '';
+    if (kids.includes('один') || kids.includes('двое') || kids.includes('больше')) {
+      moon_family_context = 'В роли родителя ваша Луна в Раке наделяет вас чуткостью к эмоциональным состояниям детей. Однако для сохранения сил вам особенно важно находить время для собственного тихого отдыха и перезагрузки, чтобы материнская забота оставалась наполненной и мягкой.';
+    } else {
+      moon_family_context = 'Ваша натальная Луна проявляется в бережном отношении к своему дому и близкому кругу: вам требуется личное безопасное пространство, где можно полностью расслабиться и восстановить душевный баланс.';
+    }
+
+    // 3. Chapter 3: Planets in context of real life
+    let venus_context = '';
+    if (rel.includes('браке') || rel.includes('крепких')) {
+      venus_context = 'Внутри длительного партнерства Венера в воздушном знаке подчеркивает ценность ментального контакта и совместных ярких впечатлений. Рутина может снижать вдохновение, поэтому совместные свидания и новые общие увлечения становятся отличным источником обновления чувств.';
+    } else if (rel.includes('кризис') || rel.includes('сложност')) {
+      venus_context = 'В моменты сложностей в паре Венера подсказывает: разговор через призму дружбы, уважения к границам и искренний диалог без давления помогают мягко снять накопившееся напряжение.';
+    } else {
+      venus_context = 'При выборе партнера ваша Венера ориентирована на человека с живым умом, широким кругозором и чувством юмора, с которым интересно развиваться и смотреть в одном направлении.';
+    }
+
+    // 4. Chapter 4: Houses 2, 4, 5, 7, 10
+    let house5_context = '';
+    if (kids.includes('один') || kids.includes('двое') || kids.includes('больше')) {
+      house5_context = 'С учетом родительского опыта, 5-й дом в вашей карте связывает творческое вдохновение с раскрытием талантов в семье. Поддержка детской непосредственности и совместное творчество служат для вас естественным источником радости.';
+    } else {
+      house5_context = '5-й дом стимулирует раскрытие авторских хобби, публичных выступлений и проектов, создаваемых из чистого удовольствия и вдохновения.';
+    }
+
+    let house2_money_context = '';
+    if (money.includes('Свое дело') || money.includes('блог') || money.includes('фриланс')) {
+      house2_money_context = 'В контексте частной практики и бизнеса 2-й дом указывает на то, что финансовый потенциал укрепляется при переходе на качественные премиальные услуги и отказе от чрезмерной рутинной нагрузки.';
+    } else {
+      house2_money_context = '2-й дом стимулирует развитие персональных практических навыков, монетизацию вкуса и формирование устойчивой материальной подушки.';
+    }
+
+    // 5. Chapter 5: Nodal Axis
+    let nodal_context = '';
+    if (kids.includes('один') || kids.includes('двое') || kids.includes('больше')) {
+      nodal_context = 'Кармическая ось Раху/Кету гармонизирует баланс: не растворяться исключительно в семейных хлопотах (опыт Кету), а находить пространство для социальной реализации и признания (вектор Раху).';
+    } else {
+      nodal_context = 'Ось узлов подталкивает к постепенному переходу от привычной внутренней зоны комфорта к более смелому проявлению своих способностей в социуме.';
+    }
+
+    // 6. Chapter 6: Focus-specific tailored guidance
+    let focus_callout = '';
+    if (focus.includes('Масштаб') || focus.includes('деньги')) {
+      focus_callout = `
+        <div class="report-callout" style="border-left: 4px solid #50E3C2; background: rgba(80,227,194,0.12);">
+          <b>🎯 Прикладной акцент под ваш запрос (Масштаб & Финансовый рост):</b><br>
+          Показатели 2-го и 10-го домов вашей карты указывают на высокую отдачу от делегирования технических задач и фокусировки на стратегическом визионерстве. Это помогает сохранять энергию для крупных запусков и качественных партнерств.
+        </div>
+      `;
+    } else if (focus.includes('гармония') || focus.includes('семье')) {
+      focus_callout = `
+        <div class="report-callout" style="border-left: 4px solid #F472B6; background: rgba(244,114,182,0.12);">
+          <b>🎯 Прикладной акцент под ваш запрос (Гармония & Близость):</b><br>
+          Взаимодействие 4-го и 7-го домов показывает: открытый и мягкий диалог о личных границах и регулярное выделение времени на отдых вдвоем способствуют углублению доверия и эмоционального тепла.
+        </div>
+      `;
+    } else if (focus.includes('тревоги') || focus.includes('ресурс')) {
+      focus_callout = `
+        <div class="report-callout" style="border-left: 4px solid #FFE8A3; background: rgba(255,232,163,0.12);">
+          <b>🎯 Прикладной акцент под ваш запрос (Восстановление ресурса):</b><br>
+          Аспекты Луны и Сатурна подчеркивают: снижение планки гиперконтроля и введение регулярных пауз тишины (вода, сон, прогулки) помогают нервной системе своевременно перезагружаться без переутомления.
+        </div>
+      `;
+    }
+
+    return `
+      <div style="line-height: 1.85; font-size: 13px; color: var(--text-sub);">
+        
+        <div style="background: linear-gradient(135deg, rgba(229,195,120,0.2) 0%, rgba(138,79,158,0.2) 100%); padding: 18px; border-radius: 18px; border: 1px solid rgba(229,195,120,0.45); margin-bottom: 20px; color: #FFE8A3;">
+          <div style="font-size: 16px; font-weight: 700; color: #FFF; margin-bottom: 6px;">🪐 ПЕРСОНАЛЬНАЯ НАТАЛЬНАЯ КНИГА ЛИЧНОСТИ PRO</div>
+          <div style="font-size: 12px; color: var(--gold); line-height: 1.6;">
+            Индивидуальный разбор для ${user.name}: синтез натальных показателей (${user.sun}, ${user.moon}, ${user.asc}) и вашей текущей жизненной ситуации.
+          </div>
+        </div>
+
+        ${focus_callout}
+
+        <!-- ГЛАВА 1 -->
+        <div class="report-chapter" style="border-left: 4px solid var(--gold);">
+          <div class="report-chapter-title">📖 ГЛАВА 1. АРХИТЕКТУРА СОЗНАНИЯ: КАК УСТРОЕНА ВАША КАРТА</div>
+          
+          <div class="report-sub-block">
+            <span class="report-sub-head">1.1. Введение в индивидуальную матрицу</span>
+            <p>Натальная карта представляет собой многоуровневую систему взаимосвязей: планеты отражают различные грани психики, дома показывают сферы практической жизни, а аспекты описывают внутренние динамики и точки баланса.</p>
+            <p>В вашем гороскопе заметно выражено сочетание структурной земной энергии и глубокой интуитивной водной стихии. Это может проявляться как стремление к основательности, надежности и одновременно тонкое эстетическое восприятие мира.</p>
+          </div>
+
+          <div class="report-sub-block">
+            <span class="report-sub-head">1.2. Общий психологический портрет в текущем контексте</span>
+            <p>${ch1_context}</p>
+            <p>При принятии важных решений для вас характерно внутреннее созревание: сначала включается интуитивное ощущение ситуации, затем вы сопоставляете факты и только после этого делаете уверенный и взвешенный шаг.</p>
+          </div>
+
+          <div class="report-callout">
+            🌟 <b>5 ключевых тенденций вашей карты:</b><br>
+            1. <i>Масштаб и авторский взгляд:</i> склонность к формированию собственных стандартов качества.<br>
+            2. <i>Интуитивная чуткость:</i> способность улавливать эмоциональную атмосферу в общении.<br>
+            3. <i>Социальная открытость:</i> живой ум и легкость первого впечатления.<br>
+            4. <i>Внутренняя гибкость:</i> способность находить ресурсы и точки роста в периоды перемен.<br>
+            5. <i>Эстетическое чувство:</i> интерес к гармонии формы, визуалу и стилю.
+          </div>
+        </div>
+
+        <!-- ГЛАВА 2 -->
+        <div class="report-chapter" style="border-left: 4px solid #FFE8A3;">
+          <div class="report-chapter-title">☀️🌙↑ ГЛАВА 2. БОЛЬШАЯ ТРОЙКА И ИХ ВЗАИМОДЕЙСТВИЕ</div>
+          
+          <div class="report-sub-block">
+            <span class="report-sub-head">2.1. ☀️ Солнце в 10-м доме (Зенит Гороскопа — Проявление воли)</span>
+            <p>Положение Солнца в верхней полусфере карты часто связано со стремлением к профессиональной реализации и формированию авторитета в своем деле.</p>
+            <p>${sun_career_context}</p>
+            <p><b>Зона внимания:</b> Склонность брать на себя повышенную ответственность. Полезной практикой может стать постепенное разделение задач и доверие коллегам или партнерам.</p>
+          </div>
+
+          <div class="report-sub-block">
+            <span class="report-sub-head">2.2. 🌙 Луна в Обители (4-й дом — Эмоциональный комфорт)</span>
+            <p>Луна в сильном гармоничном положении указывает на высокую значимость домашнего очага, покоя и чувства защищенности.</p>
+            <p>${moon_family_context}</p>
+            <p><b>Восстановление ресурса:</b> Спокойные водные процедуры, время наедине с собой в уютной обстановке и паузы без информационной перегрузки помогают сохранять гармоничный тонус.</p>
+          </div>
+
+          <div class="report-sub-block">
+            <span class="report-sub-head">2.3. 💫 Асцендент в Близнецах (1-й дом — Социальное восприятие)</span>
+            <p>Внешний стиль проявления ассоциируется с динамичностью, открытостью и доброжелательностью. Это облегчает знакомства и делает общение приятным и продуктивным.</p>
+          </div>
+
+          <div class="report-callout" style="background: rgba(255,232,163,0.12);">
+            🌀 <b>Синтез Большой тройки:</b><br>
+            Окружающие встречают вас как легкого и контактного человека (Асцендент). В деловых вопросах раскрывается ваша надежность и организованность (Солнце). При этом личные решения опираются на внутреннее интуитивное ощущение правильности (Луна).
+          </div>
+        </div>
+
+        <!-- ГЛАВА 3 -->
+        <div class="report-chapter" style="border-left: 4px solid #C4B5FD;">
+          <div class="report-chapter-title">🪐 ГЛАВА 3. ПЛАНЕТАРНЫЕ ВЛИЯНИЯ В РЕАЛЬНОЙ ЖИЗНИ</div>
+          
+          <div class="report-sub-block">
+            <span class="report-sub-head">3.1. ☿ Меркурий — Стиль мышления и передача смыслов</span>
+            <p>Меркурий ориентирован на образное, смысловое восприятие. Вам легче воспринимать и транслировать информацию через визуальные примеры, общую концепцию и вдохновляющие ориентиры.</p>
+          </div>
+
+          <div class="report-sub-block">
+            <span class="report-sub-head">3.2. ♀ Венера — Модель чувств и эстетика</span>
+            <p>${venus_context}</p>
+          </div>
+
+          <div class="report-sub-block">
+            <span class="report-sub-head">3.3. ♂ Марс & ♃ Юпитер — Действие и точки расширения</span>
+            <p>Марс предпочитает действовать последовательно и взвешенно. Юпитер поддерживает расширение горизонтов через образовательные проекты, путешествия и обмен опытом.</p>
+          </div>
+        </div>
+
+        <!-- ГЛАВА 4 -->
+        <div class="report-chapter" style="border-left: 4px solid #50E3C2;">
+          <div class="report-chapter-title">🏛 ГЛАВА 4. МАТРИЦА ДОМОВ: ДЕНЬГИ, СЕМЬЯ, РЕАЛИЗАЦИЯ</div>
+          
+          <div class="report-sub-block">
+            <span class="report-sub-head">4.1. 2-й дом и финансовая динамика</span>
+            <p>${house2_money_context}</p>
+          </div>
+
+          <div class="report-sub-block">
+            <span class="report-sub-head">4.2. 4-й и 5-й дома: Семья и радость созидания</span>
+            <p>${house5_context}</p>
+          </div>
+
+          <div class="report-sub-block">
+            <span class="report-sub-head">4.3. 7-й и 10-й дома: Партнерство и общественный статус</span>
+            <p>7-й дом благоприятствует равноправному союзу, где поддерживаются личные устремления каждого. 10-й дом укрепляет профессиональный авторитет при последовательном развитии своего стиля.</p>
+          </div>
+
+          <div style="padding: 10px 14px; background: rgba(80,227,194,0.1); border-radius: 10px; font-size: 12px; color: #50E3C2; cursor: pointer; margin-top: 10px;" onclick="closeModal(); showProductModal('💎 Финансовый & Карьерный код', '690 ₽', 'Глубокий разбор денежного потока');">
+            👉 Углубиться в финансовые сценарии? Открыть «Финансовый код» (690 ₽) →
+          </div>
+        </div>
+
+        <!-- ГЛАВА 5 -->
+        <div class="report-chapter" style="border-left: 4px solid #93C5FD;">
+          <div class="report-chapter-title">🎯 ГЛАВА 5. КАРМИЧЕСКАЯ ОСЬ СУДЬБЫ (Раху / Кету)</div>
+          
+          <div class="report-sub-block">
+            <span class="report-sub-head">5.1. Баланс внутренней опоры и социального проявления</span>
+            <p>${nodal_context}</p>
+            <p>Опыт заботы и домашнего уюта служит надежным фундаментом, опираясь на который вы можете уверенно проявлять свои таланты в более широком социальном кругу.</p>
+          </div>
+
+          <div style="padding: 10px 14px; background: rgba(147,197,253,0.1); border-radius: 10px; font-size: 12px; color: #93C5FD; cursor: pointer; margin-top: 10px;" onclick="closeModal(); showProductModal('🎯 Предназначение и реализация', '690 ₽', 'Кармический разбор миссии');">
+            👉 Узнать персональные профессиональные роли? Открыть «Предназначение» (690 ₽) →
+          </div>
+        </div>
+
+        <!-- ГЛАВА 6 -->
+        <div class="report-chapter" style="border-left: 4px solid #E879F9;">
+          <div class="report-chapter-title">🌑 ГЛАВА 6. ТОЧКИ РОСТА И ВНУТРЕННИЕ РЕСУРСЫ</div>
+          
+          <div class="report-sub-block">
+            <span class="report-sub-head">6.1. Ресурсная сторона и возможные сложности</span>
+            <p>• <b>Высокая ответственность:</b> помогает качественно организовывать процессы, но требует внимания к отдыху, чтобы избежать переутомления.<br>
+            • <b>Стремление к безупречности:</b> может иногда откладывать запуск идей; полезно практиковать постепенные шаги без избыточного давления.<br>
+            • <b>Чуткость к окружению:</b> ценный дар эмпатии, который важно оберегать с помощью ясных личных границ.</p>
+          </div>
+        </div>
+
+        <!-- ГЛАВА 7: ФИНАЛЬНЫЙ СИНТЕЗ -->
+        <div style="background: linear-gradient(135deg, rgba(229,195,120,0.25) 0%, rgba(138,79,158,0.25) 100%); padding: 20px; border-radius: 20px; border: 1px solid rgba(229,195,120,0.5); margin-top: 20px; margin-bottom: 16px;">
+          <div class="report-chapter-title" style="color: var(--gold); margin-bottom: 12px;">🌀 ГЛАВА 7. СИНТЕЗ КАРТЫ: 7 ПРАКТИЧЕСКИХ ОПОР</div>
+          
+          <p style="color: #FFF; line-height: 1.8; font-size: 13px; margin-bottom: 14px;">
+            Интеграция ваших натальных показателей и текущего жизненного контекста складывается в 7 полезных жизненных ориентиров:
+          </p>
+
+          <div style="color: #FFE8A3; line-height: 1.8; font-size: 12.5px;">
+            1. <b>Опора на интуицию:</b> первое внутреннее ощущение часто служит самым надежным компасом.<br>
+            2. <b>Фокус на стратегических задачах:</b> постепенное делегирование рутины высвобождает силы для ключевых идей.<br>
+            3. <b>Осознанная ценность своего труда:</b> уважение к своему времени формирует гармоничные финансовые отношения.<br>
+            4. <b>Бережное отношение к дому:</b> спокойная домашняя атмосфера питает эмоциональные ресурсы.<br>
+            5. <b>Уверенное проявление талантов:</b> постепенный выход в публичность расширяет возможности.<br>
+            6. <b>Равноправный диалог в союзе:</b> открытое обсуждение потребностей сберегает тепло в отношениях.<br>
+            7. <b>Легкость и интерес:</b> отношение к делам через призму увлеченности помогает действовать без лишнего напряжения.
+          </div>
+        </div>
+
+      </div>
+    `;
+  }
+
+
   function renderPaidReportView() {
     const p = targetProduct || { title: '🪐 Натальная карта PRO', price: '1 490 ₽', key: 'natal' };
     const saved = JSON.parse(localStorage.getItem('luna_user_quiz_profile') || '{}');
     const content = document.getElementById('modalContent');
-    const reportData = fullReports[p.key] || fullReports['natal'];
-
-    // DYNAMIC CONTEXTUAL BLOCKS DEPENDING ON REAL USER QUIZ ANSWERS
-    let customContextSection = '';
-
-    const relStatus = saved.relationships || '';
-    const kidsStatus = saved.kids || '';
-    const moneyStatus = saved.money || '';
-    const focusStatus = saved.focus || '';
-
-    // 1. RELATIONSHIPS CUSTOMIZATION
-    let relCustomText = '';
-    if (relStatus.includes('браке') || relStatus.includes('крепких')) {
-      relCustomText = `
-        <div class="report-callout" style="background: rgba(244,114,182,0.12); border-left: 4px solid #F472B6; margin-bottom: 14px;">
-          <b>💍 Анализ в контексте длительного союза и брака:</b><br>
-          С учётом того, что вы находитесь в устоявшихся отношениях, показатели 7-го дома и Венеры в вашей карте работают не на этапе поиска, а в динамике распределения ролей и совместного быта. Для сохранения окситоциновой связи и страсти в вашей паре критически важно регулярно выходить из родительских/бытовых ролей в пространство «только вдвоем» и иметь раздельные сферы личного творчества.
-        </div>
-      `;
-    } else if (relStatus.includes('кризис') || relStatus.includes('сложност')) {
-      relCustomText = `
-        <div class="report-callout" style="background: rgba(244,114,182,0.12); border-left: 4px solid #F472B6; margin-bottom: 14px;">
-          <b>❤️ Разбор текущей зоны турбулентности в отношениях:</b><br>
-          Поскольку сейчас в паре ощущается напряжение, ваша Луна в Раке может бессознательно уходить в «панцирь» и молчаливые обиды. Астрологический ключ к выходу из этого кризиса — перевод скрытых претензий в прямые, спокойные диалоги о ваших истинных эмоциональных потребностях без взаимных обвинений.
-        </div>
-      `;
-    } else if (relStatus.includes('Свободна') || relStatus.includes('поиске')) {
-      relCustomText = `
-        <div class="report-callout" style="background: rgba(244,114,182,0.12); border-left: 4px solid #F472B6; margin-bottom: 14px;">
-          <b>✨ Стратегия притяжения своего человека:</b><br>
-          В вашем свободном статусе включение 7-го дома происходит через расширение социального круга (Асцендент в Близнецах). Ваш идеальный партнер притягивается не на сайтах знакомств из дефицита, а в моменты, когда вы увлеченно горите своими проектами, путешествуете или обучаетесь новому!
-        </div>
-      `;
+    
+    let htmlBody = '';
+    if (p.key === 'natal') {
+      htmlBody = generatePervasiveNatalReport(userNatalData, saved);
     } else {
-      relCustomText = `
-        <div class="report-callout" style="background: rgba(244,114,182,0.12); border-left: 4px solid #F472B6; margin-bottom: 14px;">
-          <b>🕊 Фокус на личной автономии и целостности:</b><br>
-          В данный период ваша карта максимально раскрывается через укрепление собственной независимости и самореализации. Это идеальное время для наработки личного ресурса и выстраивания несокрушимых личных границ.
+      const reportData = fullReports[p.key] || fullReports['natal'];
+      htmlBody = `
+        <div style="line-height: 1.85; font-size: 13px; color: var(--text-sub);">
+          <div style="background: linear-gradient(135deg, rgba(229,195,120,0.16) 0%, rgba(138,79,158,0.16) 100%); padding: 16px; border-radius: 16px; border: 1px solid rgba(229,195,120,0.35); margin-bottom: 16px; color: #FFE8A3;">
+            <div style="font-size: 15px; font-weight: 700; color: #FFF; margin-bottom: 4px;">${reportData.title}</div>
+            <div style="font-size: 12px; color: var(--gold); line-height: 1.5;">
+              Персональный тематический разбор с учетом натальной карты (${userNatalData.sun} / ${userNatalData.moon}) и вашего контекста.
+            </div>
+          </div>
+          ${reportData.body}
         </div>
       `;
     }
-
-    // 2. MONEY & CAREER CUSTOMIZATION
-    let moneyCustomText = '';
-    if (moneyStatus.includes('Свое дело') || moneyStatus.includes('блог') || moneyStatus.includes('фриланс')) {
-      moneyCustomText = `
-        <div class="report-callout" style="background: rgba(80,227,194,0.12); border-left: 4px solid #50E3C2; margin-bottom: 14px;">
-          <b>🚀 Стратегия масштабирования своего бизнеса/блога:</b><br>
-          Поскольку вы развиваете собственное дело, ваша натальная матрица прямо указывает: потолок в доходах пробивается не через увеличение количества рабочих часов, а через повышение среднего чека и делегирование технической рутины. Ваша прямая монетизация лежит в авторском визионерстве и упаковке смыслов.
-        </div>
-      `;
-    } else if (moneyStatus.includes('найме')) {
-      moneyCustomText = `
-        <div class="report-callout" style="background: rgba(80,227,194,0.12); border-left: 4px solid #50E3C2; margin-bottom: 14px;">
-          <b>🏢 Переход от найма к автономности и росту дохода:</b><br>
-          В вашей карте заложено Солнце в 10-м доме — положение создателя собственных систем. В рамках найма вам тесно: карта рекомендует постепенно формировать авторские проекты или переходить на формат партнерского процента, где ваш доход напрямую зависит от масштаба созданной вами ценности.
-        </div>
-      `;
-    } else {
-      moneyCustomText = `
-        <div class="report-callout" style="background: rgba(80,227,194,0.12); border-left: 4px solid #50E3C2; margin-bottom: 14px;">
-          <b>🧭 Распаковка истинного призвания:</b><br>
-          Точка сборки вашего предназначения находится на стыке эстетики, психологии и наставничества. Перестаньте искать идеальную профессию из ума — протестируйте гипотезу создания собственного визуального или обучающего продукта.
-        </div>
-      `;
-    }
-
-    // 3. KIDS & FAMILY CUSTOMIZATION
-    let kidsCustomText = '';
-    if (kidsStatus.includes('один') || kidsStatus.includes('двое') || kidsStatus.includes('больше')) {
-      kidsCustomText = `
-        <div class="report-callout" style="background: rgba(196,181,253,0.12); border-left: 4px solid #C4B5FD; margin-bottom: 14px;">
-          <b>👶 Баланс материнства и личной реализации:</b><br>
-          С учетом наличия детей в вашей жизни, ключевой вызов вашей карты — не раствориться целиком в детских задачах (ловушка Кету в 4-м доме), а продолжать ярко светить в социуме (Раху в 10-м доме). Счастливая, реализованная и сияющая мама — лучший подарок для развития ваших детей!
-        </div>
-      `;
-    }
-
-    // 4. FOCUS CUSTOMIZATION
-    let focusCustomText = '';
-    if (focusStatus.includes('Масштаб') || focusStatus.includes('деньги')) {
-      focusCustomText = `
-        <div class="report-callout" style="background: rgba(255,232,163,0.15); border: 1px solid var(--gold); margin-bottom: 16px;">
-          <b>🎯 Ключевой акцент отчета под ваш главный запрос (Масштаб & Финансы):</b><br>
-          В этом разборе особое внимание уделено механизмам снятия финансовых блоков и точкам x3 роста через 2-й, 8-й и 10-й дома гороскопа.
-        </div>
-      `;
-    } else if (focusStatus.includes('гармония') || focusStatus.includes('семье')) {
-      focusCustomText = `
-        <div class="report-callout" style="background: rgba(255,232,163,0.15); border: 1px solid var(--gold); margin-bottom: 16px;">
-          <b>🎯 Ключевой акцент отчета под ваш главный запрос (Гармония & Отношения):</b><br>
-          В этом разборе ключевой фокус сделан на синастрической разрядке конфликтов, понимании языка любви партнера и сохранении глубокой близости.
-        </div>
-      `;
-    } else if (focusStatus.includes('тревоги') || focusStatus.includes('ресурс')) {
-      focusCustomText = `
-        <div class="report-callout" style="background: rgba(255,232,163,0.15); border: 1px solid var(--gold); margin-bottom: 16px;">
-          <b>🎯 Ключевой акцент отчета под ваш главный запрос (Ресурс & Снятие выгорания):</b><br>
-          В этом разборе детально раскрыты психосоматические законы вашей натальной Луны, способы быстрой перезагрузки и устранение гиперконтроля.
-        </div>
-      `;
-    }
-
-    customContextSection = focusCustomText + relCustomText + moneyCustomText + kidsCustomText;
 
     content.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div class="sheet-title" style="margin: 0; font-size: 18px;">` + reportData.title + `</div>
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">` + p.title + `</div>
         <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
       </div>
 
-      <div style="background: linear-gradient(135deg, rgba(229,195,120,0.14) 0%, rgba(138,79,158,0.14) 100%); padding: 12px 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.35); font-size: 11.5px; line-height: 1.6; color: #FFE8A3;">
-        🎯 <b>Персональная калибровка отчёта:</b><br>
-        • Натал: <b>` + userNatalData.name + `</b> (` + userNatalData.birthDate + `, ` + userNatalData.birthPlace + `)<br>
-        • Планетарное ядро: <b>` + userNatalData.sun + ` / ` + userNatalData.moon + ` / ` + userNatalData.asc + `</b><br>
-        • Контекст жизни: <i>` + (saved.relationships || 'Учтено') + ` • ` + (saved.money || 'Учтено') + `</i>
+      <div style="background: rgba(229,195,120,0.12); padding: 10px 12px; border-radius: 12px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.3); font-size: 11.5px; line-height: 1.5; color: #FFE8A3;">
+        🎯 <b>Индивидуальный контекст учтен:</b><br>
+        • Пользователь: <b>` + userNatalData.name + `</b> (` + userNatalData.birthDate + `, ` + userNatalData.birthPlace + `)<br>
+        • Натальное ядро: <b>` + userNatalData.sun + ` / ` + userNatalData.moon + ` / ` + userNatalData.asc + `</b><br>
+        • Ситуация: <i>` + (saved.relationships || 'Учтено') + ` • ` + (saved.money || 'Учтено') + `</i>
       </div>
 
-      ` + customContextSection + `
-
-      ` + reportData.body + `
+      ` + htmlBody + `
 
       <button class="sheet-btn" style="margin-top: 16px;" onclick="closeModal()">
         Закрыть разбор ✦
@@ -2250,7 +2421,7 @@
     `;
   }
 
-  // --- ASK LUNA / CHAT MODAL ---
+// --- ASK LUNA / CHAT MODAL ---
   function openAskModal(title) {
     haptic();
     const content = document.getElementById('modalContent');
