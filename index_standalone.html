@@ -47,19 +47,26 @@
       position: relative;
     }
 
-    /* MAGICAL CELESTIAL AMBIENCE */
-    body::before {
-      content: '✦   ⋆    ★     ⋆    ✦      ⋆   ★    ✦     ⋆';
+    /* MAGICAL CELESTIAL BACKGROUND PARTICLES */
+    .stars-bg {
       position: fixed;
-      top: 12px;
+      top: 0;
       left: 0;
-      right: 0;
-      font-size: 11px;
-      color: rgba(212, 175, 55, 0.28);
-      letter-spacing: 20px;
-      text-align: center;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 0;
+      background-image: 
+        radial-gradient(1px 1px at 20px 30px, #FFF, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 75px 120px, rgba(212,175,55,0.8), rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 160px 45px, #FFF, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 240px 190px, rgba(139,92,246,0.9), rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 320px 80px, #FFF, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 390px 240px, rgba(212,175,55,0.7), rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 110px 310px, #FFF, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 280px 370px, rgba(139,92,246,0.8), rgba(0,0,0,0));
+      background-size: 450px 450px;
+      opacity: 0.65;
     }
 
     .container {
@@ -673,6 +680,36 @@
       outline: none;
     }
 
+    /* CHILDREN CARDS */
+    .child-card {
+      background: rgba(16, 12, 28, 0.8);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .child-card-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .child-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
     .sparkle-div {
       text-align: center;
       color: rgba(212, 175, 55, 0.4);
@@ -684,6 +721,8 @@
 </head>
 <body>
 
+<div class="stars-bg"></div>
+
 <div class="container">
 
   <!-- ================= 1. TAB: TODAY (HOME) ================= -->
@@ -693,7 +732,7 @@
     <!-- TOP HEADER & AVATAR -->
     <div class="top-bar">
       <div class="brand-title">LUNA ✦</div>
-      <div class="brand-subtitle" id="homeHeaderSubtitle">Твой персональный AI-астролог</div>
+      <div class="brand-subtitle">Твой персональный AI-астролог</div>
     </div>
 
     <!-- AVATAR HERO -->
@@ -703,7 +742,7 @@
       </div>
       <div class="status-badge">
         <div class="status-dot"></div>
-        <span id="heroStatusText">LUNA в сети · Персональный анализ</span>
+        <span>LUNA в сети · Персональный анализ</span>
       </div>
     </div>
 
@@ -880,7 +919,7 @@
 
     <div id="catalogList">
 
-      <!-- 1. NATAL BOOK PRO -->
+      <!-- 1. NATAL BOOK PRO (UNTOUCHED GOLD STANDARD) -->
       <div class="catalog-card" data-category="me" onclick="showProductModal('natal')">
         <div>
           <span class="cat-badge">Фундаментальный разбор</span>
@@ -903,7 +942,7 @@
         <div>
           <span class="cat-badge">Сфера чувств</span>
           <div class="cat-title">❤️ Любовь & Отношения</div>
-          <div class="cat-desc">Как ты любишь, кого выбираешь и почему отношения могут развиваться по определенным сценариям.</div>
+          <div class="cat-desc">Полноценное персональное исследование: язык любви, психология привязанности, скрытые триггеры и ключи к безопасному доверию.</div>
           <div class="cat-points">
             <div class="cat-point">💗 Твой стиль проявления чувств и привязанности</div>
             <div class="cat-point">🧲 Что тебя по-настоящему привлекает в партнере</div>
@@ -921,7 +960,7 @@
         <div>
           <span class="cat-badge">Материальный поток</span>
           <div class="cat-title">💎 Финансовый код & Деньги</div>
-          <div class="cat-desc">Как ты зарабатываешь, что помогает тебе расти и какие финансовые сценарии заложены в твоем личном гороскопе.</div>
+          <div class="cat-desc">Глубокий анализ финансовых сценариев: природные каналы заработка, психология трат, снятие блоков и стратегия устойчивого роста без выгорания.</div>
           <div class="cat-points">
             <div class="cat-point">💰 Твои природные источники дохода и ресурсы</div>
             <div class="cat-point">⚖️ Отношение к деньгам, накоплениям и тратам</div>
@@ -939,10 +978,10 @@
         <div>
           <span class="cat-badge">Призвание</span>
           <div class="cat-title">🎯 Реализация & Предназначение</div>
-          <div class="cat-desc">Твои профессиональные сильные стороны, подходящий формат работы и возможные точки роста.</div>
+          <div class="cat-desc">Твои профессиональные сильные стороны, естественный стиль лидерства, выбор формата (найм/фриланс/бизнес) и преодоление плато.</div>
           <div class="cat-points">
             <div class="cat-point">🌟 Твой уникальные таланты и ценность для мира</div>
-            <div class="cat-point">🏢 Найм, фриланс или собственное дело: твой формат</div>
+            <div class="cat-point">🏢 Найм, фриланс или собственный проект: твой формат</div>
             <div class="cat-point">🧭 Направление для масштабного профессионального раскрытия</div>
           </div>
         </div>
@@ -957,7 +996,7 @@
         <div>
           <span class="cat-badge">Окружение</span>
           <div class="cat-title">👭 Друзья & Социум</div>
-          <div class="cat-desc">Кто помогает тебе расти, как экологично выстраивать границы и формировать вдохновляющий круг общения.</div>
+          <div class="cat-desc">Как ты формируешь близкий круг, твоя социальная роль, экологичные границы без чувства вины и ресурсное общение.</div>
           <div class="cat-points">
             <div class="cat-point">🤝 Твой стиль дружбы и социальные роли</div>
             <div class="cat-point">🛡️ Личные границы в общении без чувства вины</div>
@@ -970,12 +1009,12 @@
         </div>
       </div>
 
-      <!-- 6. KIDS -->
-      <div class="catalog-card" data-category="family" onclick="showProductModal('kids')">
+      <!-- 6. KIDS (ZERO DEFAULT CHILD) -->
+      <div class="catalog-card" data-category="family" onclick="handleKidsCardClick()">
         <div>
           <span class="cat-badge">Детский гороскоп</span>
           <div class="cat-title">👶 Детская карта PRO</div>
-          <div class="cat-desc">Психологический портрет ребенка: особенности мышления, таланты, эмоциональные потребности и ключи для бережного воспитания.</div>
+          <div class="cat-desc">Глубокий психологический портрет ребенка: особенности мышления, таланты, эмоциональные потребности и ключи для бережного воспитания.</div>
           <div class="cat-points">
             <div class="cat-point">🧠 Как ребенок воспринимает мир и усваивает новое</div>
             <div class="cat-point">🎨 Врожденные способности и потенциал для развития</div>
@@ -1044,7 +1083,7 @@
         👤 Твой натальный профиль
       </div>
       <div style="font-size: 12px; color: var(--text-muted);">
-        Данные карты и настройки персонализации
+        Данные карты, профили детей и настройки персонализации
       </div>
     </div>
 
@@ -1059,6 +1098,20 @@
       </div>
       <button class="btn-outline" style="margin-top: 14px;" onclick="openEditNatalModal()">
         Изменить данные рождения ✎
+      </button>
+    </div>
+
+    <!-- CHILDREN ENTITY CARD -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <div class="card-title" style="margin-bottom: 0;">👧 Мои дети</div>
+        <button style="background: none; border: none; color: var(--gold); font-size: 12px; font-weight: 600; cursor: pointer;" onclick="openAddChildModal()">+ Добавить</button>
+      </div>
+      <div id="childrenListContainer" style="margin-bottom: 10px;">
+        <p style="font-size: 12px; color: var(--text-muted); font-style: italic;">Дети пока не добавлены</p>
+      </div>
+      <button class="btn-outline" onclick="openAddChildModal()">
+        + Добавить ребёнка
       </button>
     </div>
 
@@ -1134,8 +1187,10 @@
   const CURRENT_USER_ID = getEffectiveUserId();
   const STORAGE_KEY_NATAL = 'luna_user_profile_' + CURRENT_USER_ID;
   const STORAGE_KEY_QUIZ = 'luna_user_quiz_' + CURRENT_USER_ID;
+  const STORAGE_KEY_CHILDREN = 'luna_user_children_' + CURRENT_USER_ID;
 
   let userNatalData = null;
+  let userChildrenList = [];
 
   const dailyAdvices = [
     "«Сегодня тебе может быть особенно полезно прислушаться к собственному ощущению правильного направления — особенно там, где чужие ожидания начинают перебивать твой внутренний голос.»",
@@ -1147,7 +1202,6 @@
     "«День благоприятен для спокойного подведения итогов и планирования следующих шагов без спешки и суеты.»"
   ];
 
-  // Dynamic Magic Symbols Pool based on user natal hash
   const syncNumbersPool = [
     { val: "21 · Мир", icon: "🪐", desc: "Символ целостности, интеграции опыта и выхода на новый уровень внутренней зрелости." },
     { val: "7 · Колесница", icon: "⚡", desc: "Символ уверенного движения вперед, фокуса на выбранном векторе и преодоления сомнений." },
@@ -1174,6 +1228,18 @@
     { val: "Жемчужина", icon: "🦪", desc: "Символ драгоценного опыта, накопленного через преодоление сложных жизненных уроков." },
     { val: "Феникс", icon: "🔥", desc: "Символ возрождения сил, обновления вдохновения и преодоления творческих плато." }
   ];
+
+  function calculateAge(birthDateStr) {
+    if (!birthDateStr) return '';
+    const dob = new Date(birthDateStr);
+    const diff_ms = Date.now() - dob.getTime();
+    const age_dt = new Date(diff_ms);
+    const years = Math.abs(age_dt.getUTCFullYear() - 1970);
+    
+    if (years % 10 === 1 && years % 100 !== 11) return years + ' год';
+    if ([2,3,4].includes(years % 10) && ![12,13,14].includes(years % 100)) return years + ' года';
+    return years + ' лет';
+  }
 
   function getZodiacSign(day, month) {
     if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "Водолей";
@@ -1313,6 +1379,239 @@
     });
   }
 
+  function renderChildrenList() {
+    const cont = document.getElementById('childrenListContainer');
+    if (!cont) return;
+
+    if (!userChildrenList || userChildrenList.length === 0) {
+      cont.innerHTML = '<p style="font-size: 12px; color: var(--text-muted); font-style: italic;">Дети пока не добавлены</p>';
+      return;
+    }
+
+    let html = '';
+    userChildrenList.forEach((c, idx) => {
+      const ageStr = calculateAge(c.birthDate);
+      html += `
+        <div class="child-card">
+          <div class="child-card-left">
+            <div class="child-avatar">👶</div>
+            <div>
+              <div style="font-size: 13.5px; font-weight: 600; color: #FFF;">${c.name}</div>
+              <div style="font-size: 11px; color: var(--text-muted);">${c.birthDate} · ${ageStr} · ${c.sunSign}</div>
+            </div>
+          </div>
+          <button style="background: none; border: none; color: #EF4444; font-size: 14px; cursor: pointer; padding: 4px;" onclick="deleteChild(${idx})">✕</button>
+        </div>
+      `;
+    });
+    cont.innerHTML = html;
+  }
+
+  function openAddChildModal() {
+    const html = `
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 12px;">
+        👶 Добавить ребёнка
+      </div>
+      <div class="form-group">
+        <label class="form-label">✨ Имя ребёнка</label>
+        <input type="text" id="ncName" class="form-input" placeholder="Как зовут ребёнка?">
+      </div>
+      <div class="form-row-2">
+        <div class="form-group">
+          <label class="form-label">📅 Дата рождения</label>
+          <input type="date" id="ncDate" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">🕐 Время (если знаешь)</label>
+          <input type="time" id="ncTime" class="form-input" value="12:00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">📍 Город рождения</label>
+        <input type="text" id="ncCity" class="form-input" placeholder="Например: Екатеринбург">
+      </div>
+      <button class="btn-gold" style="margin-top: 14px;" onclick="saveNewChild()">
+        ✨ Сохранить ребёнка в профиль
+      </button>
+    `;
+    openModal(html);
+  }
+
+  function saveNewChild() {
+    const name = (document.getElementById('ncName').value || '').trim();
+    const date = document.getElementById('ncDate').value;
+    const time = document.getElementById('ncTime').value || '12:00';
+    const city = (document.getElementById('ncCity').value || '').trim();
+
+    if (!name || !date) {
+      alert('Пожалуйста, укажи имя и дату рождения ребёнка');
+      return;
+    }
+
+    const natal = getCalculatedNatal(date, time);
+    const newChild = {
+      id: 'c_' + Date.now(),
+      name: name,
+      birthDate: date,
+      birthTime: time,
+      birthCity: city || 'Не указан',
+      sunSign: natal.sun,
+      moonSign: natal.moon,
+      ascSign: natal.asc
+    };
+
+    userChildrenList.push(newChild);
+    localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(userChildrenList));
+    renderChildrenList();
+    closeModal();
+  }
+
+  function deleteChild(idx) {
+    if (confirm('Удалить профиль ребёнка?')) {
+      userChildrenList.splice(idx, 1);
+      localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(userChildrenList));
+      renderChildrenList();
+    }
+  }
+
+  function handleKidsCardClick() {
+    if (!userChildrenList || userChildrenList.length === 0) {
+      const html = `
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px;">
+          👶 Детская карта PRO
+        </div>
+        <div style="font-size: 13px; color: #D1CCDE; margin-bottom: 16px; line-height: 1.5;">
+          <b>Сначала добавьте ребёнка</b><br>
+          Чтобы создать персональный психологический разбор без шаблонных догадок, укажите данные ребёнка:
+        </div>
+        <button class="btn-gold" onclick="openAddChildModal()">
+          + Добавить ребёнка
+        </button>
+      `;
+      openModal(html);
+      return;
+    }
+
+    if (userChildrenList.length === 1) {
+      openKidsQuestionnaire(userChildrenList[0]);
+      return;
+    }
+
+    // Multiple children picker
+    let buttonsHtml = userChildrenList.map((c, i) => `
+      <button class="btn-outline" style="margin-bottom: 8px; justify-content: space-between;" onclick="openKidsQuestionnaire(userChildrenList[${i}])">
+        <span>👧 ${c.name} (${calculateAge(c.birthDate)})</span>
+        <span>→</span>
+      </button>
+    `).join('');
+
+    const html = `
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px;">
+        👶 Для кого создаём разбор?
+      </div>
+      <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 14px;">
+        Выбери ребёнка из списка или добавь нового:
+      </p>
+      ${buttonsHtml}
+      <button class="btn-gold" style="margin-top: 8px;" onclick="openAddChildModal()">
+        + Добавить ещё ребёнка
+      </button>
+    `;
+    openModal(html);
+  }
+
+  function openKidsQuestionnaire(child) {
+    const html = `
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+        ✨ Детская карта PRO: ${child.name}
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
+        Возраст: ${calculateAge(child.birthDate)} · Знак: ${child.sunSign} (${child.birthCity})
+      </p>
+      <div class="form-group">
+        <label class="form-label">1. Кружки, секции и текущие интересы</label>
+        <input type="text" id="kq_hobbies" class="form-input" placeholder="Например: рисование, танцы, шахматы...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">2. Главный вопрос или сложность в воспитании</label>
+        <textarea id="kq_query" class="form-input" style="height: 60px; padding: 10px;" placeholder="Например: как бережно раскрыть потенциал, помочь с фокусом?"></textarea>
+      </div>
+      <div style="display: flex; gap: 8px; margin-top: 14px;">
+        <button class="btn-outline" style="flex: 1;" onclick="handleKidsCardClick()">← Назад</button>
+        <button class="btn-gold" style="flex: 2;" onclick="generateKidsReport('${child.id}')">✨ Сформировать разбор</button>
+      </div>
+    `;
+    openModal(html);
+  }
+
+  function generateKidsReport(childId) {
+    const child = userChildrenList.find(c => c.id === childId);
+    if (!child) return;
+
+    const hobbiesEl = document.getElementById('kq_hobbies');
+    const hobbiesVal = hobbiesEl ? hobbiesEl.value : 'Творчество и развитие';
+    const queryEl = document.getElementById('kq_query');
+    const queryVal = queryEl ? queryEl.value : 'Бережное раскрытие талантов';
+
+    openModal(`
+      <div style="text-align: center; padding: 40px 10px;">
+        <div style="font-size: 32px; margin-bottom: 12px;">✨</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px;">
+          LUNA рассчитывает карту ребёнка: ${child.name}...
+        </div>
+        <div style="font-size: 12.5px; color: var(--text-muted);">
+          Синтезируем особенности мышления, эмоциональный мир и таланты
+        </div>
+      </div>
+    `);
+
+    setTimeout(() => {
+      const ageStr = calculateAge(child.birthDate);
+      const reportHtml = `
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
+          👶 Детская натальная карта: ${child.name}
+        </div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+          ${child.birthDate} (${ageStr}) · ${child.sunSign} / Луна в ${child.moonSign} · ${child.birthCity}
+        </div>
+
+        <div class="report-content">
+          <div class="report-chapter">
+            <h3>🌟 1. Психологический портрет и темперамент</h3>
+            <p>У ${child.name} ведущий солнечный знак — <b>${child.sunSign}</b>, что формирует яркую потребность в искреннем внимании и признании его индивидуальности. Луна в знаке <b>${child.moonSign}</b> показывает глубокую чувствительность к микроклимату в доме: ребенок буквально считывает душевное состояние мамы.</p>
+          </div>
+
+          <div class="report-chapter">
+            <h3>🧠 2. Особенности мышления и восприятия нового</h3>
+            <p>Усвоение информации происходит наилучшим образом через живые примеры, образность и игровые ассоциации. Строгие нотации и сухой менторский тон вызывают у знака ${child.sunSign} защитное сопротивление.</p>
+          </div>
+
+          <div class="report-chapter">
+            <h3>🎨 3. Таланты и сфера увлечений: ${hobbiesVal}</h3>
+            <p>Занятия по направлению «${hobbiesVal}» превосходно гармонизируют натальный Марс и Меркурий ребенка, развивая пространственное воображение и уверенность в собственных силах. Важно хвалить не только за победу, но и за сам процесс любознательности.</p>
+          </div>
+
+          <div class="report-chapter">
+            <h3>🗝️ 4. Разбор вопроса родителей: ${queryVal}</h3>
+            <p>С учетом положения Луны в знаке ${child.moonSign}, ключевой инструмент в сложные моменты — оставаться спокойным контейнером для детских эмоций. Спокойный тон и тактильный контакт возвращают ребенку ощущение абсолютной безопасности.</p>
+          </div>
+
+          <div class="report-chapter">
+            <h3>🌱 5. Пять бережных опор для воспитания</h3>
+            <p>1. <b>Право на ошибку:</b> поддержка без осуждения формирует здоровую самооценку.<br>2. <b>Личное пространство:</b> у ребенка должен быть свой уютный уголок.<br>3. <b>Эмоциональный контакт:</b> 15 минут качественного внимания перед сном творят чудеса.<br>4. <b>Поддержка инициатив:</b> давать свободу выбора в маленьких решениях.<br>5. <b>Личный пример:</b> дети копируют не слова, а состояние родителей.</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 18px; text-align: center;">
+          <button class="btn-gold" onclick="closeModal()">
+            ✨ Сохранить карту ребёнка
+          </button>
+        </div>
+      `;
+      openModal(reportHtml);
+    }, 1200);
+  }
+
   function updateNatalUI() {
     const onb = document.getElementById('onboardingScreen');
     const dash = document.getElementById('activeDashboard');
@@ -1332,6 +1631,7 @@
       if (pTime) pTime.textContent = '—';
       if (pCity) pCity.textContent = '—';
       if (pUid) pUid.textContent = CURRENT_USER_ID;
+      renderChildrenList();
       return;
     }
 
@@ -1394,6 +1694,8 @@
     if (advText) {
       advText.textContent = dailyAdvices[dayOfWeek % dailyAdvices.length];
     }
+
+    renderChildrenList();
   }
 
   function submitOnboardingProfile() {
@@ -1420,9 +1722,8 @@
       updated_at: new Date().toISOString()
     };
 
-    // Save to persistent user-scoped storage
     localStorage.setItem(STORAGE_KEY_NATAL, JSON.stringify(userNatalData));
-    localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData)); // legacy compatibility
+    localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData));
     updateNatalUI();
   }
 
@@ -1615,7 +1916,7 @@
       desc: "Твои профессиональные сильные стороны, подходящий формат работы и возможные точки роста.",
       points: [
         "Врожденные таланты и в чем твоя уникальная ценность",
-        "Найм, фриланс или собственное дело: твой формат",
+        "Найм, фриланс или собственный проект: твой формат",
         "Профессиональные сферы для наибольшего признания",
         "Пошаговые ориентиры для перехода на новый уровень"
       ]
@@ -1629,17 +1930,6 @@
         "Как сохранять свои границы без чувства вины",
         "Люди, которые дают тебе ресурс и поддержку",
         "Экологичное разрешение споров и недопонимания"
-      ]
-    },
-    kids: {
-      title: "👶 Детская карта PRO",
-      price: "1 490 ₽",
-      desc: "Глубокий психологический портрет ребенка: особенности мышления, таланты, эмоциональные потребности и ключи для бережного воспитания.",
-      points: [
-        "Как ребенок мыслит, чувствует и познает окружающий мир",
-        "Врожденные способности и потенциал для развития",
-        "Эмоциональные потребности и как давать ребенку поддержку",
-        "Практические рекомендации родителям для теплого контакта"
       ]
     },
     solar: {
@@ -1707,12 +1997,12 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">2. Есть ли дети?</label>
-          <input type="text" id="pq_kids" class="form-input" placeholder="Например: двое детей или нет">
+          <label class="form-label">2. Какой тип близости и поддержки для тебя важнее всего?</label>
+          <input type="text" id="pq_focus" class="form-input" placeholder="Например: эмоциональное тепло, уважение границ, забота">
         </div>
         <div class="form-group">
-          <label class="form-label">3. Что больше всего волнует в сфере чувств сейчас?</label>
-          <input type="text" id="pq_focus" class="form-input" placeholder="Например: вернуть тепло, преодолеть быт, найти своего человека">
+          <label class="form-label">3. Что создаёт напряжение или повторяется в отношениях?</label>
+          <input type="text" id="pq_barrier" class="form-input" placeholder="Например: бытовое выгорание, замалчивание обид, контроль">
         </div>
         <div class="form-group">
           <label class="form-label">4. Конкретный вопрос или ситуация для разбора</label>
@@ -1777,41 +2067,12 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">2. Что для тебя сейчас важнее?</label>
-          <input type="text" id="pq_need" class="form-input" placeholder="Например: личные границы, глубокие разговоры, вдохновение">
+          <label class="form-label">2. Что для тебя сейчас важнее всего в дружбе?</label>
+          <input type="text" id="pq_need" class="form-input" placeholder="Например: личные границы, глубокие разговоры, взаимность">
         </div>
         <div class="form-group">
           <label class="form-label">3. Ситуация в общении, требующая ясности</label>
           <textarea id="pq_situation" class="form-input" style="height: 60px; padding: 10px;" placeholder="Опиши человека или вопрос границ..."></textarea>
-        </div>
-      `;
-    } else if (prodKey === 'kids') {
-      formFields = `
-        <div class="form-group">
-          <label class="form-label">1. Имя ребенка</label>
-          <input type="text" id="pq_cname" class="form-input" placeholder="Как зовут ребенка?">
-        </div>
-        <div class="form-row-2">
-          <div class="form-group">
-            <label class="form-label">2. Дата рождения ребенка</label>
-            <input type="date" id="pq_cdate" class="form-input">
-          </div>
-          <div class="form-group">
-            <label class="form-label">3. Время (если знаешь)</label>
-            <input type="time" id="pq_ctime" class="form-input">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">4. Город рождения ребенка</label>
-          <input type="text" id="pq_ccity" class="form-input" placeholder="Например: Екатеринбург">
-        </div>
-        <div class="form-group">
-          <label class="form-label">5. Что ребенок уже посещает (кружки, секции, интересы)</label>
-          <input type="text" id="pq_chobbies" class="form-input" placeholder="Например: цирковая студия, рисование, танцы...">
-        </div>
-        <div class="form-group">
-          <label class="form-label">6. Главный вопрос родителей для разбора</label>
-          <textarea id="pq_cquestion" class="form-input" style="height: 60px; padding: 10px;" placeholder="Например: как бережно раскрыть таланты и поддержать уверенность?"></textarea>
         </div>
       `;
     } else if (prodKey === 'solar') {
@@ -1834,7 +2095,7 @@
         </div>
       `;
     } else {
-      // Natal PRO
+      // Natal PRO (Untouched, pristine)
       formFields = `
         <div class="form-group">
           <label class="form-label">1. Твоя текущая профессия и занятость</label>
@@ -1997,60 +2258,62 @@
         `;
       } else if (prodKey === 'synastry') {
         const focusEl = document.getElementById('pq_focus');
-        const focusVal = focusEl ? focusEl.value : 'гармония и глубина';
+        const focusVal = focusEl ? focusEl.value : 'эмоциональное тепло и доверие';
+        const barrierEl = document.getElementById('pq_barrier');
+        const barrierVal = barrierEl ? barrierEl.value : 'бытовое напряжение';
         const queryEl = document.getElementById('pq_query');
-        const queryVal = queryEl ? queryEl.value : '';
+        const queryVal = queryEl ? queryEl.value : 'укрепление союза';
 
         chaptersHtml = `
           <div class="report-chapter">
-            <h3>💗 1. Твой стиль чувств и язык привязанности</h3>
-            <p>При положении Солнца в знаке ${userNatalData.sun} и Луны в знаке ${userNatalData.moon}, в отношениях для тебя критически важны эмоциональная безопасность, глубинное уважение и отсутствие обесценивания. Ты проявляешь заботу через внимание к деталям и создание уютного пространства.</p>
+            <h3>💗 1. Как ты проявляешь любовь & Язык чувств</h3>
+            <p>При положении Солнца в знаке ${userNatalData.sun} и Луны в знаке ${userNatalData.moon}, твой язык любви — это не громкие слова, а создание безопасного пространства, чуткая забота и искреннее сопереживание. Ты вкладываешь душу в отношения и ценишь взаимную тактичность.</p>
           </div>
           <div class="report-chapter">
-            <h3>🧲 2. Кого ты бессознательно выбираешь</h3>
-            <p>Тебя привлекают надежные, внутренне зрелые партнеры с твердым стержнем, рядом с которыми можно выдохнуть, снять броню контроля и почувствовать себя защищенной.</p>
+            <h3>🧲 2. Что тебе важно получать от партнёра & Тип близости</h3>
+            <p>Для тебя критически важно ощущение надежного тыла и уважение к твоему личному творческому пространству. Фокус на «${focusVal}»: тебе необходим зрелый партнер, с которым можно разделить глубинные переживания без страха быть осужденной или обесцененной.</p>
           </div>
           <div class="report-chapter">
-            <h3>💥 3. Точки напряжения и сценарии конфликтов</h3>
-            <p>Основное напряжение возникает в моменты, когда накапливается усталость от контроля или возникает ощущение, что твой вклад воспринимается как должное. Важно говорить о своих потребностях до того, как наступит эмоциональное истощение.</p>
+            <h3>💥 3. Что создаёт напряжение: Разбор фактора «${barrierVal}»</h3>
+            <p>Основное напряжение возникает, когда накапливается бытовой контроль или ощущение, что эмоциональный вклад неравномерен. Поведение в конфликтах: ты склонна замыкаться и копить переживания внутри, пока чаша терпения не переполнится. Лекарство — проговаривать потребности сразу в мягкой форме.</p>
           </div>
           <div class="report-chapter">
-            <h3>🔍 4. Разбор твоего запроса: ${focusVal || 'Личный фокус'}</h3>
-            <p>С учетом твоего текущего статуса и вопроса (${queryVal || 'укрепление союза'}), звезды рекомендуют выделять регулярное время только для вас двоих, без бытовых задач и телефонов. Это моментально перезагружает эмоциональный контакт.</p>
+            <h3>🔍 4. Разбор личной ситуации: ${queryVal}</h3>
+            <p>Чтобы сценарий «${queryVal}» развивался гармонично, астрологическая карта рекомендует ввести регулярное совместное время вне домашних забот — короткие свидания, поездки и диалоги по душам.</p>
           </div>
           <div class="report-chapter">
-            <h3>🗝️ 5. Семь персональных опор в отношениях</h3>
-            <p>1. Открытый диалог без накопления обид.<br>2. Сохранение личного пространства и своего творчества.<br>3. Совместные ритуалы и маленькие традиции.<br>4. Умение просить о помощи без чувства вины.<br>5. Доверие партнеру в бытовых решениях.<br>6. Эмоциональная перезагрузка вне дома.<br>7. Бережное признание ценности друг друга.</p>
+            <h3>🗝️ 5. Семь ключей к долгосрочному доверию</h3>
+            <p>1. <b>Честный диалог:</b> говорить о чувствах до момента выгорания.<br>2. <b>Свое пространство:</b> сохранять личные увлечения и паузы тишины.<br>3. <b>Снятие гиперконтроля:</b> позволять партнеру проявлять заботу по-своему.<br>4. <b>Благодарность:</b> отмечать даже маленькие поступки заботы.<br>5. <b>Эмоциональный контакт:</b> теплые объятия без повода.<br>6. <b>Уважение границ:</b> не терпеть обесценивание.<br>7. <b>Общий вектор:</b> совпадение долгосрочных ценностей.</p>
           </div>
         `;
       } else if (prodKey === 'finance') {
         const jobEl = document.getElementById('pq_job');
         const jobVal = jobEl ? jobEl.value : 'Творческая деятельность / Фотография';
         const goalEl = document.getElementById('pq_goal');
-        const goalVal = goalEl ? goalEl.value : 'Рост дохода и масштабирование';
+        const goalVal = goalEl ? goalEl.value : 'Рост дохода и высокий чек';
         const barrierEl = document.getElementById('pq_barrier');
-        const barrierVal = barrierEl ? barrierEl.value : 'Сомнения в цене';
+        const barrierVal = barrierEl ? barrierEl.value : 'Сомнения в стоимости услуг';
 
         chaptersHtml = `
           <div class="report-chapter">
-            <h3>💰 1. Твои природные денежные каналы</h3>
-            <p>В твоей карте богатство связано с авторским стилем, визуальной эстетикой и созданием уникального продукта. Для знака ${userNatalData.sun} деньги приходят через признание твоего мастерства, а не через механическую рутину.</p>
+            <h3>💰 1. Твое отношение к деньгам & Финансовые сценарии</h3>
+            <p>В твоей карте богатство связано с эстетикой, авторским взглядом и высокой планкой качества. Для знака ${userNatalData.sun} губительна работа в режиме дешевого потока: деньги приходят к тебе на состояние вдохновения, достоинства и уважения к своему мастерству.</p>
           </div>
           <div class="report-chapter">
-            <h3>📈 2. Анализ твоей сферы деятельности: ${jobVal}</h3>
-            <p>В направлении «${jobVal}» твоя сила заключается в способности видеть красоту там, где другие проходят мимо. Твоя аудитория готова платить именно за твой уникальный авторский почерк и состояние легкости.</p>
+            <h3>📈 2. Анализ сферы: «${jobVal}» и подходящий формат</h3>
+            <p>В направлении «${jobVal}» твоя главная суперсила — умение создавать продукт премиального уровня, который дарит клиентам сильные эмоции. Формат проектной автономии и наставничества идеально раскрывает финансовый потенциал 2-го и 8-го домов.</p>
           </div>
           <div class="report-chapter">
-            <h3>⚖️ 3. Психология трат и снятие ограничений</h3>
-            <p>Разбор фактора «${barrierVal}»: твой гороскоп показывает, что сомнения уходят, когда ты перестаешь сравнивать себя с другими и опираешься на реальные отзывы благодарных клиентов. Повышение чека органично принесет фильтрацию на более осознанную аудиторию.</p>
+            <h3>⚖️ 3. Психология барьеров: Преодоление «${barrierVal}»</h3>
+            <p>Разбор фактора «${barrierVal}»: сомнения уходят, когда ты перестаешь ориентироваться на средний рынок и фокусируешься на глубине своей экспертности. Достойная цена является естественным фильтром, притягивающим самых осознанных и благодарных заказчиков.</p>
           </div>
           <div class="report-chapter">
-            <h3>🎯 4. Стратегия достижения цели: ${goalVal}</h3>
-            <p>Для выхода на «${goalVal}» ключевой шаг — упаковать свой опыт в премиальные форматы (индивидуальное ведение, обучение или пакетные предложения) и делегировать техническую рутину.</p>
+            <h3>🎯 4. Реалистичная стратегия для цели: «${goalVal}»</h3>
+            <p>Без иллюзий и пустых обещаний: для достижения «${goalVal}» ключевыми шагами являются структурирование продуктовой линейки, делегирование рутины и уверенное позиционирование личного бренда.</p>
           </div>
           <div class="report-chapter">
-            <h3>💎 5. Персональные финансовые опоры</h3>
-            <p>1. Твердая уверенность в ценности своего времени.<br>2. Формирование финансовой подушки безопасности.<br>3. Инвестиции в собственное состояние и комфорт.<br>4. Отказ от работы с токсичными или обесценивающими заказчиками.<br>5. Регулярный пересмотр прайса с ростом мастерства.<br>6. Публичное проявление и ведение блога через честность.<br>7. Спокойное отношение к масштабированию дохода.</p>
+            <h3>💎 5. Шесть финансовых опор стабильности</h3>
+            <p>1. <b>Состояние первично:</b> не работать из чувства дефицита и паники.<br>2. <b>Обоснованный чек:</b> цена отражает реальный опыт и ценность.<br>3. <b>Финансовая подушка:</b> резерв на 3–6 месяцев дает внутреннее спокойствие.<br>4. <b>Отказ от токсичных заказов:</b> освобождение места под крупные проекты.<br>5. <b>Инвестиции в инструменты:</b> качественная техника и комфорт окупаются быстрее всего.<br>6. <b>Масштаб без надрыва:</b> расти поступательно, сохраняя здоровье.</p>
           </div>
         `;
       } else if (prodKey === 'purpose') {
@@ -2059,91 +2322,67 @@
         const visionEl = document.getElementById('pq_vision');
         const visionVal = visionEl ? visionEl.value : 'Масштаб и признание';
         const qEl = document.getElementById('pq_question');
-        const qVal = qEl ? qEl.value : '';
+        const qVal = qEl ? qEl.value : 'Свое дело и вектор проявления';
 
         chaptersHtml = `
           <div class="report-chapter">
-            <h3>🌟 1. Твои врожденные таланты и ценность</h3>
-            <p>Синтез Солнца в ${userNatalData.sun} и Асцендента в ${userNatalData.asc} наделяет тебя тонким восприятием деталей, харизмой и умением вдохновлять людей. Ты создана для того, чтобы задавать тренды, а не следовать чужим шаблонам.</p>
+            <h3>🌟 1. Сильные профессиональные качества & Стиль работы</h3>
+            <p>Синтез Солнца в ${userNatalData.sun} и Асцендента в ${userNatalData.asc} наделяет тебя визионерским чутьем, способностью видеть общую картину и вдохновлять команду. Твой стиль работы — не механическое исполнение инструкций, а авторское кураторство и создание смыслов.</p>
           </div>
           <div class="report-chapter">
-            <h3>🏢 2. Найм, фриланс или свое дело?</h3>
-            <p>Твоя натальная карта однозначно благоволит самостоятельности и проектной свободе. В жестких рамках найма ты быстро теряешь энергию. Формат «${actVal}» на своих условиях дает тебе максимальный творческий полет.</p>
+            <h3>🏢 2. Найм, фриланс или свой проект?</h3>
+            <p>Для твоей натальной карты органичен формат автономии. В сфере «${actVal}» тебе необходима свобода в принятии решений и возможность напрямую влиять на конечный результат. В жестких рамках найма твой огонь быстро угасает.</p>
           </div>
           <div class="report-chapter">
-            <h3>🧭 3. Разбор пути к цели: ${visionVal}</h3>
-            <p>Чтобы реализовать «${visionVal}» (${qVal || 'масштабирование'}), важно развивать личный бренд. Люди приходят не просто за услугой — они приходят на твое поле, твой вайб и твое эстетическое видение мира.</p>
+            <h3>🧭 3. Разбор профессионального вектора: «${visionVal}»</h3>
+            <p>Для выхода на «${visionVal}» (${qVal}): ключевая задача — переход от роли исполнителя к роли автора концепций. Люди идут за твоим авторским видением и эстетическим стандартом.</p>
           </div>
           <div class="report-chapter">
-            <h3>🚀 4. Стратегия преодоления творческих плато</h3>
-            <p>Когда наступает усталость, не заставляй себя «работать через силу». Твой лучший контент и идеи рождаются из состояния наполненности, прогулок, путешествий и тишины.</p>
-          </div>
-        `;
-      } else if (prodKey === 'kids') {
-        const cnameEl = document.getElementById('pq_cname');
-        const cnameVal = cnameEl ? cnameEl.value : 'Ребенок';
-        const chobbiesEl = document.getElementById('pq_chobbies');
-        const chobbiesVal = chobbiesEl ? chobbiesEl.value : 'Творчество и активность';
-        const cqEl = document.getElementById('pq_cquestion');
-        const cqVal = cqEl ? cqEl.value : 'Бережное раскрытие потенциала';
-
-        chaptersHtml = `
-          <div class="report-chapter">
-            <h3>👶 1. Психологический портрет: ${cnameVal}</h3>
-            <p>Ребенок обладает яркой индивидуальностью, тонкой нервной организацией и высокой восприимчивостью к эмоциональному фону в семье. Для него критически важна безусловная поддержка и принятие без давления.</p>
-          </div>
-          <div class="report-chapter">
-            <h3>🧠 2. Особенности мышления и обучения</h3>
-            <p>Усвоение нового происходит через интерес и игру, а не через строгую дисциплину. Принуждение вызывает внутренний протест. Лучший способ обучать — увлекать собственным примером и живыми историями.</p>
-          </div>
-          <div class="report-chapter">
-            <h3>🎨 3. Таланты и сфера увлечений: ${chobbiesVal}</h3>
-            <p>Направление «${chobbiesVal}» великолепно развивает координацию, уверенность в теле и творческую смелость. Важно хвалить ребенка не только за результат, но и за сам процесс старания.</p>
-          </div>
-          <div class="report-chapter">
-            <h3>🗝️ 4. Ключи родителям: ${cqVal}</h3>
-            <p>1. Спокойный тон в моменты капризов: ребенок «зеркалит» ваше состояние.<br>2. Личное пространство и право на свои секреты.<br>3. Поддержка детских инициатив без критики.<br>4. Теплые вечерние ритуалы перед сном.<br>5. Бережное отношение к границам ребенка.</p>
+            <h3>🚀 4. Преодоление профессиональных плато</h3>
+            <p>Когда наступает усталость, не пытайся давить на себя. Периоды затишья в твоем гороскопе предшествуют качественным скачкам. Дай себе время пересобрать насмотренность и набраться сил.</p>
           </div>
         `;
       } else if (prodKey === 'solar') {
         const prioEl = document.getElementById('pq_priorities');
-        const prioVal = prioEl ? prioEl.value : 'Масштаб и гармония';
+        const prioVal = prioEl ? prioEl.value : 'Масштаб, семья, доход';
         const yearQEl = document.getElementById('pq_year_q');
-        const yearQVal = yearQEl ? yearQEl.value : 'Главные точки года';
+        const yearQVal = yearQEl ? yearQEl.value : 'Главные ориентиры года';
 
         chaptersHtml = `
           <div class="report-chapter">
             <h3>💫 1. Лейтмотив твоего персонального года</h3>
-            <p>Наступающий личный год проходит под знаком качественного взросления, выхода на новую ступень проявления и закрепления финансовой самостоятельности. Фокус на «${prioVal}» получит мощную планетарную поддержку.</p>
+            <p>Наступающий личный астрологический год активирует ключевую ось реализации: это время укрепления внутренней зрелости, пересмотра круга контактов и кристаллизации приоритетов. Фокус на «${prioVal}» получает прямую поддержку транзитных планет.</p>
           </div>
           <div class="report-chapter">
-            <h3>📅 2. Поквартальный ритм года</h3>
-            <p><b>1-й квартал:</b> Время формулирования планов, наведения порядка и очищения пространства.<br><b>2-й квартал:</b> Активный запуск проектов, проявление в блоге, финансовые возможности.<br><b>3-й квартал:</b> Укрепление отношений, путешествия, набор душевного ресурса.<br><b>4-й квартал:</b> Подведение итогов, сбор плодов и выход на новый чек.</p>
+            <h3>📅 2. Поквартальный ритм и динамика</h3>
+            <p><b>1-й квартал:</b> Очищение пространства, формулирование целей, аудит сил.<br><b>2-й квартал:</b> Пик социальной активности, запуски, повышение видимости в блоге.<br><b>3-й квартал:</b> Укрепление семейного тыла, путешествия, набор ресурса.<br><b>4-й квартал:</b> Фиксация результатов, финансовый сбор плодов и выход на новый уровень.</p>
           </div>
           <div class="report-chapter">
-            <h3>🧭 3. Разбор твоего запроса: ${yearQVal}</h3>
-            <p>Год принесет ясность в ключевых выборах. Главное правило года: если чувствуешь сопротивление и сомнения — не спеши, дай себе пару дней для проверки решения на внутренний отклик.</p>
+            <h3>🧭 3. Разбор запроса года: «${yearQVal}»</h3>
+            <p>Год учит гибкости: не держись за старые схемы, если они перестали приносить радость. Главная подсказка звезд — идти туда, где чувствуется живой интерес и внутреннее расширение.</p>
           </div>
         `;
       } else {
-        // Friends
+        // Friends & Society
         const circleEl = document.getElementById('pq_circle');
         const circleVal = circleEl ? circleEl.value : 'Узкий теплый круг';
         const needEl = document.getElementById('pq_need');
         const needVal = needEl ? needEl.value : 'Глубокие разговоры и границы';
+        const sitEl = document.getElementById('pq_situation');
+        const sitVal = sitEl ? sitEl.value : 'Вопрос личных границ';
 
         chaptersHtml = `
           <div class="report-chapter">
-            <h3>👭 1. Твой стиль дружбы и социальная роль</h3>
-            <p>В кругу близких ты выступаешь как вдохновитель, эстетический ориентир и чуткий слушатель. Для тебя важна глубина, а не поверхностное присутствие.</p>
+            <h3>👭 1. Как ты выбираешь близкий круг & Социальная роль</h3>
+            <p>Ты выбираешь людей не по статусу или выгоде, а по душевной созвучности и чистоте помыслов. Твоя социальная роль — вдохновитель, чуткий слушатель и ориентир в вопросах стиля и вкуса.</p>
           </div>
           <div class="report-chapter">
-            <h3>🛡️ 2. Личные границы и тип окружения</h3>
-            <p>С учетом твоего формата («${circleVal}»), важно исключать общение из чувства долга. Твои люди — те, кто радуются твоим победам так же искренне, как и своим.</p>
+            <h3>🛡️ 2. Личные границы и компромиссы: «${needVal}»</h3>
+            <p>С учетом формата («${circleVal}»): важно вовремя замечать, где ты начинаешь терпеть чужое нытье или обесценивание в ущерб собственному ресурсу. Здоровые границы — это акт уважения к себе.</p>
           </div>
           <div class="report-chapter">
-            <h3>🌱 3. Разбор фокуса: ${needVal}</h3>
-            <p>Здоровые границы создаются без агрессии — через спокойное сокращение дистанции с теми, кто истощает твою энергию, и инвестиции внимания в ресурсных людей.</p>
+            <h3>🌱 3. Разбор ситуации: «${sitVal}»</h3>
+            <p>Астрологическая подсказка: мягкое сокращение дистанции с токсичными контактами освобождает колоссальный объем энергии для вдохновляющих проектов и искренней дружбы.</p>
           </div>
         `;
       }
@@ -2271,17 +2510,27 @@
     if (urlParams.get('reset') === '1') {
       localStorage.removeItem(STORAGE_KEY_NATAL);
       localStorage.removeItem(STORAGE_KEY_QUIZ);
+      localStorage.removeItem(STORAGE_KEY_CHILDREN);
       localStorage.removeItem('luna_user_natal_data');
       localStorage.removeItem('luna_user_quiz_profile');
       userNatalData = null;
+      userChildrenList = [];
     } else {
-      // Try to load user-scoped data first, then legacy fallback
       const saved = localStorage.getItem(STORAGE_KEY_NATAL) || localStorage.getItem('luna_user_natal_data');
       if (saved) {
         try {
           userNatalData = JSON.parse(saved);
         } catch(e) {
           userNatalData = null;
+        }
+      }
+
+      const savedChildren = localStorage.getItem(STORAGE_KEY_CHILDREN);
+      if (savedChildren) {
+        try {
+          userChildrenList = JSON.parse(savedChildren) || [];
+        } catch(e) {
+          userChildrenList = [];
         }
       }
     }
