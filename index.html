@@ -650,6 +650,105 @@
     border: none;
     cursor: pointer;
   }
+
+  .catalog-filters {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    scrollbar-width: none;
+  }
+  .catalog-filters::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 11.5px;
+    color: var(--text-sub);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .filter-chip.active {
+    background: rgba(229, 195, 120, 0.18);
+    border-color: var(--gold);
+    color: var(--gold-bright);
+    font-weight: 600;
+  }
+  .showcase-card {
+    background: linear-gradient(160deg, rgba(28, 24, 44, 0.85) 0%, rgba(16, 14, 26, 0.92) 100%);
+    border: 1px solid rgba(229, 195, 120, 0.25);
+    border-radius: 20px;
+    padding: 18px 16px;
+    margin-bottom: 14px;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    transition: transform 0.15s ease, border-color 0.15s ease;
+    cursor: pointer;
+  }
+  .showcase-card:active {
+    transform: scale(0.98);
+    border-color: var(--gold);
+  }
+  .showcase-card.featured {
+    background: linear-gradient(160deg, rgba(38, 30, 58, 0.9) 0%, rgba(22, 18, 36, 0.95) 100%);
+    border: 1.5px solid rgba(229, 195, 120, 0.45);
+    box-shadow: 0 10px 30px rgba(138, 79, 158, 0.25);
+  }
+  .showcase-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #FFF;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .showcase-desc {
+    font-size: 12px;
+    color: #CBD5E1;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .showcase-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .showcase-tag {
+    font-size: 10.5px;
+    color: var(--gold);
+    background: rgba(229, 195, 120, 0.12);
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-weight: 500;
+  }
+  .showcase-price-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .showcase-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold-bright);
+  }
+  .showcase-btn {
+    font-size: 12px;
+    color: #000;
+    background: linear-gradient(135deg, var(--gold) 0%, #C49746 100%);
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    border: none;
+  }
+
 </style>
 </head>
 <body>
@@ -832,67 +931,150 @@
   </div>
 
   <!-- ==================== TAB 2: CATALOG / REPORTS ==================== -->
+  
+  <!-- ==================== TAB 2: CATALOG (PREMIUM SHOWCASE) ==================== -->
   <div id="tab-catalog" class="tab-view" style="display: none;">
-    <div class="section-head">
-      <div class="section-title">🪐 Каталог персональных отчетов</div>
+    
+    <div style="margin-bottom: 16px;">
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: #FFF; margin-bottom: 4px;">
+        🔮 Персональные разборы
+      </div>
+      <div style="font-size: 12px; color: var(--text-sub);">
+        Выбери сферу, которую хочешь исследовать глубже.
+      </div>
     </div>
 
-    <div class="catalog-grid">
-      <div class="catalog-card" onclick="showProductModal('🪐 Полная натальная карта PRO', '1 490 ₽', 'Фундаментальный астрологический разбор: 10 планет, 12 домов, кармическая ось судьбы, точки скрытого ресурса и сценарии реализации.')">
-        <div class="card-top">
-          <span class="card-title">🪐 Полная натальная карта PRO</span>
-          <span class="card-price">1 490 ₽</span>
+    <!-- Category Filters -->
+    <div class="catalog-filters">
+      <div class="filter-chip active" onclick="filterCatalog('all', this)">Все</div>
+      <div class="filter-chip" onclick="filterCatalog('me', this)">Про меня</div>
+      <div class="filter-chip" onclick="filterCatalog('love', this)">Отношения</div>
+      <div class="filter-chip" onclick="filterCatalog('money', this)">Деньги</div>
+      <div class="filter-chip" onclick="filterCatalog('purpose', this)">Реализация</div>
+      <div class="filter-chip" onclick="filterCatalog('family', this)">Семья</div>
+    </div>
+
+    <div id="catalogCardsContainer">
+
+      <!-- 1. NATAL PRO FEATURED -->
+      <div class="showcase-card featured" data-cat="me" onclick="showProductModal('🪐 Натальная книга личности PRO', '1 490 ₽', 'Фундаментальный разбор личности: 10 планет, 12 домов, кармические узлы Раху/Кету, внутренние противоречия и 7 опор судьбы.', 'natal')">
+        <div class="showcase-title">
+          <span>🪐 Натальная книга личности PRO</span>
         </div>
-        <div class="card-desc">Энциклопедический разбор личности: Большая тройка, 10 планет, 12 домов, кармические узлы, тени и 7 опор судьбы.</div>
+        <div class="showcase-desc">
+          Фундаментальный астрологический синтез: глубокое исследование твоей личности, структуры мышления, кармической оси и жизненных ориентиров.
+        </div>
+        <div class="showcase-footer">
+          <span class="showcase-tag">PRO · главная книга</span>
+          <div class="showcase-price-btn">
+            <span class="showcase-price">1 490 ₽</span>
+            <button class="showcase-btn">Открыть разбор →</button>
+          </div>
+        </div>
       </div>
 
-      <div class="catalog-card" onclick="showProductModal('❤️ Любовь & Отношения (Синастрия)', '690 ₽', 'Анализ точек притяжения, кармических связей и зон роста в паре. Как углубить понимание и доверие.')">
-        <div class="card-top">
-          <span class="card-title">❤️ Любовь & Отношения</span>
-          <span class="card-price">690 ₽</span>
+      <!-- 2. LOVE -->
+      <div class="showcase-card" data-cat="love" onclick="showProductModal('❤️ Любовь & Отношения', '690 ₽', 'Психологический разбор Венеры, Марса, 7-го дома партнерства и сценариев любви.', 'synastry')">
+        <div class="showcase-title">
+          <span>❤️ Любовь & Отношения</span>
         </div>
-        <div class="card-desc">Глубокий разбор Венеры, Марса, 5-го и 7-го домов, сценарии притяжения, красные/зеленые флаги и снятие конфликтов.</div>
+        <div class="showcase-desc">
+          Как ты любишь, кого выбираешь и почему отношения развиваются именно по твоему сценарию.
+        </div>
+        <div class="showcase-footer">
+          <span class="showcase-tag">PRO · персональный разбор</span>
+          <div class="showcase-price-btn">
+            <span class="showcase-price">690 ₽</span>
+            <button class="showcase-btn">Открыть разбор →</button>
+          </div>
+        </div>
       </div>
 
-      <div class="catalog-card" onclick="showProductModal('💎 Финансовый & Карьерный код', '690 ₽', 'Точный астрологический расчет 2-го и 10-го домов: в каких нишах твои самые легкие деньги, что блокирует финансовый поток.')">
-        <div class="card-top">
-          <span class="card-title">💎 Финансовый код & Деньги</span>
-          <span class="card-price">690 ₽</span>
+      <!-- 3. MONEY -->
+      <div class="showcase-card" data-cat="money" onclick="showProductModal('💎 Финансовый код & Деньги', '690 ₽', 'Анализ 2-го дома личных доходов, 8-го дома ресурсов и 10-го дома карьерного статуса.', 'finance')">
+        <div class="showcase-title">
+          <span>💎 Финансовый код & Деньги</span>
         </div>
-        <div class="card-desc">Где твои легкие деньги, финансовая емкость, ниши для x3 роста и устранение психологических блоков.</div>
+        <div class="showcase-desc">
+          Как ты зарабатываешь, что помогает тебе расти и что может мешать увеличивать доход.
+        </div>
+        <div class="showcase-footer">
+          <span class="showcase-tag">PRO · персональный разбор</span>
+          <div class="showcase-price-btn">
+            <span class="showcase-price">690 ₽</span>
+            <button class="showcase-btn">Открыть разбор →</button>
+          </div>
+        </div>
       </div>
 
-      <div class="catalog-card" onclick="showProductModal('🎯 Предназначение и реализация', '690 ₽', 'Глубокий анализ кармических узлов Раху/Кету, 10-го и 9-го домов. Твое истинное призвание и масштаб.')">
-        <div class="card-top">
-          <span class="card-title">🎯 Предназначение & Реализация</span>
-          <span class="card-price">690 ₽</span>
+      <!-- 4. PURPOSE -->
+      <div class="showcase-card" data-cat="purpose" onclick="showProductModal('🎯 Предназначение & Реализация', '690 ₽', 'Кармический вектор Раху/Кету, сценарий самореализации и профессиональные таланты.', 'purpose')">
+        <div class="showcase-title">
+          <span>🎯 Предназначение & Реализация</span>
         </div>
-        <div class="card-desc">Твоя главная миссия воплощения, профессиональный статус, выход из тени и масштабное проявление.</div>
+        <div class="showcase-desc">
+          Твои профессиональные сильные стороны, подходящий формат реализации и возможные точки роста.
+        </div>
+        <div class="showcase-footer">
+          <span class="showcase-tag">PRO · персональный разбор</span>
+          <div class="showcase-price-btn">
+            <span class="showcase-price">690 ₽</span>
+            <button class="showcase-btn">Открыть разбор →</button>
+          </div>
+        </div>
       </div>
 
-      <div class="catalog-card" onclick="showProductModal('👭 Друзья и социальное окружение', '690 ₽', 'Разбор 11-го дома, единомышленников, социальных ролей и построения поддерживающего круга.')">
-        <div class="card-top">
-          <span class="card-title">👭 Друзья & Окружение</span>
-          <span class="card-price">690 ₽</span>
+      <!-- 5. FRIENDS -->
+      <div class="showcase-card" data-cat="me" onclick="showProductModal('👭 Друзья & Окружение', '690 ₽', 'Разбор 11-го дома, единомышленников, круга общения и вдохновляющих связей.', 'friends')">
+        <div class="showcase-title">
+          <span>👭 Друзья & Окружение</span>
         </div>
-        <div class="card-desc">Как ты выбираешь друзей, какие люди тебя наполняют, а какие сливают ресурс, твоя роль в сообществах.</div>
+        <div class="showcase-desc">
+          Какие люди тебе подходят, как ты строишь дружбу и какое окружение помогает тебе развиваться.
+        </div>
+        <div class="showcase-footer">
+          <span class="showcase-tag">PRO · персональный разбор</span>
+          <div class="showcase-price-btn">
+            <span class="showcase-price">690 ₽</span>
+            <button class="showcase-btn">Открыть разбор →</button>
+          </div>
+        </div>
       </div>
 
-      <div class="catalog-card" onclick="showProductModal('👶 Детская натальная карта & Таланты PRO', '1 490 ₽', 'Разбор природы ребенка, сильных сторон и талантов. Подсказки для гармоничного развития.')">
-        <div class="card-top">
-          <span class="card-title">👶 Детская карта & Таланты PRO</span>
-          <span class="card-price">1 490 ₽</span>
+      <!-- 6. KIDS -->
+      <div class="showcase-card" data-cat="family" onclick="showProductModal('👶 Детская карта PRO', '1 490 ₽', 'Астрологический и психологический портрет ребенка, восприятие мира, таланты и ключи для родителей.', 'kids')">
+        <div class="showcase-title">
+          <span>👶 Детская карта PRO</span>
         </div>
-        <div class="card-desc">Авто-расчет возраста: темперамент, таланты 5-го дома, тип мышления Меркурия, эмоциональная опора и профориентация.</div>
+        <div class="showcase-desc">
+          Портрет ребёнка: характер, эмоции, мышление, способности и ключи к его раскрытию.
+        </div>
+        <div class="showcase-footer">
+          <span class="showcase-tag">PRO · персональный разбор</span>
+          <div class="showcase-price-btn">
+            <span class="showcase-price">1 490 ₽</span>
+            <button class="showcase-btn">Открыть разбор →</button>
+          </div>
+        </div>
       </div>
 
-      <div class="catalog-card" onclick="showProductModal('💫 Персональный год 2027 (Соляр)', '2 990 ₽', 'Полный разбор персонального года: ключевые месяцы для прорыва, финансовые и личные точки силы.')">
-        <div class="card-top">
-          <span class="card-title">💫 Персональный Соляр 2027</span>
-          <span class="card-price">2 990 ₽</span>
+      <!-- 7. SOLAR -->
+      <div class="showcase-card" data-cat="me" onclick="showProductModal('💫 Персональный Соляр', '2 990 ₽', 'Индивидуальный прогноз на год от момента дня рождения: поквартальный план и важные периоды.', 'solar')">
+        <div class="showcase-title">
+          <span>💫 Персональный Соляр</span>
         </div>
-        <div class="card-desc">Главный вектор года: благоприятные месяцы для инвестиций, переездов, запусков и трансформаций.</div>
+        <div class="showcase-desc">
+          Главные темы нового личного года, важные периоды и направления, на которые стоит обратить внимание.
+        </div>
+        <div class="showcase-footer">
+          <span class="showcase-tag">PRO · прогноз на год</span>
+          <div class="showcase-price-btn">
+            <span class="showcase-price">2 990 ₽</span>
+            <button class="showcase-btn">Открыть разбор →</button>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -1373,6 +1555,23 @@
     if (tg && tg.HapticFeedback) {
       tg.HapticFeedback.impactOccurred('light');
     }
+  }
+
+  
+  function filterCatalog(category, el) {
+    haptic();
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    const cards = document.querySelectorAll('#catalogCardsContainer .showcase-card');
+    cards.forEach(card => {
+      const cat = card.getAttribute('data-cat');
+      if (category === 'all' || cat === category) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
   }
 
   function switchTab(tab) {
