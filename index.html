@@ -165,12 +165,14 @@
     border-radius: 50% !important;
     padding: 3px !important;
     background: linear-gradient(135deg, #FFE8A3, #8A4F9E, #E5C378) !important;
-    margin: 0 auto 10px !important;
+    margin: 0 auto 12px !important;
     position: relative !important;
     box-shadow: 0 0 24px rgba(138, 79, 158, 0.5) !important;
     cursor: pointer;
     overflow: hidden !important;
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     box-sizing: border-box !important;
   }
   .avatar-ring-large img,
@@ -726,6 +728,7 @@
       </div>
     </div>
 
+    
     <!-- STATE 2: ACTIVE DASHBOARD (Visible when profile exists) -->
     <div id="activeDashboard" style="display: none;">
       <!-- Centered Hero Section -->
@@ -798,6 +801,7 @@
         </div>
       </div>
     </div>
+
   </div>
 
   
@@ -989,57 +993,26 @@
     tg.ready();
   }
 
-  // Pure State: user profile
-  let userNatalData = null;
-  try {
-    const saved = localStorage.getItem('luna_user_natal_data');
-    if (saved) userNatalData = JSON.parse(saved);
-  } catch(e) {
-    userNatalData = null;
-  }
+  const dailyAdvices = [
+    "«В тебе соединена редкая синергия: железная воля созидателя и глубинная интуиция. Доверяй первому импульсу души — он безошибочен.»",
+    "«Сегодня идеальный день, чтобы отпустить избыточный контроль. Твоя энергия раскрывается в разы сильнее, когда ты доверяешь потоку.»",
+    "«Обрати внимание на знаки в диалогах: пространство готовит благоприятную возможность в финансах и творчестве.»",
+    "«Сконцентрируйся на одном главном действии вместо распыления. Качество твоего фокуса сегодня определяет масштаб недели.»",
+    "«Позволь себе замедлиться и наполниться эстетикой. Вода, тишина и приятная атмосфера восстановят твою натальную Луну.»",
+    "«Смело проявляй авторский взгляд и не соглашайся на компромиссы. Люди тянутся именно к твоей индивидуальности.»",
+    "«Энергетический пик: транзиты планет открывают зеленый свет для новых смелых инициатив и важных решений.»"
+  ];
 
-  function haptic(type = 'light') {
-    if (tg && tg.HapticFeedback) {
-      tg.HapticFeedback.impactOccurred(type);
-    }
-  }
+  // Global Astro Profile
+  let userNatalData = (function() {
+    try {
+      const saved = localStorage.getItem('luna_user_natal_data');
+      if (saved) return JSON.parse(saved);
+    } catch(e) {}
+    return null;
+  })();
 
-  function openModal() {
-    const modal = document.getElementById('appModal');
-    if (modal) {
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-  }
-
-  function closeModal(e) {
-    const modal = document.getElementById('appModal');
-    if (modal) {
-      modal.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  }
-
-  function parseDateParts(dateStr) {
-    if (!dateStr) return { day: 1, month: 1, year: 1990 };
-    if (typeof dateStr === 'object' && dateStr.day) return dateStr;
-    const parts = dateStr.toString().split(/[\.\-\/]/);
-    const day = parseInt(parts[0], 10) || 1;
-    const month = parseInt(parts[1], 10) || 1;
-    const year = parseInt(parts[2], 10) || 1990;
-    return { day, month, year };
-  }
-
-  function calculateZodiacSign(dateOrDay, optionalMonth) {
-    let day = 1, month = 1;
-    if (typeof dateOrDay === 'number' && optionalMonth !== undefined) {
-      day = dateOrDay;
-      month = optionalMonth;
-    } else {
-      const p = parseDateParts(dateOrDay);
-      day = p.day;
-      month = p.month;
-    }
+  function calculateZodiacSign(day, month) {
     if ((month == 1 && day <= 20) || (month == 12 && day >= 22)) return 'Козерог';
     if ((month == 1 && day >= 21) || (month == 2 && day <= 19)) return 'Водолей';
     if ((month == 2 && day >= 20) || (month == 3 && day <= 20)) return 'Рыбы';
@@ -1055,37 +1028,110 @@
     return 'Козерог';
   }
 
-  function calculateMoonSign(dateOrDay, optionalMonth) {
-    let day = 1, month = 1;
-    if (typeof dateOrDay === 'number' && optionalMonth !== undefined) {
-      day = dateOrDay;
-      month = optionalMonth;
-    } else {
-      const p = parseDateParts(dateOrDay);
-      day = p.day;
-      month = p.month;
-    }
+  function calculateMoonSign(day, month) {
     const signs = ['Овен', 'Телец', 'Близнецы', 'Рак', 'Лев', 'Дева', 'Весы', 'Скорпион', 'Стрелец', 'Козерог', 'Водолей', 'Рыбы'];
-    const idx = Math.abs((day * 3 + month * 7)) % 12;
+    const idx = (day * 3 + month * 7) % 12;
     return signs[idx];
   }
 
-  function calculateAscendantSign(dateOrHour, optionalTime) {
-    let hour = 12;
-    if (typeof dateOrHour === 'number') {
-      hour = dateOrHour;
-    } else if (optionalTime) {
-      const parts = optionalTime.toString().split(':');
-      hour = parseInt(parts[0], 10) || 12;
-    } else if (typeof dateOrHour === 'string' && dateOrHour.includes(':')) {
-      const parts = dateOrHour.split(':');
-      hour = parseInt(parts[0], 10) || 12;
-    }
+  function calculateAscendantSign(hour) {
     const signs = ['Овен', 'Телец', 'Близнецы', 'Рак', 'Лев', 'Дева', 'Весы', 'Скорпион', 'Стрелец', 'Козерог', 'Водолей', 'Рыбы'];
     const idx = Math.floor((hour % 24) / 2);
     return signs[idx] || 'Близнецы';
   }
 
+  function getAgeCategoryFromDate(birthDateStr) {
+    if (!birthDateStr) return '7–10 лет';
+    const parts = birthDateStr.split(/[\.\-\/]/);
+    if (parts.length < 3) return '7–10 лет';
+    const d = parseInt(parts[0]) || 1;
+    const m = parseInt(parts[1]) - 1 || 0;
+    const y = parseInt(parts[2]) || 2018;
+
+    const bDate = new Date(y, m, d);
+    const now = new Date(2026, 9, 2);
+    let age = now.getFullYear() - bDate.getFullYear();
+    const mDiff = now.getMonth() - bDate.getMonth();
+    if (mDiff < 0 || (mDiff === 0 && now.getDate() < bDate.getDate())) {
+      age--;
+    }
+
+    if (age <= 3) return '0–3 года (Ранний возраст & Сенсорный контакт)';
+    if (age <= 6) return '4–6 лет (Дошкольный возраст & Игра)';
+    if (age <= 10) return '7–10 лет (Младший школьник & Таланты)';
+    if (age <= 14) return '11–14 лет (Подросток & Личные границы)';
+    return '15–17 лет (Юность & Профориентация)';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      const savedNatal = localStorage.getItem('luna_user_natal_data');
+      if (savedNatal) {
+        userNatalData = JSON.parse(savedNatal);
+      }
+
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && userNatalData) {
+        userNatalData.name = tg.initDataUnsafe.user.first_name || userNatalData.name;
+      }
+
+      renderHomeView();
+
+      const dayOfWeek = new Date().getDay();
+      const advHeader = document.getElementById('dailyAdviceHeader');
+      const advText = document.getElementById('dailyAdviceText');
+      if (advHeader) {
+        if (userNatalData && userNatalData.name) {
+          advHeader.innerText = "Совет от Луны на сегодня для " + userNatalData.name;
+        } else {
+          advHeader.innerText = "Совет от Луны на сегодня";
+        }
+      }
+      if (advText && typeof dailyAdvices !== 'undefined') {
+        advText.innerText = dailyAdvices[dayOfWeek] || dailyAdvices[0];
+      }
+
+      updateProfileStatus();
+      if (typeof renderSavedChildren === 'function') {
+        renderSavedChildren();
+      }
+    } catch(e) {
+      console.error("Initialization error:", e);
+    }
+  });
+
+  function updateNatalUI() {
+    const pNameEl = document.getElementById('profileNameVal');
+    if (pNameEl) pNameEl.innerText = userNatalData.name;
+
+    const pDateEl = document.getElementById('profileBirthDateVal');
+    if (pDateEl) pDateEl.innerText = userNatalData.birthDate;
+
+    const pPlaceEl = document.getElementById('profileBirthPlaceVal');
+    if (pPlaceEl) pPlaceEl.innerText = userNatalData.birthPlace;
+
+    const pTimeEl = document.getElementById('profileBirthTimeVal');
+    if (pTimeEl) pTimeEl.innerText = userNatalData.birthTime;
+
+    const pSunEl = document.getElementById('profileSunVal');
+    if (pSunEl) pSunEl.innerText = userNatalData.sun + ' (10-й дом)';
+
+    const pMoonEl = document.getElementById('profileMoonVal');
+    if (pMoonEl) pMoonEl.innerText = userNatalData.moon + ' (Эмоциональный центр)';
+
+    const pAscEl = document.getElementById('profileAscVal');
+    if (pAscEl) pAscEl.innerText = userNatalData.asc + ' (1-й дом)';
+
+    const hSun = document.getElementById('heroSunVal');
+    if (hSun) hSun.innerText = userNatalData.sun;
+
+    const hMoon = document.getElementById('heroMoonVal');
+    if (hMoon) hMoon.innerText = userNatalData.moon;
+
+    const hAsc = document.getElementById('heroAscVal');
+    if (hAsc) hAsc.innerText = userNatalData.asc;
+  }
+
+  
   function submitOnboardingProfile() {
     haptic();
     const nameEl = document.getElementById('onboardName');
@@ -1153,74 +1199,35 @@
     if (advText && typeof dailyAdvices !== 'undefined') advText.innerText = dailyAdvices[dayOfWeek] || dailyAdvices[0];
   }
 
-  function updateProfileStatus() {
-    const pName = document.getElementById('profileNameVal') || document.getElementById('profileName');
-    const pDate = document.getElementById('profileBirthDateVal');
-    const pPlace = document.getElementById('profileBirthPlaceVal');
-    const pTime = document.getElementById('profileBirthTimeVal');
-    const pSun = document.getElementById('profileSunVal') || document.getElementById('profileSun');
-    const pMoon = document.getElementById('profileMoonVal') || document.getElementById('profileMoon');
-    const pAsc = document.getElementById('profileAscVal') || document.getElementById('profileAsc');
-
-    if (!userNatalData) {
-      if (pName) pName.innerText = 'Astro Profile не создан';
-      if (pDate) pDate.innerText = '—';
-      if (pPlace) pPlace.innerText = '—';
-      if (pTime) pTime.innerText = '—';
-      if (pSun) pSun.innerText = '—';
-      if (pMoon) pMoon.innerText = '—';
-      if (pAsc) pAsc.innerText = '—';
-      return;
-    }
-
-    if (pName) pName.innerText = userNatalData.name || 'Пользователь';
-    if (pDate) pDate.innerText = userNatalData.birthDate || '—';
-    if (pPlace) pPlace.innerText = userNatalData.birthPlace || '—';
-    if (pTime) pTime.innerText = userNatalData.birthTime || '12:00';
-    if (pSun) pSun.innerText = userNatalData.sun || '—';
-    if (pMoon) pMoon.innerText = userNatalData.moon || '—';
-    if (pAsc) pAsc.innerText = userNatalData.asc || '—';
-  }
-
 
   function openEditNatalModal() {
     haptic();
     const content = document.getElementById('modalContent');
-    const data = userNatalData || { name: '', birthDate: '', birthTime: '', birthPlace: '' };
-
     content.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div class="sheet-title" style="margin: 0; font-size: 18px;">✨ ${userNatalData ? 'Изменить Astro Profile' : 'Создай свою Astro Profile'}</div>
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">✏️ Твои натальные координаты</div>
         <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
       </div>
-      <div class="sheet-desc" style="margin-bottom: 14px;">
-        ${userNatalData ? 'Отредактируй данные для мгновенного перерасчёта натальной карты:' : 'Укажи данные рождения, чтобы LUNA рассчитала твою натальную карту:'}
+      <div class="sheet-desc" style="margin-bottom: 12px;">
+        Введи свои точные данные рождения для автоматического пересчета всех домов и планет:
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 11px; margin-bottom: 16px;">
-        <div>
-          <label style="font-size: 11px; color: var(--gold); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 4px;">Имя</label>
-          <input type="text" id="inputNatalName" value="${data.name || ''}" placeholder="Например, Надин" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: #FFF; font-size: 14px; outline: none;">
-        </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Твое Имя:</label>
+        <input type="text" id="editUserName" class="input-field" value="` + userNatalData.name + `">
 
-        <div>
-          <label style="font-size: 11px; color: var(--gold); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 4px;">Дата рождения (ДД.ММ.ГГГГ)</label>
-          <input type="text" id="inputNatalDate" value="${data.birthDate || ''}" placeholder="Например, 19.09.1990" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: #FFF; font-size: 14px; outline: none;">
-        </div>
+        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Дата рождения (ДД.ММ.ГГГГ):</label>
+        <input type="text" id="editUserDate" class="input-field" value="` + userNatalData.birthDate + `">
 
-        <div>
-          <label style="font-size: 11px; color: var(--gold); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 4px;">Время рождения (необязательно)</label>
-          <input type="text" id="inputNatalTime" value="${data.birthTime || ''}" placeholder="Например, 08:30 (необязательно)" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: #FFF; font-size: 14px; outline: none;">
-        </div>
+        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Город рождения:</label>
+        <input type="text" id="editUserPlace" class="input-field" value="` + userNatalData.birthPlace + `">
 
-        <div>
-          <label style="font-size: 11px; color: var(--gold); text-transform: uppercase; font-weight: 600; display: block; margin-bottom: 4px;">Город рождения</label>
-          <input type="text" id="inputNatalPlace" value="${data.birthPlace || ''}" placeholder="Например, Екатеринбург" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; color: #FFF; font-size: 14px; outline: none;">
-        </div>
+        <label style="font-size: 11px; color: var(--gold); font-weight: 600;">Время рождения (ЧЧ:ММ):</label>
+        <input type="text" id="editUserTime" class="input-field" value="` + userNatalData.birthTime + `">
       </div>
 
-      <button class="sheet-btn" onclick="saveUserNatalData()">
-        ✨ ${userNatalData ? 'Сохранить и пересчитать карту' : 'Создать мою карту ✨'}
+      <button class="sheet-btn" style="margin-top: 10px;" onclick="saveUserNatalData()">
+        Рассчитать мою натальную карту ✦
       </button>
     `;
     openModal();
@@ -1228,42 +1235,440 @@
 
   function saveUserNatalData() {
     haptic();
-    const nameInput = document.getElementById('inputNatalName');
-    const bDateInput = document.getElementById('inputNatalDate');
-    const bTimeInput = document.getElementById('inputNatalTime');
-    const bPlaceInput = document.getElementById('inputNatalPlace');
+    const name = document.getElementById('editUserName').value.trim() || 'Пользователь';
+    const bDate = document.getElementById('editUserDate').value.trim() || '07.01.1990';
+    const bPlace = document.getElementById('editUserPlace').value.trim() || 'Екатеринбург';
+    const bTime = document.getElementById('editUserTime').value.trim() || '12:00';
 
-    if (!nameInput || !bDateInput || !bPlaceInput) return;
+    let parts = bDate.split(/[\.\-\/]/);
+    let day = parseInt(parts[0]) || 7;
+    let month = parseInt(parts[1]) || 1;
 
-    const name = nameInput.value.trim();
-    const bDate = bDateInput.value.trim();
-    const bTime = bTimeInput.value.trim() || '12:00';
-    const bPlace = bPlaceInput.value.trim();
+    let timeParts = bTime.split(/[\:\-\.]/);
+    let hour = parseInt(timeParts[0]) || 12;
 
-    if (!name || !bDate || !bPlace) {
-      alert('Пожалуйста, укажи имя, дату и город рождения (время рождения указывать необязательно).');
-      return;
-    }
-
-    const sun = calculateZodiacSign(bDate);
-    const moon = calculateMoonSign(bDate);
-    const asc = calculateAscendantSign(bDate, bTime);
+    const sunSign = calculateZodiacSign(day, month);
+    const moonSign = calculateMoonSign(day, month);
+    const ascSign = calculateAscendantSign(hour);
 
     userNatalData = {
       name: name,
       birthDate: bDate,
-      birthTime: bTime,
       birthPlace: bPlace,
-      sun: sun,
-      moon: moon,
-      asc: asc
+      birthTime: bTime,
+      sun: sunSign,
+      moon: moonSign,
+      asc: ascSign
     };
 
     localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData));
-    updateNatalUI();
-    updateProfileStatus();
+    renderHomeView();
     closeModal();
   }
+
+  function getSunDescription() {
+    return '<b>Солнце в знаке ' + userNatalData.sun + '</b>.<br><br>Ядро твоей воли, масштаба и самореализации. Определяет, через какие действия ты зажигаешь свою энергию и выстраиваешь авторитет в обществе.';
+  }
+
+  function getMoonDescription() {
+    return '<b>Луна в знаке ' + userNatalData.moon + '</b>.<br><br>Твой эмоциональный мир, глубинная интуиция и адаптивность. Показывает, как ты восстанавливаешь силы, чувствуешь безопасность и считываешь пространство.';
+  }
+
+  function getAscDescription() {
+    return '<b>Асцендент в знаке ' + userNatalData.asc + '</b>.<br><br>Твоя социальная маска, визуальный стиль и первое впечатление в социуме. То, как мир безошибочно узнает твою уникальную энергию.';
+  }
+
+  function updateProfileStatus() {
+    const done = localStorage.getItem('luna_user_quiz_done') === 'true';
+    const stEl = document.getElementById('profileQuizStatus');
+    if (stEl) {
+      stEl.innerText = done ? '✨ Активен (Заполнен)' : 'Не пройден';
+      stEl.style.color = done ? '#50E3C2' : '#FFE8A3';
+    }
+  }
+
+  
+  function renderSavedChildren() {
+    const list = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
+    const card = document.getElementById('savedChildrenCard');
+    const container = document.getElementById('savedChildrenList');
+    if (!card || !container) return;
+
+    if (list.length === 0) {
+      card.style.display = 'none';
+      return;
+    }
+    card.style.display = 'block';
+    container.innerHTML = list.map((c, idx) => `
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(229,195,120,0.2); padding: 10px 12px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="flex: 1;">
+          <b style="color: #FFE8A3; font-size: 13px;">` + (c.name || 'Ребенок ' + (idx+1)) + `</b>
+          <div style="font-size: 11px; color: var(--text-sub);">` + c.birthDate + ` • ` + (c.ageCategory || getAgeCategoryFromDate(c.birthDate)) + `</div>
+        </div>
+        <div style="display: flex; gap: 6px; align-items: center;">
+          <button style="background: rgba(229,195,120,0.15); border: 1px solid var(--gold); color: var(--gold); border-radius: 8px; padding: 5px 10px; font-size: 11px; font-weight: 600; cursor: pointer;" onclick="openChildReport('` + c.name + `', '` + c.birthDate + `', '` + c.birthPlace + `', '` + c.birthTime + `')">Разбор →</button>
+          <button style="background: rgba(255,70,70,0.15); border: 1px solid rgba(255,70,70,0.4); color: #FF7B7B; border-radius: 8px; padding: 5px 8px; font-size: 11px; cursor: pointer;" onclick="deleteChild(` + idx + `)" title="Удалить">🗑</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function deleteChild(index) {
+    haptic();
+    let list = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
+    list.splice(index, 1);
+    localStorage.setItem('luna_saved_children', JSON.stringify(list));
+    renderSavedChildren();
+    if (list.length === 0) {
+      closeModal();
+    }
+  }
+
+  
+  function showSavedChildrenChoiceModal() {
+    const list = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
+    const content = document.getElementById('modalContent');
+    content.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">👶 Детские карты PRO</div>
+        <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
+      </div>
+      <div class="sheet-desc" style="margin-bottom: 12px;">
+        Выбери ребёнка для просмотра разбора или добавь нового:
+      </div>
+
+      <div style="margin-bottom: 14px;">
+        ` + list.map((c, idx) => `
+          <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(229,195,120,0.22); padding: 12px; border-radius: 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <b style="color: #FFE8A3; font-size: 13.5px;">` + (c.name || 'Ребенок ' + (idx+1)) + `</b>
+              <div style="font-size: 11px; color: var(--text-sub);">` + c.birthDate + ` • ` + (c.ageCategory || getAgeCategoryFromDate(c.birthDate)) + `</div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="sheet-btn" style="padding: 6px 12px; font-size: 11px; width: auto;" onclick="openChildReport('` + c.name + `', '` + c.birthDate + `', '` + c.birthPlace + `', '` + c.birthTime + `')">Открыть →</button>
+              <button style="background: rgba(255,70,70,0.15); border: 1px solid rgba(255,70,70,0.4); color: #FF7B7B; border-radius: 8px; padding: 6px 10px; font-size: 11px; cursor: pointer;" onclick="deleteChild(` + idx + `); showSavedChildrenChoiceModal();">🗑</button>
+            </div>
+          </div>
+        `).join('') + `
+      </div>
+
+      <button class="sheet-btn" onclick="openChildQuizModal()">
+        + Добавить нового ребёнка ✦
+      </button>
+    `;
+    openModal();
+  }
+
+  function resetAndRestartQuiz() {
+    haptic();
+    localStorage.removeItem('luna_user_quiz_done');
+    localStorage.removeItem('luna_user_quiz_profile');
+    userQuizDone = false;
+    updateProfileStatus();
+    quizStep = 1;
+    renderLifeQuizStep();
+    openModal();
+  }
+
+  function haptic() {
+    if (tg && tg.HapticFeedback) {
+      tg.HapticFeedback.impactOccurred('light');
+    }
+  }
+
+  function switchTab(tab) {
+    haptic();
+    document.querySelectorAll('.tab-view').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+    document.getElementById('tab-' + tab).style.display = 'block';
+    const navBtn = document.getElementById('nav-' + tab);
+    if (navBtn) navBtn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function openModal() {
+    const m = document.getElementById('appModal');
+    m.classList.add('active');
+  }
+
+  function closeModal(e) {
+    haptic();
+    const m = document.getElementById('appModal');
+    m.classList.remove('active');
+  }
+
+  function showLegal(type) {
+    haptic();
+    const content = document.getElementById('modalContent');
+    if (type === 'privacy') {
+      content.innerHTML = `
+        <div class="sheet-title">Политика конфиденциальности</div>
+        <div class="sheet-desc">Мы бережно храним персональные астрологические данные. Дата и время рождения используются исключительно для математического расчета натальных домов и планетарных аспектов в защищенном контуре.</div>
+        <button class="sheet-btn" onclick="closeModal()">Закрыть</button>
+      `;
+    } else {
+      content.innerHTML = `
+        <div class="sheet-title">Публичная оферта</div>
+        <div class="sheet-desc">Сервис LUNA предоставляет информационно-консультационные услуги по составлению персональных астрологических разборов. Оплата производится через сертифицированные российские платежные шлюзы (СБП, банковские карты).</div>
+        <button class="sheet-btn" onclick="closeModal()">Закрыть</button>
+      `;
+    }
+    openModal();
+  }
+
+  // --- BASE FREE NATAL READING (5-7 SCREENS LAYER) ---
+    function showFullFreeReading() {
+    haptic();
+    if (!userNatalData) { openEditNatalModal(); return; }
+    const content = document.getElementById('modalContent');
+    content.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">✨ Твой астрологический код личности</div>
+        <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
+      </div>
+
+      <div style="background: linear-gradient(135deg, rgba(229,195,120,0.18) 0%, rgba(138,79,158,0.18) 100%); padding: 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.35); font-size: 12px; color: #FFE8A3; line-height: 1.6;">
+        🌟 <b>Космический паспорт составлен для: ${userNatalData.name}</b><br>
+        • Дата и город: <b>${userNatalData.birthDate}, ${userNatalData.birthPlace}</b><br>
+        • Твоя Большая Тройка: <b>${userNatalData.sun} (Солнце) / ${userNatalData.moon} (Луна) / ${userNatalData.asc} (Асцендент)</b>
+      </div>
+
+      <div style="line-height: 1.8; font-size: 13px; color: var(--text-sub);">
+        
+        <div class="report-chapter" style="border-left: 4px solid var(--gold);">
+          <div class="report-chapter-title">☀️ 1. Личность и воля (${userNatalData.sun})</div>
+          <p>Твоё Солнце в знаке ${userNatalData.sun} раскрывает природный вектор проявления воли. Ты обладаешь врожденной способностью выстраивать структуру, доводить задуманное до совершенства и быть надежной опорой в любых масштабных делах.</p>
+        </div>
+
+        <div class="report-chapter" style="border-left: 4px solid #F472B6;">
+          <div class="report-chapter-title">🌙 2. Эмоции и зона безопасности (${userNatalData.moon})</div>
+          <p>Твоя Луна в знаке ${userNatalData.moon} описывает способ психологической адаптации и восстановления энергии. Твой ресурс — это бережная атмосфера, доверительный круг, тактильный уют и право на тишину.</p>
+        </div>
+
+        <div class="report-chapter" style="border-left: 4px solid #93C5FD;">
+          <div class="report-chapter-title">↑ 3. Социальная маска (${userNatalData.asc})</div>
+          <p>Асцендент в знаке ${userNatalData.asc} формирует твой внешний образ: окружающие мгновенно считывают твою харизму, интеллект и ощущение внутреннего достоинства.</p>
+        </div>
+
+        <div class="report-chapter" style="border-left: 4px solid #50E3C2;">
+          <div class="report-chapter-title">💎 4. Денежный потенциал</div>
+          <p>Деньги приходят к тебе через монетизацию авторского мастерства, проявление личного вкуса и отказ от обесценивания своего времени.</p>
+        </div>
+
+        <div class="report-chapter" style="border-left: 4px solid #FFE8A3;">
+          <div class="report-chapter-title">❤️ 5. Отношения и партнерство</div>
+          <p>В союзе для тебя ключевое значение имеет эмоциональная глубина и уважение к личным границам, где каждый партнер сохраняет свободу развития.</p>
+        </div>
+
+        <div class="report-chapter" style="border-left: 4px solid #E879F9;">
+          <div class="report-chapter-title">🚀 6. Точка ближайшего роста</div>
+          <p>Снижение избыточного самоконтроля и делегирование рутины высвобождает колоссальный ресурс для качественного масштаба.</p>
+        </div>
+
+      </div>
+
+      <div style="background: rgba(229,195,120,0.12); border: 1px dashed var(--gold); border-radius: 14px; padding: 14px; margin-top: 16px; text-align: center;">
+        <div style="font-size: 14px; font-weight: 700; color: #FFF; margin-bottom: 4px;">Хочешь полную энциклопедию личности?</div>
+        <div style="font-size: 11.5px; color: var(--text-sub); margin-bottom: 10px;">В PRO-книге раскрыты все 10 планет, 12 домов, карма и теневые стороны.</div>
+        <button class="sheet-btn" style="padding: 10px; font-size: 13px;" onclick="closeModal(); showProductModal('🪐 Полная натальная карта PRO', '1 490 ₽', 'Полная книга личности на 35+ страниц');">
+          Открыть Натальную карту PRO (1 490 ₽) →
+        </button>
+      </div>
+
+      <button class="sheet-btn" style="margin-top: 14px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text-sub);" onclick="closeModal()">
+        Закрыть ✦
+      </button>
+    `;
+    openModal();
+  }
+
+  
+  function showPlanetModal(type) {
+    haptic();
+    if (!userNatalData) { openEditNatalModal(); return; }
+    
+    let title = '', desc = '', houseText = '';
+    if (type === 'sun' || type === 'Солнце') {
+      title = '☀️ Твоё Солнце в знаке ' + userNatalData.sun;
+      desc = `
+        <div class="report-chapter">
+          <div class="report-chapter-title">Ядро личности и проявление воли</div>
+          <p>Солнце — это центр твоей сознательной энергии, творческий импульс и самоощущение взрослого «Я». В знаке <b>${userNatalData.sun}</b> твоя истинная сила раскрывается через самостоятельность, верность собственным ценностям и способность брать ответственность за авторство своей жизни.</p>
+        </div>
+        <div class="report-chapter">
+          <div class="report-chapter-title">Солнцезажигающие действия</div>
+          <p>• Реализация собственных масштабных замыслов без ожидания одобрения.<br>• Фокус на личном мастерстве и высоком качестве результата.<br>• Проявление лидерской позиции в ключевых проектах.</p>
+        </div>
+      `;
+    } else if (type === 'moon' || type === 'Луна') {
+      title = '🌙 Твоя Луна в знаке ' + userNatalData.moon;
+      desc = `
+        <div class="report-chapter">
+          <div class="report-chapter-title">Эмоциональный мир и зона комфорта</div>
+          <p>Луна отвечает за подсознание, базовое чувство безопасности, адаптивность и способ восстановления сил. Луна в знаке <b>${userNatalData.moon}</b> показывает, что твоей психике жизненно необходимо бережное отношение к своим границам, качественный сон, уютное личное пространство и возможность проживать чувства без критики.</p>
+        </div>
+        <div class="report-chapter">
+          <div class="report-chapter-title">Лунорасслабляющие практики</div>
+          <p>• Водные процедуры, контакт с природой и тишина.<br>• Теплая, доверительная атмосфера дома без спешки.<br>• Забота о теле через мягкий режим и расслабляющий массаж.</p>
+        </div>
+      `;
+    } else if (type === 'asc' || type === 'Восход' || type === 'Асцендент') {
+      title = '↑ Твой Асцендент в знаке ' + userNatalData.asc;
+      desc = `
+        <div class="report-chapter">
+          <div class="report-chapter-title">Социальная маска и первое впечатление</div>
+          <p>Асцендент — это точка восхода в момент твоего рождения, формирующая то, как тебя бессознательно считывают окружающие и через какие поведенческие паттерны ты входишь в новые контакты. При Асценденте в <b>${userNatalData.asc}</b> люди мгновенно ощущают твою харизму, интеллект и внутренний стержень.</p>
+        </div>
+      `;
+    } else {
+      title = '🪐 Планетарный фокус';
+      desc = '<p>Персональные астрологические координаты формируют индивидуальный рисунок твоей судьбы и талантов.</p>';
+    }
+
+    const content = document.getElementById('modalContent');
+    content.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">${title}</div>
+        <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
+      </div>
+      <div style="font-size: 13px; line-height: 1.7; color: var(--text-sub); margin-bottom: 16px;">
+        ${desc}
+      </div>
+      <button class="sheet-btn" onclick="closeModal()">Понятно ✦</button>
+    `;
+    openModal();
+  }
+
+    let userQuizDone = true;
+  let targetProduct = { title: '🪐 Натальная карта PRO', price: '1 490 ₽', desc: 'Полная книга личности', key: 'natal' };
+
+  function showProductModal(title, price, desc) {
+    haptic();
+    if (!userNatalData) { openEditNatalModal(); return; }
+    let key = 'natal';
+    if (title.includes('Финанс') || title.includes('Деньги')) key = 'finance';
+    else if (title.includes('Совместим') || title.includes('Синастр') || title.includes('Любовь')) key = 'synastry';
+    else if (title.includes('Детск') || title.includes('Ребенок')) key = 'kids';
+    else if (title.includes('Предназначен')) key = 'purpose';
+    else if (title.includes('Друзь') || title.includes('Окружен')) key = 'friends';
+    else if (title.includes('Соляр') || title.includes('2027')) key = 'solar';
+
+    targetProduct = { title: title, price: price, desc: desc, key: key };
+
+    if (key === 'kids') {
+      const savedList = JSON.parse(localStorage.getItem('luna_saved_children') || '[]');
+      if (savedList.length > 0) {
+        showSavedChildrenChoiceModal();
+      } else {
+        openChildQuizModal();
+      }
+      return;
+    }
+
+    renderPaidReportView();
+    openModal();
+  }
+
+  function showWeeklyModal(type) {
+    haptic();
+    let title = '✨ Магия и знаки недели';
+    let body = '';
+
+    if (type === 'sync') {
+      title = '🔢 Синхрон 21 • Аркан «Мир»';
+      body = 'Число 21 знаменует завершение важного этапа и гармоничный переход на новый уровень. Если ты замечаешь повторяющиеся числа на часах (11:11, 21:21) — пространство сообщает: твои текущие действия абсолютно созвучны эволюции твоей души.';
+    } else if (type === 'symbol') {
+      title = '🕊 Символ недели: Белое перо';
+      body = 'Символ чистоты намерений и защиты на тонком плане. Знаки в пространстве: внезапные озарения в тишине, перо на дороге, ощущение внутренней легкости в моменты принятия важных решений.';
+    } else if (type === 'totem') {
+      title = '🌿 Тотем недели: Лаванда и Мята';
+      body = 'Растения-проводники, очищающие ментальное поле от суеты и избыточного анализа. Заваривай травяной чай, зажигай благовония или используй эфирные масла для возвращения в глубокий сенсорный покой.';
+    } else {
+      title = '✨ Знаки и энергия текущей недели';
+      body = '• <b>Число 21 (Мир):</b> закрытие старых хвостов.<br>• <b>Символ:</b> белое перо — знак невидимой поддержки.<br>• <b>Тотем:</b> лаванда и мята — баланс нервной системы и ясность интуиции.';
+    }
+
+    const content = document.getElementById('modalContent');
+    content.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">${title}</div>
+        <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
+      </div>
+      <div style="font-size: 13px; line-height: 1.7; color: var(--text-sub); margin-bottom: 18px;">
+        ${body}
+      </div>
+      <button class="sheet-btn" onclick="closeModal()">Принять энергию недели ✦</button>
+    `;
+    openModal();
+  }
+
+    function showFullFreeReading() {
+    haptic();
+    if (!userNatalData) { openEditNatalModal(); return; }
+    const content = document.getElementById('modalContent');
+    content.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <div class="sheet-title" style="margin: 0; font-size: 18px;">✨ Твой астрологический код личности</div>
+        <div onclick="closeModal()" style="font-size: 20px; color: var(--text-sub); cursor: pointer; padding: 4px;">✕</div>
+      </div>
+
+      <div style="background: linear-gradient(135deg, rgba(229,195,120,0.18) 0%, rgba(138,79,158,0.18) 100%); padding: 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.35); font-size: 12px; color: #FFE8A3; line-height: 1.6;">
+        🌟 <b>Космический паспорт составлен для: ${userNatalData.name}</b><br>
+        • Дата и город: <b>${userNatalData.birthDate}, ${userNatalData.birthPlace}</b><br>
+        • Твоя Большая Тройка: <b>${userNatalData.sun} (Солнце) / ${userNatalData.moon} (Луна) / ${userNatalData.asc} (Асцендент)</b>
+      </div>
+
+      <div style="line-height: 1.8; font-size: 13px; color: var(--text-sub);">
+        
+        <div class="report-chapter" style="border-left: 4px solid var(--gold);">
+          <div class="report-chapter-title">☀️ 1. Личность и воля (${userNatalData.sun})</div>
+          <p>Твоё Солнце в знаке ${userNatalData.sun} раскрывает природный вектор проявления воли. Ты обладаешь врожденной способностью выстраивать структуру, доводить задуманное до совершенства и быть надежной опорой в любых масштабных делах.</p>
+        </div>
+
+        <div class="report-chapter" style="border-left: 4px solid #F472B6;">
+          <div class="report-chapter-title">🌙 2. Эмоции и зона безопасности (${userNatalData.moon})</div>
+          <p>Твоя Луна в знаке ${userNatalData.moon} описывает способ психологической адаптации и восстановления энергии. Твой ресурс — это бережная атмосфера, доверительный круг, тактильный уют и право на тишину.</p>
+        </div>
+
+        <div class="report-chapter" style="border-left: 4px solid #93C5FD;">
+          <div class="report-chapter-title">↑ 3. Социальная маска (${userNatalData.asc})</div>
+          <p>Асцендент в знаке ${userNatalData.asc} формирует твой внешний образ: окружающие мгновенно считывают твою харизму, интеллект и ощущение внутреннего достоинства.</p>
+        </div>
+
+        <div class="report-chapter" style="border-left: 4px solid #50E3C2;">
+          <div class="report-chapter-title">💎 4. Денежный потенциал</div>
+          <p>Деньги приходят к тебе через монетизацию авторского мастерства, проявление личного вкуса и отказ от обесценивания своего времени.</p>
+        </div>
+
+        <div class="report-chapter" style="border-left: 4px solid #FFE8A3;">
+          <div class="report-chapter-title">❤️ 5. Отношения и партнерство</div>
+          <p>В союзе для тебя ключевое значение имеет эмоциональная глубина и уважение к личным границам, где каждый партнер сохраняет свободу развития.</p>
+        </div>
+
+        <div class="report-chapter" style="border-left: 4px solid #E879F9;">
+          <div class="report-chapter-title">🚀 6. Точка ближайшего роста</div>
+          <p>Снижение избыточного самоконтроля и делегирование рутины высвобождает колоссальный ресурс для качественного масштаба.</p>
+        </div>
+
+      </div>
+
+      <div style="background: rgba(229,195,120,0.12); border: 1px dashed var(--gold); border-radius: 14px; padding: 14px; margin-top: 16px; text-align: center;">
+        <div style="font-size: 14px; font-weight: 700; color: #FFF; margin-bottom: 4px;">Хочешь полную энциклопедию личности?</div>
+        <div style="font-size: 11.5px; color: var(--text-sub); margin-bottom: 10px;">В PRO-книге раскрыты все 10 планет, 12 домов, карма и теневые стороны.</div>
+        <button class="sheet-btn" style="padding: 10px; font-size: 13px;" onclick="closeModal(); showProductModal('🪐 Полная натальная карта PRO', '1 490 ₽', 'Полная книга личности на 35+ страниц');">
+          Открыть Натальную карту PRO (1 490 ₽) →
+        </button>
+      </div>
+
+      <button class="sheet-btn" style="margin-top: 14px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text-sub);" onclick="closeModal()">
+        Закрыть ✦
+      </button>
+    `;
+    openModal();
+  }
+
+  
   function openChildQuizModal() {
     const content = document.getElementById('modalContent');
     content.innerHTML = `
@@ -1887,11 +2292,114 @@
   };
 
   
-    function renderPaidReportView() {
+  function renderPaidReportView() {
     const p = targetProduct || { title: '🪐 Натальная карта PRO', price: '1 490 ₽', key: 'natal' };
     const saved = JSON.parse(localStorage.getItem('luna_user_quiz_profile') || '{}');
     const content = document.getElementById('modalContent');
     const reportData = fullReports[p.key] || fullReports['natal'];
+
+    // DYNAMIC CONTEXTUAL BLOCKS DEPENDING ON REAL USER QUIZ ANSWERS
+    let customContextSection = '';
+
+    const relStatus = saved.relationships || '';
+    const kidsStatus = saved.kids || '';
+    const moneyStatus = saved.money || '';
+    const focusStatus = saved.focus || '';
+
+    // 1. RELATIONSHIPS CUSTOMIZATION
+    let relCustomText = '';
+    if (relStatus.includes('браке') || relStatus.includes('крепких')) {
+      relCustomText = `
+        <div class="report-callout" style="background: rgba(244,114,182,0.12); border-left: 4px solid #F472B6; margin-bottom: 14px;">
+          <b>💍 Анализ в контексте длительного союза и брака:</b><br>
+          С учётом того, что вы находитесь в устоявшихся отношениях, показатели 7-го дома и Венеры в вашей карте работают не на этапе поиска, а в динамике распределения ролей и совместного быта. Для сохранения окситоциновой связи и страсти в вашей паре критически важно регулярно выходить из родительских/бытовых ролей в пространство «только вдвоем» и иметь раздельные сферы личного творчества.
+        </div>
+      `;
+    } else if (relStatus.includes('кризис') || relStatus.includes('сложност')) {
+      relCustomText = `
+        <div class="report-callout" style="background: rgba(244,114,182,0.12); border-left: 4px solid #F472B6; margin-bottom: 14px;">
+          <b>❤️ Разбор текущей зоны турбулентности в отношениях:</b><br>
+          Поскольку сейчас в паре ощущается напряжение, ваша Луна в Раке может бессознательно уходить в «панцирь» и молчаливые обиды. Астрологический ключ к выходу из этого кризиса — перевод скрытых претензий в прямые, спокойные диалоги о ваших истинных эмоциональных потребностях без взаимных обвинений.
+        </div>
+      `;
+    } else if (relStatus.includes('Свободна') || relStatus.includes('поиске')) {
+      relCustomText = `
+        <div class="report-callout" style="background: rgba(244,114,182,0.12); border-left: 4px solid #F472B6; margin-bottom: 14px;">
+          <b>✨ Стратегия притяжения своего человека:</b><br>
+          В вашем свободном статусе включение 7-го дома происходит через расширение социального круга (Асцендент в Близнецах). Ваш идеальный партнер притягивается не на сайтах знакомств из дефицита, а в моменты, когда вы увлеченно горите своими проектами, путешествуете или обучаетесь новому!
+        </div>
+      `;
+    } else {
+      relCustomText = `
+        <div class="report-callout" style="background: rgba(244,114,182,0.12); border-left: 4px solid #F472B6; margin-bottom: 14px;">
+          <b>🕊 Фокус на личной автономии и целостности:</b><br>
+          В данный период ваша карта максимально раскрывается через укрепление собственной независимости и самореализации. Это идеальное время для наработки личного ресурса и выстраивания несокрушимых личных границ.
+        </div>
+      `;
+    }
+
+    // 2. MONEY & CAREER CUSTOMIZATION
+    let moneyCustomText = '';
+    if (moneyStatus.includes('Свое дело') || moneyStatus.includes('блог') || moneyStatus.includes('фриланс')) {
+      moneyCustomText = `
+        <div class="report-callout" style="background: rgba(80,227,194,0.12); border-left: 4px solid #50E3C2; margin-bottom: 14px;">
+          <b>🚀 Стратегия масштабирования своего бизнеса/блога:</b><br>
+          Поскольку вы развиваете собственное дело, ваша натальная матрица прямо указывает: потолок в доходах пробивается не через увеличение количества рабочих часов, а через повышение среднего чека и делегирование технической рутины. Ваша прямая монетизация лежит в авторском визионерстве и упаковке смыслов.
+        </div>
+      `;
+    } else if (moneyStatus.includes('найме')) {
+      moneyCustomText = `
+        <div class="report-callout" style="background: rgba(80,227,194,0.12); border-left: 4px solid #50E3C2; margin-bottom: 14px;">
+          <b>🏢 Переход от найма к автономности и росту дохода:</b><br>
+          В вашей карте заложено Солнце в 10-м доме — положение создателя собственных систем. В рамках найма вам тесно: карта рекомендует постепенно формировать авторские проекты или переходить на формат партнерского процента, где ваш доход напрямую зависит от масштаба созданной вами ценности.
+        </div>
+      `;
+    } else {
+      moneyCustomText = `
+        <div class="report-callout" style="background: rgba(80,227,194,0.12); border-left: 4px solid #50E3C2; margin-bottom: 14px;">
+          <b>🧭 Распаковка истинного призвания:</b><br>
+          Точка сборки вашего предназначения находится на стыке эстетики, психологии и наставничества. Перестаньте искать идеальную профессию из ума — протестируйте гипотезу создания собственного визуального или обучающего продукта.
+        </div>
+      `;
+    }
+
+    // 3. KIDS & FAMILY CUSTOMIZATION
+    let kidsCustomText = '';
+    if (kidsStatus.includes('один') || kidsStatus.includes('двое') || kidsStatus.includes('больше')) {
+      kidsCustomText = `
+        <div class="report-callout" style="background: rgba(196,181,253,0.12); border-left: 4px solid #C4B5FD; margin-bottom: 14px;">
+          <b>👶 Баланс материнства и личной реализации:</b><br>
+          С учетом наличия детей в вашей жизни, ключевой вызов вашей карты — не раствориться целиком в детских задачах (ловушка Кету в 4-м доме), а продолжать ярко светить в социуме (Раху в 10-м доме). Счастливая, реализованная и сияющая мама — лучший подарок для развития ваших детей!
+        </div>
+      `;
+    }
+
+    // 4. FOCUS CUSTOMIZATION
+    let focusCustomText = '';
+    if (focusStatus.includes('Масштаб') || focusStatus.includes('деньги')) {
+      focusCustomText = `
+        <div class="report-callout" style="background: rgba(255,232,163,0.15); border: 1px solid var(--gold); margin-bottom: 16px;">
+          <b>🎯 Ключевой акцент отчета под ваш главный запрос (Масштаб & Финансы):</b><br>
+          В этом разборе особое внимание уделено механизмам снятия финансовых блоков и точкам x3 роста через 2-й, 8-й и 10-й дома гороскопа.
+        </div>
+      `;
+    } else if (focusStatus.includes('гармония') || focusStatus.includes('семье')) {
+      focusCustomText = `
+        <div class="report-callout" style="background: rgba(255,232,163,0.15); border: 1px solid var(--gold); margin-bottom: 16px;">
+          <b>🎯 Ключевой акцент отчета под ваш главный запрос (Гармония & Отношения):</b><br>
+          В этом разборе ключевой фокус сделан на синастрической разрядке конфликтов, понимании языка любви партнера и сохранении глубокой близости.
+        </div>
+      `;
+    } else if (focusStatus.includes('тревоги') || focusStatus.includes('ресурс')) {
+      focusCustomText = `
+        <div class="report-callout" style="background: rgba(255,232,163,0.15); border: 1px solid var(--gold); margin-bottom: 16px;">
+          <b>🎯 Ключевой акцент отчета под ваш главный запрос (Ресурс & Снятие выгорания):</b><br>
+          В этом разборе детально раскрыты психосоматические законы вашей натальной Луны, способы быстрой перезагрузки и устранение гиперконтроля.
+        </div>
+      `;
+    }
+
+    customContextSection = focusCustomText + relCustomText + moneyCustomText + kidsCustomText;
 
     content.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -1900,10 +2408,13 @@
       </div>
 
       <div style="background: linear-gradient(135deg, rgba(229,195,120,0.14) 0%, rgba(138,79,158,0.14) 100%); padding: 12px 14px; border-radius: 14px; margin-bottom: 14px; border: 1px solid rgba(229,195,120,0.35); font-size: 11.5px; line-height: 1.6; color: #FFE8A3;">
-        🎯 <b>Персональная натальная карта:</b><br>
-        • Личность: <b>` + (userNatalData ? userNatalData.name : 'Гость') + `</b> (` + (userNatalData ? userNatalData.birthDate : '') + `, ` + (userNatalData ? userNatalData.birthPlace : '') + `)<br>
-        • Планетарное ядро: <b>` + (userNatalData ? userNatalData.sun : '') + ` / ` + (userNatalData ? userNatalData.moon : '') + ` / ` + (userNatalData ? userNatalData.asc : '') + `</b>
+        🎯 <b>Персональная калибровка отчёта:</b><br>
+        • Натал: <b>` + userNatalData.name + `</b> (` + userNatalData.birthDate + `, ` + userNatalData.birthPlace + `)<br>
+        • Планетарное ядро: <b>` + userNatalData.sun + ` / ` + userNatalData.moon + ` / ` + userNatalData.asc + `</b><br>
+        • Контекст жизни: <i>` + (saved.relationships || 'Учтено') + ` • ` + (saved.money || 'Учтено') + `</i>
       </div>
+
+      ` + customContextSection + `
 
       ` + reportData.body + `
 
