@@ -563,7 +563,7 @@
       </div>
     </div>
 
-    <!-- STATE 2: PROFILE_CREATED (ATMOSPHERIC DAILY DASHBOARD) -->
+    <!-- STATE 2: PROFILE_CREATED (CLASSIC BELOVED ATMOSPHERIC DASHBOARD) -->
     <div id="activeDashboard" style="display: none;">
 
       <!-- 1. GREETING & BIG 3 -->
@@ -591,7 +591,7 @@
         </div>
       </div>
 
-      <!-- 2. СОВЕТ ЛУНЫ НА СЕГОДНЯ (В ВЕРХНЕЙ ЧАСТИ) -->
+      <!-- 2. СОВЕТ ЛУНЫ НА СЕГОДНЯ -->
       <div class="card" style="border-left: 4px solid var(--gold); margin-bottom: 14px;">
         <div class="card-title">
           <span>🌙 Совет Луны на сегодня</span>
@@ -601,10 +601,23 @@
         </div>
       </div>
 
-      <!-- 3. МАГИЯ ДНЯ / СИНХРОНЫ И ПРОВОДНИКИ (СРАЗУ ПОД СОВЕТОМ) -->
+      <!-- 3. БАЗОВЫЙ НАТАЛЬНЫЙ РАЗБОР -->
+      <div class="card" style="background: linear-gradient(135deg, rgba(229,195,120,0.12) 0%, rgba(138,79,158,0.14) 100%); border: 1px solid rgba(229,195,120,0.35); margin-bottom: 14px;">
+        <div class="card-title" style="color: #FFF;">
+          <span>✨ Базовый натальный разбор (FREE)</span>
+        </div>
+        <div class="card-text" style="font-size: 12px; margin-bottom: 14px; color: var(--text-sub);">
+          Расшифровка твоей натальной триады, талантов, эмоционального типа, отношений и финансового кода.
+        </div>
+        <button class="btn-primary" onclick="showFullFreeReading()">
+          ✨ Открыть базовый разбор →
+        </button>
+      </div>
+
+      <!-- 4. МАГИЯ ДНЯ / СИНХРОНЫ И ПРОВОДНИКИ -->
       <div class="card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(229,195,120,0.25); margin-bottom: 14px;">
         <div class="card-title" style="font-size: 13px; color: var(--gold-bright);">
-          <span>✨ Магия дня / Синхроны и проводники</span>
+          <span>🔮 Магия дня / Синхроны и проводники</span>
         </div>
         <div class="weekly-row">
           <div class="weekly-col" onclick="showWeeklyModal('sync')">
@@ -622,46 +635,6 @@
             <div class="weekly-col-title">Тотем</div>
             <div class="weekly-col-val" id="magicTotem">—</div>
           </div>
-        </div>
-      </div>
-
-      <!-- 4. КОМПАКТНЫЙ БЛОК «ТВОИ ВОЗМОЖНОСТИ» -->
-      <div class="card">
-        <div class="card-title" style="margin-bottom: 12px;">
-          <span>🪐 Твои возможности</span>
-        </div>
-
-        <div class="action-row-item" onclick="showFullFreeReading()">
-          <div class="action-item-left">
-            <span class="action-item-icon">🪐</span>
-            <div>
-              <div class="action-item-title">Натальная карта</div>
-              <div class="action-item-desc">Посмотреть свой базовый портрет (FREE)</div>
-            </div>
-          </div>
-          <div class="action-item-arrow">Открыть →</div>
-        </div>
-
-        <div class="action-row-item" onclick="switchTab('chat')">
-          <div class="action-item-left">
-            <span class="action-item-icon">💬</span>
-            <div>
-              <div class="action-item-title">Спросить LUNA</div>
-              <div class="action-item-desc">Задать свой персональный вопрос звёздам</div>
-            </div>
-          </div>
-          <div class="action-item-arrow">Спросить →</div>
-        </div>
-
-        <div class="action-row-item" onclick="switchTab('catalog')">
-          <div class="action-item-left">
-            <span class="action-item-icon">🔮</span>
-            <div>
-              <div class="action-item-title">Персональные разборы</div>
-              <div class="action-item-desc">Фундаментальная PRO-книга и сферы жизни</div>
-            </div>
-          </div>
-          <div class="action-item-arrow">Каталог →</div>
         </div>
       </div>
 
