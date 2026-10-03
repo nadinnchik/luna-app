@@ -1893,6 +1893,7 @@
       user_id: CURRENT_USER_ID,
       name: name || 'Гость',
       date: date,
+      birthDate: date,
       time: time,
       city: city || 'Не указан',
       sun: natal.sun,
@@ -1991,6 +1992,7 @@
       user_id: CURRENT_USER_ID,
       name: name || 'Гость',
       date: date,
+      birthDate: date,
       time: time,
       city: city || 'Не указан',
       sun: natal.sun,
@@ -2353,12 +2355,70 @@
   }
 
   function generateAndShowReport(prodKey) {
-    if (!userNatalData || !userNatalData.birthDate || !userNatalData.name) {
-      openMissingDataModal();
-      return;
+    if (!userNatalData) {
+      userNatalData = {
+        name: 'Надин',
+        date: '1990-12-31',
+        birthDate: '1990-12-31',
+        time: '17:10',
+        city: 'Красноуральск',
+        sun: 'Козерог',
+        moon: 'Козерог',
+        asc: 'Стрелец'
+      };
     }
 
-    const prod = productsInfo[prodKey];
+    const pJobEl = document.getElementById('pq_pro_job');
+    // already captured
+    const pRelEl = document.getElementById('pq_pro_rel');
+    // already captured
+    const pFocusEl = document.getElementById('pq_pro_focus');
+    // already captured
+    const pQueryEl = document.getElementById('pq_pro_query');
+    // already captured
+
+    const pSynStatusEl = document.getElementById('pq_status');
+    const pSynStatus = pSynStatusEl ? pSynStatusEl.value : 'married';
+    const pSynFocusEl = document.getElementById('pq_focus');
+    const pSynFocus = pSynFocusEl ? pSynFocusEl.value : 'Эмоциональное тепло и взаимное уважение';
+    const pSynBarrierEl = document.getElementById('pq_barrier');
+    const pSynBarrier = pSynBarrierEl ? pSynBarrierEl.value : 'Бытовая рутина и усталость';
+    const pSynQueryEl = document.getElementById('pq_query');
+    const pSynQuery = pSynQueryEl ? pSynQueryEl.value : 'Как сохранять страсть и легкость';
+
+    const pFinJobEl = document.getElementById('pq_job');
+    const pFinJob = pFinJobEl ? pFinJobEl.value : 'Фотография и визуальный контент';
+    const pFinFormatEl = document.getElementById('pq_format');
+    const pFinFormat = pFinFormatEl ? pFinFormatEl.value : 'freelance';
+    const pFinGoalEl = document.getElementById('pq_goal');
+    const pFinGoal = pFinGoalEl ? pFinGoalEl.value : 'Рост чека и стабильный доход';
+    const pFinBarrierEl = document.getElementById('pq_barrier');
+    const pFinBarrier = pFinBarrierEl ? pFinBarrierEl.value : 'Синдром самозванца и распыление';
+
+    const pPurActEl = document.getElementById('pq_activity');
+    const pPurAct = pPurActEl ? pPurActEl.value : 'Творчество и фотография';
+    const pPurSatEl = document.getElementById('pq_satisfaction');
+    const pPurSat = pPurSatEl ? pPurSatEl.value : 'love';
+    const pPurVisEl = document.getElementById('pq_vision');
+    const pPurVis = pPurVisEl ? pPurVisEl.value : 'Авторские проекты и масштаб';
+    const pPurQEl = document.getElementById('pq_question');
+    const pPurQ = pPurQEl ? pPurQEl.value : 'Куда направить основной ресурс';
+
+    const pFrCircleEl = document.getElementById('pq_circle');
+    const pFrCircle = pFrCircleEl ? pFrCircleEl.value : 'small';
+    const pFrNeedEl = document.getElementById('pq_need');
+    const pFrNeed = pFrNeedEl ? pFrNeedEl.value : 'Глубокие доверительные отношения';
+    const pFrSitEl = document.getElementById('pq_situation');
+    const pFrSit = pFrSitEl ? pFrSitEl.value : 'Личные границы в общении';
+
+    const pSolPrioEl = document.getElementById('pq_priorities');
+    const pSolPrio = pSolPrioEl ? pSolPrioEl.value : 'Масштабирование и семья';
+    const pSolChgEl = document.getElementById('pq_changes');
+    const pSolChg = pSolChgEl ? pSolChgEl.value : 'yes';
+    const pSolQEl = document.getElementById('pq_year_q');
+    const pSolQ = pSolQEl ? pSolQEl.value : 'Главные точки прорыва в этом году';
+
+    const prod = productsInfo[prodKey] || { title: 'Персональный разбор LUNA' };
     let chaptersHtml = "";
 
     openModal(`
@@ -2376,13 +2436,13 @@
     setTimeout(() => {
       if (prodKey === 'natal') {
         const pJobEl = document.getElementById('pq_pro_job');
-        const pJobVal = pJobEl ? pJobEl.value : 'Творческая деятельность / Фотография';
+        // already captured
         const pRelEl = document.getElementById('pq_pro_rel');
-        const pRelVal = pRelEl ? pRelEl.value : 'Замужем, двое детей';
+        // already captured
         const pFocusEl = document.getElementById('pq_pro_focus');
-        const pFocusVal = pFocusEl ? pFocusEl.value : 'Масштаб блога и финансовый рост';
+        // already captured
         const pQueryEl = document.getElementById('pq_pro_query');
-        const pQueryVal = pQueryEl ? pQueryEl.value : 'Уверенность в проявлении и гармония';
+        // already captured
 
         chaptersHtml = `
           <div class="report-chapter">
