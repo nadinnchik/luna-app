@@ -1292,7 +1292,11 @@
     tg.ready();
   }
 
-  // 1. DETERMINISTIC TELEGRAM USER ID / STABLE PROFILE SCOPE
+  // 1. DETERMINISTIC TELEGRAM USER ID & BACKEND API ADAPTER
+  const API_BASE_URL = window.LUNA_API_URL || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://127.0.0.1:8000' : 'https://luna-api-production.up.railway.app');
+
+  let lunaAuthToken = localStorage.getItem('luna_auth_jwt') || null;
+
   function getEffectiveUserId() {
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
       return 'tg_' + tg.initDataUnsafe.user.id;
@@ -1312,6 +1316,88 @@
 
   let userNatalData = null;
   let userChildrenList = [];
+
+  // Backend API synchronization
+  async function apiRequest(endpoint, method = 'GET', data = null) {
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (lunaAuthToken) {
+        headers['Authorization'] = `Bearer ${lunaAuthToken}`;
+      }
+      const options = { method, headers };
+      if (data && method !== 'GET') {
+        options.body = JSON.stringify(data);
+      }
+      const res = await fetch(`${API_BASE_URL}${endpoint}`, options);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (e) {
+      console.warn('LUNA API offline fallback:', e.message);
+      return null;
+    }
+  }
+
+  async function authenticateWithBackend() {
+    const initData = (tg && tg.initData) ? tg.initData : '';
+    const payload = { init_data: initData };
+    if (!initData) {
+      // Local dev fallback
+      payload.dev_user_id = 999001;
+    }
+    const res = await apiRequest('/api/v1/auth/telegram', 'POST', payload);
+    if (res && res.access_token) {
+      lunaAuthToken = res.access_token;
+      localStorage.setItem('luna_auth_jwt', lunaAuthToken);
+      if (res.user) {
+        applyServerUserData(res.user);
+      }
+    }
+  }
+
+  function applyServerUserData(user) {
+    if (user.birth_date && user.name) {
+      userNatalData = {
+        user_id: 'tg_' + user.telegram_id,
+        name: user.name || user.first_name || 'Гость',
+        date: user.birth_date,
+        birthDate: user.birth_date,
+        time: user.birth_time || '12:00',
+        city: user.birth_city || 'Не указан',
+        sun: user.sun_sign,
+        moon: user.moon_sign,
+        asc: user.asc_sign,
+        updated_at: user.updated_at
+      };
+      localStorage.setItem(STORAGE_KEY_NATAL, JSON.stringify(userNatalData));
+      updateNatalUI();
+    }
+    if (user.children && Array.isArray(user.children)) {
+      userChildrenList = user.children.map(c => ({
+        id: c.id,
+        name: c.name,
+        birthDate: c.birth_date,
+        birthTime: c.birth_time || '12:00',
+        birthCity: c.birth_city || 'Не указан',
+        sunSign: c.sun_sign
+      }));
+      localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(userChildrenList));
+      if (typeof renderChildrenList === 'function') renderChildrenList();
+    }
+    if (user.quiz) {
+      const qData = {
+        qRel: user.quiz.q_rel,
+        qJob: user.quiz.q_job,
+        qFocus: user.quiz.q_focus,
+        completedAt: user.quiz.completed_at
+      };
+      localStorage.setItem(STORAGE_KEY_QUIZ, JSON.stringify(qData));
+      const statusEl = document.getElementById('profQuizStatus');
+      if (statusEl) {
+        statusEl.textContent = 'Анкета: Заполнена ✨ (учитывается в анализе)';
+        statusEl.style.color = '#10B981';
+      }
+    }
+  }
 
   const dailyAdvices = [
     "«Сегодня тебе может быть особенно полезно прислушаться к собственному ощущению правильного направления — особенно там, где чужие ожидания начинают перебивать твой внутренний голос.»",
@@ -1628,7 +1714,7 @@
     openModal(html);
   }
 
-  function saveNewChild() {
+  async function saveNewChild() {
     const name = (document.getElementById('ncName').value || '').trim();
     const date = document.getElementById('ncDate').value;
     const time = document.getElementById('ncTime').value || '12:00';
@@ -1655,13 +1741,31 @@
     localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(userChildrenList));
     renderChildrenList();
     closeModal();
+
+    // Async sync with FastAPI Backend
+    const res = await apiRequest('/api/v1/children', 'POST', {
+      name: newChild.name,
+      birth_date: newChild.birthDate,
+      birth_time: newChild.birthTime,
+      birth_city: newChild.birthCity,
+      sun_sign: newChild.sunSign
+    });
+    if (res && res.id) {
+      newChild.id = res.id;
+      localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(userChildrenList));
+    }
   }
 
-  function deleteChild(idx) {
+  async function deleteChild(idx) {
     if (confirm('Удалить профиль ребёнка?')) {
+      const targetChild = userChildrenList[idx];
       userChildrenList.splice(idx, 1);
       localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(userChildrenList));
       renderChildrenList();
+
+      if (targetChild && typeof targetChild.id === 'number') {
+        apiRequest(`/api/v1/children/${targetChild.id}`, 'DELETE');
+      }
     }
   }
 
@@ -1905,6 +2009,17 @@
     localStorage.setItem(STORAGE_KEY_NATAL, JSON.stringify(userNatalData));
     localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData));
     updateNatalUI();
+
+    // Async sync with FastAPI Backend
+    apiRequest('/api/v1/profile/natal', 'PUT', {
+      name: userNatalData.name,
+      birth_date: userNatalData.date,
+      birth_time: userNatalData.time,
+      birth_city: userNatalData.city,
+      sun_sign: userNatalData.sun,
+      moon_sign: userNatalData.moon,
+      asc_sign: userNatalData.asc
+    });
   }
 
   
@@ -2005,6 +2120,17 @@
     localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData));
     updateNatalUI();
     closeModal();
+
+    // Async sync with FastAPI Backend
+    apiRequest('/api/v1/profile/natal', 'PUT', {
+      name: userNatalData.name,
+      birth_date: userNatalData.date,
+      birth_time: userNatalData.time,
+      birth_city: userNatalData.city,
+      sun_sign: userNatalData.sun,
+      moon_sign: userNatalData.moon,
+      asc_sign: userNatalData.asc
+    });
   }
 
   function openWeekForecastModal() {
@@ -2780,6 +2906,13 @@
     }
 
     closeModal();
+
+    // Async sync with FastAPI Backend
+    apiRequest('/api/v1/quiz', 'POST', {
+      q_rel: qRel,
+      q_job: qJob,
+      q_focus: qFocus
+    });
   }
 
   // 2. STABLE INITIALIZATION & RESTORATION
@@ -2791,6 +2924,7 @@
       localStorage.removeItem(STORAGE_KEY_CHILDREN);
       localStorage.removeItem('luna_user_natal_data');
       localStorage.removeItem('luna_user_quiz_profile');
+      localStorage.removeItem('luna_auth_jwt');
       userNatalData = null;
       userChildrenList = [];
     } else {
@@ -2823,6 +2957,9 @@
     }
 
     updateNatalUI();
+
+    // Authenticate with backend and fetch synced profile from database
+    authenticateWithBackend();
   });
 </script>
 
