@@ -84,3 +84,11 @@ class UserOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+# Analytics Event Schema
+class AnalyticsEventSchema(BaseModel):
+    event: str
+    userId: Optional[str] = None
+    timestamp: Optional[str] = None
+    payload: Optional[dict] = None

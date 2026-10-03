@@ -815,6 +815,175 @@
   .hero-natal-btn:active {
     transform: scale(0.98);
   }
+
+  /* === TRIPWIRE & SUBSCRIPTION & CHAT ENHANCEMENTS === */
+  .credit-header-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(229, 195, 120, 0.14);
+    border: 1px solid rgba(229, 195, 120, 0.45);
+    color: #FFE8A3;
+    padding: 3px 10px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .credit-header-pill:active {
+    transform: scale(0.96);
+    background: rgba(229, 195, 120, 0.25);
+  }
+
+  .tripwire-card {
+    background: linear-gradient(135deg, rgba(46, 26, 71, 0.9) 0%, rgba(20, 14, 38, 0.95) 100%);
+    border: 1.5px solid rgba(243, 186, 47, 0.6);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 28px rgba(139, 92, 246, 0.25), 0 0 15px rgba(243, 186, 47, 0.15);
+  }
+  .tripwire-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle, rgba(243, 186, 47, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .tripwire-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, #FFB800, #E5C378);
+    color: #1A1028;
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .tripwire-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFF;
+    line-height: 1.25;
+    margin-bottom: 4px;
+  }
+  .tripwire-desc {
+    font-size: 12px;
+    color: #D6D0E4;
+    line-height: 1.45;
+    margin-bottom: 12px;
+  }
+  .tripwire-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .tripwire-chip-item {
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(229, 195, 120, 0.3);
+    padding: 3px 8px;
+    border-radius: 10px;
+    color: #FFE8A3;
+  }
+
+  /* Chat Suggestions & Credit Bar */
+  .chat-credit-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(22, 18, 38, 0.85);
+    border: 1px solid rgba(229, 195, 120, 0.3);
+    border-radius: 12px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    font-size: 11.5px;
+  }
+  .chat-chips-scroll {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 4px 2px 10px 2px;
+    margin-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .chat-chips-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .chat-prompt-chip {
+    flex-shrink: 0;
+    background: rgba(35, 26, 56, 0.9);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    color: #E2DFEC;
+    font-size: 11px;
+    padding: 6px 11px;
+    border-radius: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .chat-prompt-chip:hover, .chat-prompt-chip:active {
+    background: rgba(139, 92, 246, 0.25);
+    border-color: rgba(229, 195, 120, 0.6);
+    color: #FFE8A3;
+  }
+
+  /* Subscription Cards Grid */
+  .sub-card {
+    background: rgba(22, 18, 38, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .sub-card.popular {
+    border-color: rgba(243, 186, 47, 0.8);
+    background: linear-gradient(145deg, rgba(38, 26, 62, 0.9) 0%, rgba(20, 14, 38, 0.95) 100%);
+    box-shadow: 0 0 20px rgba(243, 186, 47, 0.2);
+  }
+  .sub-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: var(--gold-btn);
+    color: #120C22;
+    font-size: 9.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 8px;
+  }
+  .sub-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFF;
+    margin-bottom: 2px;
+  }
+  .sub-price {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+  }
+  .sub-features {
+    font-size: 11.5px;
+    color: #CBD5E1;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
 </style>
 
 </head>
@@ -834,10 +1003,15 @@
     <!-- TOP HEADER & AVATAR -->
     <div class="top-bar">
       <div class="brand-title">LUNA ✦</div>
-      <div class="brand-subtitle">Твой персональный AI-астролог</div>
-      <div style="display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: var(--gold); background: rgba(212, 175, 55, 0.12); border: 1px solid rgba(212, 175, 55, 0.3); padding: 2px 8px; border-radius: 12px; margin-top: 6px;">
-        <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
-        <span>v1.1.0 • Cloud Sync</span>
+      <div class="brand-subtitle">ПЕРСОНАЛЬНЫЙ AI-АСТРОЛОГ • НЕ ПРО ЗНАК, ПРО ТЕБЯ</div>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px;">
+        <div style="display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: var(--gold); background: rgba(212, 175, 55, 0.12); border: 1px solid rgba(212, 175, 55, 0.3); padding: 2px 8px; border-radius: 12px;">
+          <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
+          <span>v1.2.0 • Live</span>
+        </div>
+        <div class="credit-header-pill" onclick="openSubscriptionModal()">
+          ✨ <span id="headerCreditsCount">3</span> AI-запроса ⚡
+        </div>
       </div>
     </div>
 
@@ -848,17 +1022,17 @@
       </div>
       <div class="status-badge">
         <div class="status-dot"></div>
-        <span>LUNA в сети · Персональный анализ</span>
+        <span>LUNA в сети · Персональный диалог</span>
       </div>
     </div>
 
     <!-- STATE 1: ONBOARDING FOR NEW USERS (NO FAKE PROFILE) -->
     <div id="onboardingScreen" style="display: none;">
       <div class="card" style="background: linear-gradient(180deg, rgba(28, 22, 50, 0.94) 0%, rgba(14, 11, 26, 0.98) 100%); border-color: rgba(212, 175, 55, 0.45);">
-        <div class="card-title">✨ Добро пожаловать в LUNA</div>
+        <div class="card-title">✨ Открой свою натальную матрицу</div>
         <div class="sparkle-div">✦ ✦ ✦</div>
         <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
-          Чтобы составить твой персональный натальный профиль, ежедневные советы и разборы, укажи данные своего рождения:
+          Не общий гороскоп из журнала. LUNA рассчитывает точные астрономические координаты планет на момент твоего рождения и помогает понять твои истинные паттерны.
         </p>
 
         <div class="form-group">
@@ -883,7 +1057,7 @@
         </div>
 
         <button class="btn-gold" style="margin-top: 12px;" onclick="submitOnboardingProfile()">
-          ✨ Рассчитать мою натальную карту
+          ✨ Построить мою карту бесплатно
         </button>
       </div>
     </div>
@@ -891,7 +1065,7 @@
     <!-- STATE 2: ACTIVE DASHBOARD (FOR USERS WITH PROFILE) -->
     <div id="activeDashboard" style="display: none;">
 
-      <!-- ② ⭐ 1. МИНИ-НАТАЛЬНАЯ КАРТА (ГЛАВНЫЙ АКЦЕНТНЫЙ БЛОК) -->
+      <!-- 1. МИНИ-НАТАЛЬНАЯ КАРТА (ГЛАВНЫЙ АКЦЕНТНЫЙ БЛОК) -->
       <div class="hero-natal-card">
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
           <div class="hero-natal-badge">⭐ Бесплатный разбор</div>
@@ -922,6 +1096,23 @@
           Открыть мини-карту →
         </button>
       </div>
+
+      <!-- 🎯 TRIPWIRE BANNER ON DASHBOARD (BLUEPRINT §4 & §8) -->
+      <div class="tripwire-card">
+        <div class="tripwire-badge">🔥 Хит · Тест за 99 ₽</div>
+        <div class="tripwire-title">🎯 Разбор повторяющегося сценария</div>
+        <div class="tripwire-desc">
+          Почему ситуация в отношениях, финансах или работе повторяется по кругу? Разбери свой ключевой паттерн по натальной карте.
+        </div>
+        <div class="tripwire-chips">
+          <span class="tripwire-chip-item">❤️ Отношения</span>
+          <span class="tripwire-chip-item">💰 Финансы</span>
+          <span class="tripwire-chip-item">🎯 Реализация</span>
+          <span class="tripwire-chip-item">🧭 Выбор</span>
+        </div>
+        <button class="btn-gold" style="padding: 11px 16px; font-size: 13.5px;" onclick="openTripwireModal()">
+          Разобрать сценарий за 99 ₽ →
+        </button>
       </div>
 
       <!-- 2. 🌙 СОВЕТ ОТ ЛУНЫ НА СЕГОДНЯ -->
@@ -1023,6 +1214,7 @@
     <!-- FILTER CHIPS -->
     <div class="filter-chips">
       <div class="filter-chip active" onclick="filterCatalog('all', this)">Все</div>
+      <div class="filter-chip" onclick="filterCatalog('tripwire', this)">⭐ Экспресс (99 ₽)</div>
       <div class="filter-chip" onclick="filterCatalog('me', this)">Про меня</div>
       <div class="filter-chip" onclick="filterCatalog('love', this)">Отношения</div>
       <div class="filter-chip" onclick="filterCatalog('money', this)">Деньги</div>
@@ -1031,6 +1223,27 @@
     </div>
 
     <div id="catalogList">
+
+      <!-- ⭐ 0. TRIPWIRE PRODUCT (LEADING TEST OFFER 99 ₽) -->
+      <div class="catalog-card" data-category="tripwire" style="border: 1.5px solid rgba(243, 186, 47, 0.7); background: linear-gradient(135deg, rgba(38, 24, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);" onclick="openTripwireModal()">
+        <div>
+          <span class="cat-badge" style="background: var(--gold-btn); color: #120C22; font-weight: 800;">⭐ Хит · Экспресс-разбор</span>
+          <div class="cat-title">🎯 Разбор повторяющегося сценария</div>
+          <div class="cat-desc">Точечный анализ одной актуальной темы: почему сценарий повторяется, какие натальные факторы за этим стоят и практический фокус на ближайшее время.</div>
+          <div class="cat-points">
+            <div class="cat-point">✨ Причина повторяющегося сценария в карте</div>
+            <div class="cat-point">🔍 Разбор конкретной ситуации: отношения, деньги или выбор</div>
+            <div class="cat-point">🧭 1 конструктивный фокус и ориентир действий</div>
+          </div>
+        </div>
+        <div class="cat-footer">
+          <div>
+            <div style="font-size: 10px; color: #10B981; font-weight: 700; text-transform: uppercase;">Тестовая цена</div>
+            <div class="cat-price" style="color: #FFE8A3;">99 ₽</div>
+          </div>
+          <button class="cat-btn">Разобрать за 99 ₽ →</button>
+        </div>
+      </div>
 
       <!-- 1. NATAL BOOK PRO (UNTOUCHED GOLD STANDARD) -->
       <div class="catalog-card" data-category="me" onclick="showProductModal('natal')">
@@ -1158,13 +1371,25 @@
         </div>
       </div>
 
+      <!-- 💎 SUBSCRIPTION TEASER BANNER IN CATALOG -->
+      <div class="card" style="border: 1.5px solid rgba(139, 92, 246, 0.5); background: linear-gradient(135deg, rgba(38, 22, 60, 0.9) 0%, rgba(18, 12, 34, 0.95) 100%); text-align: center; padding: 18px 16px;">
+        <div style="font-size: 11px; font-weight: 800; color: #A78BFA; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">💎 Подписка Luna Plus</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 700; color: #FFF; margin-bottom: 6px;">Регулярный диалог с твоей картой</div>
+        <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 14px; line-height: 1.45;">
+          Подключи тариф от 299 ₽/мес: 30–200 персональных AI-запросов, прогнозы и глубокие разборы.
+        </div>
+        <button class="btn-gold" style="padding: 10px 18px; font-size: 13px;" onclick="openSubscriptionModal()">
+          Выбрать тариф подписки →
+        </button>
+      </div>
+
     </div>
   </div>
 
 
   <!-- ================= 3. TAB: AI-ASTROLOGER CHAT ================= -->
   <div id="tab-chat" class="tab-view" style="display: none;">
-    <div style="margin-bottom: 12px;">
+    <div style="margin-bottom: 10px;">
       <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light);">
         💬 Спросить LUNA
       </div>
@@ -1173,14 +1398,43 @@
       </div>
     </div>
 
+    <!-- CHAT CREDIT BAR (BLUEPRINT §5) -->
+    <div class="chat-credit-bar">
+      <div style="color: var(--gold-light); font-weight: 600;">
+        ⚡ Баланс: <span id="chatCreditsCount" style="color: #FFF; font-weight: 800;">3</span> запроса
+      </div>
+      <button style="background: rgba(229, 195, 120, 0.15); border: 1px solid rgba(229, 195, 120, 0.4); color: var(--gold); border-radius: 10px; padding: 4px 9px; font-size: 11px; font-weight: 700; cursor: pointer;" onclick="openSubscriptionModal()">
+        + Пополнить
+      </button>
+    </div>
+
+    <!-- QUICK PROMPT CHIPS (BLUEPRINT APPENDIX A & B) -->
+    <div class="chat-chips-scroll">
+      <div class="chat-prompt-chip" onclick="askQuickPrompt('Почему у меня повторяется один и тот же сценарий?')">
+        🔁 Повторяющийся сценарий
+      </div>
+      <div class="chat-prompt-chip" onclick="askQuickPrompt('Что сейчас происходит в моём текущем периоде жизни?')">
+        ⏳ Мой период сейчас
+      </div>
+      <div class="chat-prompt-chip" onclick="askQuickPrompt('Где мой главный природный источник дохода?')">
+        💰 Финансовый фокус
+      </div>
+      <div class="chat-prompt-chip" onclick="askQuickPrompt('Как мне перестать сомневаться при принятии решений?')">
+        🧭 Принятие решений
+      </div>
+      <div class="chat-prompt-chip" onclick="askQuickPrompt('Что показывает моя Луна про отдых и восстановление?')">
+        🌙 Отдых и ресурс
+      </div>
+    </div>
+
     <div class="chat-wrap">
       <div class="chat-messages" id="chatBox">
         <div class="chat-bubble bot">
-          Здравствуй! Я здесь, чтобы бережно разобрать любой твой вопрос — будь то отношения, выбор в работе, поиск вдохновения или понимание текущего состояния. О чем ты хочешь поговорить?
+          Здравствуй! Я здесь, чтобы разобрать твой вопрос с опорой на натальную карту — отношения, карьерный выбор, финансы или повторяющиеся жизненные сценарии. О чём ты хочешь поговорить?
         </div>
       </div>
       <div class="chat-input-bar">
-        <input type="text" id="chatInput" class="chat-input" placeholder="Напиши свой вопрос..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Напиши свой вопрос к карте..." onkeypress="if(event.key==='Enter') sendChatMessage()">
         <button class="btn-gold" style="width: auto; padding: 10px 16px;" onclick="sendChatMessage()">
           ➤
         </button>
@@ -1196,7 +1450,26 @@
         👤 Твой натальный профиль
       </div>
       <div style="font-size: 12px; color: var(--text-muted);">
-        Данные карты, профили детей и настройки персонализации
+        Данные карты, подписка, баланс запросов и дети
+      </div>
+    </div>
+
+    <!-- 💎 SUBSCRIPTION & CREDITS CARD (BLUEPRINT §5) -->
+    <div class="card" style="border-color: rgba(243, 186, 47, 0.45); background: linear-gradient(145deg, rgba(34, 22, 54, 0.9) 0%, rgba(18, 12, 34, 0.95) 100%);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <div class="card-title" style="margin-bottom: 0;">💎 Тариф и AI-запросы</div>
+        <span id="profPlanBadge" style="background: rgba(229, 195, 120, 0.2); border: 1px solid rgba(229, 195, 120, 0.5); color: #FFE8A3; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Free (Старт)</span>
+      </div>
+      <div style="font-size: 13px; color: #E2DFEC; margin-bottom: 10px; line-height: 1.5;">
+        Осталось персональных AI-запросов: <b id="profCreditsCount" style="color: var(--gold-light); font-size: 15px;">3</b>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-gold" style="padding: 10px 14px; font-size: 12.5px;" onclick="openSubscriptionModal()">
+          Управление подпиской ⚡
+        </button>
+        <button class="btn-outline" style="padding: 10px 14px; font-size: 12.5px;" onclick="openTopUpModal()">
+          + Пакет запросов
+        </button>
       </div>
     </div>
 
@@ -1612,6 +1885,8 @@
 
   function openMiniNatalModal() {
     haptic();
+    trackLunaEvent('mini_reading_viewed');
+
     const data = userNatalData || {
       name: 'Надин',
       sun: 'Козерог',
@@ -1665,13 +1940,23 @@
           </p>
         </div>
 
-        <div style="background: linear-gradient(135deg, rgba(138, 79, 158, 0.22) 0%, rgba(229, 195, 120, 0.16) 100%); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 16px; padding: 16px; text-align: center; margin-top: 20px;">
-          <div style="font-size: 14.5px; font-weight: 700; color: #FFF; margin-bottom: 6px;">Хочешь узнать всё до деталей? 📖</div>
-          <div style="font-size: 12.5px; color: var(--text-sub); margin-bottom: 14px; line-height: 1.45;">
-            Полная натальная карта PRO содержит глубокий разбор всех 10 планет, 12 домов, кармической оси и внутренних противоречий.
+        <!-- TRIPWIRE OFFER EMBEDDED DIRECTLY (BLUEPRINT §4 & §8) -->
+        <div style="background: linear-gradient(135deg, rgba(46, 26, 71, 0.95) 0%, rgba(20, 14, 38, 0.98) 100%); border: 1.5px solid rgba(243, 186, 47, 0.6); border-radius: 16px; padding: 16px; text-align: center; margin-top: 18px;">
+          <div class="tripwire-badge" style="margin-bottom: 6px;">🔥 Рекомендуемый следующий шаг</div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 4px;">
+            Разбор повторяющегося сценария · 99 ₽
           </div>
-          <button onclick="closeModal(); switchTab('catalog');" class="sheet-btn" style="width: 100%; padding: 13px; font-weight: 700; font-size: 14px;">
-            Смотреть в каталоге →
+          <div style="font-size: 12px; color: #D6D0E4; margin-bottom: 12px; line-height: 1.45;">
+            Узнай, почему в отношениях, деньгах или карьере повторяется один и тот же замкнутый круг и как его разомкнуть.
+          </div>
+          <button onclick="closeModal(); openTripwireModal();" class="btn-gold" style="width: 100%; padding: 12px; font-size: 13.5px;">
+            Разобрать мой сценарий за 99 ₽ →
+          </button>
+        </div>
+
+        <div style="text-align: center; margin-top: 14px;">
+          <button onclick="closeModal(); switchTab('catalog');" style="background: none; border: none; color: var(--gold); font-size: 12px; text-decoration: underline; cursor: pointer;">
+            Или смотреть полный каталог PRO-книг →
           </button>
         </div>
       </div>
@@ -2860,13 +3145,105 @@
     }, 1200);
   }
 
+  // ================= 5. MARKETING & ANALYTICS & CREDITS ENGINE =================
+  function trackLunaEvent(eventName, payload = {}) {
+    try {
+      const eventObj = {
+        event: eventName,
+        userId: currentUserId,
+        timestamp: new Date().toISOString(),
+        payload: payload
+      };
+      const events = JSON.parse(localStorage.getItem('luna_analytics_events') || '[]');
+      events.push(eventObj);
+      localStorage.setItem('luna_analytics_events', JSON.stringify(events.slice(-100)));
+      console.log(`[📊 LUNA ANALYTICS] ${eventName}`, payload);
+      
+      // Async beacon to backend if logged in
+      if (lunaAuthToken) {
+        apiRequest('/api/v1/analytics/event', 'POST', eventObj).catch(() => {});
+      }
+    } catch (e) {}
+  }
+
+  function getStorageKeyCredits() { return 'luna_user_credits_' + currentUserId; }
+  function getStorageKeyPlan() { return 'luna_user_plan_' + currentUserId; }
+
+  function getUserCredits() {
+    const raw = localStorage.getItem(getStorageKeyCredits());
+    if (raw === null) {
+      localStorage.setItem(getStorageKeyCredits(), '3');
+      return 3;
+    }
+    return parseInt(raw, 10) || 0;
+  }
+
+  function setUserCredits(count) {
+    localStorage.setItem(getStorageKeyCredits(), count.toString());
+    updateCreditDisplays();
+  }
+
+  function getUserPlan() {
+    return localStorage.getItem(getStorageKeyPlan()) || 'Free (Старт)';
+  }
+
+  function setUserPlan(planName) {
+    localStorage.setItem(getStorageKeyPlan(), planName);
+    const badge = document.getElementById('profPlanBadge');
+    if (badge) badge.textContent = planName;
+  }
+
+  function updateCreditDisplays() {
+    const cr = getUserCredits();
+    const hEl = document.getElementById('headerCreditsCount');
+    if (hEl) hEl.textContent = cr;
+    const cEl = document.getElementById('chatCreditsCount');
+    if (cEl) cEl.textContent = cr;
+    const pEl = document.getElementById('profCreditsCount');
+    if (pEl) pEl.textContent = cr;
+    const pBadge = document.getElementById('profPlanBadge');
+    if (pBadge) pBadge.textContent = getUserPlan();
+  }
+
+  function askQuickPrompt(txt) {
+    haptic();
+    const inp = document.getElementById('chatInput');
+    if (inp) {
+      inp.value = txt;
+      sendChatMessage();
+    }
+  }
+
   function sendChatMessage() {
     const input = document.getElementById('chatInput');
     const txt = (input.value || '').trim();
     if (!txt) return;
 
+    const credits = getUserCredits();
+    if (credits <= 0) {
+      haptic('warning');
+      trackLunaEvent('credits_exhausted');
+      openModal(`
+        <div style="text-align: center; padding: 10px 4px 16px;">
+          <div style="font-size: 32px; margin-bottom: 8px;">⚡</div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+            Персональные запросы завершились
+          </div>
+          <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
+            Ты использовала все бесплатные AI-запросы. Чтобы продолжить глубокий диалог с твоей картой, выбери удобный тариф или пакет:
+          </p>
+          <button class="btn-gold" style="margin-bottom: 10px;" onclick="closeModal(); openSubscriptionModal();">
+            💎 Выбрать тариф (от 299 ₽)
+          </button>
+          <button class="btn-outline" onclick="closeModal(); openTopUpModal();">
+            ⚡ Докупить 15 запросов (99 ₽)
+          </button>
+        </div>
+      `);
+      return;
+    }
+
     const box = document.getElementById('chatBox');
-    
     const uBubble = document.createElement('div');
     uBubble.className = 'chat-bubble user';
     uBubble.textContent = txt;
@@ -2875,20 +3252,335 @@
     input.value = '';
     box.scrollTop = box.scrollHeight;
 
+    // Deduct 1 credit
+    setUserCredits(credits - 1);
+    trackLunaEvent('chat_question_asked', { question: txt, creditsLeft: credits - 1 });
+
     setTimeout(() => {
       const bBubble = document.createElement('div');
       bBubble.className = 'chat-bubble bot';
 
-      let signInfo = userNatalData ? `${userNatalData.sun} (Луна в знаке ${userNatalData.moon})` : "твоего натального профиля";
+      let signInfo = userNatalData ? `${userNatalData.sun} (Луна в знаке ${userNatalData.moon})` : "твоей натальной карты";
       
-      bBubble.innerHTML = `
-        С точки зрения энергии ${signInfo} и твоего текущего вопроса:
-        <br><br>
-        В этой ситуации важно не форсировать события через избыточное напряжение. Твоя натальная сила раскрывается через устойчивое спокойствие и верность своей внутренней планке. Обрати внимание на то, где ты пытаешься соответствовать чужим ожиданиям, и сделай выбор в пользу личного комфорта.
-      `;
+      let answerText = "";
+      const lower = txt.toLowerCase();
+
+      if (lower.includes('сценарий') || lower.includes('повторя')) {
+        answerText = `
+          В твоей карте ключевой паттерн повторения сценариев связан с положением Луны в ${userNatalData ? userNatalData.moon : 'Козероге'} и узлов судьбы.
+          <br><br>
+          Ты часто бессознательно выбираешь ситуации, где требуется доказывать свою нужность или брать на себя избыточную ответственность. Когда ты замечаешь этот импульс и делаешь паузу, старый круг разрывается.
+          <br><br>
+          <div style="background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 10px; padding: 10px; font-size: 12px; color: #FFE8A3;">
+            💡 <b>Рекомендация:</b> Хочешь разобрать этот паттерн досконально? Доступен экспресс-разбор всего за 99 ₽.
+            <div style="margin-top: 6px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="openTripwireModal('отношения')">Разобрать за 99 ₽ →</div>
+          </div>
+        `;
+      } else if (lower.includes('деньг') || lower.includes('доход') || lower.includes('финанс')) {
+        answerText = `
+          Твой финансовый код опирается на баланс Солнца в ${userNatalData ? userNatalData.sun : 'Козероге'} и 2-го дома ценностей.
+          <br><br>
+          Твои деньги приходят не через суету и демпинг, а через ощущение авторитета, высокий стандарт качества и авторское позиционирование. Как только ты снижаешь чек или соглашаешься на компромиссы из страха, поток сжимается.
+        `;
+      } else if (lower.includes('период') || lower.includes('сейчас')) {
+        answerText = `
+          Текущий транзитный фон ставит акцент на структурирование внутренней энергии и завершение старых ментальных долгов.
+          <br><br>
+          Это период не для резких рывков на истощении, а для кристаллизации твоего главного направления. То, что сейчас отсекается — освобождает место под масштабные цели.
+        `;
+      } else {
+        answerText = `
+          С точки зрения натального синтеза ${signInfo}:
+          <br><br>
+          В этом вопросе важно не действовать из чувства спешки или попытки угодить окружающим. Твоя натальная сила раскрывается через спокойную опору на свои ценности. Сделай выбор в пользу того сценария, который дает глубокий внутренний выдох и расширение.
+        `;
+      }
+
+      bBubble.innerHTML = answerText;
       box.appendChild(bBubble);
       box.scrollTop = box.scrollHeight;
-    }, 800);
+    }, 750);
+  }
+
+  // ================= 6. TRIPWIRE (99 ₽) MODAL & ENGINE =================
+  function openTripwireModal(defaultTopic = 'relations') {
+    haptic();
+    trackLunaEvent('tripwire_viewed', { topic: defaultTopic });
+
+    const html = `
+      <div style="padding: 6px 2px 14px;">
+        <div class="tripwire-badge" style="margin-bottom: 6px;">⭐ Экспресс-разбор · 99 ₽</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+          🎯 Почему повторяется один и тот же сценарий?
+        </div>
+        <div style="font-size: 12.5px; color: #D1CCDE; line-height: 1.45; margin-bottom: 14px;">
+          Точечный астрологический разбор ключевой проблемы по твоей натальной карте без воды и сложных терминов.
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">1. В какой сфере повторяется сценарий?</label>
+          <select id="tw_topic" class="form-input">
+            <option value="relations" ${defaultTopic === 'relations' || defaultTopic === 'отношения' ? 'selected' : ''}>❤️ Отношения и выбор партнёров</option>
+            <option value="money" ${defaultTopic === 'money' || defaultTopic === 'деньги' ? 'selected' : ''}>💰 Деньги, доход и финансовый потолок</option>
+            <option value="purpose" ${defaultTopic === 'purpose' || defaultTopic === 'реализация' ? 'selected' : ''}>🎯 Работа, выгорание и смена деятельности</option>
+            <option value="choice" ${defaultTopic === 'choice' || defaultTopic === 'выбор' ? 'selected' : ''}>🧭 Сложность выбора и внутренние сомнения</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">2. Опиши кратко, в чём именно повторяется тупик?</label>
+          <input type="text" id="tw_situation" class="form-input" placeholder="Например: быстро выгораю / партнер отстраняется / страх поднять чек">
+        </div>
+
+        <div style="background: rgba(14, 11, 26, 0.8); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 12px; padding: 12px; margin-bottom: 16px;">
+          <div style="font-size: 11px; color: var(--gold-light); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">В разбор входит:</div>
+          <div style="font-size: 12px; color: #CBD5E1; line-height: 1.5;">
+            • Астрологическая причина сценария по натальной карте<br>
+            • Психологический механизм проживания напряжения<br>
+            • 1 конструктивный фокус и практический ориентир
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid rgba(212, 175, 55, 0.2); padding-top: 12px;">
+          <div>
+            <div style="font-size: 10px; color: #10B981; font-weight: 700; text-transform: uppercase;">Тестовая цена</div>
+            <div style="font-size: 20px; font-weight: 800; color: #FFE8A3;">99 ₽</div>
+          </div>
+          <button class="btn-gold" style="width: auto; padding: 12px 20px;" onclick="submitTripwireOrder()">
+            Получить разбор за 99 ₽ →
+          </button>
+        </div>
+      </div>
+    `;
+    openModal(html);
+  }
+
+  function submitTripwireOrder() {
+    const topic = document.getElementById('tw_topic').value;
+    const situation = (document.getElementById('tw_situation').value || '').trim() || 'Повторяющийся сценарий в жизни';
+
+    haptic('success');
+    trackLunaEvent('tripwire_ordered', { topic, situation, price: 99 });
+
+    openModal(`
+      <div style="text-align: center; padding: 24px 8px;">
+        <div style="font-size: 32px; animation: spin 2s infinite linear; margin-bottom: 12px;">🪐</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+          LUNA синтезирует разбор сценария...
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted);">
+          Анализируем натальные аспекты и твой жизненный контекст
+        </p>
+      </div>
+    `);
+
+    setTimeout(() => {
+      const natal = userNatalData || { sun: 'Козерог', moon: 'Козерог', asc: 'Стрелец', name: 'Надин' };
+      
+      let topicTitle = "Отношения и привязанность";
+      if (topic === 'money') topicTitle = "Деньги и финансовая опора";
+      if (topic === 'purpose') topicTitle = "Реализация и призвание";
+      if (topic === 'choice') topicTitle = "Внутренний выбор и сомнения";
+
+      const reportHtml = `
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
+          🎯 Разбор сценария: ${topicTitle}
+        </div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+          Персональный анализ для: ${natal.name} (☀️ ${natal.sun} • 🌙 ${natal.moon} • ↑ ${natal.asc})
+        </div>
+
+        <div class="report-content">
+          <div class="report-chapter">
+            <h3>🔍 1. Что в твоей карте запускает этот паттерн</h3>
+            <p>Запрос: <i>«${situation}»</i>.</p>
+            <p>Синтез Солнца в ${natal.sun} и Луны в ${natal.moon} создает глубинную установку: <b>«Я должна всё контролировать и соответствовать идеалу, иначе стабильность рухнет»</b>. В сфере (${topicTitle}) это проявляется как бессознательное притягивание ситуаций, где ты взваливаешь на себя двойную нагрузку или терпишь напряжение до последнего.</p>
+          </div>
+
+          <div class="report-chapter">
+            <h3>⚡ 2. Психологический механизм: Почему это кажется нормой</h3>
+            <p>Твоя психика воспринимает привычное напряжение как знак надежности. Когда всё идет легко и без надрыва, внутри может возникать фоновая тревога: «Неужели так просто? Где подвох?». Из-за этого ты можешь сама возвращаться к сложным, энергозатратным сценариям.</p>
+          </div>
+
+          <div class="report-chapter">
+            <h3>🗝️ 3. Конструктивный фокус и точка разрыва круга</h3>
+            <p>1. <b>Пауза перед реакцией:</b> как только чувствуешь привычный порыв «спасать» или соглашаться через силу — дай себе 24 часа тишины.<br>
+            2. <b>Отказ от гиперконтроля:</b> позволь другим нести их долю ответственности.<br>
+            3. <b>Опора на состояние:</b> твое истинное расширение происходит через расслабление и достоинство, а не через подвиги.</p>
+          </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, rgba(38, 22, 60, 0.9) 0%, rgba(18, 12, 34, 0.95) 100%); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 14px; padding: 14px; text-align: center; margin-top: 16px;">
+          <div style="font-size: 14px; font-weight: 700; color: #FFF; margin-bottom: 4px;">Хочешь полную картину жизни? 📖</div>
+          <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 12px; line-height: 1.4;">
+            Фундаментальная Натальная книга PRO раскрывает все 16 глав и 10 планет твоей карты.
+          </div>
+          <button class="btn-gold" style="padding: 10px 16px; font-size: 13px;" onclick="closeModal(); showProductModal('natal');">
+            Открыть Натальную книгу PRO →
+          </button>
+        </div>
+      `;
+      openModal(reportHtml);
+    }, 1100);
+  }
+
+  // ================= 7. SUBSCRIPTIONS & TOP-UP MODALS =================
+  function openSubscriptionModal() {
+    haptic();
+    trackLunaEvent('subscription_viewed');
+
+    const curPlan = getUserPlan();
+
+    const html = `
+      <div style="padding: 6px 2px 14px;">
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
+          💎 Подписка Luna Plus
+        </div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
+          Постоянный доступ к персональному AI-астрологу с фиксированным лимитом запросов.
+        </div>
+
+        <!-- START PLAN -->
+        <div class="sub-card">
+          <div class="sub-title">Тариф Start</div>
+          <div class="sub-price">299 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
+          <div class="sub-features">
+            • <b>30 персональных AI-запросов</b> в месяц<br>
+            • Ежедневный персональный прогноз и советы Луны<br>
+            • Сохранение контекста и истории карты
+          </div>
+          <button class="btn-outline" style="padding: 9px;" onclick="selectSubscriptionPlan('Start', 299, 30)">
+            Подключить за 299 ₽
+          </button>
+        </div>
+
+        <!-- PLUS PLAN (POPULAR) -->
+        <div class="sub-card popular">
+          <div class="sub-badge">Хит продаж</div>
+          <div class="sub-title">Тариф Plus</div>
+          <div class="sub-price">599 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
+          <div class="sub-features">
+            • <b>100 персональных AI-запросов</b> в месяц<br>
+            • Расширенные лунные прогнозы и разбор транзитов<br>
+            • Приоритетная скорость обработки ответов
+          </div>
+          <button class="btn-gold" style="padding: 10px;" onclick="selectSubscriptionPlan('Plus', 599, 100)">
+            Подключить за 599 ₽ →
+          </button>
+        </div>
+
+        <!-- PREMIUM PLAN -->
+        <div class="sub-card">
+          <div class="sub-title">Тариф Premium</div>
+          <div class="sub-price">999 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
+          <div class="sub-features">
+            • <b>200 персональных AI-запросов</b> в месяц<br>
+            • Включены глубокие разборы тем без доплат<br>
+            • Персональный приоритетный канал связи
+          </div>
+          <button class="btn-outline" style="padding: 9px;" onclick="selectSubscriptionPlan('Premium', 999, 200)">
+            Подключить за 999 ₽
+          </button>
+        </div>
+
+        <div style="text-align: center; margin-top: 12px;">
+          <button style="background: none; border: none; color: var(--gold); font-size: 12px; cursor: pointer; text-decoration: underline;" onclick="openTopUpModal()">
+            Нужно просто докупить запросы без подписки? ⚡
+          </button>
+        </div>
+      </div>
+    `;
+    openModal(html);
+  }
+
+  function selectSubscriptionPlan(planName, price, creditsToAdd) {
+    haptic('success');
+    setUserPlan(`Luna ${planName}`);
+    setUserCredits(getUserCredits() + creditsToAdd);
+    trackLunaEvent('subscription_started', { plan: planName, price, creditsAdded: creditsToAdd });
+
+    openModal(`
+      <div style="text-align: center; padding: 20px 8px;">
+        <div style="font-size: 36px; margin-bottom: 8px;">✨</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+          Тариф Luna ${planName} активен!
+        </div>
+        <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
+          Вам начислено <b>+${creditsToAdd} персональных AI-запросов</b>. Теперь вы можете задавать любые вопросы вашей натальной карте.
+        </p>
+        <button class="btn-gold" onclick="closeModal(); switchTab('chat');">
+          Перейти в чат с Луной →
+        </button>
+      </div>
+    `);
+  }
+
+  function openTopUpModal() {
+    haptic();
+    trackLunaEvent('topup_viewed');
+
+    const html = `
+      <div style="padding: 6px 2px 14px;">
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
+          ⚡ Докупить пакет запросов
+        </div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
+          Разовое пополнение баланса без автопродления и подписки.
+        </div>
+
+        <div class="sub-card" style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; color: #FFF; font-size: 15px;">15 запросов</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">Экспресс-пакет</div>
+          </div>
+          <button class="btn-gold" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="buyTopUpCredits(15, 99)">
+            99 ₽
+          </button>
+        </div>
+
+        <div class="sub-card popular" style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; color: #FFF; font-size: 15px;">50 запросов 🔥</div>
+            <div style="font-size: 11.5px; color: #FFE8A3;">Оптимальный выбор</div>
+          </div>
+          <button class="btn-gold" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="buyTopUpCredits(50, 249)">
+            249 ₽
+          </button>
+        </div>
+
+        <div class="sub-card" style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; color: #FFF; font-size: 15px;">120 запросов</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">Максимальный пакет</div>
+          </div>
+          <button class="btn-gold" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="buyTopUpCredits(120, 399)">
+            399 ₽
+          </button>
+        </div>
+      </div>
+    `;
+    openModal(html);
+  }
+
+  function buyTopUpCredits(amount, price) {
+    haptic('success');
+    setUserCredits(getUserCredits() + amount);
+    trackLunaEvent('topup_purchased', { amount, price });
+
+    openModal(`
+      <div style="text-align: center; padding: 20px 8px;">
+        <div style="font-size: 34px; margin-bottom: 8px;">⚡</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+          Баланс пополнен!
+        </div>
+        <p style="font-size: 13px; color: #D1CCDE; margin-bottom: 16px;">
+          Начислено <b>+${amount} запросов</b>. Текущий баланс: <b>${getUserCredits()}</b>.
+        </p>
+        <button class="btn-gold" onclick="closeModal(); switchTab('chat');">
+          Продолжить диалог →
+        </button>
+      </div>
+    `);
   }
 
   function startLifeQuizModal() {
@@ -2964,11 +3656,15 @@
 
   // 2. STABLE INITIALIZATION & RESTORATION
   document.addEventListener('DOMContentLoaded', () => {
+    trackLunaEvent('landing_view');
+
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('reset') === '1') {
       localStorage.removeItem(getStorageKeyNatal());
       localStorage.removeItem(getStorageKeyQuiz());
       localStorage.removeItem(getStorageKeyChildren());
+      localStorage.removeItem(getStorageKeyCredits());
+      localStorage.removeItem(getStorageKeyPlan());
       localStorage.removeItem('luna_user_natal_data');
       localStorage.removeItem('luna_user_quiz_profile');
       localStorage.removeItem('luna_auth_jwt');
@@ -3004,6 +3700,7 @@
     }
 
     updateNatalUI();
+    updateCreditDisplays();
 
     // Authenticate with backend and fetch synced profile from database
     authenticateWithBackend();
