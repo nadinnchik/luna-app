@@ -1319,23 +1319,23 @@
   const API_BASE_URL = window.LUNA_API_URL || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://127.0.0.1:8000' : 'https://luna-app-production-fc12.up.railway.app');
 
   let lunaAuthToken = localStorage.getItem('luna_auth_jwt') || null;
+  let currentUserId = getInitialUserId();
 
-  function getEffectiveUserId() {
+  function getInitialUserId() {
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
       return 'tg_' + tg.initDataUnsafe.user.id;
     }
     let localUid = localStorage.getItem('luna_stable_device_uid');
     if (!localUid) {
-      localUid = 'dev_' + Math.random().toString(36).substring(2, 12) + '_' + Date.now().toString(36);
+      localUid = 'tg_guest_' + Math.random().toString(36).substring(2, 8);
       localStorage.setItem('luna_stable_device_uid', localUid);
     }
     return localUid;
   }
 
-  const CURRENT_USER_ID = getEffectiveUserId();
-  const STORAGE_KEY_NATAL = 'luna_user_profile_' + CURRENT_USER_ID;
-  const STORAGE_KEY_QUIZ = 'luna_user_quiz_' + CURRENT_USER_ID;
-  const STORAGE_KEY_CHILDREN = 'luna_user_children_' + CURRENT_USER_ID;
+  function getStorageKeyNatal() { return 'luna_user_profile_' + currentUserId; }
+  function getStorageKeyQuiz() { return 'luna_user_quiz_' + currentUserId; }
+  function getStorageKeyChildren() { return 'luna_user_children_' + currentUserId; }
 
   let userNatalData = null;
   let userChildrenList = [];
@@ -1363,9 +1363,8 @@
   async function authenticateWithBackend() {
     const initData = (tg && tg.initData) ? tg.initData : '';
     const payload = { init_data: initData };
-    if (!initData) {
-      // Local dev fallback
-      payload.dev_user_id = 999001;
+    if (!initData && tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+      payload.dev_user_id = tg.initDataUnsafe.user.id;
     }
     const res = await apiRequest('/api/v1/auth/telegram', 'POST', payload);
     const badge = document.getElementById('apiStatusBadge');
@@ -1388,9 +1387,16 @@
   }
 
   function applyServerUserData(user) {
+    if (user.telegram_id) {
+      currentUserId = 'tg_' + user.telegram_id;
+    }
+
+    const pUid = document.getElementById('profUserId');
+    if (pUid) pUid.textContent = currentUserId;
+
     if (user.birth_date && user.name) {
       userNatalData = {
-        user_id: 'tg_' + user.telegram_id,
+        user_id: currentUserId,
         name: user.name || user.first_name || 'Гость',
         date: user.birth_date,
         birthDate: user.birth_date,
@@ -1401,10 +1407,17 @@
         asc: user.asc_sign,
         updated_at: user.updated_at
       };
-      localStorage.setItem(STORAGE_KEY_NATAL, JSON.stringify(userNatalData));
+      localStorage.setItem(getStorageKeyNatal(), JSON.stringify(userNatalData));
+      updateNatalUI();
+    } else if (user.first_name || user.name) {
+      const obName = document.getElementById('obName');
+      if (obName && !obName.value) {
+        obName.value = user.name || user.first_name || '';
+      }
       updateNatalUI();
     }
-    if (user.children && Array.isArray(user.children)) {
+
+    if (user.children && Array.isArray(user.children) && user.children.length > 0) {
       userChildrenList = user.children.map(c => ({
         id: c.id,
         name: c.name,
@@ -1413,17 +1426,18 @@
         birthCity: c.birth_city || 'Не указан',
         sunSign: c.sun_sign
       }));
-      localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(userChildrenList));
+      localStorage.setItem(getStorageKeyChildren(), JSON.stringify(userChildrenList));
       if (typeof renderChildrenList === 'function') renderChildrenList();
     }
-    if (user.quiz) {
+
+    if (user.quiz && user.quiz.q_rel) {
       const qData = {
         qRel: user.quiz.q_rel,
         qJob: user.quiz.q_job,
         qFocus: user.quiz.q_focus,
         completedAt: user.quiz.completed_at
       };
-      localStorage.setItem(STORAGE_KEY_QUIZ, JSON.stringify(qData));
+      localStorage.setItem(getStorageKeyQuiz(), JSON.stringify(qData));
       const statusEl = document.getElementById('profQuizStatus');
       if (statusEl) {
         statusEl.textContent = 'Анкета: Заполнена ✨ (учитывается в анализе)';
@@ -1520,7 +1534,7 @@
 
   function getPersonalMagicItems(dateStr, name) {
     let hash = 0;
-    const str = (dateStr || "") + (name || "") + (CURRENT_USER_ID || "");
+    const str = (dateStr || "") + (name || "") + (currentUserId || "");
     for (let i = 0; i < str.length; i++) {
       hash = ((hash << 5) - hash) + str.charCodeAt(i);
       hash |= 0;
@@ -1946,7 +1960,7 @@
       if (pDate) pDate.textContent = '—';
       if (pTime) pTime.textContent = '—';
       if (pCity) pCity.textContent = '—';
-      if (pUid) pUid.textContent = CURRENT_USER_ID;
+      if (pUid) pUid.textContent = currentUserId;
       renderChildrenList();
       return;
     }
@@ -2003,7 +2017,7 @@
     if (pDate) pDate.textContent = userNatalData.date || '—';
     if (pTime) pTime.textContent = userNatalData.time || 'Не указано';
     if (pCity) pCity.textContent = userNatalData.city || '—';
-    if (pUid) pUid.textContent = CURRENT_USER_ID;
+    if (pUid) pUid.textContent = currentUserId;
 
     const dayOfWeek = new Date().getDay();
     const advText = document.getElementById('dailyAdviceText');
@@ -2027,7 +2041,7 @@
 
     const natal = getCalculatedNatal(date, time);
     userNatalData = {
-      user_id: CURRENT_USER_ID,
+      user_id: currentUserId,
       name: name || 'Гость',
       date: date,
       birthDate: date,
@@ -2039,7 +2053,7 @@
       updated_at: new Date().toISOString()
     };
 
-    localStorage.setItem(STORAGE_KEY_NATAL, JSON.stringify(userNatalData));
+    localStorage.setItem(getStorageKeyNatal(), JSON.stringify(userNatalData));
     localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData));
     updateNatalUI();
 
@@ -2137,7 +2151,7 @@
 
     const natal = getCalculatedNatal(date, time);
     userNatalData = {
-      user_id: CURRENT_USER_ID,
+      user_id: currentUserId,
       name: name || 'Гость',
       date: date,
       birthDate: date,
@@ -2149,7 +2163,7 @@
       updated_at: new Date().toISOString()
     };
 
-    localStorage.setItem(STORAGE_KEY_NATAL, JSON.stringify(userNatalData));
+    localStorage.setItem(getStorageKeyNatal(), JSON.stringify(userNatalData));
     localStorage.setItem('luna_user_natal_data', JSON.stringify(userNatalData));
     updateNatalUI();
     closeModal();
@@ -2929,7 +2943,7 @@
     const qFocus = document.getElementById('qFocus').value;
 
     const quizData = { qRel, qJob, qFocus, completedAt: new Date().toISOString() };
-    localStorage.setItem(STORAGE_KEY_QUIZ, JSON.stringify(quizData));
+    localStorage.setItem(getStorageKeyQuiz(), JSON.stringify(quizData));
     localStorage.setItem('luna_user_quiz_profile', JSON.stringify(quizData));
 
     const statusEl = document.getElementById('profQuizStatus');
@@ -2952,16 +2966,16 @@
   document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('reset') === '1') {
-      localStorage.removeItem(STORAGE_KEY_NATAL);
-      localStorage.removeItem(STORAGE_KEY_QUIZ);
-      localStorage.removeItem(STORAGE_KEY_CHILDREN);
+      localStorage.removeItem(getStorageKeyNatal());
+      localStorage.removeItem(getStorageKeyQuiz());
+      localStorage.removeItem(getStorageKeyChildren());
       localStorage.removeItem('luna_user_natal_data');
       localStorage.removeItem('luna_user_quiz_profile');
       localStorage.removeItem('luna_auth_jwt');
       userNatalData = null;
       userChildrenList = [];
     } else {
-      const saved = localStorage.getItem(STORAGE_KEY_NATAL) || localStorage.getItem('luna_user_natal_data');
+      const saved = localStorage.getItem(getStorageKeyNatal()) || localStorage.getItem('luna_user_natal_data');
       if (saved) {
         try {
           userNatalData = JSON.parse(saved);
@@ -2970,7 +2984,7 @@
         }
       }
 
-      const savedChildren = localStorage.getItem(STORAGE_KEY_CHILDREN);
+      const savedChildren = localStorage.getItem(getStorageKeyChildren());
       if (savedChildren) {
         try {
           userChildrenList = JSON.parse(savedChildren) || [];
@@ -2980,7 +2994,7 @@
       }
     }
 
-    const savedQuiz = localStorage.getItem(STORAGE_KEY_QUIZ) || localStorage.getItem('luna_user_quiz_profile');
+    const savedQuiz = localStorage.getItem(getStorageKeyQuiz()) || localStorage.getItem('luna_user_quiz_profile');
     if (savedQuiz) {
       const statusEl = document.getElementById('profQuizStatus');
       if (statusEl) {
