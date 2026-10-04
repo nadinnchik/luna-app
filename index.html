@@ -75,7 +75,7 @@
     .container {
       max-width: 480px;
       margin: 0 auto;
-      padding: 16px 16px 140px 16px;
+      padding: 16px 16px calc(140px + env(safe-area-inset-bottom, 0px)) 16px;
       position: relative;
       z-index: 1;
     }
@@ -462,7 +462,7 @@
       border-top: 1px solid rgba(212, 175, 55, 0.25);
       display: flex;
       justify-content: space-around;
-      padding: 8px 10px 14px 10px;
+      padding: 8px 10px calc(14px + env(safe-area-inset-bottom, 0px)) 10px;
       z-index: 999;
       max-width: 480px;
       margin: 0 auto;
@@ -1725,8 +1725,18 @@
 
   const tg = window.Telegram ? window.Telegram.WebApp : null;
   if (tg) {
-    tg.expand();
-    tg.ready();
+    try {
+      tg.expand();
+      tg.ready();
+      if (tg.enableClosingConfirmation) {
+        tg.enableClosingConfirmation();
+      }
+      if (tg.BackButton) {
+        tg.BackButton.onClick(() => {
+          closeModal();
+        });
+      }
+    } catch(e) {}
   }
 
   // 1. DETERMINISTIC TELEGRAM USER ID & BACKEND API ADAPTER
@@ -2474,6 +2484,9 @@
       m.style.display = 'flex';
       m.classList.add('active');
     }
+    if (tg && tg.BackButton) {
+      tg.BackButton.show();
+    }
   }
 
   function openMiniNatalModal() {
@@ -2564,6 +2577,9 @@
     if (m) {
       m.style.display = 'none';
       m.classList.remove('active');
+    }
+    if (tg && tg.BackButton) {
+      tg.BackButton.hide();
     }
   }
 
@@ -3709,8 +3725,14 @@
           ${chaptersHtml}
         </div>
 
-        <div style="margin-top: 18px; text-align: center;">
-          <button class="btn-gold" onclick="closeModal()">
+        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="copyReportText('${prod.title}')">
+            📋 Скопировать весь текст разбора
+          </button>
+          <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="shareReportTelegram('${prod.title}')">
+            📤 Поделиться в Telegram
+          </button>
+          <button class="btn-gold" style="padding: 12px;" onclick="closeModal()">
             ✨ Сохранить и закрыть
           </button>
         </div>
@@ -3720,6 +3742,44 @@
         console.error("Error generating report:", err);
       }
     }, 1200);
+  }
+
+  function copyReportText(title) {
+    haptic('success');
+    const contentEl = document.querySelector('.report-content');
+    if (!contentEl) return;
+    const text = `🌙 LUNA ASTROLOGER — ${title}\n\n` + contentEl.innerText;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('✨ Текст разбора скопирован в буфер обмена!');
+      }).catch(() => {
+        fallbackCopyText(text);
+      });
+    } else {
+      fallbackCopyText(text);
+    }
+  }
+
+  function fallbackCopyText(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✨ Текст разбора скопирован!');
+  }
+
+  function shareReportTelegram(title) {
+    haptic('light');
+    const shareUrl = 'https://t.me/share/url?url=' + encodeURIComponent('https://t.me/Luna_Astrologer_Bot') + '&text=' + encodeURIComponent(`🌙 Мой персональный астрологический разбор «${title}» в LUNA Astrologer ✨`);
+    if (tg && tg.openTelegramLink) {
+      tg.openTelegramLink(shareUrl);
+    } else {
+      window.open(shareUrl, '_blank');
+    }
   }
 
   // ================= 5. MARKETING & ANALYTICS & CREDITS ENGINE =================
@@ -3833,14 +3893,31 @@
     setUserCredits(credits - 1);
     trackLunaEvent('chat_question_asked', { question: txt, creditsLeft: credits - 1 });
 
-    setTimeout(() => {
-      const bBubble = document.createElement('div');
-      bBubble.className = 'chat-bubble bot';
+    const typingBubble = document.createElement('div');
+    typingBubble.className = 'chat-bubble bot';
+    typingBubble.innerHTML = '<span style="opacity: 0.7;">✨ LUNA настраивается на планетарные координаты...</span>';
+    box.appendChild(typingBubble);
+    box.scrollTop = box.scrollHeight;
 
-      bBubble.innerHTML = generateDeepAstrologicalChatResponse(txt, userNatalData);
-      box.appendChild(bBubble);
+    const postData = {
+      question: txt,
+      name: userNatalData ? userNatalData.name : null,
+      sun_sign: userNatalData ? userNatalData.sun : null,
+      moon_sign: userNatalData ? userNatalData.moon : null,
+      asc_sign: userNatalData ? userNatalData.asc : null
+    };
+
+    apiRequest('/api/v1/chat/ask', 'POST', postData).then(res => {
+      if (res && res.answer) {
+        typingBubble.innerHTML = res.answer;
+      } else {
+        typingBubble.innerHTML = generateDeepAstrologicalChatResponse(txt, userNatalData);
+      }
       box.scrollTop = box.scrollHeight;
-    }, 750);
+    }).catch(() => {
+      typingBubble.innerHTML = generateDeepAstrologicalChatResponse(txt, userNatalData);
+      box.scrollTop = box.scrollHeight;
+    });
   }
 
   function generateDeepAstrologicalChatResponse(question, natal) {
