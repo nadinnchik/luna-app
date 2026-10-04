@@ -992,12 +992,137 @@
     line-height: 1.5;
     margin-bottom: 10px;
   }
+
+  /* === LUXURY AMBIENT GLOW & NEBULA ORBS === */
+  .ambient-glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(85px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.55;
+  }
+  .ambient-orb-1 {
+    top: 5%;
+    left: -10%;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.7) 0%, rgba(109, 40, 217, 0.25) 55%, transparent 75%);
+    animation: floatGlow 14s infinite ease-in-out;
+  }
+  .ambient-orb-2 {
+    top: 40%;
+    right: -15%;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(229, 195, 120, 0.5) 0%, rgba(212, 175, 55, 0.2) 50%, transparent 75%);
+    animation: floatGlow 18s infinite ease-in-out reverse;
+  }
+  .ambient-orb-3 {
+    bottom: 15%;
+    left: 10%;
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.45) 0%, rgba(76, 29, 149, 0.25) 55%, transparent 75%);
+    animation: floatGlow 16s infinite ease-in-out 3s;
+  }
+
+  @keyframes floatGlow {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+    50% { transform: translate(30px, 25px) scale(1.2); opacity: 0.65; }
+    100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+  }
+
+  /* Dedicated Chat Viewport (Input strictly pinned above Bottom Nav, perfect mobile fit) */
+  #tab-chat {
+    display: none;
+    flex-direction: column;
+    height: calc(100vh - 90px);
+    height: calc(100dvh - 90px);
+    box-sizing: border-box;
+    padding: 10px 14px 6px 14px;
+    margin-left: -16px;
+    margin-right: -16px;
+    margin-top: -16px;
+    margin-bottom: -140px;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+  }
+  #tab-chat .chat-header-wrap {
+    flex-shrink: 0;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+  }
+  #tab-chat .chat-credit-bar {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(22, 18, 38, 0.92);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 12px;
+    padding: 6px 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+  #tab-chat .chat-chips-scroll {
+    flex-shrink: 0;
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+    scrollbar-width: none;
+  }
+  #tab-chat .chat-chips-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  #tab-chat .chat-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+  #tab-chat .chat-messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 4px;
+    padding-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #tab-chat .chat-input-bar {
+    flex-shrink: 0;
+    background: rgba(14, 11, 26, 0.98);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 8px 0 4px 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
 </style>
 
 </head>
 <body>
 
+  <!-- AMBIENT NEBULA GLOW ORBS -->
+  <div class="ambient-glow-orb ambient-orb-1"></div>
+  <div class="ambient-glow-orb ambient-orb-2"></div>
+  <div class="ambient-glow-orb ambient-orb-3"></div>
+
+  <!-- CELESTIAL CANVAS PARTICLES & CONSTELLATIONS -->
   <canvas id="starsCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></canvas>
+
 
 
 <div class="stars-bg"></div>
@@ -1106,7 +1231,7 @@
       </div>
 
       <!-- 🎯 TRIPWIRE BANNER ON DASHBOARD (BLUEPRINT §4 & §8) -->
-      <div class="tripwire-card">
+      <div class="tripwire-card" id="homeTripwireCard">
         <div class="tripwire-badge">🔥 Хит · Тест за 99 ₽</div>
         <div class="tripwire-title">🎯 Разбор повторяющегося сценария</div>
         <div class="tripwire-desc">
@@ -1233,7 +1358,7 @@
     <div id="catalogList">
 
       <!-- ⭐ 0. TRIPWIRE PRODUCT (LEADING TEST OFFER 99 ₽) -->
-      <div class="catalog-card" data-category="tripwire" style="border: 1.5px solid rgba(243, 186, 47, 0.7); background: linear-gradient(135deg, rgba(38, 24, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);" onclick="openTripwireModal()">
+      <div class="catalog-card" id="catTripwireCard" data-category="tripwire" style="border: 1.5px solid rgba(243, 186, 47, 0.7); background: linear-gradient(135deg, rgba(38, 24, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);" onclick="openTripwireModal()">
         <div>
           <span class="cat-badge" style="background: var(--gold-btn); color: #120C22; font-weight: 800;">⭐ Хит · Экспресс-разбор</span>
           <div class="cat-title">🎯 Разбор повторяющегося сценария</div>
@@ -1397,21 +1522,29 @@
 
   <!-- ================= 3. TAB: AI-ASTROLOGER CHAT ================= -->
   <div id="tab-chat" class="tab-view" style="display: none;">
-    <div style="margin-bottom: 10px;">
-      <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light);">
-        💬 Спросить LUNA
-      </div>
-      <div style="font-size: 11.5px; color: var(--text-muted);">
-        Ответ строится на основе твоей натальной карты, анкеты и жизненного контекста.
+    <div class="chat-header-wrap">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); display: flex; align-items: center; gap: 6px;">
+            <span>🔮</span> <span>Астролог LUNA</span>
+          </div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 1px;">
+            Персональный AI-диалог на основе твоей натальной карты
+          </div>
+        </div>
+        <div class="status-badge" style="margin-top: 0; padding: 3px 10px; font-size: 10px;">
+          <div class="status-dot"></div>
+          <span>В сети</span>
+        </div>
       </div>
     </div>
 
     <!-- CHAT CREDIT BAR (BLUEPRINT §5) -->
     <div class="chat-credit-bar">
-      <div style="color: var(--gold-light); font-weight: 600;">
-        ⚡ Баланс: <span id="chatCreditsCount" style="color: #FFF; font-weight: 800;">3</span> запроса
+      <div style="color: var(--gold-light); font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 5px;">
+        <span>⚡ Баланс:</span> <span id="chatCreditsCount" style="color: #FFF; font-weight: 800; font-size: 14px;">3</span> <span>AI-запроса</span>
       </div>
-      <button style="background: rgba(229, 195, 120, 0.15); border: 1px solid rgba(229, 195, 120, 0.4); color: var(--gold); border-radius: 10px; padding: 4px 9px; font-size: 11px; font-weight: 700; cursor: pointer;" onclick="openSubscriptionModal()">
+      <button style="background: rgba(229, 195, 120, 0.15); border: 1px solid rgba(229, 195, 120, 0.4); color: var(--gold); border-radius: 10px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;" onclick="openSubscriptionModal()">
         + Пополнить
       </button>
     </div>
@@ -1443,7 +1576,7 @@
       </div>
       <div class="chat-input-bar">
         <input type="text" id="chatInput" class="chat-input" placeholder="Напиши свой вопрос к карте..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-        <button class="btn-gold" style="width: auto; padding: 10px 16px;" onclick="sendChatMessage()">
+        <button class="btn-gold" style="width: auto; padding: 10px 18px; border-radius: 12px;" onclick="sendChatMessage()">
           ➤
         </button>
       </div>
@@ -1750,81 +1883,384 @@
     "Рыбы": "Нептун (тонкое чутье, образность и безусловное принятие)"
   };
 
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  // ================= CELESTIAL CANVAS PARTICLES, CONSTELLATIONS & METEORS =================
+  function initCelestialCanvas() {
+    const canvas = document.getElementById('starsCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let dpr = window.devicePixelRatio || 1;
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // 1. Starfield background
+    const starCount = Math.min(130, Math.floor((width * height) / 4500));
+    const stars = [];
+    const starPalettes = [
+      'rgba(255, 255, 255, ',
+      'rgba(247, 231, 180, ',
+      'rgba(212, 175, 55, ',
+      'rgba(196, 181, 253, ',
+      'rgba(233, 213, 255, '
+    ];
+
+    for (let i = 0; i < starCount; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 1.5 + 0.5,
+        palette: starPalettes[Math.floor(Math.random() * starPalettes.length)],
+        baseAlpha: Math.random() * 0.55 + 0.25,
+        twinkleSpeed: Math.random() * 0.03 + 0.01,
+        twinklePhase: Math.random() * Math.PI * 2
+      });
+    }
+
+    // 2. Astrological Constellations
+    const constellationDefs = [
+      // Ursa Major / Большая Медведица
+      {
+        name: 'Ursa Major',
+        points: [{x:0,y:0},{x:35,y:5},{x:65,y:25},{x:90,y:40},{x:100,y:75},{x:145,y:78},{x:135,y:42}],
+        lines: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,3]]
+      },
+      // Cassiopeia / Кассиопея (W-shape)
+      {
+        name: 'Cassiopeia',
+        points: [{x:0,y:30},{x:28,y:0},{x:56,y:32},{x:85,y:6},{x:115,y:36}],
+        lines: [[0,1],[1,2],[2,3],[3,4]]
+      },
+      // Orion / Орион
+      {
+        name: 'Orion',
+        points: [{x:0,y:0},{x:60,y:10},{x:20,y:45},{x:30,y:47},{x:40,y:49},{x:5,y:85},{x:55,y:90}],
+        lines: [[0,1],[0,2],[1,4],[2,3],[3,4],[2,5],[4,6],[5,6]]
+      },
+      // Cygnus / Лебедь (Северный Крест)
+      {
+        name: 'Cygnus',
+        points: [{x:40,y:0},{x:40,y:40},{x:40,y:80},{x:0,y:35},{x:80,y:35}],
+        lines: [[0,1],[1,2],[3,1],[1,4]]
+      },
+      // Leo / Лев
+      {
+        name: 'Leo',
+        points: [{x:0,y:20},{x:25,y:0},{x:45,y:10},{x:35,y:30},{x:75,y:30},{x:95,y:55},{x:50,y:55}],
+        lines: [[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6],[6,3]]
+      }
+    ];
+
+    const activeConstellations = constellationDefs.map((def, idx) => ({
+      ...def,
+      x: (width / (constellationDefs.length + 1)) * (idx + 1) + (Math.random() * 40 - 20),
+      y: (height / (constellationDefs.length + 1)) * (idx + 1) + (Math.random() * 60 - 30),
+      vx: (Math.random() - 0.5) * 0.08,
+      vy: (Math.random() - 0.5) * 0.08,
+      scale: Math.random() * 0.35 + 0.75,
+      angle: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.0008,
+      glowPhase: Math.random() * Math.PI * 2
+    }));
+
+    // 3. Meteors (Shooting stars)
+    const meteors = [];
+    let lastMeteorTime = Date.now();
+
+    function spawnMeteor() {
+      const startX = Math.random() * width * 0.9;
+      const startY = Math.random() * (height * 0.4);
+      const angle = (Math.PI / 4) + (Math.random() * 0.2 - 0.1); // ~45 deg
+      const speed = Math.random() * 5 + 6;
+      meteors.push({
+        x: startX,
+        y: startY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        length: Math.random() * 70 + 60,
+        life: 1.0,
+        decay: Math.random() * 0.02 + 0.015
+      });
+    }
+
+    let time = 0;
+    function render() {
+      time += 0.016;
+      ctx.clearRect(0, 0, width, height);
+
+      // A. Render background stars
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        const alpha = s.baseAlpha + Math.sin(time * s.twinkleSpeed * 60 + s.twinklePhase) * 0.35;
+        const clampedAlpha = Math.max(0.1, Math.min(1.0, alpha));
+        ctx.fillStyle = s.palette + clampedAlpha + ')';
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // B. Render Constellations
+      for (let c of activeConstellations) {
+        c.x += c.vx;
+        c.y += c.vy;
+        c.angle += c.rotSpeed;
+        if (c.x < -120) c.x = width + 100;
+        if (c.x > width + 120) c.x = -100;
+        if (c.y < -120) c.y = height + 100;
+        if (c.y > height + 120) c.y = -100;
+
+        const pulse = 0.4 + Math.sin(time * 0.8 + c.glowPhase) * 0.25;
+
+        ctx.save();
+        ctx.translate(c.x, c.y);
+        ctx.rotate(c.angle);
+        ctx.scale(c.scale, c.scale);
+
+        // Lines
+        ctx.strokeStyle = `rgba(229, 195, 120, ${0.18 * pulse})`;
+        ctx.lineWidth = 0.85;
+        for (let l of c.lines) {
+          const p1 = c.points[l[0]];
+          const p2 = c.points[l[1]];
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+        }
+
+        // Star Nodes
+        for (let p of c.points) {
+          // Glow halo
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 7);
+          grad.addColorStop(0, `rgba(247, 231, 180, ${0.7 * pulse})`);
+          grad.addColorStop(0.5, `rgba(139, 92, 246, ${0.3 * pulse})`);
+          grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Star core
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.9 * pulse})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 1.4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      // C. Render Meteors
+      const now = Date.now();
+      if (now - lastMeteorTime > 7500 + Math.random() * 5000) {
+        spawnMeteor();
+        lastMeteorTime = now;
+      }
+
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i];
+        m.x += m.vx;
+        m.y += m.vy;
+        m.life -= m.decay;
+
+        if (m.life <= 0) {
+          meteors.splice(i, 1);
+          continue;
+        }
+
+        const tailX = m.x - (m.vx / 8) * m.length;
+        const tailY = m.y - (m.vy / 8) * m.length;
+
+        const grad = ctx.createLinearGradient(tailX, tailY, m.x, m.y);
+        grad.addColorStop(0, 'rgba(212, 175, 55, 0)');
+        grad.addColorStop(0.6, `rgba(196, 181, 253, ${0.45 * m.life})`);
+        grad.addColorStop(1, `rgba(255, 255, 255, ${0.95 * m.life})`);
+
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(tailX, tailY);
+        ctx.lineTo(m.x, m.y);
+        ctx.stroke();
+
+        // Meteor Head Sparkle
+        ctx.fillStyle = `rgba(255, 255, 255, ${m.life})`;
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+  }
+
+  // ================= LUNAR PHASE & DYNAMIC ASTROLOGICAL FORMULAS =================
+  function getLunarCycleInfo(targetDate = new Date()) {
+    // Known new moon epoch reference: Jan 11, 2024 11:57 UTC
+    const knownNewMoon = new Date('2024-01-11T11:57:00Z').getTime();
+    const synodicMonth = 29.53058867 * 86400000;
+    const diff = targetDate.getTime() - knownNewMoon;
+    const currentCycleProgress = (diff % synodicMonth + synodicMonth) % synodicMonth;
+    const lunarDay = Math.floor(currentCycleProgress / 86400000) + 1;
+    const phaseFraction = currentCycleProgress / synodicMonth;
+
+    let phaseName = "Растущая Луна";
+    let phaseIcon = "🌒";
+    if (phaseFraction < 0.03 || phaseFraction >= 0.97) {
+      phaseName = "Новолуние"; phaseIcon = "🌑";
+    } else if (phaseFraction < 0.22) {
+      phaseName = "Молодая Луна"; phaseIcon = "🌒";
+    } else if (phaseFraction < 0.28) {
+      phaseName = "Первая четверть"; phaseIcon = "🌓";
+    } else if (phaseFraction < 0.47) {
+      phaseName = "Растущая Луна"; phaseIcon = "🌔";
+    } else if (phaseFraction < 0.53) {
+      phaseName = "Полнолуние"; phaseIcon = "🌕";
+    } else if (phaseFraction < 0.72) {
+      phaseName = "Убывающая Луна"; phaseIcon = "🌖";
+    } else if (phaseFraction < 0.78) {
+      phaseName = "Последняя четверть"; phaseIcon = "🌗";
+    } else {
+      phaseName = "Старая Луна"; phaseIcon = "🌘";
+    }
+
+    return { lunarDay, phaseName, phaseIcon };
+  }
+
   function getPersonalDailyAdvice(sun, moon, asc, dateStr) {
     const sunSign = sun || "Козерог";
     const moonSign = moon || "Козерог";
     const ascSign = asc || "Стрелец";
 
-    const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-    const elem = ZODIAC_ELEMENTS[sunSign] || "earth";
-    const ruler = ZODIAC_RULERS[sunSign] || "Сатурн";
+    const now = new Date();
+    const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+    const dayOfWeek = now.getDay(); // 0-6
+    const { lunarDay, phaseName, phaseIcon } = getLunarCycleInfo(now);
 
-    const sunAdvices = {
+    // Personal deterministic seed from user's birth data + current calendar day
+    let birthHash = 42;
+    if (dateStr) {
+      for (let i = 0; i < dateStr.length; i++) {
+        birthHash = (birthHash * 31 + dateStr.charCodeAt(i)) % 1000;
+      }
+    }
+    const seed = (dayOfYear * 7 + birthHash + sunSign.length * 13 + moonSign.length * 5) % 1000;
+
+    const sunElem = ZODIAC_ELEMENTS[sunSign] || "earth";
+    const moonElem = ZODIAC_ELEMENTS[moonSign] || "earth";
+
+    const transitAspects = [
+      `Лунный транзит гармонизирует ось твоего Солнца в ${sunSign} и Луны в ${moonSign}`,
+      `Активация природного сектора ресурсов под влиянием стихии ${sunElem === 'fire' ? 'Огня' : sunElem === 'earth' ? 'Земли' : sunElem === 'air' ? 'Воздуха' : 'Воды'}`,
+      `Мягкий тригон к твоему Асценденту в знаке ${ascSign}`,
+      `Укрепление внутреннего вектора через Сатурнианскую и Венерианскую энергии`,
+      `Фокус на авторской независимости и защите личного пространства`,
+      `Период кристаллизации приоритетов и спокойного завершения начатого`
+    ];
+
+    const specificAdvices = {
       "Овен": [
-        `«Сегодня твоя марсианская энергия просит точечного фокуса, а не слепого напора. Выбери одно главное дело и доведи его без спешки — это сохранит внутренний огонь.»`,
-        `«Твой импульс сегодня особенно силен. Прежде чем резко реагировать на провокации, сделай глубокий вдох — твоя сила в хладнокровной уверенности.»`,
-        `«День благоприятен для смелых авторских инициатив. Не жди идеального момента — сделай первый шаг, и пространство подстроится.»`
+        `«Сегодня твоя марсианская энергия просит точечного фокуса, а не слепого напора. Выбери одну главную задачу и доведи её с достоинством — пространство само подстроится под твой ритм.»`,
+        `«Твой импульс сегодня особенно силен. Прежде чем резко отвечать на внешние раздражители, сделай паузу: твоя истинная сила — в хладнокровной уверенности и спокойном взгляде.»`,
+        `«День благоприятен для авторских смелых инициатив. Не жди чужого одобрения — сделай первый шаг, опираясь на внутренний стержень.»`,
+        `«Сегодня полезно перенаправить пыл в физическое тело или спорт. Не распыляй огонь на пустые споры — береги свой стратегический ресурс.»`
       ],
       "Телец": [
-        `«Венера в твоей карте подсказывает: не форсируй события через стресс. Материальная устойчивость и ясность приходят через спокойный темп и верность своим стандартам.»`,
-        `«Сегодня важно окружить себя телесным комфортом и эстетикой. Качественный отдых и вкусная еда вернут тебе ощущение прочного фундамента.»`,
-        `«Не соглашайся на компромиссы, которые обесценивают твой труд. Твоя ценность не требует оправданий перед окружающими.»`
+        `«Венера в твоей карте напоминает: материальная опора и ясность приходят через спокойный темп. Не форсируй события через стресс — устойчивость строится на качестве.»`,
+        `«Окружи себя телесным комфортом и эстетикой. Качественный отдых, порядок вокруг и вкусная еда быстро вернут тебе ощущение прочного фундамента.»`,
+        `«Не соглашайся на сомнительные компромиссы, которые обесценивают твой труд. Твоя экспертность не требует оправданий перед окружающими.»`,
+        `«Благоприятный день для финансовых расчетов и обустройства дома. Доверяй своей практичной интуиции.»`
       ],
       "Близнецы": [
-        `«Твой Меркурий сегодня активен: информации будет много, но важно отфильтровать чужой ментальный шум. Сосредоточься на том, что развивает лично тебя.»`,
-        `«Отличный день для важных переговоров, переписки и запуска идей. Твоя легкость в подаче смыслов способна открыть любые двери.»`,
-        `«Дай мозгу паузу от бесконечных уведомлений — тишина поможет соединить разрозненные мысли в стройную стратегию.»`
+        `«Твой Меркурий сегодня активен: информации вокруг много, но важно отфильтровать чужой ментальный шум. Сфокусируйся на том, что развивает именно твои проекты.»`,
+        `«Отличный момент для важных переговоров, переписки и запуска идей. Твоя природная легкость в подаче смыслов способна открыть самые закрытые двери.»`,
+        `«Дай мозгу паузу от бесконечных уведомлений — тишина поможет соединить разрозненные мысли в стройную долгосрочную стратегию.»`,
+        `«Не пытайся успеть везде одновременно. Выбери два ключевых контакта и проведи глубокие содержательные диалоги.»`
       ],
       "Рак": [
-        `«Луна усиливает твою природную чуткость. Защити свое личное пространство от эмоциональных перегрузок и проведи вечер в безопасном кругу близких.»`,
-        `«Сегодня твоя интуиция видит глубже любой сухой логики. Доверяй первому чувству в теле, когда принимаешь личные решения.»`,
-        `«Не бери на себя чужие эмоциональные долги. Твоя эмпатия — это дар, но она требует регулярной подзарядки в тишине.»`
+        `«Луна усиливает твою природную чуткость. Защити личное пространство от эмоциональных перегрузок и проведи вечер в безопасной, теплой обстановке.»`,
+        `«Сегодня твоя интуиция видит глубже любой сухой логики. Доверяй первому телесному отклику, когда принимаешь личные решения.»`,
+        `«Не бери на себя чужие эмоциональные долги. Твоя эмпатия — огромный дар, но она требует регулярной подзарядки в тишине и уюте.»`,
+        `«Мягкий контакт с водой (ванна с солью, прогулка у воды) снимет накопившееся напряжение и вернет радость бытия.»`
       ],
       "Лев": [
-        `«Твое Солнце сегодня притягивает взгляды. Проявляйся щедро и с достоинством, но без потребности доказывать свою значимость тем, кто не готов ее оценить.»`,
-        `«Творческий подъем дня: направь энергию на авторский проект или вдохновляющий контент. Твоя искренность зажигает других.»`,
-        `«Позволь себе быть не только сильной опорой для всех, но и просто человеком, о котором можно позаботиться.»`
+        `«Твое Солнце сегодня притягивает взгляды. Проявляйся щедро и с достоинством, но без потребности доказывать свою значимость тем, кто пока не готов ее оценить.»`,
+        `«Творческий подъем дня: направь энергию на авторский проект или вдохновляющий контент. Твоя искренность зажигает сердца окружающих.»`,
+        `«Позволь себе быть не только сильной опорой для всех, но и человеком, о котором можно искренне позаботиться.»`,
+        `«Держи фокус на масштабе: мелкая рутина не должна заслонять твои большие жизненные замыслы.»`
       ],
       "Дева": [
-        `«Сегодня твое аналитическое чутье безупречно, но береги себя от самоедства и избыточного перфекционизма. Достаточно хорошо — это уже победа.»`,
-        `«Удели внимание физическому телу и ритуалам чистоты: порядок на рабочем столе и легкая разминка быстро вернут ясность мышления.»`,
-        `«Твоя способность замечать суть деталей сегодня поможет разрешить запутанный практический вопрос.»`
+        `«Твое аналитическое чутье сегодня безупречно, но береги себя от самоедства и избыточного перфекционизма. Достаточно хорошо — это уже отличный результат.»`,
+        `«Удели внимание телу и ритуалам чистоты: порядок на рабочем месте и легкая прогулка быстро вернут кристальную ясность мышления.»`,
+        `«Твоя способность видеть суть деталей сегодня поможет изящно разрешить давний практический вопрос.»`,
+        `«Не бери на себя чужую безответственность. Мягко расставь границы в рабочих процессах.»`
       ],
       "Весы": [
-        `«Венерианская гармония дня требует честности с собой. Не жертвуй своими желаниями ради искусственного мира — здоровые границы только укрепляют союз.»`,
-        `«День благоприятен для эстетических покупок, искусства и вдохновляющего общения. Выбирай то, что дарит ощущение легкости.»`,
-        `«Если сложно сделать выбор, не взвешивай до бесконечности: выбери то, от чего внутри становится теплее и просторнее.»`
+        `«Венерианская гармония дня требует честности с собой. Не жертвуй своими истинными желаниями ради иллюзорного мира — здоровые границы только укрепляют союз.»`,
+        `«День благоприятен для эстетических решений, искусства и теплого общения. Выбирай то, от чего внутри становится просторнее.»`,
+        `«Если сложно сделать выбор между вариантами — выбери тот, который дарит ощущение легкости и спокойного дыхания.»`,
+        `«Красивый ритуал или чашка кофе в тишине зарядят твою натальную Венеру на несколько дней вперед.»`
       ],
       "Скорпион": [
-        `«Твоя плутоническая глубина сегодня обострена: ты видишь скрытые мотивы людей. Направь эту силу не на подозрительность, а на глубинную трансформацию своих задач.»`,
-        `«Сними избыточный контроль: то, что должно уйти — освободит место для качественно нового ресурса и отношений.»`,
-        `«Энергия дня требует перезагрузки через воду или уединение. Молчание вернет тебе колоссальный заряд сил.»`
+        `«Твоя плутоническая глубина сегодня обострена: ты считываешь скрытые мотивы людей. Направь эту силу не на подозрительность, а на глубинную трансформацию своих задач.»`,
+        `«Сними избыточный контроль: то, что должно уйти — освободит место для качественно нового ресурса и искренних отношений.»`,
+        `«Энергия дня просит перезагрузки в тишине. Молчание и уединение вернут тебе колоссальный запас жизненных сил.»`,
+        `«Доверяй своему чутью на людей и проекты: твоя натальная проницательность не ошибается.»`
       ],
       "Стрелец": [
         `«Юпитер расширяет твои горизонты: сегодня полезно мыслить масштабно, изучать новое и планировать дальние цели без оглядки на мелкие ограничения.»`,
-        `«Не распыляй свое вдохновение на десятки споров. Сфокусируй свой энтузиазм на одном проекте, который по-настоящему тебя зажигает.»`,
-        `«Твой оптимизм сегодня — главный антидот против любой рутины. Делись верой в лучшее с теми, кто рядом.»`
+        `«Не распыляй вдохновение на десятки споров. Сфокусируй энтузиазм на одном деле, которое по-настоящему тебя зажигает.»`,
+        `«Твой оптимизм сегодня — главный антидот против любой рутины. Делись верой в лучшее с теми, кто рядом.»`,
+        `«День подходит для планирования поездок, обучения и расширения авторского круга общения.»`
       ],
       "Козерог": [
         `«Сатурн в твоей карте напоминает: твоя фундаментальная сила — в терпении и мастерстве. Двигайся по своему плану без сравнения себя с чужой скоростью.»`,
         `«Сегодня тебе особенно полезно снизить планку требований к себе. Ты уже сделала достаточно — позволь себе вечер абсолютного покоя.»`,
-        `«Твоя надежность и структурный подход сегодня станут главной опорой в рабочем вопросе. Держи фокус на долгосрочном результате.»`
+        `«Твоя надежность и структурный подход сегодня станут главной опорой в ключевом вопросе. Держи фокус на долгосрочном результате.»`,
+        `«Качественный результат требует устойчивого фундамента: не спеши, всё разворачивается вовремя.»`
       ],
       "Водолей": [
-        `«Твой уранический взгляд видит нестандартное решение там, где другие зашли в тупик. Не бойся предложить свой смелый подход.»`,
-        `«День благоприятен для общения с единомышленниками и обсуждения будущих проектов. Твоя свобода мысли вдохновляет.»`,
-        `«Не пытайся вписаться в устаревшие шаблоны. Твоя уникальность — это твой главный натальный капитал.»`
+        `«Твой уранический взгляд видит нестандартное решение там, где другие зашли в тупик. Не бойся предложить свой смелый авторский подход.»`,
+        `«День благоприятен для общения с единомышленниками и обсуждения будущих концепций. Твоя внутренняя свобода вдохновляет.»`,
+        `«Не пытайся вписаться в устаревшие шаблоны. Твоя уникальность — это твой главный натальный капитал.»`,
+        `«Откажись от навязанных рамок: доверяй своей интуиции на тренды и будущее.»`
       ],
       "Рыбы": [
-        `«Нептун наполняет день тонкими знаками и вдохновением. Обращай внимание на образы в снах и случайные совпадения — пространство говорит с тобой мягко.»`,
-        `«Сегодня важно заземлить эмоции через творчество, музыку или контакт с водой. Береги свои эмоциональные границы от чужой суеты.»`,
-        `«Доверяй течению событий: там, где логика бессильна, твое сердце точно знает верный маршрут.»`
+        `«Нептун наполняет день тонкими знаками и вдохновением. Обращай внимание на случайные совпадения и образы — пространство говорит с тобой мягко.»`,
+        `«Сегодня важно заземлить эмоции через творчество, музыку или контакт с водой. Береги свои душевные границы от чужой суеты.»`,
+        `«Доверяй течению событий: там, где логика бессильна, твое сердце безошибочно знает верный маршрут.»`,
+        `«Мягкость и чуткость — твоя великая сила. Не закрывай сердце, но держи личные границы на замке.»`
       ]
     };
 
-    const list = sunAdvices[sunSign] || sunAdvices["Козерог"];
-    const idx = (dayOfYear + sunSign.length + moonSign.length) % list.length;
-    return list[idx];
+    const list = specificAdvices[sunSign] || specificAdvices["Козерог"];
+    const textIdx = seed % list.length;
+    const aspectIdx = (seed + dayOfWeek) % transitAspects.length;
+
+    return `${phaseIcon} ${phaseName} (${lunarDay}-й лунный день) • ${transitAspects[aspectIdx]}\n\n${list[textIdx]}`;
   }
 
   function getPersonalWeekForecast(sunSign, moonSign, ascSign) {
@@ -1832,42 +2268,91 @@
     const moon = moonSign || "Козерог";
     const asc = ascSign || "Стрелец";
 
+    const now = new Date();
+    const oneJan = new Date(now.getFullYear(), 0, 1);
+    const numberOfDays = Math.floor((now - oneJan) / 86400000);
+    const weekNum = Math.ceil((numberOfDays + oneJan.getDay() + 1) / 7);
+
     const sunElem = ZODIAC_ELEMENTS[sun] || "earth";
     const moonElem = ZODIAC_ELEMENTS[moon] || "earth";
 
-    const loveByElements = {
-      "fire": `Период ярких чувств и искренних разговоров. В знаке ${sun} важно не перетягивать инициативу, а дать партнеру проявить заботу.`,
-      "earth": `Время укрепления фундамента и надежности в союзе. С Луной в ${moon} уютные домашние вечера и практическая забота вернут доверие.`,
-      "air": `Легкая волна взаимопонимания и вдохновляющих диалогов. Отличная неделя для совместных прогулок и обсуждения общих планов.`,
-      "water": `Глубокая эмоциональная близость. Твоя чуткость поможет мягко сгладить старые шероховатости без претензий.`
+    const loveVariants = {
+      "fire": [
+        `Период ярких чувств и искренних разговоров. В знаке ${sun} важно не перетягивать инициативу, а дать партнеру возможность проявить заботу.`,
+        `Теплый подъем в общении: отличное время для романтического свидания вне привычной домашней рутины.`
+      ],
+      "earth": [
+        `Время укрепления фундамента и надежности в союзе. С Луной в ${moon} уютные совместные вечера и практическая забота вернут полное доверие.`,
+        `Спокойная и стабильная волна: важные совместные решения по быту и планам пройдут без разногласий.`
+      ],
+      "air": [
+        `Легкая волна взаимопонимания и вдохновляющих диалогов. Отличная неделя для совместных прогулок и обсуждения общих планов.`,
+        `Свежий воздух в отношениях: разговоры по душам помогут прояснить давние недомолвки без обид.`
+      ],
+      "water": [
+        `Глубокая эмоциональная близость. Твоя чуткость поможет мягко сгладить старые шероховатости без лишних слов и претензий.`,
+        `Период душевного единения: взаимная поддержка станет главным источником вдохновения на всю неделю.`
+      ]
     };
 
-    const moneyByElements = {
-      "fire": `Благоприятно для лидерских инициатив, публичных выступлений и повышения прайса. Твой авторитет работает на тебя.`,
-      "earth": `Стабильный и предсказуемый финансовый поток. Фокусируйся на системных задачах и укреплении долгосрочных договоренностей.`,
-      "air": `Отличный момент для монетизации контактов, упаковки мастер-классов и запуска новых инфо-продуктов.`,
-      "water": `Деньги приходят на состояние доверия и авторского вдохновения. Избегай демпинга и суеты.`
+    const moneyVariants = {
+      "fire": [
+        `Благоприятно для лидерских инициатив, публичных выступлений и повышения прайса. Твой авторитет работает на тебя.`,
+        `Отличный момент для запуска авторских идей и презентации своего опыта широкой аудитории.`
+      ],
+      "earth": [
+        `Стабильный и предсказуемый финансовый поток. Фокусируйся на системных задачах и укреплении долгосрочных договоренностей.`,
+        `Удачное время для упорядочивания бюджета, крупных надежных покупок и фиксации прибыли.`
+      ],
+      "air": [
+        `Отличный момент для монетизации контактов, упаковки мастер-классов и запуска новых инфо-продуктов.`,
+        `Интеллектуальный прорыв: твои идеи и консультации привлекают платежеспособных клиентов.`
+      ],
+      "water": [
+        `Деньги приходят на состояние доверия и авторского вдохновения. Избегай демпинга и пустой спешки.`,
+        `Укрепление ценности продукта: клиенты приходят на твою глубину и уникальную эстетику.`
+      ]
     };
 
-    const energyByElements = {
-      "fire": `Высокий тонус, но важно не сжечь ресурс за первые дни. Чередуй активность с качественным ночным сном.`,
-      "earth": `Устойчивая энергия. Поддерживай контакт с телом: массаж, прогулки на природе и отсутствие спешки в еде.`,
-      "air": `Ментальный тонус на пике. Защити нервную систему от бесконечного скроллинга новостей перед сном.`,
-      "water": `Тонкая волнообразная чувствительность. Водные процедуры, теплый травяной чай и тишина восстановят силы.`
+    const energyVariants = {
+      "fire": [
+        `Высокий тонус, но важно не сжечь ресурс в первые дни недели. Чередуй активность с качественным ночным сном.`,
+        `Огненный энтузиазм на высоте: направь его в творчество, береги нервную систему вечером.`
+      ],
+      "earth": [
+        `Устойчивая энергия. Поддерживай контакт с телом: массаж, прогулки на свежем воздухе и регулярное питание.`,
+        `Тело просит заземления: порядок вокруг и физический покой вернут максимальную продуктивность.`
+      ],
+      "air": [
+        `Ментальный тонус на пике. Защити нервную систему от бесконечного скроллинга новостей перед сном.`,
+        `Ясность мыслей высокая, но делай перерывы на тишину и легкую разминку в течение дня.`
+      ],
+      "water": [
+        `Тонкая волнообразная чувствительность. Водные процедуры, теплый травяной чай и тишина восстановят силы.`,
+        `Глубокая регенерация через качественный сон и отсутствие необходимости общаться с токсичными людьми.`
+      ]
     };
 
-    const themeByElements = {
+    const themeVariants = {
       "fire": `Смелое авторское проявление и верность своим амбициозным целям.`,
-      "earth": `Внутренняя устойчивость, кристаллизация планов и наведение порядка в делах.`,
-      "air": `Свобода мысли, выход на новый уровень коммуникации и смелые идеи.`,
+      "earth": `Внутренняя устойчивость, кристаллизация планов и наведение порядка во всех сферах.`,
+      "air": `Свобода мысли, выход на новый уровень коммуникации и реализация смелых идей.`,
       "water": `Глубинное доверие своей интуиции и бережное отношение к своим чувствам.`
     };
 
+    const luckyDays = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
+    const luckyDay = luckyDays[(weekNum + sun.length) % 7];
+
+    const lList = loveVariants[moonElem] || loveVariants["earth"];
+    const mList = moneyVariants[sunElem] || moneyVariants["earth"];
+    const eList = energyVariants[moonElem] || energyVariants["water"];
+
     return {
-      love: loveByElements[moonElem] || loveByElements["earth"],
-      money: moneyByElements[sunElem] || moneyByElements["earth"],
-      energy: energyByElements[moonElem] || energyByElements["water"],
-      theme: themeByElements[sunElem] || themeByElements["earth"]
+      love: lList[weekNum % lList.length],
+      money: mList[weekNum % mList.length],
+      energy: eList[weekNum % eList.length],
+      theme: themeVariants[sunElem] || themeVariants["earth"],
+      luckyDay: luckyDay
     };
   }
 
@@ -1958,7 +2443,15 @@
   function switchTab(tabId, btn) {
     document.querySelectorAll('.tab-view').forEach(el => el.style.display = 'none');
     const target = document.getElementById('tab-' + tabId);
-    if (target) target.style.display = 'block';
+    if (target) {
+      if (tabId === 'chat') {
+        target.style.display = 'flex';
+        const box = document.getElementById('chatBox');
+        if (box) setTimeout(() => { box.scrollTop = box.scrollHeight; }, 60);
+      } else {
+        target.style.display = 'block';
+      }
+    }
 
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     if (btn) {
@@ -1970,7 +2463,7 @@
       if (tabId === 'chat' && items[2]) items[2].classList.add('active');
       if (tabId === 'profile' && items[3]) items[3].classList.add('active');
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
   function openModal(contentHtml) {
@@ -2760,13 +3253,19 @@
   }
 
   function openProductQuestionnaire(prodKey) {
+    if (!userNatalData || !userNatalData.date) {
+      openMissingDataModal();
+      return;
+    }
+
     const prod = productsInfo[prodKey];
+    if (!prod) return;
     let formFields = "";
 
     if (prodKey === 'synastry') {
       formFields = `
         <div class="form-group">
-          <label class="form-label">1. Твой текущий статус в отношениях</label>
+          <label class="form-label">1. Твой текущий статус в отношениях *</label>
           <select id="pq_status" class="form-input">
             <option value="single">Свободна / в поиске</option>
             <option value="dating">Начало отношений / встречаемся</option>
@@ -2775,11 +3274,11 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">2. Какой тип близости и поддержки для тебя важнее всего?</label>
+          <label class="form-label">2. Какой тип близости и поддержки для тебя важнее всего? *</label>
           <input type="text" id="pq_focus" class="form-input" placeholder="Например: эмоциональное тепло, уважение границ, забота">
         </div>
         <div class="form-group">
-          <label class="form-label">3. Что создаёт напряжение или повторяется в отношениях?</label>
+          <label class="form-label">3. Что создаёт напряжение или повторяется в отношениях? *</label>
           <input type="text" id="pq_barrier" class="form-input" placeholder="Например: бытовое выгорание, замалчивание обид, контроль">
         </div>
         <div class="form-group">
@@ -2790,7 +3289,7 @@
     } else if (prodKey === 'finance') {
       formFields = `
         <div class="form-group">
-          <label class="form-label">1. Чем ты сейчас занимаешься?</label>
+          <label class="form-label">1. Чем ты сейчас занимаешься? *</label>
           <input type="text" id="pq_job" class="form-input" placeholder="Например: фотограф, контент-мейкер, дизайнер...">
         </div>
         <div class="form-group">
@@ -2803,18 +3302,18 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">3. Главная финансовая цель сейчас</label>
+          <label class="form-label">3. Главная финансовая цель сейчас *</label>
           <input type="text" id="pq_goal" class="form-input" placeholder="Например: поднять чек на услуги, выйти на стабильный доход">
         </div>
         <div class="form-group">
-          <label class="form-label">4. Что, по твоему ощущению, мешает росту?</label>
+          <label class="form-label">4. Что, по твоему ощущению, мешает росту? *</label>
           <textarea id="pq_barrier" class="form-input" style="height: 60px; padding: 10px;" placeholder="Например: страх поднимать цену, синдром самозванца, выгорание..."></textarea>
         </div>
       `;
     } else if (prodKey === 'purpose') {
       formFields = `
         <div class="form-group">
-          <label class="form-label">1. Текущая профессиональная деятельность</label>
+          <label class="form-label">1. Текущая профессиональная деятельность *</label>
           <input type="text" id="pq_activity" class="form-input" placeholder="Например: творчество, фотография, маркетинг...">
         </div>
         <div class="form-group">
@@ -2826,7 +3325,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">3. К чему ты хочешь прийти в реализации?</label>
+          <label class="form-label">3. К чему ты хочешь прийти в реализации? *</label>
           <input type="text" id="pq_vision" class="form-input" placeholder="Например: авторский проект, масштаб, признание">
         </div>
         <div class="form-group">
@@ -2845,7 +3344,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">2. Что для тебя сейчас важнее всего в дружбе?</label>
+          <label class="form-label">2. Что для тебя сейчас важнее всего в дружбе? *</label>
           <input type="text" id="pq_need" class="form-input" placeholder="Например: личные границы, глубокие разговоры, взаимность">
         </div>
         <div class="form-group">
@@ -2856,7 +3355,7 @@
     } else if (prodKey === 'solar') {
       formFields = `
         <div class="form-group">
-          <label class="form-label">1. Какие сферы наиболее важны в наступающем личном году?</label>
+          <label class="form-label">1. Какие сферы наиболее важны в наступающем личном году? *</label>
           <input type="text" id="pq_priorities" class="form-input" placeholder="Например: масштабирование блога, семья, переезд, доход">
         </div>
         <div class="form-group">
@@ -2873,18 +3372,18 @@
         </div>
       `;
     } else {
-      // Natal PRO (Untouched, pristine)
+      // Natal PRO
       formFields = `
         <div class="form-group">
-          <label class="form-label">1. Твоя текущая профессия и занятость</label>
+          <label class="form-label">1. Твоя текущая профессия и занятость *</label>
           <input type="text" id="pq_pro_job" class="form-input" placeholder="Например: фотограф, контент-мейкер, фрилансер">
         </div>
         <div class="form-group">
-          <label class="form-label">2. Семейное положение и отношения</label>
+          <label class="form-label">2. Семейное положение и отношения *</label>
           <input type="text" id="pq_pro_rel" class="form-input" placeholder="Например: замужем, двое детей">
         </div>
         <div class="form-group">
-          <label class="form-label">3. Главная точка роста и фокус внимания сейчас</label>
+          <label class="form-label">3. Главная точка роста и фокус внимания сейчас *</label>
           <input type="text" id="pq_pro_focus" class="form-input" placeholder="Например: уверенность, масштаб блога, баланс семьи и работы">
         </div>
         <div class="form-group">
@@ -2913,186 +3412,161 @@
   }
 
   function generateAndShowReport(prodKey) {
-    if (!userNatalData) {
-      userNatalData = {
-        name: 'Надин',
-        date: '1990-12-31',
-        birthDate: '1990-12-31',
-        time: '17:10',
-        city: 'Красноуральск',
-        sun: 'Козерог',
-        moon: 'Козерог',
-        asc: 'Стрелец'
-      };
+    if (!userNatalData || !userNatalData.date) {
+      openMissingDataModal();
+      return;
     }
 
-    const pJobEl = document.getElementById('pq_pro_job');
-    // already captured
-    const pRelEl = document.getElementById('pq_pro_rel');
-    // already captured
-    const pFocusEl = document.getElementById('pq_pro_focus');
-    // already captured
-    const pQueryEl = document.getElementById('pq_pro_query');
-    // already captured
+    // Capture and validate form inputs
+    let pJobVal = (document.getElementById('pq_pro_job')?.value || '').trim();
+    let pRelVal = (document.getElementById('pq_pro_rel')?.value || '').trim();
+    let pFocusVal = (document.getElementById('pq_pro_focus')?.value || '').trim();
+    let pQueryVal = (document.getElementById('pq_pro_query')?.value || '').trim();
 
-    const pSynStatusEl = document.getElementById('pq_status');
-    const pSynStatus = pSynStatusEl ? pSynStatusEl.value : 'married';
-    const pSynFocusEl = document.getElementById('pq_focus');
-    const pSynFocus = pSynFocusEl ? pSynFocusEl.value : 'Эмоциональное тепло и взаимное уважение';
-    const pSynBarrierEl = document.getElementById('pq_barrier');
-    const pSynBarrier = pSynBarrierEl ? pSynBarrierEl.value : 'Бытовая рутина и усталость';
-    const pSynQueryEl = document.getElementById('pq_query');
-    const pSynQuery = pSynQueryEl ? pSynQueryEl.value : 'Как сохранять страсть и легкость';
+    if (prodKey === 'natal' && (!pJobVal || !pRelVal || !pFocusVal)) {
+      haptic('warning');
+      alert('Пожалуйста, заполни ключевые поля анкеты, чтобы LUNA могла рассчитать точный персональный разбор.');
+      return;
+    }
 
-    const pFinJobEl = document.getElementById('pq_job');
-    const pFinJob = pFinJobEl ? pFinJobEl.value : 'Фотография и визуальный контент';
-    const pFinFormatEl = document.getElementById('pq_format');
-    const pFinFormat = pFinFormatEl ? pFinFormatEl.value : 'freelance';
-    const pFinGoalEl = document.getElementById('pq_goal');
-    const pFinGoal = pFinGoalEl ? pFinGoalEl.value : 'Рост чека и стабильный доход';
-    const pFinBarrierEl = document.getElementById('pq_barrier');
-    const pFinBarrier = pFinBarrierEl ? pFinBarrierEl.value : 'Синдром самозванца и распыление';
+    pJobVal = pJobVal || 'Творческая деятельность и проекты';
+    pRelVal = pRelVal || 'Близкие доверительные отношения';
+    pFocusVal = pFocusVal || 'Масштабирование и баланс сил';
+    pQueryVal = pQueryVal || 'Ключевые точки роста и внутренняя опора';
 
-    const pPurActEl = document.getElementById('pq_activity');
-    const pPurAct = pPurActEl ? pPurActEl.value : 'Творчество и фотография';
-    const pPurSatEl = document.getElementById('pq_satisfaction');
-    const pPurSat = pPurSatEl ? pPurSatEl.value : 'love';
-    const pPurVisEl = document.getElementById('pq_vision');
-    const pPurVis = pPurVisEl ? pPurVisEl.value : 'Авторские проекты и масштаб';
-    const pPurQEl = document.getElementById('pq_question');
-    const pPurQ = pPurQEl ? pPurQEl.value : 'Куда направить основной ресурс';
+    const pSynStatus = document.getElementById('pq_status')?.value || 'married';
+    const pSynFocus = (document.getElementById('pq_focus')?.value || '').trim() || 'Эмоциональное тепло и взаимное уважение';
+    const pSynBarrier = (document.getElementById('pq_barrier')?.value || '').trim() || 'Бытовая рутина и усталость';
+    const pSynQuery = (document.getElementById('pq_query')?.value || '').trim() || 'Как сохранять доверие и легкость';
 
-    const pFrCircleEl = document.getElementById('pq_circle');
-    const pFrCircle = pFrCircleEl ? pFrCircleEl.value : 'small';
-    const pFrNeedEl = document.getElementById('pq_need');
-    const pFrNeed = pFrNeedEl ? pFrNeedEl.value : 'Глубокие доверительные отношения';
-    const pFrSitEl = document.getElementById('pq_situation');
-    const pFrSit = pFrSitEl ? pFrSitEl.value : 'Личные границы в общении';
+    const pFinJob = (document.getElementById('pq_job')?.value || '').trim() || 'Творчество и авторские проекты';
+    const pFinFormat = document.getElementById('pq_format')?.value || 'freelance';
+    const pFinGoal = (document.getElementById('pq_goal')?.value || '').trim() || 'Рост чека и стабильный доход';
+    const pFinBarrier = (document.getElementById('pq_barrier')?.value || '').trim() || 'Сомнения в стоимости и синдром самозванца';
 
-    const pSolPrioEl = document.getElementById('pq_priorities');
-    const pSolPrio = pSolPrioEl ? pSolPrioEl.value : 'Масштабирование и семья';
-    const pSolChgEl = document.getElementById('pq_changes');
-    const pSolChg = pSolChgEl ? pSolChgEl.value : 'yes';
-    const pSolQEl = document.getElementById('pq_year_q');
-    const pSolQ = pSolQEl ? pSolQEl.value : 'Главные точки прорыва в этом году';
+    const pPurAct = (document.getElementById('pq_activity')?.value || '').trim() || 'Творчество и контент';
+    const pPurSat = document.getElementById('pq_satisfaction')?.value || 'love';
+    const pPurVis = (document.getElementById('pq_vision')?.value || '').trim() || 'Авторские проекты и масштаб';
+    const pPurQ = (document.getElementById('pq_question')?.value || '').trim() || 'Куда направить основной ресурс';
+
+    const pFrCircle = document.getElementById('pq_circle')?.value || 'small';
+    const pFrNeed = (document.getElementById('pq_need')?.value || '').trim() || 'Глубокие доверительные отношения';
+    const pFrSit = (document.getElementById('pq_situation')?.value || '').trim() || 'Личные границы в общении';
+
+    const pSolPrio = (document.getElementById('pq_priorities')?.value || '').trim() || 'Масштабирование и семья';
+    const pSolChg = document.getElementById('pq_changes')?.value || 'yes';
+    const pSolQ = (document.getElementById('pq_year_q')?.value || '').trim() || 'Главные точки прорыва в этом году';
 
     const prod = productsInfo[prodKey] || { title: 'Персональный разбор LUNA' };
     let chaptersHtml = "";
 
+    haptic();
     openModal(`
       <div style="text-align: center; padding: 40px 10px;">
-        <div style="font-size: 32px; margin-bottom: 12px;">✨</div>
+        <div style="font-size: 36px; animation: spin 2s infinite linear; margin-bottom: 14px;">✨</div>
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px;">
-          LUNA рассчитывает персональный отчёт...
+          LUNA рассчитывает персональный разбор...
         </div>
         <div style="font-size: 12.5px; color: var(--text-muted);">
-          Синтезируем натальные аспекты и твой жизненный контекст
+          Синтезируем натальные координаты и твой жизненный контекст
         </div>
       </div>
     `);
 
     setTimeout(() => {
-      if (prodKey === 'natal') {
-        const pJobEl = document.getElementById('pq_pro_job');
-        // already captured
-        const pRelEl = document.getElementById('pq_pro_rel');
-        // already captured
-        const pFocusEl = document.getElementById('pq_pro_focus');
-        // already captured
-        const pQueryEl = document.getElementById('pq_pro_query');
-        // already captured
+      try {
+        if (prodKey === 'natal') {
+          chaptersHtml = `
+            <div class="report-chapter">
+              <h3>📖 Глава 1. Введение — Персональный портрет</h3>
+              <p>Ты обладаешь редким сочетанием психологической тонкости и внутреннего стержня. Для личности с Солнцем в знаке ${userNatalData.sun}, Луной в знаке ${userNatalData.moon} и Асцендентом в знаке ${userNatalData.asc} жизнь строится не по шаблонам, а через поиск глубокого личного смысла.</p>
+              <p>С учетом твоего текущего контекста (${pRelVal}, деятельность: «${pJobVal}»), эта книга раскрывает, как природные планетарные настройки работают на твои цели — от масштабирования до душевного спокойствия.</p>
+            </div>
 
-        chaptersHtml = `
-          <div class="report-chapter">
-            <h3>📖 Глава 1. Введение — Персональный портрет</h3>
-            <p>Ты обладаешь редким сочетанием психологической тонкости и внутреннего стержня. Для личности с Солнцем в знаке ${userNatalData.sun}, Луной в знаке ${userNatalData.moon} и Асцендентом в знаке ${userNatalData.asc} жизнь строится не по шаблонам, а через поиск глубокого личного смысла.</p>
-            <p>С учетом твоего текущего контекста (${pRelVal}, деятельность: «${pJobVal}»), эта книга раскрывает, как природные планетарные настройки работают на твои цели — от масштабирования до душевного спокойствия.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>🏛️ Глава 2. Архитектура личности: Триада Солнца, Луны и ASC</h3>
+              <p><b>Солнце в ${userNatalData.sun}</b> дает тебе фундаментальную потребность в авторстве, качестве и уважении к своему труду. Ты не выносишь поверхностности и пустых обещаний.</p>
+              <p><b>Луна в ${userNatalData.moon}</b> делает тебя чутким эмпатом, для которого дом, безопасность близких и теплое пространство являются главным источником восстановления сил.</p>
+              <p><b>Асцендент в ${userNatalData.asc}</b> — твой фасад проявления в социуме: легкость в контактах, визуальный шарм, харизма и умение мгновенно считывать атмосферу аудитории.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>🏛️ Глава 2. Архитектура личности: Триада Солнца, Луны и ASC</h3>
-            <p><b>Солнце в ${userNatalData.sun}</b> дает тебе фундаментальную потребность в авторстве, качестве и уважении к своему труду. Ты не выносишь поверхностности и пустых обещаний.</p>
-            <p><b>Луна в ${userNatalData.moon}</b> делает тебя чутким эмпатом, для которого дом, безопасность близких и теплое пространство являются главным источником восстановления сил.</p>
-            <p><b>Асцендент в ${userNatalData.asc}</b> — твой фасад проявления в социуме: легкость в контактах, визуальный шарм, харизма и умение мгновенно считывать атмосферу аудитории.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>🌊 Глава 3. Эмоциональный мир и восстановление ресурса</h3>
+              <p>Твоя психика функционирует волнообразно: периоды яркой социальной отдачи обязательно должны сменяться днями тишины и уединения. Если ты игнорируешь потребность Луны в отдыхе и пытаешься «держать планку на силе воли», накапливается внутренняя усталость.</p>
+              <p>Чувство безопасности тебе возвращают: вода, порядок в физическом пространстве, эстетичные ритуалы и возможность побыть наедине со своими мыслями без необходимости соответствовать чужим ожиданиям.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>🌊 Глава 3. Эмоциональный мир и восстановление ресурса</h3>
-            <p>Твоя психика функционирует волнообразно: периоды яркой социальной отдачи обязательно должны сменяться днями тишины и уединения. Если ты игнорируешь потребность Луны в отдыхе и пытаешься «держать планку на силе воли», накапливается внутренняя усталость.</p>
-            <p>Чувство безопасности тебе возвращают: вода, порядок в физическом пространстве, эстетичные ритуалы и возможность побыть наедине со своими мыслями без необходимости соответствовать чужим ожиданиям.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>💡 Глава 4. Мышление, речь и принятие решений</h3>
+              <p>Твой Меркурий синтезирует логику и образное чутье. Ты воспринимаешь информацию через визуальные образы, интонации и контекст. Тебе сложно воспринимать сухие инструкции — тебе нужно видеть общую картину и чувствовать эстетику процесса.</p>
+              <p>Принимая решения, доверяй первому спокойному импульсу: когда ты начинаешь слишком долго сомневаться и взвешивать чужие мнения, ментальный шум перекрывает ясность.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>💡 Глава 4. Мышление, речь и принятие решений</h3>
-            <p>Твой Меркурий синтезирует логику и образное чутье. Ты воспринимаешь информацию через визуальные образы, интонации и контекст. Тебе сложно воспринимать сухие инструкции — тебе нужно видеть общую картину и чувствовать эстетику процесса.</p>
-            <p>Принимая решения, доверяй первому спокойному импульсу: когда ты начинаешь слишком долго сомневаться и взвешивать чужие мнения, ментальный шум перекрывает ясность.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>🎯 Глава 5. Самореализация и характер действий</h3>
+              <p>В работе («${pJobVal}») тебе противопоказаны жесткие рамки механического найма. Твой Марс раскрывает максимальную продуктивность в условиях проектной автономии, когда ты сама задаешь темп и несешь авторскую ответственность за результат.</p>
+              <p>Ты расцветаешь, когда видишь реальную ценность своего продукта и отклик благодарных людей. Твоя амбициозность носит не агрессивный, а качественный характер — делать лучшее, на что ты способна.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>🎯 Глава 5. Самореализация и характер действий</h3>
-            <p>В работе («${pJobVal}») тебе противопоказаны жесткие рамки механического найма. Твой Марс раскрывает максимальную продуктивность в условиях проектной автономии, когда ты сама задаешь темп и несешь авторскую ответственность за результат.</p>
-            <p>Ты расцветаешь, когда видишь реальную ценность своего продукта и отклик благодарных людей. Твоя амбициозность носит не агрессивный, а качественный характер — делать лучшее, на что ты способна.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>💗 Глава 6. Отношения и партнерство</h3>
+              <p>В любви и семейной жизни (${pRelVal}) твоя Венера и Луна требуют партнерства равных: эмоциональной зрелости, надежности и защиты. Тебе важно, чтобы партнер уважал твое творчество и личное пространство.</p>
+              <p>Конфликтные триггеры чаще всего возникают из-за бытового выгорания или ощущения, что твой огромный вклад воспринимается как само собой разумеющееся. Лекарство — регулярные паузы только для двоих и честное проговаривание потребностей без накопления обид.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>💗 Глава 6. Отношения и партнерство</h3>
-            <p>В любви и семейной жизни (${pRelVal}) твоя Венера и Луна требуют партнерства равных: эмоциональной зрелости, надежности и защиты. Тебе важно, чтобы партнер уважал твое творчество и личное пространство.</p>
-            <p>Конфликтные триггеры чаще всего возникают из-за бытового выгорания или ощущения, что твой огромный вклад воспринимается как само собой разумеющееся. Лекарство — регулярные паузы только для двоих и честное проговаривание потребностей без накопления обид.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>💎 Глава 7. Деньги, профессия и масштаб</h3>
+              <p>Финансовый код твоей карты напрямую связан с проявленностью, авторским брендом и высоким чеком. Попытки конкурировать в эконом-сегменте или демпинговать разрушают твою мотивацию.</p>
+              <p>Фокус на «${pFocusVal}»: твой денежный поток расширяется через эксклюзивность, упаковку опыта в мастер-классы, премиальные съемки и наставничество. Деньги приходят к тебе на состояние легкости и достоинства.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>💎 Глава 7. Деньги, профессия и масштаб</h3>
-            <p>Финансовый код твоей карты напрямую связан с проявленностью, авторским брендом и высоким чеком. Попытки конкурировать в эконом-сегменте или демпинговать разрушают твою мотивацию.</p>
-            <p>Фокус на «${pFocusVal}»: твой денежный поток расширяется через эксклюзивность, упаковку опыта в мастер-классы, премиальные съемки и наставничество. Деньги приходят к тебе на состояние легкости и достоинства.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>👭 Глава 8. Социальное окружение и границы</h3>
+              <p>Твой 11-й дом предпочитает качество количеству. Тебе не нужна огромная толпа поверхностных знакомых — тебе необходим круг единомышленников, которые вдохновляют на рост и не тянут в токсичные жалобы.</p>
+              <p>Важнейший навык — твердое и спокойное «нет» без чувства вины тем, кто пытается использовать твою эмпатию в роли бесплатной жилетки.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>👭 Глава 8. Социальное окружение и границы</h3>
-            <p>Твой 11-й дом предпочитает качество количеству. Тебе не нужна огромная толпа поверхностных знакомых — тебе необходим круг единомышленников, которые вдохновляют на рост и не тянут в токсичные жалобы.</p>
-            <p>Важнейший навык — твердое и спокойное «нет» без чувства вины тем, кто пытается использовать твою эмпатию в роли бесплатной жилетки.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>🏰 Глава 9. Дома натальной карты: Ключевые сферы</h3>
+              <p><b>1-й дом:</b> Личная харизма и магнетизм. Твое тело и внешность — инструмент влияния на мир.<br><b>4-й дом:</b> Семья как опора и фундамент. Дом — место твоей силы.<br><b>10-й дом:</b> Карьерный Зенит. Признание твоего мастерства в обществе неизбежно при системном проявлении.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>🏰 Глава 9. Дома натальной карты: Ключевые сферы</h3>
-            <p><b>1-й дом:</b> Личная харизма и магнетизм. Твое тело и внешность — инструмент влияния на мир.<br><b>4-й дом:</b> Семья как опора и фундамент. Дом — место твоей силы.<br><b>10-й дом:</b> Карьерный Зенит. Признание твоего мастерства в обществе неизбежно при системном проявлении.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>🪐 Глава 10. Анализ 10 планет в твоем гороскопе</h3>
+              <p>• <b>Солнце в ${userNatalData.sun}:</b> Ядро воли и духа.<br>• <b>Луна в ${userNatalData.moon}:</b> Эмоциональная база и подсознание.<br>• <b>Меркурий:</b> Образное мышление и дар убеждения.<br>• <b>Венера:</b> Эстетическое чутье, чувство стиля и ценность себя.<br>• <b>Марс:</b> Точечная концентрация энергии и действий.<br>• <b>Юпитер:</b> Масштаб социального авторитета.<br>• <b>Сатурн:</b> Внутренняя дисциплина и способность доводить начатое до совершенства.<br>• <b>Уран, Нептун, Плутон:</b> Поколенческие планеты, дающие тебе глубокую интуицию и чутье на тренды.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>🪐 Глава 10. Анализ 10 планет в твоем гороскопе</h3>
-            <p>• <b>Солнце в ${userNatalData.sun}:</b> Ядро воли и духа.<br>• <b>Луна в ${userNatalData.moon}:</b> Эмоциональная база и подсознание.<br>• <b>Меркурий:</b> Образное мышление и дар убеждения.<br>• <b>Венера:</b> Эстетическое чутье, чувство стиля и ценность себя.<br>• <b>Марс:</b> Точечная концентрация энергии и действий.<br>• <b>Юпитер:</b> Масштаб социального авторитета.<br>• <b>Сатурн:</b> Внутренняя дисциплина и способность доводить начатое до совершенства.<br>• <b>Уран, Нептун, Плутон:</b> Поколенческие планеты, дающие тебе глубокую интуицию и чутье на тренды.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>⚡ Глава 11. Аспекты и динамика карты</h3>
+              <p>Гармоничные тригоны в твоей карте дают природную одаренность в создании визуального контента и работе с людьми. Напряженные аспекты между волей и чувствами работают как мотор: именно они заставляют тебя не сидеть на месте, а постоянно расти и искать новые форматы проявления.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>⚡ Глава 11. Аспекты и динамика карты</h3>
-            <p>Гармоничные тригоны в твоей карте дают природную одаренность в создании визуального контента и работе с людьми. Напряженные аспекты между волей и чувствами работают как мотор: именно они заставляют тебя не сидеть на месте, а постоянно расти и искать новые форматы проявления.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>🧭 Глава 12. Кармическая ось (Узлы Судьбы)</h3>
+              <p>Северный Узел указывает на переход от избыточных сомнений и обслуживания чужих ожиданий к смелому авторскому лидерству. Твоя эволюционная задача — доверять своей уникальности и не бояться быть заметной.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>🧭 Глава 12. Кармическая ось (Узлы Судьбы)</h3>
-            <p>Северный Узел указывает на переход от избыточных сомнений и обслуживания чужих ожиданий к смелому авторскому лидерству. Твоя эволюционная задача — доверять своей уникальности и не бояться быть заметной.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>💥 Глава 13. Внутренние противоречия и их трансформация</h3>
+              <p>Главный конфликт: желание спрятаться в уютную ракушку покоя (Луна) против амбициозного зова реализовать свой огромный потенциал (Солнце и 10 дом). Решение — не выбирать что-то одно, а выстроить бережный ритм: 3 дня активного проявления, затем день тишины.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>💥 Глава 13. Внутренние противоречия и их трансформация</h3>
-            <p>Главный конфликт: желание спрятаться в уютную ракушку покоя (Луна) против амбициозного зова реализовать свой огромный потенциал (Солнце и 10 дом). Решение — не выбирать что-то одно, а выстроить бережный ритм: 3 дня активного проявления, затем день тишины.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>🌱 Глава 14. Сильные стороны и ресурсные точки</h3>
+              <p>Твой главный супер-ресурс — умение создавать атмосферу доверия и эстетики. Люди рядом с тобой расслабляются и раскрывают свои лучшие грани. В бизнесе и блогинге это монетизируется лучше любых агрессивных продаж.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>🌱 Глава 14. Сильные стороны и ресурсные точки</h3>
-            <p>Твой главный супер-ресурс — умение создавать атмосферу доверия и эстетики. Люди рядом с тобой расслабляются и раскрывают свои лучшие грани. В бизнесе и блогинге это монетизируется лучше любых агрессивных продаж.</p>
-          </div>
+            <div class="report-chapter">
+              <h3>🌟 Глава 15. Итоговый портрет личности</h3>
+              <p>Ты — создатель смыслов и проводник красоты. В тебе соединились глубина исследователя, теплота матери и решительность профессионала. Твой путь — это раскрытие через радость созидания без надрыва и самоедства.</p>
+            </div>
 
-          <div class="report-chapter">
-            <h3>🌟 Глава 15. Итоговый портрет личности</h3>
-            <p>Ты — создатель смыслов и проводник красоты. В тебе соединились глубина исследователя, теплота матери и решительность профессионала. Твой путь — это раскрытие через радость созидания без надрыва и самоедства.</p>
-          </div>
-
-          <div class="report-chapter">
-            <h3>🗝️ Глава 16. Семь персональных опор для жизни</h3>
-            <p>1. <b>Состояние первично:</b> Сначала наполненность и отдых, затем съемки и контент.<br>2. <b>Цена твоего мастерства:</b> Достойный чек отсекает токсичность и притягивает идеальных клиентов.<br>3. <b>Личное пространство:</b> Право на тишину и закрытую дверь без чувства вины.<br>4. <b>Честность в блоге:</b> Твоя сила — в искренности и показе живой жизни.<br>5. <b>Доверие партнеру:</b> Снимай контроль и позволяй близким заботиться о тебе.<br>6. <b>Магия повседневности:</b> Маленькие ритуалы красоты заряжают твою натальную Венеру.<br>7. <b>Масштаб без спешки:</b> Твое от тебя не уйдет, двигайся в удовольствие.</p>
-          </div>
-        `;
-      } else if (prodKey === 'synastry') {
+            <div class="report-chapter">
+              <h3>🗝️ Глава 16. Семь персональных опор для жизни</h3>
+              <p>1. <b>Состояние первично:</b> Сначала наполненность и отдых, затем съемки и контент.<br>2. <b>Цена твоего мастерства:</b> Достойный чек отсекает токсичность и притягивает идеальных клиентов.<br>3. <b>Личное пространство:</b> Право на тишину и закрытую дверь без чувства вины.<br>4. <b>Честность в блоге:</b> Твоя сила — в искренности и показе живой жизни.<br>5. <b>Доверие партнеру:</b> Снимай контроль и позволяй близким заботиться о тебе.<br>6. <b>Магия повседневности:</b> Маленькие ритуалы красоты заряжают твою натальную Венеру.<br>7. <b>Масштаб без спешки:</b> Твое от тебя не уйдет, двигайся в удовольствие.</p>
+            </div>
+          `;
+        } else if (prodKey === 'synastry') {
         const focusEl = document.getElementById('pq_focus');
         const focusVal = focusEl ? focusEl.value : 'эмоциональное тепло и доверие';
         const barrierEl = document.getElementById('pq_barrier');
@@ -3242,6 +3716,9 @@
         </div>
       `;
       openModal(reportModalHtml);
+      } catch (err) {
+        console.error("Error generating report:", err);
+      }
     }, 1200);
   }
 
