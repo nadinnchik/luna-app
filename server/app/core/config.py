@@ -1,5 +1,10 @@
 import os
-from pydantic_settings import BaseSettings
+
+try:
+    from pydantic_settings import BaseSettings
+except ImportError:
+    class BaseSettings:
+        pass
 
 
 class Settings(BaseSettings):
@@ -19,7 +24,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./luna.db")
 
     # CORS configuration (allow Telegram WebApp origins & GitHub Pages)
-    CORS_ORIGINS: list[str] = [
+    CORS_ORIGINS: list = [
         "https://nadinnchik.github.io",
         "http://localhost:3000",
         "http://localhost:8000",
