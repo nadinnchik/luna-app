@@ -43,3 +43,20 @@ def get_current_user(
         )
 
     return user
+
+
+def get_current_user_optional(
+    authorization: Optional[str] = Header(None),
+    db: Session = Depends(get_db)
+) -> Optional[User]:
+    if not authorization:
+        return None
+    try:
+        token = authorization.replace("Bearer ", "").replace("bearer ", "").strip()
+        payload = decode_access_token(token)
+        if not payload or not payload.get("sub"):
+            return None
+        telegram_id = payload.get("sub")
+        return db.query(User).filter(User.telegram_id == int(telegram_id)).first()
+    except Exception:
+        return None
