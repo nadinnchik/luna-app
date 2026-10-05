@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "LUNA_ASTROLOGER_PROJECT.md",
+    "LUNA_MARKETING_BLUEPRINT.md",
+    ".opencode/rules/common/development-workflow.md",
+    ".opencode/rules/python/testing.md",
+    ".opencode/rules/python/security.md"
+  ]
+}

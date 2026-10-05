@@ -65,6 +65,25 @@ class QuizOut(BaseModel):
         from_attributes = True
 
 
+# Purchase Schemas
+class PurchaseCreate(BaseModel):
+    product_id: str
+    price: Optional[int] = None
+    target_child_id: Optional[int] = None
+    analysis_data: Optional[dict] = None
+
+
+class PurchaseOut(BaseModel):
+    id: int
+    product_id: str
+    status: str
+    target_child_id: Optional[int] = None
+    created_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
 # User Profile Schemas
 class UserOut(BaseModel):
     id: int
@@ -81,6 +100,7 @@ class UserOut(BaseModel):
     asc_sign: Optional[str] = None
     children: List[ChildOut] = []
     quiz: Optional[QuizOut] = None
+    purchases: List[PurchaseOut] = []
 
     class Config:
         from_attributes = True

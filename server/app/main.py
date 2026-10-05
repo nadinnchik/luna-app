@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.database import engine, Base
+import app.models.models  # Ensures all models are registered in Base.metadata
 from app.api.v1.api import api_router
 
 # Auto-create SQLite / Postgres tables on start
