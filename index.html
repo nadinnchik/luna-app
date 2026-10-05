@@ -1372,7 +1372,7 @@
         <div class="form-group">
           <label class="form-label">📍 Город / населённый пункт рождения</label>
           <div class="city-input-wrap">
-            <input type="text" id="obCity" class="form-input" placeholder="Начни вводить: Красноуральск, Москва..." autocomplete="off">
+            <input type="text" id="obCity" class="form-input" placeholder="Начни вводить: Москва, Санкт-Петербург, Казань..." autocomplete="off">
             <div class="city-dropdown" id="obCityDropdown"></div>
           </div>
           <div id="obCityConfirmedBadge" style="display: none; margin-top: 5px; font-size: 11.5px; color: #10B981; align-items: center; gap: 4px;">
@@ -1634,7 +1634,7 @@
             <div style="font-size: 10px; color: #10B981; font-weight: 700; text-transform: uppercase;">Стоимость</div>
             <div class="cat-price" style="color: #FFE8A3;">999 ₽</div>
           </div>
-          <button class="cat-btn">Открыть книгу →</button>
+          <button class="cat-btn" id="btnCatLunaPro">999 ₽ / Открыть LUNA PRO →</button>
         </div>
       </div>
 
@@ -1749,6 +1749,20 @@
         <button class="btn-outline" style="padding: 10px 12px; font-size: 12px;" onclick="openTopUpModal()">
           + Пакет запросов
         </button>
+      </div>
+    </div>
+
+    <!-- 🪐 MY LUNA PRO BOOK (17 CHAPTERS) IN PROFILE -->
+    <div class="card" id="profLunaProCard" style="border: 1.5px solid rgba(139, 92, 246, 0.5); background: linear-gradient(145deg, rgba(38, 22, 60, 0.85) 0%, rgba(18, 12, 34, 0.95) 100%);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <div class="card-title" style="margin-bottom: 0;">🪐 Книга LUNA PRO</div>
+        <span id="profLunaProStatusBadge" style="background: rgba(229, 195, 120, 0.2); border: 1px solid rgba(229, 195, 120, 0.5); color: #FFE8A3; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Не приобретена</span>
+      </div>
+
+      <div id="profLunaProDetails" style="font-size: 13px; color: #E2DFEC; line-height: 1.7; margin-bottom: 12px;">
+      </div>
+
+      <div id="profLunaProActions" style="display: flex; gap: 8px;">
       </div>
     </div>
 
@@ -1918,6 +1932,111 @@
     return localUid;
   }
 
+  // PRODUCTS CATALOG REGISTRY
+  const productsInfo = {
+    'natal': {
+      id: 'luna_pro',
+      product_id: 'natal',
+      title: 'Персональная книга LUNA PRO (17 глав)',
+      shortTitle: 'Книга LUNA PRO',
+      price: '999 ₽',
+      priceNum: 999,
+      type: 'one_time',
+      badge: '⭐ Флагман · Полный разбор',
+      desc: '17 полноценных разделов: характер, тень, сценарии, отношения, деньги, предназначение, периоды Vimshottari Dasha и 30-дневный план действий.',
+      points: [
+        '📖 17 глав глубокого ведического и психологического синтеза',
+        '🪐 Точный расчет Накшатры, Лагны и периодов Vimshottari Dasha',
+        '🗝️ Пошаговый 30-дневный план и 5 правил жизни',
+        '📥 Интерактивный веб-ридер и экспорт в PDF-книгу',
+        '⚡ Разовая покупка навсегда (не подписка, без списания и без начисления AI-запросов)'
+      ]
+    },
+    'synastry': {
+      id: 'synastry',
+      product_id: 'synastry',
+      title: '❤️ Синастрия и Отношения PRO',
+      shortTitle: 'Синастрия PRO',
+      price: '399 ₽',
+      priceNum: 399,
+      type: 'one_time',
+      badge: 'Любовь и Совместимость',
+      desc: 'Глубокий анализ совместимости, языка чувств Венеры и Марса, зон роста пары и персональной стратегии гармонизации союза.',
+      points: [
+        '💗 Язык любви и чувств по натальной карте',
+        '🧲 Потребности в партнере и тип близости',
+        '💥 Преодоление напряжения и бытовых кризисов',
+        '🗝️ 7 ключей к долгосрочному доверию'
+      ]
+    },
+    'finance': {
+      id: 'finance',
+      product_id: 'finance',
+      title: '💰 Финансовый код и Карьера PRO',
+      shortTitle: 'Финансы PRO',
+      price: '399 ₽',
+      priceNum: 399,
+      type: 'one_time',
+      badge: 'Деньги и Масштаб',
+      desc: 'Природные каналы дохода по 2-му и 8-му домам, снятие синдрома самозванца и персональная стратегия роста чека.',
+      points: [
+        '📈 Природные каналы заработка и подходящий формат',
+        '⚖️ Преодоление страха поднимать цену и синдрома самозванца',
+        '🎯 Пошаговая стратегия финансового роста без выгорания',
+        '💎 6 финансовых опор стабильности'
+      ]
+    },
+    'purpose': {
+      id: 'purpose',
+      product_id: 'purpose',
+      title: '🌟 Предназначение и Реализация PRO',
+      shortTitle: 'Предназначение PRO',
+      price: '399 ₽',
+      priceNum: 399,
+      type: 'one_time',
+      badge: 'Призвание и Таланты',
+      desc: 'Раху и Кету, вектор кармической реализации, уникальные таланты и авторское позиционирование.',
+      points: [
+        '🧭 Вектор кармической реализации (Раху / Кету)',
+        '💫 Природные таланты и авторский стиль',
+        '🚀 Выход из найма в свое дело: пошаговый план',
+        '🗝️ 5 принципов реализации без сомнений'
+      ]
+    },
+    'friends': {
+      id: 'friends',
+      product_id: 'friends',
+      title: '👥 Окружение и Личные границы PRO',
+      shortTitle: 'Окружение PRO',
+      price: '299 ₽',
+      priceNum: 299,
+      type: 'one_time',
+      badge: 'Границы и Люди',
+      desc: 'Аудит окружения по 11-му дому, экологичные границы, защита от токсичности и построение поддерживающего круга.',
+      points: [
+        '🛡️ Защита личных границ без чувства вины',
+        '🤝 Привлечение единомышленников и масштабных людей',
+        '⚡ Избавление от токсичных привязок и манипуляций'
+      ]
+    },
+    'solar': {
+      id: 'solar',
+      product_id: 'solar',
+      title: '☀️ Соляр и Прогноз на год PRO',
+      shortTitle: 'Соляр PRO',
+      price: '499 ₽',
+      priceNum: 499,
+      type: 'one_time',
+      badge: 'Годовой цикл',
+      desc: 'Астрономический солярный прогноз: ключевые месяцы, фокус года, опасности и главные возможности для прорыва.',
+      points: [
+        '🗓️ Помесячный календарь возможностей и рисков',
+        '🔥 Главная точка прорыва в текущем солярном году',
+        '🗝️ Личные ритуалы включения соляра'
+      ]
+    }
+  };
+
   function getStorageKeyNatal() { return 'luna_user_profile_' + currentUserId; }
   function getStorageKeyQuiz() { return 'luna_user_quiz_' + currentUserId; }
   function getStorageKeyChildren() { return 'luna_user_children_' + currentUserId; }
@@ -1931,6 +2050,22 @@
     }
   }
 
+  function isLunaProPurchased() {
+    const purchased = getPurchasedReports();
+    return !!(purchased && purchased['natal'] && (purchased['natal'].bookData || purchased['natal'].chaptersHtml));
+  }
+
+  function savePurchasedReports(list) {
+    try {
+      localStorage.setItem(getStorageKeyPurchasedReports(), JSON.stringify(list));
+      updateCatalogCardsUI();
+      updateCreditDisplays();
+      updateNatalUI();
+    } catch (e) {
+      console.warn('Error saving purchased reports:', e);
+    }
+  }
+
   function savePurchasedReport(prodKey, reportHtml, chaptersHtml) {
     const list = getPurchasedReports();
     list[prodKey] = {
@@ -1939,8 +2074,7 @@
       reportHtml: reportHtml,
       chaptersHtml: chaptersHtml
     };
-    localStorage.setItem(getStorageKeyPurchasedReports(), JSON.stringify(list));
-    updateCatalogCardsUI();
+    savePurchasedReports(list);
   }
 
   let userNatalData = null;
@@ -3743,7 +3877,7 @@
       <div class="form-group">
         <label class="form-label">📍 Город рождения</label>
         <div class="city-input-wrap">
-          <input type="text" id="ncCity" class="form-input" placeholder="Начни вводить: Москва, Казань..." autocomplete="off">
+          <input type="text" id="ncCity" class="form-input" placeholder="Начни вводить: Москва, Санкт-Петербург, Казань..." autocomplete="off">
           <div class="city-dropdown" id="ncCityDropdown"></div>
         </div>
       </div>
@@ -4235,7 +4369,7 @@
       <div class="form-group">
         <label class="form-label">📍 Город рождения (выбери из списка или напиши свой)</label>
         <div class="city-input-wrap">
-          <input type="text" id="editCity" class="form-input" value="${userNatalData ? escapeHtml(userNatalData.city || '') : ''}" placeholder="Начни вводить: Красноуральск, Москва..." autocomplete="off">
+          <input type="text" id="editCity" class="form-input" value="${userNatalData ? escapeHtml(userNatalData.city || '') : ''}" placeholder="Начни вводить: Москва, Санкт-Петербург, Казань..." autocomplete="off">
           <div class="city-dropdown" id="editCityDropdown"></div>
         </div>
         <div id="editCityConfirmedBadge" style="display: none; margin-top: 5px; font-size: 11.5px; color: #10B981; align-items: center; gap: 4px;">
@@ -5150,6 +5284,40 @@
       }
     }
 
+    const isPro = isLunaProPurchased();
+    const catPro = document.getElementById('catNatalProCard');
+    if (catPro) {
+      const btn = catPro.querySelector('.cat-btn') || document.getElementById('btnCatLunaPro');
+      const badge = catPro.querySelector('.cat-badge');
+      if (isPro) {
+        if (btn) {
+          btn.innerHTML = '📖 Читать книгу LUNA PRO →';
+          btn.style.background = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
+          btn.style.color = '#FFF';
+          btn.style.boxShadow = '0 0 10px rgba(16, 185, 129, 0.4)';
+        }
+        if (badge) {
+          badge.innerHTML = '✅ LUNA PRO — активна (17 глав)';
+          badge.style.background = 'rgba(16, 185, 129, 0.25)';
+          badge.style.color = '#6EE7B7';
+          badge.style.border = '1px solid rgba(16, 185, 129, 0.4)';
+        }
+      } else {
+        if (btn) {
+          btn.innerHTML = '999 ₽ / Открыть LUNA PRO →';
+          btn.style.background = 'var(--gold-btn)';
+          btn.style.color = '#120C22';
+          btn.style.boxShadow = 'none';
+        }
+        if (badge) {
+          badge.innerHTML = '⭐ Флагман · Полный разбор';
+          badge.style.background = 'linear-gradient(135deg, #A855F7, #EC4899)';
+          badge.style.color = '#FFF';
+          badge.style.border = 'none';
+        }
+      }
+    }
+
     const purchased = getPurchasedReports();
     const cards = document.querySelectorAll('.catalog-card');
     cards.forEach(card => {
@@ -5158,14 +5326,14 @@
         if (onclickAttr.includes(`'${key}'`)) {
           const btn = card.querySelector('.cat-btn');
           if (btn) {
-            btn.innerHTML = '📖 Читать разбор ✨';
+            btn.innerHTML = (key === 'natal') ? '📖 Читать книгу LUNA PRO →' : '📖 Читать разбор ✨';
             btn.style.background = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
             btn.style.color = '#FFF';
             btn.style.boxShadow = '0 0 10px rgba(16, 185, 129, 0.4)';
           }
           let badge = card.querySelector('.cat-badge');
           if (badge && !badge.innerText.includes('Куплен')) {
-            badge.innerHTML = '✅ Разбор доступен';
+            badge.innerHTML = (key === 'natal') ? '✅ LUNA PRO — активна (17 глав)' : '✅ Разбор доступен';
             badge.style.background = 'rgba(16, 185, 129, 0.25)';
             badge.style.color = '#6EE7B7';
             badge.style.border = '1px solid rgba(16, 185, 129, 0.4)';
@@ -5176,19 +5344,29 @@
   }
 
   function showProductModal(prodKey) {
-    const prod = productsInfo[prodKey];
+    if (!userNatalData || !userNatalData.date) {
+      openMissingDataModal();
+      return;
+    }
+
+    const prod = productsInfo[prodKey] || productsInfo['natal'];
     if (!prod) return;
 
     if (prodKey === 'natal') {
       const purchased = getPurchasedReports();
-      if (purchased['natal'] && purchased['natal'].bookData) {
-        currentLunaProBook = purchased['natal'].bookData;
+      if (purchased['natal'] && (purchased['natal'].bookData || purchased['natal'].chaptersHtml)) {
+        if (purchased['natal'].bookData) {
+          currentLunaProBook = purchased['natal'].bookData;
+        } else {
+          const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
+          currentLunaProBook = generateLunaPro17Chapters(userNatalData, vedic, {});
+        }
         openLunaProFirstImpressionModal(currentLunaProBook);
         return;
       }
     }
 
-    // Check if product was already purchased / generated
+    // Check if other product was already purchased / generated
     const purchased = getPurchasedReports();
     if (purchased[prodKey] && purchased[prodKey].chaptersHtml) {
       haptic('success');
@@ -5203,7 +5381,7 @@
           ${prod.title}
         </div>
         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
-          Персональный разбор для: ${userNatalData ? userNatalData.name : 'душа'} (${userNatalData ? userNatalData.date : ''}, ${userNatalData ? userNatalData.city : ''})
+          Персональный разбор для: ${userNatalData ? escapeHtml(userNatalData.name) : 'душа'} (${userNatalData ? userNatalData.date : ''}, ${userNatalData ? escapeHtml(userNatalData.city) : ''})
         </div>
 
         <div class="report-content">
@@ -5211,10 +5389,10 @@
         </div>
 
         <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
-          <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="copyReportText('${prod.title}')">
+          <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="copyReportText('${escapeHtml(prod.title)}')">
             📋 Скопировать весь текст разбора
           </button>
-          <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="shareReportTelegram('${prod.title}')">
+          <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="shareReportTelegram('${escapeHtml(prod.title)}')">
             📤 Поделиться в Telegram
           </button>
           <button class="btn-outline" style="padding: 10px; font-size: 12px; opacity: 0.85;" onclick="openProductQuestionnaire('${prodKey}')">
@@ -5232,33 +5410,183 @@
     let pointsHtml = prod.points.map(p => `<li style="margin-bottom: 6px;">${p}</li>`).join('');
 
     const html = `
-      <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
-        ${prod.title}
-      </div>
-      <div style="font-size: 13px; color: #D1CCDE; font-style: italic; margin-bottom: 16px; line-height: 1.45;">
-        ${prod.desc}
-      </div>
-
-      <div style="background: rgba(14, 11, 26, 0.7); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 14px; padding: 14px; margin-bottom: 18px;">
-        <div style="font-weight: 600; color: var(--gold-light); font-size: 13px; margin-bottom: 8px;">
-          Что ты узнаешь из разбора:
+      <div style="padding: 4px 2px 14px;">
+        <div class="hero-natal-badge" style="margin-bottom: 8px;">
+          ${prod.badge}
         </div>
-        <ul style="padding-left: 18px; font-size: 12.5px; color: #E2DFEC; line-height: 1.5;">
-          ${pointsHtml}
-        </ul>
-      </div>
-
-      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid rgba(212, 175, 55, 0.2); padding-top: 14px;">
-        <div>
-          <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Стоимость</div>
-          <div style="font-size: 20px; font-weight: 700; color: var(--gold-light);">${prod.price}</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px; line-height: 1.2;">
+          ${prod.title}
         </div>
-        <button class="btn-gold" style="width: auto; padding: 12px 20px;" onclick="openProductQuestionnaire('${prodKey}')">
-          Получить разбор →
-        </button>
+        <div style="font-size: 13px; color: #D1CCDE; font-style: italic; margin-bottom: 16px; line-height: 1.45;">
+          ${prod.desc}
+        </div>
+
+        <div style="background: rgba(14, 11, 26, 0.85); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+          <div style="font-weight: 600; color: var(--gold-light); font-size: 13px; margin-bottom: 8px;">
+            Что входит в персональную книгу:
+          </div>
+          <ul style="padding-left: 18px; font-size: 12.5px; color: #E2DFEC; line-height: 1.55;">
+            ${pointsHtml}
+          </ul>
+        </div>
+
+        <div style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: #DDD6FE; line-height: 1.45;">
+          ⚡ <b>Разовый продукт:</b> Доступ открывается навсегда в вебе и PDF. <b>0 дополнительных списаний и без изменения баланса AI-запросов.</b>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid rgba(212, 175, 55, 0.2); padding-top: 14px;">
+          <div>
+            <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Стоимость</div>
+            <div style="font-size: 22px; font-weight: 800; color: var(--gold-light);">${prod.price}</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            ${prodKey === 'natal' ? `
+              <button class="btn-outline" style="width: auto; padding: 11px 12px; font-size: 12px;" onclick="openProductQuestionnaire('natal')">
+                Контекст ✎
+              </button>
+              <button class="btn-gold" style="width: auto; padding: 12px 18px; font-size: 13.5px; font-weight: 800;" onclick="openProductCheckoutModal('natal')">
+                999 ₽ / Открыть LUNA PRO →
+              </button>
+            ` : `
+              <button class="btn-gold" style="width: auto; padding: 12px 20px;" onclick="openProductQuestionnaire('${prodKey}')">
+                Получить разбор за ${prod.price} →
+              </button>
+            `}
+          </div>
+        </div>
       </div>
     `;
     openModal(html);
+  }
+
+  function openProductCheckoutModal(prodKey) {
+    if (!userNatalData || !userNatalData.date) {
+      openMissingDataModal();
+      return;
+    }
+    const prod = productsInfo[prodKey] || productsInfo['natal'];
+    haptic('medium');
+
+    const isNatalPro = (prodKey === 'natal');
+    const price = prod.priceNum || 999;
+
+    const html = `
+      <div style="padding: 6px 2px 18px;">
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div class="hero-natal-badge" style="margin-bottom: 8px;">💎 ОФОРМЛЕНИЕ ЗАКАЗА</div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: #FFF; line-height: 1.25;">
+            ${prod.title}
+          </div>
+          <div style="font-size: 24px; font-weight: 800; color: #FFE8A3; margin-top: 6px;">
+            ${prod.price} <span style="font-size: 12.5px; font-weight: 400; color: #94A3B8;">(разовый платёж, не подписка)</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+          <b style="font-size: 13px; color: #FFE8A3;">В покупку входит:</b>
+          <ul style="padding-left: 18px; font-size: 12.5px; color: #CBD5E1; line-height: 1.6; margin-top: 6px;">
+            ${isNatalPro ? `
+              <li><b>Вся персональная книга LUNA PRO (17 глав)</b></li>
+              <li>Точный ведический расчёт Накшатры, Лагны и периодов Vimshottari Dasha</li>
+              <li>Пошаговый 30-дневный план действий и 5 правил жизни</li>
+              <li>Бессрочный интерактивный доступ в приложении и экспорт в PDF-книгу</li>
+              <li><b>0 дополнительных AI-запросов</b> (покупка книги не изменяет баланс AI-запросов)</li>
+              <li><b>Не оформляет подписку Premium</b> (разовая покупка навсегда)</li>
+            ` : `
+              <li><b>Полный персональный разбор</b> по натальной карте</li>
+              <li>Бессрочный доступ в приложении и сохранение в профиле</li>
+              <li>0 дополнительных AI-запросов (разовый продукт)</li>
+            `}
+          </ul>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button id="btnPayProductConfirm" class="btn-gold" style="padding: 14px; font-size: 14px; font-weight: 800;" onclick="confirmProductPurchase('${prodKey}', ${price})">
+            ✦ Оплатить ${prod.price} и открыть книгу →
+          </button>
+          <button class="btn-outline" style="padding: 10px; font-size: 12px;" onclick="showProductModal('${prodKey}')">
+            ← Назад к описанию
+          </button>
+        </div>
+      </div>
+    `;
+    openModal(html);
+  }
+
+  function confirmProductPurchase(prodKey, price) {
+    if (!userNatalData || !userNatalData.date) {
+      openMissingDataModal();
+      return;
+    }
+
+    try {
+      haptic('success');
+      const prod = productsInfo[prodKey] || productsInfo['natal'];
+
+      openModal(`
+        <div style="text-align: center; padding: 28px 8px;">
+          <div style="font-size: 38px; animation: spin 2s infinite linear; margin-bottom: 12px;">🪐</div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+            LUNA формирует твою персональную книгу...
+          </div>
+          <p style="font-size: 12.5px; color: #D1CCDE; line-height: 1.45;">
+            Синтезируем 17 глав глубокого ведического и психологического анализа для ${escapeHtml(userNatalData.name || 'душа')}
+          </p>
+        </div>
+      `);
+
+      setTimeout(() => {
+        try {
+          if (prodKey === 'natal') {
+            const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
+            const book = generateLunaPro17Chapters(userNatalData, vedic, {
+              qJob: twState.job || 'Творческая деятельность и проекты',
+              qRel: twState.family || 'Близкие доверительные отношения',
+              qFocus: twState.topic || 'Масштабирование и баланс сил',
+              qQuery: twState.situation || 'Ключевые точки роста и внутренняя опора'
+            });
+            currentLunaProBook = book;
+
+            // Save in purchased reports
+            const purchased = getPurchasedReports();
+            purchased['natal'] = {
+              purchasedAt: new Date().toISOString(),
+              title: 'Персональная книга LUNA PRO (17 глав)',
+              bookData: book,
+              chaptersHtml: book.chapters.map(c => `<div class="report-chapter"><h3>${c.num}. ${c.title}</h3>${c.html}</div>`).join('')
+            };
+            savePurchasedReports(purchased);
+
+            // Synchronize with backend API if available
+            apiRequest('/api/v1/profile/purchase', 'POST', {
+              product_id: 'natal',
+              price: price || 999
+            }).catch(e => console.warn('Backend sync warning:', e));
+
+            trackLunaEvent('product_purchased', {
+              product_id: 'natal',
+              price: price || 999,
+              creditsAdded: 0
+            });
+
+            updateCatalogCardsUI();
+            updateCreditDisplays();
+            updateNatalUI();
+
+            // Open First Impression Screen
+            openLunaProFirstImpressionModal(book);
+          } else {
+            generateAndShowReport(prodKey);
+          }
+        } catch (err) {
+          console.error("Product purchase generation error:", err);
+          alert('Не удалось оформить LUNA PRO. Попробуйте ещё раз.');
+        }
+      }, 1000);
+    } catch (err) {
+      console.error("Product purchase error:", err);
+      alert('Не удалось оформить LUNA PRO. Попробуйте ещё раз.');
+    }
   }
 
   function openProductQuestionnaire(prodKey) {
@@ -5267,7 +5595,7 @@
       return;
     }
 
-    const prod = productsInfo[prodKey];
+    const prod = productsInfo[prodKey] || productsInfo['natal'];
     if (!prod) return;
     let formFields = "";
 
@@ -5414,7 +5742,9 @@
 
       <div style="display: flex; gap: 8px; margin-top: 14px;">
         <button class="btn-outline" style="flex: 1;" onclick="showProductModal('${prodKey}')">← Назад</button>
-        <button class="btn-gold" style="flex: 2;" onclick="generateAndShowReport('${prodKey}')">✨ Сформировать разбор</button>
+        <button class="btn-gold" style="flex: 2;" onclick="${prodKey === 'natal' ? `openProductCheckoutModal('natal')` : `generateAndShowReport('${prodKey}')`}">
+          ${prodKey === 'natal' ? `✨ Оформить LUNA PRO (${prod.price}) →` : `✨ Сформировать разбор`}
+        </button>
       </div>
     `;
     openModal(html);
@@ -5823,6 +6153,64 @@
         pSubBtnMain.textContent = 'Управление подпиской ⚡';
       } else {
         pSubBtnMain.textContent = 'Подключить подписку →';
+      }
+    }
+
+    // Profile LUNA PRO Card
+    const pProBadge = document.getElementById('profLunaProStatusBadge');
+    const pProDetails = document.getElementById('profLunaProDetails');
+    const pProActions = document.getElementById('profLunaProActions');
+    const isPro = isLunaProPurchased();
+
+    if (pProBadge && pProDetails && pProActions) {
+      if (isPro) {
+        const purchased = getPurchasedReports();
+        const rep = purchased['natal'];
+        const buyDate = rep && rep.purchasedAt ? new Date(rep.purchasedAt).toLocaleDateString('ru-RU') : 'Активна';
+        pProBadge.textContent = '✅ LUNA PRO — активна';
+        pProBadge.style.background = 'rgba(16, 185, 129, 0.25)';
+        pProBadge.style.color = '#6EE7B7';
+        pProBadge.style.border = '1px solid rgba(16, 185, 129, 0.45)';
+
+        pProDetails.innerHTML = `
+          <div><b>Статус:</b> <span style="color: #6EE7B7; font-weight: 700;">17 глав открыты навсегда</span></div>
+          <div><b>Дополнительно AI-запросов:</b> <span>0 (книга не меняет баланс чата)</span></div>
+          <div><b>Дата покупки:</b> <span>${buyDate}</span></div>
+          <div style="margin-top: 6px; font-size: 12px; color: #CBD5E1;">
+            • Полный ведический и психологический синтез<br>
+            • Расчёт Накшатры, Лагны и периодов Vimshottari Dasha<br>
+            • 30-дневный пошаговый план и 5 правил жизни
+          </div>
+        `;
+
+        pProActions.innerHTML = `
+          <button class="btn-gold" style="flex: 1; padding: 11px 12px; font-size: 13px; font-weight: 800;" onclick="showProductModal('natal')">
+            📖 Читать книгу LUNA PRO →
+          </button>
+          <button class="btn-outline" style="padding: 11px 12px; font-size: 12px;" onclick="exportLunaProBookToPDF()">
+            📥 PDF
+          </button>
+        `;
+      } else {
+        pProBadge.textContent = 'Доступна к заказу';
+        pProBadge.style.background = 'rgba(229, 195, 120, 0.15)';
+        pProBadge.style.color = '#FFE8A3';
+        pProBadge.style.border = '1px solid rgba(229, 195, 120, 0.35)';
+
+        pProDetails.innerHTML = `
+          <div><b>Продукт:</b> <span>Персональная книга (17 глав)</span></div>
+          <div><b>Стоимость:</b> <span style="color: #FFE8A3; font-weight: 800;">999 ₽</span> <span style="font-size: 11px; color: #94A3B8;">(разовый платёж, не подписка)</span></div>
+          <div><b>AI-запросы:</b> <span>0 доп. запросов (не влияет на баланс)</span></div>
+          <div style="margin-top: 6px; font-size: 12px; color: #CBD5E1;">
+            17 полноценных глав: характер, тень, отношения, финансы, предназначение, периоды жизни и пошаговый план.
+          </div>
+        `;
+
+        pProActions.innerHTML = `
+          <button class="btn-gold" style="width: 100%; padding: 11px 14px; font-size: 13px; font-weight: 800;" onclick="showProductModal('natal')">
+            999 ₽ / Открыть LUNA PRO →
+          </button>
+        `;
       }
     }
 
