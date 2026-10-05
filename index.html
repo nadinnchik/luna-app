@@ -2951,6 +2951,9 @@
       if (tabId === 'profile' && items[3]) items[3].classList.add('active');
     }
 
+    // Refresh live credit & subscription displays across screens
+    updateCreditDisplays();
+
     setTimeout(() => {
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
