@@ -728,15 +728,24 @@
   </style>
 
 <style id="heroMiniNatalStyles">
+  @keyframes goldGlowPulse {
+    0% { box-shadow: 0 0 25px rgba(229, 195, 120, 0.25), 0 10px 30px rgba(0, 0, 0, 0.5); }
+    50% { box-shadow: 0 0 45px rgba(229, 195, 120, 0.5), 0 12px 35px rgba(138, 79, 158, 0.45); }
+    100% { box-shadow: 0 0 25px rgba(229, 195, 120, 0.25), 0 10px 30px rgba(0, 0, 0, 0.5); }
+  }
+  @keyframes starSparkle {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+    50% { transform: scale(1.15) rotate(10deg); opacity: 1; }
+  }
   .hero-natal-card {
-    background: linear-gradient(145deg, rgba(35, 24, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%) !important;
-    border: 1.5px solid rgba(229, 195, 120, 0.5) !important;
-    border-radius: 22px !important;
-    padding: 20px 18px !important;
-    margin-bottom: 20px !important;
+    background: linear-gradient(155deg, rgba(38, 26, 68, 0.96) 0%, rgba(20, 14, 40, 0.98) 55%, rgba(12, 9, 24, 1) 100%) !important;
+    border: 1.8px solid rgba(229, 195, 120, 0.65) !important;
+    border-radius: 24px !important;
+    padding: 22px 18px !important;
+    margin-bottom: 22px !important;
     position: relative !important;
     overflow: hidden !important;
-    box-shadow: 0 0 35px rgba(138, 79, 158, 0.4), 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    animation: goldGlowPulse 4s infinite ease-in-out !important;
   }
   .hero-natal-card::before {
     content: '';
@@ -745,30 +754,42 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle at 50% 25%, rgba(255, 232, 163, 0.15) 0%, rgba(138, 79, 158, 0.1) 45%, transparent 70%);
+    background: radial-gradient(circle at 50% 20%, rgba(255, 232, 163, 0.2) 0%, rgba(138, 79, 158, 0.15) 45%, transparent 70%);
     pointer-events: none;
+  }
+  .hero-natal-badge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
   }
   .hero-natal-badge {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    background: rgba(229, 195, 120, 0.18);
-    border: 1px solid rgba(229, 195, 120, 0.5);
+    gap: 6px;
+    background: linear-gradient(135deg, rgba(229, 195, 120, 0.28) 0%, rgba(138, 79, 158, 0.25) 100%);
+    border: 1px solid rgba(229, 195, 120, 0.7);
     color: #FFE8A3;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 4px 10px;
+    letter-spacing: 0.9px;
+    padding: 5px 12px;
     border-radius: 20px;
-    margin-bottom: 10px;
+    box-shadow: 0 0 12px rgba(229, 195, 120, 0.3);
+  }
+  .hero-natal-badge .badge-star {
+    animation: starSparkle 2.5s infinite ease-in-out;
+    display: inline-block;
   }
   .hero-natal-title {
-    font-size: 18px;
-    font-weight: 800;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 23px;
+    font-weight: 700;
     color: #FFF;
     margin-bottom: 4px;
     letter-spacing: 0.3px;
+    line-height: 1.25;
   }
   .hero-natal-subtitle {
     font-size: 12.5px;
@@ -780,48 +801,166 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
-    margin: 14px 0 16px;
+    margin: 14px 0 14px;
   }
   .triad-hero-item {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(229, 195, 120, 0.25);
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(229, 195, 120, 0.3);
+    border-radius: 14px;
     padding: 10px 6px;
     text-align: center;
+    position: relative;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+  .triad-hero-item:hover {
+    border-color: rgba(229, 195, 120, 0.6);
   }
   .triad-hero-icon {
-    font-size: 18px;
+    font-size: 20px;
     margin-bottom: 2px;
   }
   .triad-hero-label {
     font-size: 10.5px;
     color: var(--text-sub);
     margin-bottom: 2px;
+    font-weight: 600;
   }
   .triad-hero-val {
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #FFE8A3;
+  }
+  .triad-hero-sub {
+    font-size: 9.5px;
+    color: #CBD5E1;
+    margin-top: 3px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hero-natal-insight-box {
+    background: rgba(229, 195, 120, 0.08);
+    border: 1px solid rgba(229, 195, 120, 0.3);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
     font-size: 12.5px;
+    color: #E2E8F0;
+    line-height: 1.5;
+  }
+  .hero-natal-insight-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
     font-weight: 700;
-    color: #FFF;
+    color: #FFE8A3;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 4px;
   }
   .hero-natal-btn {
     width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, #FFE8A3 0%, #E5C378 50%, #C49B45 100%);
+    padding: 15px 16px;
+    background: linear-gradient(135deg, #FFE8A3 0%, #E5C378 45%, #C49B45 100%);
     color: #120C22;
     font-weight: 800;
     font-size: 14.5px;
-    border-radius: 14px;
+    border-radius: 16px;
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(229, 195, 120, 0.35);
+    box-shadow: 0 4px 22px rgba(229, 195, 120, 0.45);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    transition: transform 0.15s ease;
+    gap: 3px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
   .hero-natal-btn:active {
     transform: scale(0.98);
+  }
+  .hero-natal-btn-sub {
+    font-size: 10px;
+    font-weight: 600;
+    color: #2D1E08;
+    opacity: 0.85;
+    letter-spacing: 0.2px;
+  }
+
+  /* === CITY AUTOCOMPLETE DROPDOWN === */
+  .city-input-wrap {
+    position: relative;
+    width: 100%;
+  }
+  .city-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: rgba(18, 13, 33, 0.98);
+    border: 1px solid rgba(229, 195, 120, 0.45);
+    border-radius: 12px;
+    max-height: 190px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(139, 92, 246, 0.25);
+    display: none;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .city-dropdown-item {
+    padding: 9px 12px;
+    font-size: 13px;
+    color: #F3F0FA;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .city-dropdown-item:last-child {
+    border-bottom: none;
+  }
+  .city-dropdown-item:active, .city-dropdown-item:hover {
+    background: rgba(229, 195, 120, 0.18);
+    color: #FFE8A3;
+  }
+  .city-item-region {
+    font-size: 11px;
+    color: #94A3B8;
+  }
+
+  /* === INTERACTIVE CHIP SELECTORS FOR 99 ₽ QUIZ === */
+  .tw-chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+  .tw-chip-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #E2DFEC;
+    padding: 7px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tw-chip-btn:active {
+    transform: scale(0.96);
+  }
+  .tw-chip-btn.active {
+    background: linear-gradient(135deg, rgba(229, 195, 120, 0.3) 0%, rgba(139, 92, 246, 0.35) 100%);
+    border-color: rgba(229, 195, 120, 0.85);
+    color: #FFE8A3;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(229, 195, 120, 0.3);
   }
 
   /* === TRIPWIRE & SUBSCRIPTION & CHAT ENHANCEMENTS === */
@@ -1185,8 +1324,11 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">📍 Город рождения</label>
-          <input type="text" id="obCity" class="form-input" placeholder="Например: Екатеринбург">
+          <label class="form-label">📍 Город рождения (выбери из списка или напиши свой)</label>
+          <div class="city-input-wrap">
+            <input type="text" id="obCity" class="form-input" placeholder="Начни вводить: Москва, Екатеринбург, Сочи..." autocomplete="off">
+            <div class="city-dropdown" id="obCityDropdown"></div>
+          </div>
         </div>
 
         <button class="btn-gold" style="margin-top: 12px;" onclick="submitOnboardingProfile()">
@@ -1200,33 +1342,48 @@
 
       <!-- 1. МИНИ-НАТАЛЬНАЯ КАРТА (ГЛАВНЫЙ АКЦЕНТНЫЙ БЛОК) -->
       <div class="hero-natal-card">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-          <div class="hero-natal-badge">⭐ Бесплатный разбор</div>
+        <div class="hero-natal-badge-row">
+          <div class="hero-natal-badge">
+            <span class="badge-star">✨</span> БЕСПЛАТНЫЙ РАЗБОР ЛИЧНОСТИ
+          </div>
           <button style="background: none; border: none; color: var(--gold); font-size: 11.5px; cursor: pointer; text-decoration: underline; padding-top: 2px;" onclick="openEditNatalModal()">Изменить ✎</button>
         </div>
-        <div class="hero-natal-title" id="greetingName">✨ Твоя мини-натальная карта</div>
-        <div class="hero-natal-subtitle">Твой базовый астрологический портрет по данным рождения:</div>
+        <div class="hero-natal-title" id="greetingName">✨ Твоя натальная матрица & Код силы</div>
+        <div class="hero-natal-subtitle">Персональный астрологический разбор по дате и времени рождения:</div>
 
         <div class="triad-box-hero">
           <div class="triad-hero-item">
             <div class="triad-hero-icon">☀️</div>
             <div class="triad-hero-label">Солнце</div>
             <div class="triad-hero-val" id="triadSun">Козерог</div>
+            <div class="triad-hero-sub" id="triadSunSub">Ядро воли</div>
           </div>
           <div class="triad-hero-item">
             <div class="triad-hero-icon">🌙</div>
             <div class="triad-hero-label">Луна</div>
             <div class="triad-hero-val" id="triadMoon">Козерог</div>
+            <div class="triad-hero-sub" id="triadMoonSub">Эмоции & Тыл</div>
           </div>
           <div class="triad-hero-item">
             <div class="triad-hero-icon">↑</div>
             <div class="triad-hero-label">Асцендент</div>
             <div class="triad-hero-val" id="triadAsc">Стрелец</div>
+            <div class="triad-hero-sub" id="triadAscSub">Социальный код</div>
+          </div>
+        </div>
+
+        <div class="hero-natal-insight-box">
+          <div class="hero-natal-insight-header">
+            <span>✦</span> Ключевой натальный фокус
+          </div>
+          <div id="triadInsightPreview">
+            Уникальная синергия твоего Солнца и Луны наделяет тебя мощной созидательной силой и способностью воплощать смелые замыслы в фундаментальные результаты.
           </div>
         </div>
 
         <button class="hero-natal-btn" onclick="openMiniNatalModal()">
-          Открыть мини-карту →
+          <span>✨ Читать полный бесплатный разбор личности →</span>
+          <span class="hero-natal-btn-sub">4 главы • Характер • Теневая сторона • Суперсила • 100% Бесплатно</span>
         </button>
       </div>
 
@@ -1542,11 +1699,16 @@
     <!-- CHAT CREDIT BAR (BLUEPRINT §5) -->
     <div class="chat-credit-bar">
       <div style="color: var(--gold-light); font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 5px;">
-        <span>⚡ Баланс:</span> <span id="chatCreditsCount" style="color: #FFF; font-weight: 800; font-size: 14px;">3</span> <span>AI-запроса</span>
+        <span>⚡ Баланс:</span> <span id="chatCreditsCount" style="color: #FFF; font-weight: 800; font-size: 14px;">1</span> <span>AI-запрос (Бесплатно)</span>
       </div>
-      <button style="background: rgba(229, 195, 120, 0.15); border: 1px solid rgba(229, 195, 120, 0.4); color: var(--gold); border-radius: 10px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;" onclick="openSubscriptionModal()">
-        + Пополнить
-      </button>
+      <div style="display: flex; gap: 6px; align-items: center;">
+        <button style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #94A3B8; border-radius: 10px; padding: 4px 8px; font-size: 11px; cursor: pointer;" onclick="clearChatHistory()" title="Очистить переписку">
+          🗑️ Очистить
+        </button>
+        <button style="background: rgba(229, 195, 120, 0.15); border: 1px solid rgba(229, 195, 120, 0.4); color: var(--gold); border-radius: 10px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;" onclick="openTripwireModal()">
+          ⭐ Разбор 99 ₽
+        </button>
+      </div>
     </div>
 
     <!-- QUICK PROMPT CHIPS (BLUEPRINT APPENDIX A & B) -->
@@ -1602,7 +1764,7 @@
         <span id="profPlanBadge" style="background: rgba(229, 195, 120, 0.2); border: 1px solid rgba(229, 195, 120, 0.5); color: #FFE8A3; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Free (Старт)</span>
       </div>
       <div style="font-size: 13px; color: #E2DFEC; margin-bottom: 10px; line-height: 1.5;">
-        Осталось персональных AI-запросов: <b id="profCreditsCount" style="color: var(--gold-light); font-size: 15px;">3</b>
+        Осталось персональных AI-запросов: <b id="profCreditsCount" style="color: var(--gold-light); font-size: 15px;">1</b>
       </div>
       <div style="display: flex; gap: 8px;">
         <button class="btn-gold" style="padding: 10px 14px; font-size: 12.5px;" onclick="openSubscriptionModal()">
@@ -1690,7 +1852,7 @@
   </button>
   <button class="nav-item" onclick="switchTab('chat', this)">
     <div class="nav-icon">💬</div>
-    <div>Астролог</div>
+    <div>LUNA</div>
   </button>
   <button class="nav-item" onclick="switchTab('profile', this)">
     <div class="nav-icon">👤</div>
@@ -1927,7 +2089,178 @@
       .replace(/'/g, "&#039;");
   }
 
-  // ================= CELESTIAL CANVAS PARTICLES, CONSTELLATIONS & METEORS =================
+  // ================= 1. CITIES DATABASE & AUTOCOMPLETE =================
+  const CITIES_DB = [
+    { city: "Москва", region: "Россия" },
+    { city: "Санкт-Петербург", region: "Россия" },
+    { city: "Екатеринбург", region: "Свердловская обл." },
+    { city: "Новосибирск", region: "Новосибирская обл." },
+    { city: "Казань", region: "Республика Татарстан" },
+    { city: "Нижний Новгород", region: "Нижегородская обл." },
+    { city: "Челябинск", region: "Челябинская обл." },
+    { city: "Самара", region: "Самарская обл." },
+    { city: "Уфа", region: "Республика Башкортостан" },
+    { city: "Ростов-на-Дону", region: "Ростовская обл." },
+    { city: "Краснодар", region: "Краснодарский край" },
+    { city: "Омск", region: "Омская обл." },
+    { city: "Красноярск", region: "Красноярский край" },
+    { city: "Воронеж", region: "Воронежская обл." },
+    { city: "Пермь", region: "Пермский край" },
+    { city: "Волгоград", region: "Волгоградская обл." },
+    { city: "Саратов", region: "Саратовская обл." },
+    { city: "Тюмень", region: "Тюменская обл." },
+    { city: "Тольятти", region: "Самарская обл." },
+    { city: "Барнаул", region: "Алтайский край" },
+    { city: "Ижевск", region: "Удмуртская Республика" },
+    { city: "Ульяновск", region: "Ульяновская обл." },
+    { city: "Иркутск", region: "Иркутская обл." },
+    { city: "Владивосток", region: "Приморский край" },
+    { city: "Ярославль", region: "Ярославская обл." },
+    { city: "Хабаровск", region: "Хабаровский край" },
+    { city: "Махачкала", region: "Республика Дагестан" },
+    { city: "Оренбург", region: "Оренбургская обл." },
+    { city: "Томск", region: "Томская обл." },
+    { city: "Кемерово", region: "Кемеровская обл." },
+    { city: "Новокузнецк", region: "Кемеровская обл." },
+    { city: "Рязань", region: "Рязанская обл." },
+    { city: "Астрахань", region: "Астраханская обл." },
+    { city: "Набережные Челны", region: "Республика Татарстан" },
+    { city: "Пенза", region: "Пензенская обл." },
+    { city: "Липецк", region: "Липецкая обл." },
+    { city: "Тула", region: "Тульская обл." },
+    { city: "Киров", region: "Кировская обл." },
+    { city: "Чебоксары", region: "Чувашская Республика" },
+    { city: "Калининград", region: "Калининградская обл." },
+    { city: "Брянск", region: "Брянская обл." },
+    { city: "Курск", region: "Курская обл." },
+    { city: "Иваново", region: "Ивановская обл." },
+    { city: "Магнитогорск", region: "Челябинская обл." },
+    { city: "Тверь", region: "Тверская обл." },
+    { city: "Ставрополь", region: "Ставропольский край" },
+    { city: "Сочи", region: "Краснодарский край" },
+    { city: "Белгород", region: "Белгородская обл." },
+    { city: "Архангельск", region: "Архангельская обл." },
+    { city: "Владимир", region: "Владимирская обл." },
+    { city: "Севастополь", region: "Крым" },
+    { city: "Симферополь", region: "Крым" },
+    { city: "Сургут", region: "ХМАО" },
+    { city: "Нижний Тагил", region: "Свердловская обл." },
+    { city: "Калуга", region: "Калужская обл." },
+    { city: "Чита", region: "Забайкальский край" },
+    { city: "Грозный", region: "Чеченская Республика" },
+    { city: "Волжский", region: "Волгоградская обл." },
+    { city: "Смоленск", region: "Смоленская обл." },
+    { city: "Саранск", region: "Республика Мордовия" },
+    { city: "Череповец", region: "Вологодская обл." },
+    { city: "Курган", region: "Курганская обл." },
+    { city: "Вологда", region: "Вологодская обл." },
+    { city: "Орёл", region: "Орловская обл." },
+    { city: "Владикавказ", region: "Северная Осетия" },
+    { city: "Мурманск", region: "Мурманская обл." },
+    { city: "Тамбов", region: "Тамбовская обл." },
+    { city: "Петрозаводск", region: "Республика Карелия" },
+    { city: "Кострома", region: "Костромская обл." },
+    { city: "Новороссийск", region: "Краснодарский край" },
+    { city: "Сыктывкар", region: "Республика Коми" },
+    { city: "Таганрог", region: "Ростовская обл." },
+    { city: "Йошкар-Ола", region: "Марий Эл" },
+    { city: "Братск", region: "Иркутская обл." },
+    { city: "Нальчик", region: "Кабардино-Балкария" },
+    { city: "Дзержинск", region: "Нижегородская обл." },
+    { city: "Шахты", region: "Ростовская обл." },
+    { city: "Орск", region: "Оренбургская обл." },
+    { city: "Ангарск", region: "Иркутская обл." },
+    { city: "Благовещенск", region: "Амурская обл." },
+    { city: "Старый Оскол", region: "Белгородская обл." },
+    { city: "Великий Новгород", region: "Новгородская обл." },
+    { city: "Псков", region: "Псковская обл." },
+    { city: "Бийск", region: "Алтайский край" },
+    { city: "Южно-Сахалинск", region: "Сахалинская обл." },
+    { city: "Армавир", region: "Краснодарский край" },
+    { city: "Люберцы", region: "Московская обл." },
+    { city: "Мытищи", region: "Московская обл." },
+    { city: "Балашиха", region: "Московская обл." },
+    { city: "Химки", region: "Московская обл." },
+    { city: "Подольск", region: "Московская обл." },
+    { city: "Королёв", region: "Московская обл." },
+    { city: "Петропавловск-Камчатский", region: "Камчатский край" },
+    { city: "Норильск", region: "Красноярский край" },
+    { city: "Абакан", region: "Республика Хакасия" },
+    { city: "Пятигорск", region: "Ставропольский край" },
+    { city: "Кисловодск", region: "Ставропольский край" },
+    { city: "Минск", region: "Беларусь" },
+    { city: "Алматы", region: "Казахстан" },
+    { city: "Астана", region: "Казахстан" },
+    { city: "Ташкент", region: "Узбекистан" },
+    { city: "Ереван", region: "Армения" },
+    { city: "Тбилиси", region: "Грузия" },
+    { city: "Баку", region: "Азербайджан" },
+    { city: "Бишкек", region: "Кыргызстан" },
+    { city: "Дубай", region: "ОАЭ" },
+    { city: "Стамбул", region: "Турция" },
+    { city: "Бали / Денпасар", region: "Индонезия" },
+    { city: "Пхукет", region: "Таиланд" }
+  ];
+
+  function setupCityAutocomplete(inputId, dropdownId) {
+    const input = document.getElementById(inputId);
+    const dropdown = document.getElementById(dropdownId);
+    if (!input || !dropdown) return;
+
+    function renderList(query) {
+      const q = (query || '').toLowerCase().trim();
+      let matches = [];
+      if (!q) {
+        matches = CITIES_DB.slice(0, 8);
+      } else {
+        matches = CITIES_DB.filter(item => 
+          item.city.toLowerCase().includes(q) || item.region.toLowerCase().includes(q)
+        ).slice(0, 10);
+      }
+
+      if (matches.length === 0) {
+        dropdown.innerHTML = `<div class="city-dropdown-item" style="color: #94A3B8; font-style: italic;">Будет использован введенный город: «${escapeHtml(query)}»</div>`;
+        dropdown.style.display = 'block';
+        return;
+      }
+
+      dropdown.innerHTML = matches.map(m => `
+        <div class="city-dropdown-item" data-val="${escapeHtml(m.city)}">
+          <span>📍 <b>${escapeHtml(m.city)}</b></span>
+          <span class="city-item-region">${escapeHtml(m.region)}</span>
+        </div>
+      `).join('');
+
+      dropdown.querySelectorAll('.city-dropdown-item').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const val = el.getAttribute('data-val');
+          if (val) {
+            input.value = val;
+          }
+          dropdown.style.display = 'none';
+        });
+      });
+
+      dropdown.style.display = 'block';
+    }
+
+    input.addEventListener('focus', () => {
+      renderList(input.value);
+    });
+
+    input.addEventListener('input', () => {
+      renderList(input.value);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = 'none';
+      }
+    });
+  }
+
+  // ================= CELESTIAL CANVAS PARTICLES, CONSTELLATIONS & NEBULAS =================
   function initCelestialCanvas() {
     const canvas = document.getElementById('starsCanvas');
     if (!canvas) return;
@@ -1951,8 +2284,15 @@
     resize();
     window.addEventListener('resize', resize);
 
-    // 1. Starfield background
-    const starCount = Math.min(130, Math.floor((width * height) / 4500));
+    // 1. Cosmic Nebulas (Soft drifting clouds of stellar energy)
+    const nebulas = [
+      { x: width * 0.25, y: height * 0.2, r: 180, color: 'rgba(139, 92, 246, 0.12)', vx: 0.04, vy: 0.02 },
+      { x: width * 0.8, y: height * 0.35, r: 210, color: 'rgba(212, 175, 55, 0.09)', vx: -0.03, vy: 0.03 },
+      { x: width * 0.45, y: height * 0.75, r: 240, color: 'rgba(168, 85, 247, 0.11)', vx: 0.02, vy: -0.04 }
+    ];
+
+    // 2. Starfield background
+    const starCount = Math.min(160, Math.floor((width * height) / 3800));
     const stars = [];
     const starPalettes = [
       'rgba(255, 255, 255, ',
@@ -1966,15 +2306,15 @@
       stars.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        r: Math.random() * 1.5 + 0.5,
+        r: Math.random() * 1.6 + 0.4,
         palette: starPalettes[Math.floor(Math.random() * starPalettes.length)],
         baseAlpha: Math.random() * 0.55 + 0.25,
-        twinkleSpeed: Math.random() * 0.03 + 0.01,
+        twinkleSpeed: Math.random() * 0.035 + 0.01,
         twinklePhase: Math.random() * Math.PI * 2
       });
     }
 
-    // 2. Astrological Constellations
+    // 3. Astrological Constellations
     const constellationDefs = [
       // Ursa Major / Большая Медведица
       {
@@ -2005,22 +2345,28 @@
         name: 'Leo',
         points: [{x:0,y:20},{x:25,y:0},{x:45,y:10},{x:35,y:30},{x:75,y:30},{x:95,y:55},{x:50,y:55}],
         lines: [[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6],[6,3]]
+      },
+      // Taurus / Телец
+      {
+        name: 'Taurus',
+        points: [{x:10,y:0},{x:40,y:30},{x:70,y:25},{x:90,y:50},{x:50,y:55},{x:25,y:75},{x:0,y:45}],
+        lines: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,1]]
       }
     ];
 
     const activeConstellations = constellationDefs.map((def, idx) => ({
       ...def,
-      x: (width / (constellationDefs.length + 1)) * (idx + 1) + (Math.random() * 40 - 20),
-      y: (height / (constellationDefs.length + 1)) * (idx + 1) + (Math.random() * 60 - 30),
+      x: (width / (constellationDefs.length + 1)) * (idx + 1) + (Math.random() * 30 - 15),
+      y: (height / (constellationDefs.length + 1)) * (idx + 1) + (Math.random() * 50 - 25),
       vx: (Math.random() - 0.5) * 0.08,
       vy: (Math.random() - 0.5) * 0.08,
-      scale: Math.random() * 0.35 + 0.75,
+      scale: Math.random() * 0.35 + 0.8,
       angle: Math.random() * Math.PI * 2,
-      rotSpeed: (Math.random() - 0.5) * 0.0008,
+      rotSpeed: (Math.random() - 0.5) * 0.0007,
       glowPhase: Math.random() * Math.PI * 2
     }));
 
-    // 3. Meteors (Shooting stars)
+    // 4. Meteors (Shooting stars)
     const meteors = [];
     let lastMeteorTime = Date.now();
 
@@ -2045,7 +2391,25 @@
       time += 0.016;
       ctx.clearRect(0, 0, width, height);
 
-      // A. Render background stars
+      // A. Render Cosmic Nebulas
+      for (let n of nebulas) {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < -100) n.x = width + 100;
+        if (n.x > width + 100) n.x = -100;
+        if (n.y < -100) n.y = height + 100;
+        if (n.y > height + 100) n.y = -100;
+
+        const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
+        grad.addColorStop(0, n.color);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // B. Render background stars
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
         const alpha = s.baseAlpha + Math.sin(time * s.twinkleSpeed * 60 + s.twinklePhase) * 0.35;
@@ -2056,7 +2420,7 @@
         ctx.fill();
       }
 
-      // B. Render Constellations
+      // C. Render Constellations
       for (let c of activeConstellations) {
         c.x += c.vx;
         c.y += c.vy;
@@ -2066,7 +2430,7 @@
         if (c.y < -120) c.y = height + 100;
         if (c.y > height + 120) c.y = -100;
 
-        const pulse = 0.4 + Math.sin(time * 0.8 + c.glowPhase) * 0.25;
+        const pulse = 0.45 + Math.sin(time * 0.8 + c.glowPhase) * 0.3;
 
         ctx.save();
         ctx.translate(c.x, c.y);
@@ -2074,8 +2438,8 @@
         ctx.scale(c.scale, c.scale);
 
         // Lines
-        ctx.strokeStyle = `rgba(229, 195, 120, ${0.18 * pulse})`;
-        ctx.lineWidth = 0.85;
+        ctx.strokeStyle = `rgba(229, 195, 120, ${0.22 * pulse})`;
+        ctx.lineWidth = 0.95;
         for (let l of c.lines) {
           const p1 = c.points[l[0]];
           const p2 = c.points[l[1]];
@@ -2088,27 +2452,27 @@
         // Star Nodes
         for (let p of c.points) {
           // Glow halo
-          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 7);
-          grad.addColorStop(0, `rgba(247, 231, 180, ${0.7 * pulse})`);
-          grad.addColorStop(0.5, `rgba(139, 92, 246, ${0.3 * pulse})`);
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 8);
+          grad.addColorStop(0, `rgba(247, 231, 180, ${0.8 * pulse})`);
+          grad.addColorStop(0.5, `rgba(139, 92, 246, ${0.4 * pulse})`);
           grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
           ctx.fillStyle = grad;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
           ctx.fill();
 
           // Star core
-          ctx.fillStyle = `rgba(255, 255, 255, ${0.9 * pulse})`;
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.95 * pulse})`;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, 1.4, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
           ctx.fill();
         }
         ctx.restore();
       }
 
-      // C. Render Meteors
+      // D. Render Meteors
       const now = Date.now();
-      if (now - lastMeteorTime > 7500 + Math.random() * 5000) {
+      if (now - lastMeteorTime > 7000 + Math.random() * 5000) {
         spawnMeteor();
         lastMeteorTime = now;
       }
@@ -2514,49 +2878,347 @@
   }
 
   const DEEP_SUN_DATA = {
-    "Овен": { title: "Импульс первопроходца", superpower: "Способность пробивать любые тупики и начинать с нуля", desc: "Твое Солнце горит энергией лидерства, страсти и прямоты. Тебе противопоказано долгое топтание на месте — твоя витальная сила раскрывается, когда ты берешь ответственность на себя, смело заходишь в неизведанное и защищаешь свои ценности без оглядки на чужое одобрение.", fuel: "Ясный вызов, свобода действий и быстрый видимый результат." },
-    "Телец": { title: "Архитектор качества & Земная опора", superpower: "Создание долговечной ценности, осязаемого комфорта и надежности", desc: "Твое Солнце — это фундаментальная созидательная сила. Ты чувствуешь материю, природную красоту и ресурс. Тебе важно делать вещи основательно, с наслаждением каждым шагом и пониманием конечной пользы. Твой авторитет строится на стабильности и безупречном качестве.", fuel: "Тактильный комфорт, эстетичное окружение, финансовая подушка и спокойный темп без суеты." },
-    "Близнецы": { title: "Проводник смыслов & Интеллектуальный поток", superpower: "Мгновенное соединение людей, знаний и идей в целостную картину", desc: "Твое Солнце горит на стыке информации, общения и легкости восприятия. Ты видишь закономерности там, где другие видят хаос. Твоя природа требует постоянного ментального обновления, свободы перемещений и интересного окружения.", fuel: "Новые книги и инсайты, вдохновляющие диалоги, смена локаций и проектное разнообразие." },
-    "Рак": { title: "Хранитель глубины & Чуткая интуиция", superpower: "Эмоциональная проницательность и природный дар создавать безопасность", desc: "Твое Солнце раскрывается через тонкое чувствование людей и мира. Твоя сила — в душевной теплоте, чуткости и умении превратить любое пространство в место силы. Ты интуитивно считываешь скрытые мотивы и фальшь, оберегая свой внутренний круг.", fuel: "Уютный безопасный дом, глубокое доверие близких людей и близость к воде." },
-    "Лев": { title: "Центр притяжения & Авторская искра", superpower: "Вдохновлять, сиять и заряжать других уверенностью и любовью к жизни", desc: "Твое Солнце создано быть в центре, согревать и создавать авторские шедевры. Твоя витальная энергия напрямую зависит от возможности творить, открыто проявлять свои таланты и получать искреннюю признательность аудитории.", fuel: "Творческая автономия, искренние комплименты, красивый визуальный стиль и игра." },
-    "Дева": { title: "Мастер совершенства & Острый анализ", superpower: "Умение превращать хаос в работающую, кристально выверенную систему", desc: "Твое Солнце видит мир через призму чистоты, пользы и ювелирного внимания к деталям. Ты обладаешь редким даром совершенствовать всё, к чему прикасаешься: проекты, здоровье, процессы и пространство вокруг.", fuel: "Порядок в вещах и мыслях, полезный осязаемый результат и бережная забота о теле." },
-    "Весы": { title: "Эстет гармонии & Мастер дипломатии", superpower: "Видение баланса, безупречный вкус и дар объединять людей", desc: "Твое Солнце стремится к красоте, справедливости и созвучию. Ты тонко чувствуешь малейшую фальшь и умеешь переводить сложные конфликты в эстетичный, конструктивный диалог. Твое призвание — создавать атмосферу гармонии и высокого стиля.", fuel: "Искусство, красивая одежда, гармоничные партнерские отношения и эстетика деталей." },
-    "Скорпион": { title: "Трансформатор & Глубинная сила", superpower: "Бесстрашный взгляд в суть вещей и способность возрождаться из пепла", desc: "Твое Солнце обладает мощнейшим магнетизмом и рентгеновской психологической глубиной. Ты не выносишь поверхностности. Твоя истинная сила раскрывается в моменты кризисов, когда нужно отбросить отжившее и совершить качественный квантовый скачок.", fuel: "Честность без компромиссов, глубокие практики трансформации и управление сильными проектами." },
-    "Стрелец": { title: "Искатель горизонтов & Проводник масштаба", superpower: "Видение глобальных перспектив и заразительная вера в лучшее", desc: "Твое Солнце питается масштабом, смыслами и высокими ориентирами. Тебе тесно в рамках одного шаблона. Ты призвана расширять кругозор других людей, вдохновлять на смелые цели и нести философскую мудрость.", fuel: "Путешествия, обучение, духовный поиск и грандиозные авторские идеи." },
-    "Козерог": { title: "Стратег вершин & Фундаментальная воля", superpower: "Железная выдержка, стратегическое видение и доведение дел до вершины", desc: "Твое Солнце — это опора, структура и высочайшие стандарты мастерства. Ты умеешь выдерживать дистанцию, сохранять спокойствие в шторм и строить то, что простоит десятилетия. Твой авторитет зарабатывается реальными делами.", fuel: "Четкий план, видимый социальный статус, автономия и уважение к твоему труду." },
-    "Водолей": { title: "Визионер будущего & Свободный дух", superpower: "Генерация нестандартных решений и способность опережать время", desc: "Твое Солнце живет на шаг впереди. Ты чувствуешь тренды, ценишь дружбу и абсолютную внутреннюю независимость. Тебя невозможно загнать в тесные рамки чужих догм — твоя сила в новаторстве и свободе мысли.", fuel: "Интеллектуальная свобода, круг близких единомышленников и инновационные проекты." },
-    "Рыбы": { title: "Мистик вдохновения & Безбрежный океан", superpower: "Глубокая эмпатия, связь с бессознательным и дар исцеления", desc: "Твое Солнце считывает тонкие знаки мира. Ты способна видеть невидимое и вдохновлять через творчество, сострадание и красоту. Твой внутренний мир гораздо глубже материальной реальности.", fuel: "Музыка, уединение на природе, медитативные практики и творческое самовыражение." }
+    "Овен": {
+      title: "Импульс первопроходца & Огонь инициативы",
+      element: "Стихия Огня 🔥",
+      archetype: "Первооткрыватель, Лидер прорыва",
+      desc: "Твое Солнце горит первородным пламенем чистой смелости, лидерства и прямого действия. Тебе природой заложено быть в авангарде: открывать неизведанные двери, преодолевать сопротивление среды и не ждать чужого разрешения. Твой витальный ресурс раскрывается, когда ты берешь ответственность на себя, открыто заявляешь о своих желаниях и смело идешь вперед без оглядки на чужие страхи. Ты обладаешь природным даром заряжать пространство вокруг кипучей энергией жизни.",
+      superpower: "Феноменальная скорость принятия решений, способность подниматься после любых падений и пробивать любые тупики.",
+      fuel: "Масштабные вызовы, спорт, свобода маневра и быстрый осязаемый результат без бюрократии.",
+      shadow: "Импульсивное выгорание на длинных дистанциях, вспышки нетерпения и раздражение, когда мир движется медленнее тебя.",
+      growthKey: "Учиться стратегическому терпению: сохранять огонь для главного удара, не растрачивая искры на мелочи."
+    },
+    "Телец": {
+      title: "Архитектор качества & Земная опора",
+      element: "Стихия Земли ⛰️",
+      archetype: "Созидатель материальной гармонии и изобилия",
+      desc: "Твое Солнце — это фундаментальная созидательная сила Вселенной. Ты тонко чувствуешь материю, природную красоту, тактильный комфорт и истинную ценность вещей. Твое призвание — создавать прочные, долговечные результаты, которые выдерживают любую проверку временем. Ты двигаешься к целям планомерно, основательно и с глубоким наслаждением каждым этапом пути. Твое внутреннее спокойствие дарит окружающим ощущение абсолютной надежности.",
+      superpower: "Умение кристаллизовать хаос в материальное благополучие, безупречный вкус к качеству и непоколебимая выдержка.",
+      fuel: "Эстетичное и уютное пространство, финансовая подушка безопасности, контакт с природой и неспешный, выверенный ритм.",
+      shadow: "Застревание в зоне комфорта из страха потерять стабильность, упрямство и сопротивление назревшим переменам.",
+      growthKey: "Доверять жизни и позволять себе внутреннюю гибкость, когда мир предлагает новые неизведанные пути."
+    },
+    "Близнецы": {
+      title: "Проводник смыслов & Интеллектуальный поток",
+      element: "Стихия Воздуха 💨",
+      archetype: "Мастер коммуникаций, Синтезатор идей",
+      desc: "Твое Солнце горит на стыке информации, смыслов и непрерывного познания мира. Твой ум работает как сверхскоростной процессор: ты мгновенно улавливаешь взаимосвязи там, где другие видят лишь хаос. Твоя миссия — соединять людей, знания и возможности, превращая сложные концепции в простые и увлекательные идеи. Для тебя жизненно важна свобода перемещений, диалога и постоянного обновления впечатлений.",
+      superpower: "Острота ума, дар слова и убеждения, молниеносная адаптация к любым изменениям и гибкость мышления.",
+      fuel: "Вдохновляющие книги и инсайты, глубокие диалоги с интересными людьми, смена локаций и проектное разнообразие.",
+      shadow: "Рассеивание внимания на множество задач одновременно, поверхностность из-за перегрузки информацией и нервная усталость.",
+      growthKey: "Выбирать 1-2 главных приоритета и доводить ключевые авторские замыслы до глубокого финального воплощения."
+    },
+    "Рак": {
+      title: "Хранитель глубины & Интуитивный эмпат",
+      element: "Стихия Воды 🌊",
+      archetype: "Мастер душевного тепла и глубинной безопасности",
+      desc: "Твое Солнце раскрывается через тончайшую эмоциональную чуткость, душевную мудрость и способность чувствовать скрытые течения жизни. Твоя сила — в создании безопасного, наполненного любовью пространства, где каждый чувствует себя принятым и защищенным. Ты интуитивно считываешь истинные намерения людей задолго до первых слов. Твой внутренний мир глубок и богат, являясь неисчерпаемым источником мудрости.",
+      superpower: "Глубокая психологическая проницательность, целительное душевное тепло и феноменальная интуиция.",
+      fuel: "Безопасная домашняя гавань, искреннее доверие близкого круга, время у воды и бережная забота о себе.",
+      shadow: "Чрезмерная обидчивость, уход в глухую защитную раковину и привычка годами хранить старые эмоциональные раны.",
+      growthKey: "Учиться прямо и уверенно обозначать личные границы, не взваливая на свои плечи чужие переживания."
+    },
+    "Лев": {
+      title: "Центр притяжения & Авторская искра",
+      element: "Стихия Огня 🔥",
+      archetype: "Вдохновитель сердец, Творец и Лидер",
+      desc: "Твое Солнце находится в своей естественной обители — в самом сердце проявления. Ты рождена, чтобы сиять, согревать окружающих своей щедростью и создавать авторские шедевры. Твоя витальная энергия расцветает, когда ты находишься в позиции автора своей жизни: творишь, ведешь за собой, вдохновляешь и щедро делишься теплом сердца. В тебе заложен природный магнетизм и царственное достоинство, притягивающие людей.",
+      superpower: "Врожденная харизма, способность зажигать людей верой в себя и создавать масштабные яркие проекты.",
+      fuel: "Творческая автономия, искреннее признание твоих талантов, красивая визуальная эстетика и радость созидания.",
+      shadow: "Болезненная зависимость от внешней оценки, уязвимость перед равнодушием и страх показаться несовершенной.",
+      growthKey: "Опираться на глубинную самоценность: сиять из щедрости и любви к жизни, а не ради доказательства своего статуса."
+    },
+    "Дева": {
+      title: "Мастер совершенства & Кристальный разум",
+      element: "Стихия Земли ⛰️",
+      archetype: "Алхимик порядка, Архитектор пользы",
+      desc: "Твое Солнце воспринимает мир через призму гармонии, пользы и ювелирного внимания к деталям. Ты обладаешь редчайшим даром: видеть скрытые уязвимости и мгновенно находить идеальный способ превратить любой хаос в работающую, красивую и эффективную систему. Твое призвание — приносить реальную пользу, совершенствуя процессы, здоровье, проекты и жизненное пространство вокруг себя.",
+      superpower: "Непревзойденный аналитический ум, системное мышление, высочайшее качество исполнения и абсолютная надежность.",
+      fuel: "Идеальный порядок в мыслях и вещах, осязаемая польза твоей работы, бережный уход за телом и четкий распорядок дня.",
+      shadow: "Внутренний критик, самоедство, стремление к недостижимому идеалу и фоновая тревожность из-за мелочей.",
+      growthKey: "Позволять себе и миру быть неидеальными, празднуя каждый шаг и наслаждаясь процессом, а не только контролем."
+    },
+    "Весы": {
+      title: "Эстет гармонии & Мастер дипломатии",
+      element: "Стихия Воздуха 💨",
+      archetype: "Хранитель баланса, Творец изящества",
+      desc: "Твое Солнце стремится к высшей справедливости, эстетике и гармонии во всем. Ты обладаешь врожденным безупречным вкусом и тонким чувством меры. Твой дар — находить точки соприкосновения между противоположностями, сглаживать конфликты и выстраивать партнерство на принципах глубокого уважения и красоты. Твое присутствие облагораживает любое пространство и вдохновляет окружающих.",
+      superpower: "Искусство дипломатии, создание эстетически совершенных решений и глубокое понимание психологии отношений.",
+      fuel: "Искусство, красивая одежда и обстановка, гармоничные отношения без давления и созерцание прекрасного.",
+      shadow: "Мучительные сомнения при выборе, страх конфликтов и привычка подавлять свои желания ради чужого спокойствия.",
+      growthKey: "Развивать смелость делать решительный выбор и твердо отстаивать свои личные интересы без чувства вины."
+    },
+    "Скорпион": {
+      title: "Трансформатор глубин & Магическая воля",
+      element: "Стихия Воды 🌊",
+      archetype: "Феникс, Проводник глубинной силы",
+      desc: "Твое Солнце наделено колоссальной силой, гипнотическим магнетизмом и рентгеновской психологической глубиной. Ты не приемлешь фальши и поверхностности — твой взгляд всегда направлен в самую суть вещей. Твоя истинная мощь раскрывается в периоды масштабных трансформаций, когда необходимо отпустить отжившее, переродиться и выйти на качественно новый уровень силы, изобилия и осознанности.",
+      superpower: "Несокрушимая внутренняя стойкость, способность возрождаться из любого кризиса и мощнейшая интуиция.",
+      fuel: "Предельная честность, управление сложными процессами, глубокие практики самопознания и искренняя страсть.",
+      shadow: "Желание тотального контроля, подозрительность, привычка испытывать себя и близких на прочность.",
+      growthKey: "Учиться доверять жизни, отпуская контроль и позволяя себе открываться миру без страха быть уязвимой."
+    },
+    "Стрелец": {
+      title: "Искатель горизонтов & Проводник масштаба",
+      element: "Стихия Огня 🔥",
+      archetype: "Мудрец, Первооткрыватель смыслов",
+      desc: "Твое Солнце питается глобальными масштабами, высшими смыслами и заразительной верой в безграничность мира. Тебе тесно в рамках шаблонных правил и однообразных будней. Твоя миссия — расширять горизонты других людей, передавать знания, вдохновлять на грандиозные цели и нести философскую мудрость. Ты видишь общую картину жизни на годы вперед и заряжаешь мир непобедимым оптимизмом.",
+      superpower: "Глобальное стратегическое видение, дар вдохновлять и обучать, удачливость и вера в невозможное.",
+      fuel: "Путешествия и смена культур, масштабное обучение, передача знаний и смелые амбициозные цели.",
+      shadow: "Обесценивание рутинных шагов, догматизм и склонность распыляться на недостижимые идеалы.",
+      growthKey: "Заземлять свои грандиозные замыслы в конкретные пошаговые действия и ценить красоту момента «здесь и сейчас»."
+    },
+    "Козерог": {
+      title: "Стратег вершин & Архитектор реальности",
+      element: "Стихия Земли ⛰️",
+      archetype: "Мастер структуры, Создатель наследия",
+      desc: "Твое Солнце — это несокрушимая опора, железная воля и высочайшие стандарты мастерства. Ты умеешь держать фокус на длинных дистанциях, сохранять абсолютное хладнокровие во время любого шторма и строить системы, которые простоят десятилетия. Твой авторитет зарабатывается реальными делами, глубиной личной ответственности и непререкаемым профессионализмом.",
+      superpower: "Стратегическое мышление гроссмейстера, стальная выдержка, самодисциплина и умение достигать любых вершин.",
+      fuel: "Четкая стратегия, видимый социальный статус, финансовая независимость и уважение к твоему вкладу.",
+      shadow: "Эмоциональная броня, гиперответственность, синдром «я всё сделаю сама» и запрет на спонтанный отдых.",
+      growthKey: "Позволять себе расслабляться и доверять миру, помня, что твоя ценность не измеряется одними лишь достижениями."
+    },
+    "Водолей": {
+      title: "Визионер будущего & Архитектор свободы",
+      element: "Стихия Воздуха 💨",
+      archetype: "Новатор, Провидец новых эпох",
+      desc: "Твое Солнце живет на шаг впереди своего времени. Ты обладаешь уникальным видением трендов, ценишь подлинную дружбу и абсолютную внутреннюю свободу. Тебя невозможно загнать в рамки чужих догм: твоя сила — в новаторском мышлении, гуманизме и способности создавать сообщества будущего. Ты привносишь в мир свежий воздух прогресса и нестандартных решений.",
+      superpower: "Нестандартная гениальность, умение объединять людей ради больших идей и видеть будущее.",
+      fuel: "Интеллектуальная автономия, круг единомышленников, инновационные проекты и отсутствие жестких ограничений.",
+      shadow: "Эмоциональная отстраненность, бунт ради бунта и бегство в абстрактные идеи от реальной жизни.",
+      growthKey: "Соединять свой блестящий интеллект с теплом сердца и живыми человеческими эмоциями."
+    },
+    "Рыбы": {
+      title: "Мистик вдохновения & Безбрежный океан",
+      element: "Стихия Воды 🌊",
+      archetype: "Целитель душ, Творец сакральных образов",
+      desc: "Твое Солнце обладает тончайшей связью с невидимыми пластами вселенной. Ты считываешь знаки пространства, обладаешь глубочайшей эмпатией и даром исцеления душ. Ты способна видеть красоту там, где другие проходят мимо, и трансформировать тонкие эмоции в творчество, сострадание и мудрость. Твой внутренний мир — это бесконечный источник вдохновения.",
+      superpower: "Глубокая интуиция, ясновидение эмоциональных состояний, творческий гений и духовная мудрость.",
+      fuel: "Музыка и творчество, уединение на природе у воды, медитации и полноценный сон в тишине.",
+      shadow: "Уход от реальности в иллюзии, размытие личных границ и спасательство других в ущерб собственным ресурсам.",
+      growthKey: "Выстраивать четкие личные границы и заземлять свое тонкое вдохновение в реальные материальные формы."
+    }
   };
 
   const DEEP_MOON_DATA = {
-    "Овен": { need: "Свобода импульса, спорт и право на открытое выражение эмоций без стыда", shadow: "Вспышки нетерпения и подавление гнева, приводящее к выгоранию", ritual: "Интенсивная физическая нагрузка, контрастный душ и время только для себя." },
-    "Телец": { need: "Физический комфорт, вкусная еда, финансовая стабильность и неспешный ритм", shadow: "Страх перемен и застревание в привычном из-за боязни потерять опору", ritual: "Ванна с маслами, качественный сон, массаж и контакт с природой." },
-    "Близнецы": { need: "Возможность выговориться, новая информация и смена обстановки", shadow: "Ментальная перегрузка, бессонница от избытка мыслей и тревожность", ritual: "Прогулка без гаджетов, фрирайтинг в дневник и дыхательные практики." },
-    "Рак": { need: "Теплое безопасное пространство, объятия и право побыть слабой и защищенной", shadow: "Обидчивость, уход в глухую защиту и страх быть отвергнутой", ritual: "Чай из трав при свечах, плед, любимый фильм и тихий вечер дома." },
-    "Лев": { need: "Искреннее признание, ощущение своей исключительности и теплота сердца", shadow: "Болезненная реакция на критику и равнодушие, усталость от роли «вечно сильной»", ritual: "Нарядиться для себя, сделать красивый ритуал ухода, получить порцию восхищения." },
-    "Дева": { need: "Порядок вокруг, ясность планов и ощущение полезности", shadow: "Фоновая тревога, самоедство и гиперконтроль над каждой мелочью", ritual: "Уборка как медитация, составление списков, травяной детокс и уход за телом." },
-    "Весы": { need: "Эмоциональный мир, эстетика пространства и уважительный диалог без криков", shadow: "Страх конфликтов, ведущий к подавлению своих истинных желаний", ritual: "Посещение красивой выставки, покупка цветов для дома, живая музыка." },
-    "Скорпион": { need: "Глубинное доверие, эмоциональная глубина и право на тотальную перезагрузку", shadow: "Ревность, подозрительность и самоедство при потере контроля", ritual: "Очищающая ванна с солью, откровенный разговор по душам или уединение в тишине." },
-    "Стрелец": { need: "Ощущение перспективы, юмор, оптимизм и простор для мыслей", shadow: "Обесценивание текущего момента в погоне за недостижимым идеалом", ritual: "Поездка в новое место, вдохновляющая лекция, планирование будущих путешествий." },
-    "Козерог": { need: "Предсказуемость, уважение границ и уверенность в завтрашнем дне", shadow: "Эмоциональная сухость, запрет на слезы и взваливание всего на свои плечи", ritual: "Одиночная прогулка на свежем воздухе, четкий тайм-менеджмент и выключение рабочих чатов." },
-    "Водолей": { need: "Право быть не похожей на других, свобода выбора и единомышленники", shadow: "Эмоциональная холодность и бегство в логику от сложных чувств", ritual: "Общение в кругу друзей по духу, просмотр sci-fi или новый творческий эксперимент." },
-    "Рыбы": { need: "Тишина, контакт с искусством, нежность и возможность помечтать", shadow: "Размывание личных границ, спасательство других в ущерб себе", ritual: "Медитация под шум воды, сон без будильника, рисование или прослушивание музыки." }
+    "Овен": {
+      title: "Огненный импульс & Жажда прямоты",
+      element: "Стихия Огня 🔥",
+      need: "Свобода импульса, спорт, право на открытое выражение эмоций и немедленное действие.",
+      stress: "Вспышки нетерпения, резкость, мышечные зажимы в теле.",
+      shadow: "Подавление раздражения ради чужого одобрения, ведущее к внезапному эмоциональному взрыву.",
+      ritual: "15 минут интенсивного кардио или быстрой прогулки, контрастный душ и 20 минут в тишине."
+    },
+    "Телец": {
+      title: "Земной покой & Сенсорный тыл",
+      element: "Стихия Земли ⛰️",
+      need: "Осязаемый комфорт, вкусная качественная еда, финансовая стабильность и неторопливый ритм.",
+      stress: "Оцепенение, застревание в рутине, страх любых материальных потерь.",
+      shadow: "Попытка заглушить эмоциональную тревогу шопингом, едой или цеплянием за отжившие вещи.",
+      ritual: "Горячая ванна с эфирными маслами, мягкий плед, качественный массаж и контакт с природой."
+    },
+    "Близнецы": {
+      title: "Ментальный поток & Легкость диалога",
+      element: "Стихия Воздуха 💨",
+      need: "Возможность проговорить переживания, приток свежей информации и смена обстановки.",
+      stress: "Беспокойный рой мыслей, бессонница, ментальная суета и поверхностное дыхание.",
+      shadow: "Интеллектуализация эмоций: попытка логически объяснить боль вместо того, чтобы прожить её.",
+      ritual: "Письменная практика фрирайтинга в блокнот без цензуры, прогулка без гаджетов и дыхание 4-7-8."
+    },
+    "Рак": {
+      title: "Океаническая нежность & Сакральное гнездо",
+      element: "Стихия Воды 🌊",
+      need: "Глубокая эмоциональная безопасность, нежные объятия и право побыть уязвимой в тишине.",
+      stress: "Уход в панцирь, слезы наедине с собой, ощущение незащищенности перед миром.",
+      shadow: "Манипуляция обидой и молчанием, ожидание, что близкие должны сами угадывать твои чувства.",
+      ritual: "Заварить травяной чай при свечах, укутаться в уютную одежду, посмотреть любимый фильм или побыть у воды."
+    },
+    "Лев": {
+      title: "Царственное сердце & Творческое тепло",
+      element: "Стихия Огня 🔥",
+      need: "Искреннее тепло, ощущение своей ценности и исключительности, радость и творчество.",
+      stress: "Ощущение непризнанности, драматизация переживаний, усталость от роли «вечно сильной».",
+      shadow: "Прятать ранимость за маской высокомерия или требовать повышенного внимания через капризы.",
+      ritual: "Устроить красивый ритуал для себя, нарядиться, зажечь золотые свечи и сделать практику любви к себе."
+    },
+    "Дева": {
+      title: "Чистота порядка & Телесный баланс",
+      element: "Стихия Земли ⛰️",
+      need: "Порядок в пространстве, понятный план действий, физическое здоровье и ощущение полезности.",
+      stress: "Гиперконтроль, самоедство, придирки к деталям и соматизация стресса в теле.",
+      shadow: "Убежденность, что тебя любят только за безупречную пользу, жесткий запрет на неидеальность.",
+      ritual: "Медитативная уборка пространства, составление списка благодарностей, теплый травяной чай и растяжка."
+    },
+    "Весы": {
+      title: "Эстетическое созвучие & Мир в душе",
+      element: "Стихия Воздуха 💨",
+      need: "Эмоциональный мир, эстетика вокруг, бережные диалоги без повышенных тонов.",
+      stress: "Потеря внутреннего равновесия, мучительные сомнения, страх отвержения при несогласии.",
+      shadow: "Угодничество и фальшивая улыбка, когда внутри бушует несогласие, ради сохранения видимости мира.",
+      ritual: "Посещение красивой выставки, покупка свежих цветов в дом, спокойная неоклассика и арт-практика."
+    },
+    "Скорпион": {
+      title: "Глубинный феникс & Тотальная трансформация",
+      element: "Стихия Воды 🌊",
+      need: "Предельная честность, глубинная интимность, тотальное доверие и право на перезагрузку.",
+      stress: "Подозрительность, эмоциональный шторм, самоедство и желание резко оборвать связи.",
+      shadow: "Накопление обид как скрытого яда и подсознательное желание нанести упреждающий удар.",
+      ritual: "Очищающая ванна с морской солью при приглушенном свете, глубокий разговор по душам или уединение."
+    },
+    "Стрелец": {
+      title: "Окрыляющая надежда & Мудрость простора",
+      element: "Стихия Огня 🔥",
+      need: "Ощущение перспективы, юмор, философский взгляд на жизнь и простор для надежды.",
+      stress: "Чувство загнанности в угол, уныние, раздражение от бытовой тесноты и ограничений.",
+      shadow: "Обесценивание реальных проблем через токсичный позитив или побег в иллюзии.",
+      ritual: "Планирование путешествия, чтение мудрой книги, прогулка по широким открытым пространствам."
+    },
+    "Козерог": {
+      title: "Стальная опора & Внутренний стержень",
+      element: "Стихия Земли ⛰️",
+      need: "Предсказуемость, уважение личных границ, надежность и уверенность в будущем.",
+      stress: "Эмоциональная окаменелость, изоляция, взваливание всех проблем на свои плечи.",
+      shadow: "Запрет на слезы и слабость, убеждение «я справлюсь одна», ведущее к психосоматике и истощению.",
+      ritual: "Одиночная прогулка на свежем воздухе в парке или горах, отключение рабочих чатов и теплый душ."
+    },
+    "Водолей": {
+      title: "Свободная мысль & Ментальный космос",
+      element: "Стихия Воздуха 💨",
+      need: "Право быть непохожей на других, свобода личного пространства и круг единомышленников.",
+      stress: "Эмоциональное отчуждение, ощущение себя «чужой на этой планете», хаос в мыслях.",
+      shadow: "Холодное обесценивание чувств (своих и чужих) и бегство в логику от живой боли.",
+      ritual: "Встреча с вдохновляющим другом, просмотр sci-fi или документального фильма, звездная медитация."
+    },
+    "Рыбы": {
+      title: "Сакральный океан & Тонкая эмпатия",
+      element: "Стихия Воды 🌊",
+      need: "Тишина, тонкое созвучие с искусством, нежность, сострадание и возможность помечтать.",
+      stress: "Эмоциональная перегрузка чужими проблемами, растворение в чужой боли, слезливость.",
+      shadow: "Спасательство других людей ценой своего здоровья и бегство от реальности в иллюзии.",
+      ritual: "Сон в полной темноте без будильника, медитация под шум прибоя, ароматерапия и рисование."
+    }
   };
 
   const DEEP_ASC_DATA = {
-    "Овен": { aura: "Энергичная, смелая, прямолинейная и яркая", impression: "Люди сразу видят в тебе лидера и человека, способного действовать без колебаний." },
-    "Телец": { aura: "Статусная, умиротворяющая, манкая и надежная", impression: "От тебя веет спокойствием, роскошью и уверенностью. Ты внушаешь чувство безопасности." },
-    "Близнецы": { aura: "Легкая, контактная, молодая и любознательная", impression: "С тобой мгновенно завязывается разговор. Окружающие считывают твой интеллект и шарм." },
-    "Рак": { aura: "Мягкая, уютная, заботливая и женственная", impression: "Люди инстинктивно тянутся к тебе за душевным теплом и чувствуют себя принятыми." },
-    "Лев": { aura: "Царственная, щедрая, харизматичная и заметная", impression: "Когда ты входишь, пространство наполняется теплом. Ты приковываешь взгляды без усилий." },
-    "Дева": { aura: "Аккуратная, сдержанная, интеллигентная и стильная", impression: "Окружающие считывают твой безупречный вкус, профессионализм и внутреннюю культуру." },
-    "Весы": { aura: "Изящная, гармоничная, обаятельная и дипломатичная", impression: "Люди очаровываются твоей грацией, мягкостью манер и умением расположить к себе." },
-    "Скорпион": { aura: "Магнетическая, глубокая, загадочная и проницательная", impression: "Твой взгляд видит людей насквозь. От тебя исходит гипнотическое притяжение." },
-    "Стрелец": { aura: "Широкая, открытая, щедрая и вдохновляющая", impression: "Ты заряжаешь оптимизмом и производишь впечатление человека мира с большим сердцем." },
-    "Козерог": { aura: "Элегантная, статная, авторитетная и статусная", impression: "Окружающие сразу считывают внутренний стержень, зрелость и высокий уровень достоинства." },
-    "Водолей": { aura: "Неординарная, стильная, независимая и прогрессивная", impression: "Ты выделяешься из толпы своей аутентичностью и свободой от стереотипов." },
-    "Рыбы": { aura: "Воздушная, загадочная, утонченная и поэтичная", impression: "В тебе чувствуется тайна и кинематографичный шарм. Ты вдохновляешь людей своей чуткостью." }
+    "Овен": {
+      title: "Огненный лидер & Прямой импульс",
+      element: "Стихия Огня 🔥",
+      aura: "Энергичная, смелая, прямолинейная и яркая",
+      impression: "Люди сразу видят в тебе смелого лидера, человека прямого действия, открытого взгляда и решительных поступков.",
+      socialKey: "Проявляй инициативу первой, говори открыто и уверенно задавай вектор событий."
+    },
+    "Телец": {
+      title: "Элегантное благородство & Спокойная роскошь",
+      element: "Стихия Земли ⛰️",
+      aura: "Статусная, умиротворяющая, манкая и надежная",
+      impression: "Ты производишь впечатление гармоничного, надежного и необычайно привлекательного человека, рядом с которым спокойно.",
+      socialKey: "Делай ставку на неспешность, безупречное качество визуального стиля и мягкую уверенность."
+    },
+    "Близнецы": {
+      title: "Интеллектуальный шарм & Легкость слова",
+      element: "Стихия Воздуха 💨",
+      aura: "Легкая, контактная, молодая и любознательная",
+      impression: "Окружающие мгновенно очаровываются твоей легкостью, обаянием, остротой ума и даром находить общий язык с кем угодно.",
+      socialKey: "Используй силу открытого диалога, делись инсайтами и создавай живые полезные связи."
+    },
+    "Рак": {
+      title: "Магнетическая нежность & Душевный уют",
+      element: "Стихия Воды 🌊",
+      aura: "Мягкая, уютная, заботливая и женственная",
+      impression: "От тебя исходит глубокое душевное тепло, вызывающее у людей непреодолимое желание открыться и довериться.",
+      socialKey: "Слушай сердцем, создавай доверительную камерную атмосферу и доверяй первому впечатлению."
+    },
+    "Лев": {
+      title: "Царственное сияние & Центр притяжения",
+      element: "Стихия Огня 🔥",
+      aura: "Царственная, щедрая, харизматичная и заметная",
+      impression: "Когда ты входишь, пространство наполняется теплом: статная осанка, искренняя улыбка и природное достоинство.",
+      socialKey: "Не стесняйся занимать главное место, одевайся со вкусом и подчеркивай свою уникальность."
+    },
+    "Дева": {
+      title: "Аристократическая эстетика & Кристальный стиль",
+      element: "Стихия Земли ⛰️",
+      aura: "Аккуратная, сдержанная, интеллигентная и стильная",
+      impression: "Окружающие считывают твой безупречный вкус, высокий интеллект, профессионализм и внутреннюю культуру.",
+      socialKey: "Подчеркивай внимание к деталям, пунктуальность и высочайшую глубину своей экспертности."
+    },
+    "Весы": {
+      title: "Дипломатическая грация & Пленительный баланс",
+      element: "Стихия Воздуха 💨",
+      aura: "Изящная, гармоничная, обаятельная и дипломатичная",
+      impression: "Люди очаровываются твоей грацией, мягкостью манер, безупречным чувством стиля и умением расположить к себе.",
+      socialKey: "Выстраивай партнерский диалог на равных, создавай вокруг себя красоту и баланс."
+    },
+    "Скорпион": {
+      title: "Гипнотическая тайна & Рентгеновский взгляд",
+      element: "Стихия Воды 🌊",
+      aura: "Магнетическая, глубокая, загадочная и проницательная",
+      impression: "Твой взгляд видит людей насквозь: в тебе безошибочно чувствуется тайна и колоссальная скрытая сила.",
+      socialKey: "Сохраняй легкую загадочность, держи статную осанку и говори веско, без лишней суеты."
+    },
+    "Стрелец": {
+      title: "Вдохновляющий масштаб & Человек мира",
+      element: "Стихия Огня 🔥",
+      aura: "Широкая, открытая, щедрая и вдохновляющая",
+      impression: "Ты заряжаешь оптимизмом и производишь впечатление человека мира с большим сердцем и огромными горизонтами.",
+      socialKey: "Делись масштабными идеями, улыбайся открыто и вдохновляй людей на новые смелые цели."
+    },
+    "Козерог": {
+      title: "Статусный авторитет & Внутренняя скала",
+      element: "Стихия Земли ⛰️",
+      aura: "Элегантная, статная, авторитетная и статусная",
+      impression: "Окружающие сразу считывают мощный внутренний стержень, зрелость, высокий уровень достоинства и надежность.",
+      socialKey: "Держи благородную дистанцию, демонстрируй спокойную уверенность и верность своим стандартам."
+    },
+    "Водолей": {
+      title: "Аутентичный новатор & Свободный дух",
+      element: "Стихия Воздуха 💨",
+      aura: "Неординарная, стильная, независимая и прогрессивная",
+      impression: "Ты мгновенно выделяешься из толпы своей аутентичностью, свежим стилем и свободой от любых стереотипов.",
+      socialKey: "Будь верна своей аутентичности, объединяй людей по ценностям и предлагай нестандартные решения."
+    },
+    "Рыбы": {
+      title: "Поэтическая загадка & Магический флер",
+      element: "Стихия Воды 🌊",
+      aura: "Воздушная, загадочная, утонченная и поэтичная",
+      impression: "В тебе чувствуется кинематографичный шарм и глубина. Ты вдохновляешь людей своей тонкой чуткостью и добротой.",
+      socialKey: "Позволяй своей мягкости звучать в голосе, носи струящиеся фактуры и доверяй тонким подсказкам мира."
+    }
   };
+
+  function getTriadSynthesis(sun, moon, asc, name) {
+    const sProf = DEEP_SUN_DATA[sun] || DEEP_SUN_DATA["Козерог"];
+    const mProf = DEEP_MOON_DATA[moon] || DEEP_MOON_DATA["Козерог"];
+    const aProf = DEEP_ASC_DATA[asc] || DEEP_ASC_DATA["Стрелец"];
+
+    const sunElem = ZODIAC_ELEMENTS[sun] || "earth";
+    const moonElem = ZODIAC_ELEMENTS[moon] || "earth";
+    const ascElem = ZODIAC_ELEMENTS[asc] || "fire";
+
+    const elemNames = {
+      fire: "Огня",
+      earth: "Земли",
+      air: "Воздуха",
+      water: "Воды"
+    };
+
+    let synthesisText = "";
+    if (sunElem === moonElem) {
+      synthesisText = `Твоя натальная карта обладает редкой цельностью: и сознание (Солнце), и подсознание (Луна) звучат в единой стихии ${elemNames[sunElem]}. Это дает колоссальную внутреннюю слаженность — твои мысли и истинные чувства редко противоречат друг другу. Асцендент в стихии ${elemNames[ascElem]} выступает идеальным мостом, позволяющим транслировать эту внутреннюю мощь в социум легко и продуктивно.`;
+    } else {
+      synthesisText = `В твоей карте сочетаются две могущественные силы: сознательная воля в стихии ${elemNames[sunElem]} и глубинная эмоциональная природа в стихии ${elemNames[moonElem]}. Когда разум стремится к реализации, подсознание требует бережного тыла. Асцендент в стихии ${elemNames[ascElem]} помогает объединить эти разные полюса в уникальную и запоминающуюся индивидуальность.`;
+    }
+
+    return {
+      synthesisText,
+      balancePoint: `Слушать импульсы Солнца (${sun}) при принятии масштабных решений, но никогда не игнорировать сигналы тела и эмоциональные потребности Луны (${moon}). Твой Асцендент (${asc}) является идеальным инструментом для реализации задуманного.`,
+      keys: [
+        { label: "Утренний ключ (Солнце)", text: `Начинай день с ясного фокуса на 1 главной цели: ${sProf.fuel}` },
+        { label: "Эмоциональный якорь (Луна)", text: `В моменты усталости используй ритуал покоя: ${mProf.ritual}` },
+        { label: "Социальный вектор (Асцендент)", text: `В общении и делах опирайся на свою силу: ${aProf.socialKey}` }
+      ]
+    };
+  }
 
   function openMiniNatalModal() {
     haptic();
@@ -2566,86 +3228,171 @@
       name: 'Надин',
       sun: 'Козерог',
       moon: 'Козерог',
-      asc: 'Стрелец'
+      asc: 'Стрелец',
+      date: '1995-01-10'
     };
-    const name = data.name || 'Надин';
+    const name = data.name || 'Гость';
     const sun = data.sun || 'Козерог';
     const moon = data.moon || 'Козерог';
     const asc = data.asc || 'Стрелец';
+    const birthDate = data.date || data.birthDate || 'Не указана';
 
     const sProf = DEEP_SUN_DATA[sun] || DEEP_SUN_DATA["Козерог"];
     const mProf = DEEP_MOON_DATA[moon] || DEEP_MOON_DATA["Козерог"];
     const aProf = DEEP_ASC_DATA[asc] || DEEP_ASC_DATA["Стрелец"];
+    const synth = getTriadSynthesis(sun, moon, asc, name);
 
     const contentHtml = `
-      <div style="padding: 10px 4px 20px;">
-        <div style="font-size: 22px; font-weight: 800; color: #FFF; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
-          <span>✨</span> Твоя натальная матрица
-        </div>
-        <div style="font-size: 13px; color: var(--gold); font-weight: 600; margin-bottom: 16px;">
-          ${name} • ☀️ ${sun} • 🌙 ${moon} • ↑ ${asc}
-        </div>
-
-        <div style="background: rgba(229, 195, 120, 0.08); border: 1px solid rgba(229, 195, 120, 0.25); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
-          <div style="font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
-            ✦ Архитектура твоей души
+      <div style="padding: 6px 2px 24px;">
+        
+        <!-- HEADER EMBLEM -->
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div class="hero-natal-badge" style="margin-bottom: 8px;">
+            <span class="badge-star">✨</span> БЕСПЛАТНЫЙ РАЗБОР ЛИЧНОСТИ
           </div>
-          <div style="font-size: 13px; color: var(--text-sub); line-height: 1.5;">
-            Синтез сознательной воли (Солнце), глубинных потребностей подсознания (Луна) и социального фасада проявления в мире (Асцендент).
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: #FFF; line-height: 1.2; margin-bottom: 4px;">
+            Натальная матрица и код души
+          </div>
+          <div style="font-size: 13px; color: var(--gold); font-weight: 600;">
+            ${name} • 📅 ${birthDate}
           </div>
         </div>
 
-        <!-- SUN CARD -->
-        <div style="margin-bottom: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; padding: 15px;">
+        <!-- TRIAD CHIPS BAR -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 18px;">
+          <div style="background: rgba(255, 232, 163, 0.08); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 12px; padding: 8px 4px; text-align: center;">
+            <div style="font-size: 14px;">☀️</div>
+            <div style="font-size: 10px; color: var(--text-sub);">Солнце</div>
+            <div style="font-size: 12px; font-weight: 800; color: #FFE8A3;">${sun}</div>
+          </div>
+          <div style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.35); border-radius: 12px; padding: 8px 4px; text-align: center;">
+            <div style="font-size: 14px;">🌙</div>
+            <div style="font-size: 10px; color: var(--text-sub);">Луна</div>
+            <div style="font-size: 12px; font-weight: 800; color: #DDD6FE;">${moon}</div>
+          </div>
+          <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: 12px; padding: 8px 4px; text-align: center;">
+            <div style="font-size: 14px;">↑</div>
+            <div style="font-size: 10px; color: var(--text-sub);">Асцендент</div>
+            <div style="font-size: 12px; font-weight: 800; color: #93C5FD;">${asc}</div>
+          </div>
+        </div>
+
+        <!-- INTRO CARD -->
+        <div style="background: linear-gradient(145deg, rgba(38, 26, 68, 0.8) 0%, rgba(18, 12, 34, 0.95) 100%); border: 1.2px solid rgba(229, 195, 120, 0.3); border-radius: 16px; padding: 14px 16px; margin-bottom: 18px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px;">
+            ✦ Архитектура твоей триады
+          </div>
+          <div style="font-size: 13px; color: #E2E8F0; line-height: 1.55;">
+            Ты не просто один знак из гороскопа. Твоя натальная карта объединяет три фундаментальные силы: <b>Солнце</b> (твое истинное «Я» и ядро воли), <b>Луну</b> (подсознание, эмоции и зона комфорта) и <b>Асцендент</b> (социальный фасад и первое впечатление). Ниже — твой подробный разбор по каждой сфере.
+          </div>
+        </div>
+
+        <!-- CHAPTER 1: SUN -->
+        <div style="margin-bottom: 16px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(229, 195, 120, 0.35); border-radius: 16px; padding: 16px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <div style="font-size: 16px; font-weight: 700; color: #FFE8A3;">☀️ Солнце в знаке ${sun}</div>
-            <span style="font-size: 10.5px; background: rgba(243, 186, 47, 0.2); color: #FFE8A3; padding: 2px 8px; border-radius: 8px; font-weight: 600;">Ядро личности</span>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #FFE8A3;">
+              ☀️ Глава 1. Солнце в знаке ${sun}
+            </div>
+            <span style="font-size: 10px; background: rgba(243, 186, 47, 0.2); color: #FFE8A3; padding: 3px 8px; border-radius: 8px; font-weight: 700;">ЯДРО ЛИЧНОСТИ</span>
           </div>
-          <div style="font-size: 12px; color: var(--gold); font-weight: 600; margin-bottom: 8px;">${sProf.title}</div>
-          <p style="margin: 0 0 10px 0; color: #CBD5E1; font-size: 13.5px; line-height: 1.55;">
+          <div style="font-size: 12px; color: var(--gold); font-weight: 600; margin-bottom: 10px;">
+            ${sProf.title} • ${sProf.archetype}
+          </div>
+          <p style="margin: 0 0 12px 0; color: #CBD5E1; font-size: 13.5px; line-height: 1.6;">
             ${sProf.desc}
           </p>
-          <div style="background: rgba(243, 186, 47, 0.06); border-radius: 8px; padding: 8px 10px; font-size: 12px; color: #FFE8A3;">
-            ⚡ <b>Твоя суперсила:</b> ${sProf.superpower}.<br>
-            🔥 <b>Топливо энергии:</b> ${sProf.fuel}
+          <div style="background: rgba(243, 186, 47, 0.08); border: 1px solid rgba(243, 186, 47, 0.2); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; color: #FFE8A3; margin-bottom: 8px; line-height: 1.45;">
+            ⚡ <b>Врожденная суперсила:</b> ${sProf.superpower}
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.03); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #E2E8F0; margin-bottom: 8px; line-height: 1.45;">
+            🔥 <b>Источник энергии:</b> ${sProf.fuel}
+          </div>
+          <div style="background: rgba(239, 68, 68, 0.06); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #FCA5A5; margin-bottom: 8px; line-height: 1.45;">
+            ⚠️ <b>Теневая ловушка:</b> ${sProf.shadow}
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.07); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #6EE7B7; line-height: 1.45;">
+            💎 <b>Ключ к раскрытию потенциала:</b> ${sProf.growthKey}
           </div>
         </div>
 
-        <!-- MOON CARD -->
-        <div style="margin-bottom: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; padding: 15px;">
+        <!-- CHAPTER 2: MOON -->
+        <div style="margin-bottom: 16px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(139, 92, 246, 0.35); border-radius: 16px; padding: 16px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <div style="font-size: 16px; font-weight: 700; color: #FFE8A3;">🌙 Луна в знаке ${moon}</div>
-            <span style="font-size: 10.5px; background: rgba(139, 92, 246, 0.2); color: #DDD6FE; padding: 2px 8px; border-radius: 8px; font-weight: 600;">Подсознание & Покой</span>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #DDD6FE;">
+              🌙 Глава 2. Луна в знаке ${moon}
+            </div>
+            <span style="font-size: 10px; background: rgba(139, 92, 246, 0.2); color: #DDD6FE; padding: 3px 8px; border-radius: 8px; font-weight: 700;">ПОДСОЗНАНИЕ & ТЫЛ</span>
           </div>
-          <div style="font-size: 12px; color: var(--gold); font-weight: 600; margin-bottom: 8px;">Эмоциональная безопасность и тыл</div>
-          <p style="margin: 0 0 10px 0; color: #CBD5E1; font-size: 13.5px; line-height: 1.55;">
-            <b>Истинная потребность:</b> ${mProf.need}.
+          <div style="font-size: 12px; color: #A78BFA; font-weight: 600; margin-bottom: 10px;">
+            ${mProf.title} • ${mProf.element}
+          </div>
+          <p style="margin: 0 0 12px 0; color: #CBD5E1; font-size: 13.5px; line-height: 1.6;">
+            <b>Истинная эмоциональная потребность:</b> ${mProf.need}
           </p>
-          <div style="background: rgba(239, 68, 68, 0.08); border-radius: 8px; padding: 8px 10px; font-size: 12px; color: #FCA5A5; margin-bottom: 8px;">
-            ⚠️ <b>Скрытая уязвимость:</b> ${mProf.shadow}.
+          <div style="background: rgba(139, 92, 246, 0.08); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #DDD6FE; margin-bottom: 8px; line-height: 1.45;">
+            🌊 <b>Реакция на стресс:</b> ${mProf.stress}
           </div>
-          <div style="background: rgba(16, 185, 129, 0.08); border-radius: 8px; padding: 8px 10px; font-size: 12px; color: #6EE7B7;">
+          <div style="background: rgba(239, 68, 68, 0.06); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #FCA5A5; margin-bottom: 8px; line-height: 1.45;">
+            ⚠️ <b>Скрытая уязвимость:</b> ${mProf.shadow}
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #6EE7B7; line-height: 1.45;">
             🌿 <b>Ритуал восстановления:</b> ${mProf.ritual}
           </div>
         </div>
 
-        <!-- ASC CARD -->
-        <div style="margin-bottom: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; padding: 15px;">
+        <!-- CHAPTER 3: ASCENDANT -->
+        <div style="margin-bottom: 16px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(59, 130, 246, 0.35); border-radius: 16px; padding: 16px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <div style="font-size: 16px; font-weight: 700; color: #FFE8A3;">↑ Асцендент в знаке ${asc}</div>
-            <span style="font-size: 10.5px; background: rgba(59, 130, 246, 0.2); color: #93C5FD; padding: 2px 8px; border-radius: 8px; font-weight: 600;">Социальный код</span>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #93C5FD;">
+              ↑ Глава 3. Асцендент в знаке ${asc}
+            </div>
+            <span style="font-size: 10px; background: rgba(59, 130, 246, 0.2); color: #93C5FD; padding: 3px 8px; border-radius: 8px; font-weight: 700;">СОЦИАЛЬНЫЙ КОД</span>
           </div>
-          <div style="font-size: 12px; color: var(--gold); font-weight: 600; margin-bottom: 8px;">Первое впечатление и аура</div>
-          <p style="margin: 0 0 8px 0; color: #CBD5E1; font-size: 13.5px; line-height: 1.55;">
-            ${aProf.impression}
+          <div style="font-size: 12px; color: #60A5FA; font-weight: 600; margin-bottom: 10px;">
+            ${aProf.title} • ${aProf.element}
+          </div>
+          <p style="margin: 0 0 12px 0; color: #CBD5E1; font-size: 13.5px; line-height: 1.6;">
+            <b>Первое впечатление:</b> ${aProf.impression}
           </p>
-          <div style="font-size: 12px; color: #93C5FD;">
-            💫 <b>Твоя аура:</b> ${aProf.aura}.
+          <div style="background: rgba(59, 130, 246, 0.08); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #BFDBFE; margin-bottom: 8px; line-height: 1.45;">
+            💫 <b>Твоя аура и магнетизм:</b> ${aProf.aura}
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.03); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #E2E8F0; line-height: 1.45;">
+            🧭 <b>Секрет легкого входа в контакты:</b> ${aProf.socialKey}
           </div>
         </div>
 
-        <!-- TRIPWIRE OFFER EMBEDDED DIRECTLY (BLUEPRINT §4 & §8) -->
-        <div style="background: linear-gradient(135deg, rgba(46, 26, 71, 0.95) 0%, rgba(20, 14, 38, 0.98) 100%); border: 1.5px solid rgba(243, 186, 47, 0.6); border-radius: 16px; padding: 16px; text-align: center; margin-top: 18px;">
+        <!-- CHAPTER 4: SYNTHESIS -->
+        <div style="margin-bottom: 16px; background: linear-gradient(145deg, rgba(46, 28, 75, 0.85) 0%, rgba(22, 15, 42, 0.95) 100%); border: 1.5px solid rgba(229, 195, 120, 0.5); border-radius: 18px; padding: 18px;">
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; color: #FFE8A3; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+            <span>🔮</span> Глава 4. Синтез твоей триады
+          </div>
+          <div style="font-size: 13px; color: #E2E8F0; line-height: 1.6; margin-bottom: 12px;">
+            ${synth.synthesisText}
+          </div>
+          <div style="background: rgba(229, 195, 120, 0.1); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 12px; padding: 12px; font-size: 12.5px; color: #FFE8A3; line-height: 1.5; margin-bottom: 14px;">
+            ⚖️ <b>Твоя главная точка баланса:</b><br>${synth.balancePoint}
+          </div>
+
+          <div style="font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;">
+            ✦ 3 ключа силы на каждый день:
+          </div>
+          ${synth.keys.map(k => `
+            <div style="margin-bottom: 8px; background: rgba(0,0,0,0.25); border-radius: 10px; padding: 8px 12px; font-size: 12px; color: #CBD5E1; line-height: 1.4;">
+              <b style="color: #FFF;">${k.label}:</b> ${k.text}
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- ACTIONS & FOLLOW-UP -->
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+          <button onclick="closeModal(); switchTab('chat');" class="btn-gold" style="padding: 14px; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            💬 Спросить LUNA о моей натальной карте →
+          </button>
+        </div>
+
+        <!-- TRIPWIRE OFFER EMBEDDED DIRECTLY -->
+        <div style="background: linear-gradient(135deg, rgba(46, 26, 71, 0.95) 0%, rgba(20, 14, 38, 0.98) 100%); border: 1.5px solid rgba(243, 186, 47, 0.6); border-radius: 16px; padding: 16px; text-align: center; margin-top: 16px;">
           <div class="tripwire-badge" style="margin-bottom: 6px;">🔥 Рекомендуемый следующий шаг</div>
           <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 4px;">
             Разбор повторяющегося сценария · 99 ₽
@@ -2744,13 +3491,17 @@
       </div>
       <div class="form-group">
         <label class="form-label">📍 Город рождения</label>
-        <input type="text" id="ncCity" class="form-input" placeholder="Например: Екатеринбург">
+        <div class="city-input-wrap">
+          <input type="text" id="ncCity" class="form-input" placeholder="Начни вводить: Москва, Казань..." autocomplete="off">
+          <div class="city-dropdown" id="ncCityDropdown"></div>
+        </div>
       </div>
       <button class="btn-gold" style="margin-top: 14px;" onclick="saveNewChild()">
         ✨ Сохранить ребёнка в профиль
       </button>
     `;
     openModal(html);
+    setupCityAutocomplete('ncCity', 'ncCityDropdown');
   }
 
   async function saveNewChild() {
@@ -2971,6 +3722,23 @@
     if (tMoon) tMoon.textContent = userNatalData.moon || '—';
     if (tAsc) tAsc.textContent = userNatalData.asc || '—';
 
+    const sProf = DEEP_SUN_DATA[userNatalData.sun] || DEEP_SUN_DATA["Козерог"];
+    const mProf = DEEP_MOON_DATA[userNatalData.moon] || DEEP_MOON_DATA["Козерог"];
+    const aProf = DEEP_ASC_DATA[userNatalData.asc] || DEEP_ASC_DATA["Стрелец"];
+
+    const tSunSub = document.getElementById('triadSunSub');
+    const tMoonSub = document.getElementById('triadMoonSub');
+    const tAscSub = document.getElementById('triadAscSub');
+    const tInsight = document.getElementById('triadInsightPreview');
+
+    if (tSunSub) tSunSub.textContent = sProf.title ? sProf.title.split('&')[0].trim() : 'Ядро воли';
+    if (tMoonSub) tMoonSub.textContent = mProf.title ? mProf.title.split('&')[0].trim() : 'Эмоции & Тыл';
+    if (tAscSub) tAscSub.textContent = aProf.title ? aProf.title.split('&')[0].trim() : 'Социальный код';
+
+    if (tInsight) {
+      tInsight.innerHTML = `Сочетание ☀️ <b>${userNatalData.sun}</b> (твоя воля и суперсила) и 🌙 <b>${userNatalData.moon}</b> (твоя эмоциональная глубина) создает редкий союз: <i>${sProf.superpower}</i>. Твой Асцендент в <b>${userNatalData.asc}</b> помогает легко транслировать этот масштаб миру.`;
+    }
+
     // Week preview calculated specifically for user's chart
     const wfore = getPersonalWeekForecast(userNatalData.sun, userNatalData.moon, userNatalData.asc);
     const wpL = document.getElementById('wprevLove');
@@ -3107,7 +3875,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">✨ Твоё имя</label>
-        <input type="text" id="editName" class="form-input" value="${userNatalData ? (userNatalData.name || '') : ''}">
+        <input type="text" id="editName" class="form-input" value="${userNatalData ? escapeHtml(userNatalData.name || '') : ''}">
       </div>
       <div class="form-row-2">
         <div class="form-group">
@@ -3120,14 +3888,18 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">📍 Город рождения</label>
-        <input type="text" id="editCity" class="form-input" value="${userNatalData ? (userNatalData.city || '') : ''}">
+        <label class="form-label">📍 Город рождения (выбери из списка или напиши свой)</label>
+        <div class="city-input-wrap">
+          <input type="text" id="editCity" class="form-input" value="${userNatalData ? escapeHtml(userNatalData.city || '') : ''}" placeholder="Начни вводить: Москва, Екатеринбург..." autocomplete="off">
+          <div class="city-dropdown" id="editCityDropdown"></div>
+        </div>
       </div>
       <button class="btn-gold" style="margin-top: 14px;" onclick="saveEditedProfile()">
         Сохранить и пересчитать карту
       </button>
     `;
     openModal(html);
+    setupCityAutocomplete('editCity', 'editCityDropdown');
   }
 
   function saveEditedProfile() {
@@ -3958,8 +4730,8 @@
   function getUserCredits() {
     const raw = localStorage.getItem(getStorageKeyCredits());
     if (raw === null) {
-      localStorage.setItem(getStorageKeyCredits(), '3');
-      return 3;
+      localStorage.setItem(getStorageKeyCredits(), '1');
+      return 1;
     }
     return parseInt(raw, 10) || 0;
   }
@@ -4000,6 +4772,55 @@
     }
   }
 
+  const LUNA_CHAT_STORAGE_KEY = 'luna_chat_history_v2';
+
+  function loadChatHistory() {
+    const box = document.getElementById('chatBox');
+    if (!box) return;
+    try {
+      const raw = localStorage.getItem(LUNA_CHAT_STORAGE_KEY);
+      if (!raw) return;
+      const messages = JSON.parse(raw);
+      if (Array.isArray(messages) && messages.length > 0) {
+        box.innerHTML = '';
+        messages.forEach(m => {
+          const bubble = document.createElement('div');
+          bubble.className = m.sender === 'user' ? 'chat-bubble user' : 'chat-bubble bot';
+          bubble.innerHTML = m.html || m.text || '';
+          box.appendChild(bubble);
+        });
+        box.scrollTop = box.scrollHeight;
+      }
+    } catch (e) {
+      console.warn('Error loading chat history:', e);
+    }
+  }
+
+  function appendToChatHistory(sender, htmlContent) {
+    try {
+      const raw = localStorage.getItem(LUNA_CHAT_STORAGE_KEY);
+      const messages = raw ? JSON.parse(raw) : [];
+      messages.push({ sender, html: htmlContent, timestamp: Date.now() });
+      if (messages.length > 50) messages.splice(0, messages.length - 50);
+      localStorage.setItem(LUNA_CHAT_STORAGE_KEY, JSON.stringify(messages));
+    } catch (e) {
+      console.warn('Error saving chat history:', e);
+    }
+  }
+
+  function clearChatHistory() {
+    haptic('medium');
+    localStorage.removeItem(LUNA_CHAT_STORAGE_KEY);
+    const box = document.getElementById('chatBox');
+    if (box) {
+      box.innerHTML = `
+        <div class="chat-bubble bot">
+          ✨ <b>Здравствуй!</b> Я здесь, чтобы разобрать твой вопрос с опорой на натальную карту — отношения, финансы, карьерный выбор или повторяющиеся жизненные сценарии. О чём ты хочешь поговорить?
+        </div>
+      `;
+    }
+  }
+
   function sendChatMessage() {
     const input = document.getElementById('chatInput');
     const txt = (input.value || '').trim();
@@ -4011,18 +4832,21 @@
       trackLunaEvent('credits_exhausted');
       openModal(`
         <div style="text-align: center; padding: 10px 4px 16px;">
-          <div style="font-size: 32px; margin-bottom: 8px;">⚡</div>
+          <div style="font-size: 34px; margin-bottom: 8px;">⚡</div>
           <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
-            Персональные запросы завершились
+            Бесплатный вопрос завершён
           </div>
           <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
-            Ты использовала все бесплатные AI-запросы. Чтобы продолжить глубокий диалог с твоей картой, выбери удобный тариф или пакет:
+            Ты задала свой бесплатный вопрос к карте. Чтобы детально разобрать свой повторяющийся тупик в отношениях, деньгах или призвании:
           </p>
-          <button class="btn-gold" style="margin-bottom: 10px;" onclick="closeModal(); openSubscriptionModal();">
-            💎 Выбрать тариф (от 299 ₽)
+          <button class="btn-gold" style="margin-bottom: 10px;" onclick="closeModal(); openTripwireModal();">
+            🎯 Разобрать сценарий по карте за 99 ₽ →
           </button>
-          <button class="btn-outline" onclick="closeModal(); openTopUpModal();">
-            ⚡ Докупить 15 запросов (99 ₽)
+          <button class="btn-outline" style="margin-bottom: 10px;" onclick="closeModal(); openTopUpModal();">
+            ⚡ Пакет запросов (99 ₽ за 15 шт.)
+          </button>
+          <button class="btn-outline" style="opacity: 0.85; font-size: 12px;" onclick="closeModal(); openSubscriptionModal();">
+            💎 Безлимитная подписка LUNA
           </button>
         </div>
       `);
@@ -4034,6 +4858,7 @@
     uBubble.className = 'chat-bubble user';
     uBubble.textContent = txt;
     box.appendChild(uBubble);
+    appendToChatHistory('user', txt);
 
     input.value = '';
     box.scrollTop = box.scrollHeight;
@@ -4057,32 +4882,38 @@
       asc_sign: userNatalData ? userNatalData.asc : null
     };
 
-    const fallbackTimer = setTimeout(() => {
-      if (!responded) {
-        responded = true;
-        typingBubble.innerHTML = generateDeepAstrologicalChatResponse(txt, userNatalData);
-        box.scrollTop = box.scrollHeight;
+    const handleBotResponse = (html) => {
+      if (responded) return;
+      responded = true;
+      let finalHtml = html;
+      if (getUserCredits() <= 0) {
+        finalHtml += `
+          <div style="margin-top: 14px; padding: 10px 12px; background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 12px; font-size: 12px; color: #FFE8A3; line-height: 1.45;">
+            ✨ <b>Бесплатный вопрос к карте завершен.</b><br>
+            Если хочешь разобрать, почему в твоей жизни повторяется тупик в отношениях, деньгах или карьере — открой 
+            <span style="text-decoration: underline; font-weight: 800; cursor: pointer; color: #FFF;" onclick="openTripwireModal()">Экспресс-разбор за 99 ₽ →</span>
+          </div>
+        `;
       }
-    }, 850);
+      typingBubble.innerHTML = finalHtml;
+      appendToChatHistory('bot', finalHtml);
+      box.scrollTop = box.scrollHeight;
+    };
 
-    apiRequest('/api/v1/chat/ask', 'POST', postData, 1200).then(res => {
-      if (!responded) {
-        responded = true;
-        clearTimeout(fallbackTimer);
-        if (res && res.answer) {
-          typingBubble.innerHTML = res.answer;
-        } else {
-          typingBubble.innerHTML = generateDeepAstrologicalChatResponse(txt, userNatalData);
-        }
-        box.scrollTop = box.scrollHeight;
+    const fallbackTimer = setTimeout(() => {
+      handleBotResponse(generateDeepAstrologicalChatResponse(txt, userNatalData));
+    }, 4500);
+
+    apiRequest('/api/v1/chat/ask', 'POST', postData, 4500).then(res => {
+      clearTimeout(fallbackTimer);
+      if (res && res.answer) {
+        handleBotResponse(res.answer);
+      } else {
+        handleBotResponse(generateDeepAstrologicalChatResponse(txt, userNatalData));
       }
     }).catch(() => {
-      if (!responded) {
-        responded = true;
-        clearTimeout(fallbackTimer);
-        typingBubble.innerHTML = generateDeepAstrologicalChatResponse(txt, userNatalData);
-        box.scrollTop = box.scrollHeight;
-      }
+      clearTimeout(fallbackTimer);
+      handleBotResponse(generateDeepAstrologicalChatResponse(txt, userNatalData));
     });
   }
 
@@ -4099,12 +4930,67 @@
     const moon = data.moon || 'Козерог';
     const asc = data.asc || 'Стрелец';
 
-    const lower = (question || '').toLowerCase();
+    const raw = (question || '').trim();
+    const lower = raw.toLowerCase();
+    const clean = lower.replace(/[^a-zа-я0-9\s]/gi, '').trim();
+    const words = clean.split(/\s+/).filter(Boolean);
+
     const sunElem = ZODIAC_ELEMENTS[sun] || "earth";
     const moonElem = ZODIAC_ELEMENTS[moon] || "earth";
 
-    // 1. RELATIONSHIPS & LOVE
-    if (lower.includes('отношен') || lower.includes('любов') || lower.includes('партнер') || lower.includes('муж') || lower.includes('парен') || lower.includes('брак') || lower.includes('чувств') || lower.includes('расстава') || lower.includes('одинок')) {
+    // 1. GREETINGS (привет, здравствуйте, etc.)
+    const greetingWords = ['привет', 'приветик', 'здравствуй', 'здравствуйте', 'хай', 'салют', 'ку', 'йоу', 'hello', 'hi', 'hey'];
+    const isGreeting = ['привет', 'здравствуй', 'здравствуйте', 'добрый день', 'доброе утро', 'добрый вечер', 'хай', 'салют', 'ку', 'hello', 'hi'].includes(clean) ||
+                       (words.length <= 3 && words.some(w => greetingWords.includes(w)));
+
+    if (isGreeting) {
+      return `
+        ✨ <b>Здравствуй, ${name}!</b> Рада нашей встрече.
+        <br><br>
+        Я — <b>LUNA</b>, твой персональный астролог и проводник по натальной карте (☀️ <b>${sun}</b> • 🌙 <b>${moon}</b> • ↑ <b>${asc}</b>).
+        <br><br>
+        О чем бы тебе хотелось узнать сегодня?
+        <br>
+        • 💖 <b>Отношения и любовь:</b> совместимость, гармония, выбор партнера<br>
+        • 💎 <b>Деньги и карьера:</b> финансовый код, проявленность, точки роста<br>
+        • 🔄 <b>Повторяющиеся сценарии:</b> как разомкнуть привычный круг<br>
+        • 🌿 <b>Энергия и баланс:</b> персональные ключи к ресурсному состоянию
+        <br><br>
+        <i>Задай любой вопрос простыми словами или нажми на одну из подсказок ниже!</i>
+      `;
+    }
+
+    // 2. GRATITUDE (спасибо, благодарю, etc.)
+    const gratitudeWords = ['спасибо', 'благодарю', 'от души', 'спасибки', 'сяп', 'пасиб', 'спасибочки', 'ты супер', 'ты лучшая', 'thanks', 'thank you'];
+    const isGratitude = gratitudeWords.includes(clean) || (words.length <= 3 && words.some(w => gratitudeWords.includes(w)));
+
+    if (isGratitude) {
+      return `
+        ✨ <b>Во благо, ${name}!</b>
+        <br><br>
+        Пусть подсказки твоей натальной карты служат тебе надежным компасом и опорой. 
+        Если захочешь разобрать еще какой-то вопрос или посмотреть другие сферы — я всегда рядом. О чем бы тебе хотелось спросить?
+      `;
+    }
+
+    // 3. WHO ARE YOU / CAPABILITIES
+    if (lower.includes('кто ты') || lower.includes('что ты умеешь') || lower.includes('что ты можешь') || lower.includes('как пользоваться') || lower.includes('помощь') || lower.includes('справка') || lower.includes('о чем спросить') || lower.includes('расскажи о себе')) {
+      return `
+        🌙 <b>Я — LUNA</b>, твой чуткий персональный AI-астролог.
+        <br><br>
+        Я синтезирую планетарные координаты твоего рождения (☀️ <b>${sun}</b>, 🌙 <b>${moon}</b>, ↑ <b>${asc}</b>) и помогаю находить ответы на глубокие вопросы:
+        <br>
+        • <b>Любовь & Отношения:</b> истинные потребности в близости и сценарии выбора<br>
+        • <b>Деньги & Бизнес:</b> раскрытие потенциала и финансовая уверенность<br>
+        • <b>Предназначение:</b> твоя суперсила и авторская реализация<br>
+        • <b>Ресурс:</b> персональные способы отдыха и снятия тревоги
+        <br><br>
+        <i>Напиши свой вопрос к карте в поле ввода ниже 👇</i>
+      `;
+    }
+
+    // 4. RELATIONSHIPS & LOVE
+    if (lower.includes('отношен') || lower.includes('любов') || lower.includes('партнер') || lower.includes('муж') || lower.includes('парен') || lower.includes('брак') || lower.includes('чувств') || lower.includes('расстава') || lower.includes('одинок') || lower.includes('ревность')) {
       let styleText = "";
       if (moonElem === "water") {
         styleText = `С Луной в знаке <b>${moon}</b> твой эмоциональный мир глубок и уязвим: тебе жизненно необходимы эмоциональная безопасность, душевное тепло и отсутствие холодной отстраненности.`;
@@ -4138,8 +5024,8 @@
       `;
     }
 
-    // 2. MONEY & FINANCES
-    if (lower.includes('деньг') || lower.includes('доход') || lower.includes('финанс') || lower.includes('заработ') || lower.includes('богат') || lower.includes('чек') || lower.includes('стоимост') || lower.includes('потолок')) {
+    // 5. MONEY & FINANCES
+    if (lower.includes('деньг') || lower.includes('доход') || lower.includes('финанс') || lower.includes('заработ') || lower.includes('богат') || lower.includes('чек') || lower.includes('стоимост') || lower.includes('потолок') || lower.includes('долг') || lower.includes('кредит')) {
       let finStyle = "";
       if (sunElem === "earth") {
         finStyle = `Для земного Солнца в <b>${sun}</b> богатство — это системность, качество продукта и долгосрочные активы. Тебе противопоказаны хаотичные спекуляции и работа за копейки из страха.`;
@@ -4173,7 +5059,7 @@
       `;
     }
 
-    // 3. CAREER & PURPOSE & WORK
+    // 6. CAREER & PURPOSE & WORK
     if (lower.includes('работ') || lower.includes('карьер') || lower.includes('призван') || lower.includes('реализац') || lower.includes('бизнес') || lower.includes('найм') || lower.includes('проект') || lower.includes('професси') || lower.includes('свое дело')) {
       return `
         <b>${name}</b>, разбираем профессиональный вектор твоей карты:
@@ -4195,8 +5081,8 @@
       `;
     }
 
-    // 4. RECURRING PATTERNS & SCENARIOS
-    if (lower.includes('сценар') || lower.includes('повторя') || lower.includes('по кругу') || lower.includes('грабли') || lower.includes('тупик') || lower.includes('ошибк') || lower.includes('почему я')) {
+    // 7. RECURRING PATTERNS & SCENARIOS
+    if (lower.includes('сценар') || lower.includes('повторя') || lower.includes('по кругу') || lower.includes('грабли') || lower.includes('тупик') || lower.includes('ошибк') || lower.includes('почему я') || lower.includes('блоки') || lower.includes('страх')) {
       return `
         <b>${name}</b>, разбор повторяющегося сценария по натальной карте:
         <br><br>
@@ -4219,8 +5105,8 @@
       `;
     }
 
-    // 5. ENERGY & REST & BURNOUT
-    if (lower.includes('энерг') || lower.includes('устал') || lower.includes('выгоран') || lower.includes('сил нет') || lower.includes('сон') || lower.includes('ресурс') || lower.includes('тревог') || lower.includes('тело') || lower.includes('отдых')) {
+    // 8. ENERGY & REST & BURNOUT
+    if (lower.includes('энерг') || lower.includes('устал') || lower.includes('выгоран') || lower.includes('сил нет') || lower.includes('сон') || lower.includes('ресурс') || lower.includes('тревог') || lower.includes('тело') || lower.includes('отдых') || lower.includes('апати')) {
       let restAdvice = "";
       if (moonElem === "water") {
         restAdvice = "Контакт с водой (теплая ванна с солью, бассейн), уединение в тишине и отсутствие необходимости отвечать на звонки.";
@@ -4247,24 +5133,74 @@
       `;
     }
 
-    // 6. GENERAL & DEFAULT ASTROLOGICAL SYNTHESIS
+    // 9. CHILDREN & FAMILY
+    if (lower.includes('ребенок') || lower.includes('дет') || lower.includes('сын') || lower.includes('дочь') || lower.includes('воспитани') || lower.includes('малыш')) {
+      return `
+        <b>${name}</b>, смотрю сектор родительства и семьи в твоей карте:
+        <br><br>
+        Связка <b>Солнца в ${sun}</b> и <b>Луны в ${moon}</b> говорит о том, что для тебя важна гармония между разумной структурой и безусловным эмоциональным принятием.
+        <br><br>
+        🌱 <b>Ориентир:</b> Главное в воспитании — не идеальный контроль, а создание доверительной среды, где ребенок чувствует безопасность быть собой.
+      `;
+    }
+
+    // 10. GENERAL & DEFAULT ASTROLOGICAL SYNTHESIS
     return `
-      <b>${name}</b>, с точки зрения натального синтеза твоей карты (☀️ <b>${sun}</b> • 🌙 <b>${moon}</b> • ↑ <b>${asc}</b>):
+      <b>${name}</b>, смотрю на твой вопрос через призму натальной карты (☀️ <b>${sun}</b> • 🌙 <b>${moon}</b> • ↑ <b>${asc}</b>):
       <br><br>
-      В твоем запросе <i>«${question}»</i> натальная карта советует опираться на зрелую силу Солнца в ${sun} и природную интуицию Луны в ${moon}.
+      В этой теме карта советует опираться на зрелую силу Солнца в знаке ${sun} и природную интуицию Луны в ${moon}.
       <br><br>
       <b>Астрологический фокус:</b>
       <br>
       Не пытайся действовать из чувства спешки, тревоги или попытки соответствовать чужим ожиданиям. Твой Асцендент в ${asc} дает тебе дар видеть перспективу на несколько шагов вперед. Доверяй первому спокойному внутреннему решению — там, где чувствуется расширение и внутреннее достоинство.
       <br><br>
-      Если ты хочешь разобрать конкретную сферу (отношения, деньги, годовой соляр или сценарии), выбери интересующий блок в каталоге или уточни свой вопрос в чате!
+      <i>Если ты хочешь разобрать конкретную сферу — выбери интересующий блок в каталоге или уточни свой вопрос в чате!</i>
     `;
   }
 
-  // ================= 6. TRIPWIRE (99 ₽) MODAL & ENGINE =================
+  // ================= 6. TRIPWIRE (99 ₽) INTERACTIVE MODAL & DEEP ENGINE =================
+  let twState = {
+    topic: 'relations',
+    family: 'relationship',
+    kids: 'none',
+    job: 'freelance',
+    situation: ''
+  };
+
+  function selectTwChip(group, val, el) {
+    haptic('light');
+    twState[group] = val;
+    const parent = el.closest('.tw-chip-group');
+    if (parent) {
+      parent.querySelectorAll('.tw-chip-btn').forEach(btn => btn.classList.remove('active'));
+    }
+    el.classList.add('active');
+  }
+
+  function setTwQuickSituation(txt) {
+    haptic('light');
+    const inp = document.getElementById('tw_situation');
+    if (inp) {
+      inp.value = txt;
+      twState.situation = txt;
+    }
+  }
+
   function openTripwireModal(defaultTopic = 'relations') {
     haptic();
     trackLunaEvent('tripwire_viewed', { topic: defaultTopic });
+
+    if (defaultTopic) twState.topic = defaultTopic;
+
+    // Pre-fill from existing quiz or defaults if available
+    const savedQuiz = localStorage.getItem(getStorageKeyQuiz()) || localStorage.getItem('luna_user_quiz_profile');
+    if (savedQuiz) {
+      try {
+        const parsed = JSON.parse(savedQuiz);
+        if (parsed.qRel) twState.family = parsed.qRel;
+        if (parsed.qJob) twState.job = parsed.qJob;
+      } catch(e) {}
+    }
 
     const html = `
       <div style="padding: 6px 2px 14px;">
@@ -4273,30 +5209,65 @@
           🎯 Почему повторяется один и тот же сценарий?
         </div>
         <div style="font-size: 12.5px; color: #D1CCDE; line-height: 1.45; margin-bottom: 14px;">
-          Точечный астрологический разбор ключевой проблемы по твоей натальной карте без воды и сложных терминов.
+          Интерактивный астрологический аудит твоей ситуации по натальной карте с учётом реальной жизни.
         </div>
 
-        <div class="form-group">
-          <label class="form-label">1. В какой сфере повторяется сценарий?</label>
-          <select id="tw_topic" class="form-input">
-            <option value="relations" ${defaultTopic === 'relations' || defaultTopic === 'отношения' ? 'selected' : ''}>❤️ Отношения и выбор партнёров</option>
-            <option value="money" ${defaultTopic === 'money' || defaultTopic === 'деньги' ? 'selected' : ''}>💰 Деньги, доход и финансовый потолок</option>
-            <option value="purpose" ${defaultTopic === 'purpose' || defaultTopic === 'реализация' ? 'selected' : ''}>🎯 Работа, выгорание и смена деятельности</option>
-            <option value="choice" ${defaultTopic === 'choice' || defaultTopic === 'выбор' ? 'selected' : ''}>🧭 Сложность выбора и внутренние сомнения</option>
-          </select>
+        <!-- 1. СФЕРА -->
+        <label class="form-label">1. В какой сфере повторяется сценарий?</label>
+        <div class="tw-chip-group" id="twGroupTopic">
+          <div class="tw-chip-btn ${twState.topic === 'relations' ? 'active' : ''}" onclick="selectTwChip('topic', 'relations', this)">❤️ Отношения и партнёр</div>
+          <div class="tw-chip-btn ${twState.topic === 'money' ? 'active' : ''}" onclick="selectTwChip('topic', 'money', this)">💰 Деньги и доход</div>
+          <div class="tw-chip-btn ${twState.topic === 'purpose' ? 'active' : ''}" onclick="selectTwChip('topic', 'purpose', this)">🎯 Работа и призвание</div>
+          <div class="tw-chip-btn ${twState.topic === 'choice' ? 'active' : ''}" onclick="selectTwChip('topic', 'choice', this)">🧭 Выбор и кризис</div>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">2. Опиши кратко, в чём именно повторяется тупик?</label>
-          <input type="text" id="tw_situation" class="form-input" placeholder="Например: быстро выгораю / партнер отстраняется / страх поднять чек">
+        <!-- 2. СЕМЕЙНОЕ ПОЛОЖЕНИЕ -->
+        <label class="form-label">2. Твоё семейное положение / статус:</label>
+        <div class="tw-chip-group" id="twGroupFamily">
+          <div class="tw-chip-btn ${twState.family === 'single' ? 'active' : ''}" onclick="selectTwChip('family', 'single', this)">🌸 Свободна / в поиске</div>
+          <div class="tw-chip-btn ${twState.family === 'relationship' ? 'active' : ''}" onclick="selectTwChip('family', 'relationship', this)">💖 В отношениях</div>
+          <div class="tw-chip-btn ${twState.family === 'married' ? 'active' : ''}" onclick="selectTwChip('family', 'married', this)">💍 В браке</div>
+          <div class="tw-chip-btn ${twState.family === 'crisis' || twState.family === 'complicated' ? 'active' : ''}" onclick="selectTwChip('family', 'crisis', this)">💔 Непростой период / поиск ясности</div>
         </div>
 
-        <div style="background: rgba(14, 11, 26, 0.8); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 12px; padding: 12px; margin-bottom: 16px;">
-          <div style="font-size: 11px; color: var(--gold-light); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">В разбор входит:</div>
+        <!-- 3. ДЕТИ -->
+        <label class="form-label">3. Есть ли у тебя дети?</label>
+        <div class="tw-chip-group" id="twGroupKids">
+          <div class="tw-chip-btn ${twState.kids === 'none' ? 'active' : ''}" onclick="selectTwChip('kids', 'none', this)">🌿 Нет детей</div>
+          <div class="tw-chip-btn ${twState.kids === 'planning' ? 'active' : ''}" onclick="selectTwChip('kids', 'planning', this)">🐣 Планирую</div>
+          <div class="tw-chip-btn ${twState.kids === 'one' ? 'active' : ''}" onclick="selectTwChip('kids', 'one', this)">👶 1 ребёнок</div>
+          <div class="tw-chip-btn ${twState.kids === 'two_plus' ? 'active' : ''}" onclick="selectTwChip('kids', 'two_plus', this)">👨👩👧👦 2 и более детей</div>
+        </div>
+
+        <!-- 4. ДЕЯТЕЛЬНОСТЬ -->
+        <label class="form-label">4. Твой формат занятости:</label>
+        <div class="tw-chip-group" id="twGroupJob">
+          <div class="tw-chip-btn ${twState.job === 'business' ? 'active' : ''}" onclick="selectTwChip('job', 'business', this)">🚀 Свой бизнес / проект</div>
+          <div class="tw-chip-btn ${twState.job === 'freelance' ? 'active' : ''}" onclick="selectTwChip('job', 'freelance', this)">💻 Фриланс / частная практика</div>
+          <div class="tw-chip-btn ${twState.job === 'office' ? 'active' : ''}" onclick="selectTwChip('job', 'office', this)">💼 Найм / компания</div>
+          <div class="tw-chip-btn ${twState.job === 'search' ? 'active' : ''}" onclick="selectTwChip('job', 'search', this)">🔍 В поиске себя / декрет</div>
+        </div>
+
+        <!-- 5. ОПИСАНИЕ СИТУАЦИИ -->
+        <div class="form-group" style="margin-top: 6px;">
+          <label class="form-label">5. Что сейчас больше всего беспокоит? (кратко)</label>
+          <input type="text" id="tw_situation" class="form-input" placeholder="Например: быстро выгораю / партнер отстраняется / страх сделать шаг" value="${escapeHtml(twState.situation || '')}">
+          <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px;">
+            <span style="font-size: 10.5px; color: #94A3B8;">Быстрый выбор:</span>
+            <span class="tw-chip-btn" style="padding: 3px 8px; font-size: 11px;" onclick="setTwQuickSituation('Партнер отдаляется, чувствую холод')">Партнер отдаляется</span>
+            <span class="tw-chip-btn" style="padding: 3px 8px; font-size: 11px;" onclick="setTwQuickSituation('Упираюсь в финансовый потолок')">Потолок в доходах</span>
+            <span class="tw-chip-btn" style="padding: 3px 8px; font-size: 11px;" onclick="setTwQuickSituation('Нет сил, эмоциональное выгорание')">Выгорание и упадок сил</span>
+            <span class="tw-chip-btn" style="padding: 3px 8px; font-size: 11px;" onclick="setTwQuickSituation('Страх сделать неверный выбор')">Страх ошибки</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(14, 11, 26, 0.85); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 12px; padding: 12px; margin-bottom: 16px;">
+          <div style="font-size: 11px; color: var(--gold-light); font-weight: 700; text-transform: uppercase; margin-bottom: 4px;">В разбор входит (4 подробные главы):</div>
           <div style="font-size: 12px; color: #CBD5E1; line-height: 1.5;">
-            • Астрологическая причина сценария по натальной карте<br>
-            • Психологический механизм проживания напряжения<br>
-            • 1 конструктивный фокус и практический ориентир
+            • 🔍 <b>Глава 1:</b> Натальный корень сценария (Солнце + Луна + Асцендент)<br>
+            • 🏠 <b>Глава 2:</b> Контекст реальной жизни (семья, дети, работа)<br>
+            • ⚡ <b>Глава 3:</b> Теневая психологическая ловушка и слепая зона<br>
+            • 🗝️ <b>Глава 4:</b> Пошаговый алгоритм выхода и персональные натальные ключи
           </div>
         </div>
 
@@ -4306,7 +5277,7 @@
             <div style="font-size: 20px; font-weight: 800; color: #FFE8A3;">99 ₽</div>
           </div>
           <button class="btn-gold" style="width: auto; padding: 12px 20px;" onclick="submitTripwireOrder()">
-            Получить разбор за 99 ₽ →
+            Получить подробный разбор за 99 ₽ →
           </button>
         </div>
       </div>
@@ -4315,64 +5286,124 @@
   }
 
   function submitTripwireOrder() {
-    const topic = document.getElementById('tw_topic').value;
-    const situation = (document.getElementById('tw_situation').value || '').trim() || 'Повторяющийся сценарий в жизни';
+    const sitInp = document.getElementById('tw_situation');
+    if (sitInp) twState.situation = sitInp.value.trim();
+
+    const topic = twState.topic || 'relations';
+    const family = twState.family || 'single';
+    const kids = twState.kids || 'none';
+    const job = twState.job || 'freelance';
+    const situation = twState.situation || 'Повторяющийся жизненный тупик';
 
     haptic('success');
-    trackLunaEvent('tripwire_ordered', { topic, situation, price: 99 });
+    trackLunaEvent('tripwire_ordered', { topic, family, kids, job, situation, price: 99 });
 
     openModal(`
       <div style="text-align: center; padding: 24px 8px;">
-        <div style="font-size: 32px; animation: spin 2s infinite linear; margin-bottom: 12px;">🪐</div>
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
-          LUNA синтезирует разбор сценария...
+        <div style="font-size: 36px; animation: spin 2s infinite linear; margin-bottom: 12px;">🪐</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+          LUNA рассчитывает натальный аудит...
         </div>
-        <p style="font-size: 12px; color: var(--text-muted);">
-          Анализируем натальные аспекты и твой жизненный контекст
+        <p style="font-size: 12.5px; color: #D1CCDE; line-height: 1.45;">
+          Синтезируем положение Солнца, Луны и Асцендента с твоим жизненным контекстом (семья, дети, деятельность)
         </p>
       </div>
     `);
 
     setTimeout(() => {
       const natal = userNatalData || { sun: 'Козерог', moon: 'Козерог', asc: 'Стрелец', name: 'Надин' };
-      
-      let topicTitle = "Отношения и привязанность";
-      if (topic === 'money') topicTitle = "Деньги и финансовая опора";
-      if (topic === 'purpose') topicTitle = "Реализация и призвание";
-      if (topic === 'choice') topicTitle = "Внутренний выбор и сомнения";
+      const sun = natal.sun || 'Козерог';
+      const moon = natal.moon || 'Козерог';
+      const asc = natal.asc || 'Стрелец';
+      const name = natal.name || 'душа';
+      const sProf = DEEP_SUN_DATA[sun] || DEEP_SUN_DATA["Козерог"];
+      const mProf = DEEP_MOON_DATA[moon] || DEEP_MOON_DATA["Козерог"];
+
+      let topicTitle = "Отношения и выбор партнёра";
+      if (topic === 'money') topicTitle = "Деньги, доход и финансовый потолок";
+      if (topic === 'purpose') topicTitle = "Работа, реализация и преодоление выгорания";
+      if (topic === 'choice') topicTitle = "Внутренний выбор, сомнения и личный кризис";
+
+      let familyText = "Свободна / в поиске своего человека";
+      if (family === 'relationship') familyText = "В отношениях";
+      if (family === 'married') familyText = "В браке";
+      if (family === 'crisis' || family === 'complicated') familyText = "Непростой период / поиск ясности";
+
+      let kidsText = "Нет детей";
+      if (kids === 'planning') kidsText = "Планирую детей";
+      if (kids === 'one') kidsText = "1 ребёнок";
+      if (kids === 'two_plus') kidsText = "2 и более детей";
+
+      let jobText = "Фриланс / частная практика";
+      if (job === 'business') jobText = "Свой бизнес / проект";
+      if (job === 'office') jobText = "Работа в найме";
+      if (job === 'search') jobText = "В поиске своего призвания / декрет";
+
+      // Contextual life synthesis
+      let lifeContextInsight = "";
+      if (family === 'married' || family === 'relationship') {
+        lifeContextInsight = `Будучи <b>${familyText.toLowerCase()}</b>, при твоей конфигурации Луны в ${moon} ты склонна брать на себя избыточную эмоциональную нагрузку за общий климат в паре. Ты можешь молча терпеть нарастающий дискомфорт, ожидая, что партнер сам догадается о твоих потребностях, что в итоге приводит к внезапному эмоциональному взрыву или отчуждению.`;
+      } else if (family === 'crisis' || family === 'complicated') {
+        lifeContextInsight = `В текущий <b>период пересмотра отношений</b> твоя натальная карта проходит фазу калибровки личных границ. Солнце в ${sun} требует ясности и уважения к твоему достоинству, в то время как Луна в ${moon} может цепляться за привычную иллюзию безопасности, замедляя принятие честного решения.`;
+      } else {
+        lifeContextInsight = `В статусе <b>свободной личности</b> ты привлекаешь партнеров своей яркой натальной силой (↑ ${asc}), но при приближении к истинной уязвимости включаются бессознательные фильтры: страх потерять автономию или повторить прошлый болезненный опыт.`;
+      }
+
+      if (kids === 'one' || kids === 'two_plus') {
+        lifeContextInsight += `<br><br><b>Родительский сектор (${kidsText}):</b> наличие детей усиливает фактор натальной гиперответственности. Ты часто ставишь свои базовые потребности на последнее место, отдавая весь ресурс заботе, что быстро истощает батарейку Луны.`;
+      }
+
+      // Professional contextual factor
+      let jobContextInsight = "";
+      if (job === 'business' || job === 'freelance') {
+        jobContextInsight = `В формате <b>${jobText.toLowerCase()}</b> твой доход и масштаб напрямую зависят от внутреннего состояния. Когда ты соглашаешься на работу из страха дефицита или демпингуешь, ты мгновенно блокируешь денежный канал своего Солнца в ${sun}.`;
+      } else {
+        jobContextInsight = `В условиях <b>${jobText.toLowerCase()}</b> тебе крайне важно ощущать авторскую автономию и признание мастерства. Рутина без права голоса является главным триггером твоего профессионального выгорания.`;
+      }
 
       const reportHtml = `
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
           🎯 Разбор сценария: ${topicTitle}
         </div>
         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
-          Персональный анализ для: ${natal.name} (☀️ ${natal.sun} • 🌙 ${natal.moon} • ↑ ${natal.asc})
+          Персональный аудит для: <b>${escapeHtml(name)}</b> (☀️ <b>${sun}</b> • 🌙 <b>${moon}</b> • ↑ <b>${asc}</b>)
         </div>
 
         <div class="report-content">
           <div class="report-chapter">
-            <h3>🔍 1. Что в твоей карте запускает этот паттерн</h3>
-            <p>Запрос: <i>«${situation}»</i>.</p>
-            <p>Синтез Солнца в ${natal.sun} и Луны в ${natal.moon} создает глубинную установку: <b>«Я должна всё контролировать и соответствовать идеалу, иначе стабильность рухнет»</b>. В сфере (${topicTitle}) это проявляется как бессознательное притягивание ситуаций, где ты взваливаешь на себя двойную нагрузку или терпишь напряжение до последнего.</p>
+            <h3>🔍 Глава 1. Натальный корень и планетарная матрица</h3>
+            <p>Твой исходный запрос: <i>«${escapeHtml(situation)}»</i>.</p>
+            <p>В твоей натальной карте ключевой механизм зацикливания ситуации формируется на стыке <b>Солнца в знаке ${sun}</b> (${sProf.archetype}) и <b>Луны в ${moon}</b> (${mProf.archetype}).</p>
+            <p>Твое Солнце стремится к масштабу, безупречному результату и достоинству, однако подсознательная программа Луны в ${moon} шепчет: <b>«Я ценна и в безопасности только тогда, когда всё контролирую сама и не даю слабины»</b>. В сфере (${topicTitle}) это заставляет тебя бессознательно выбирать самые сложные, энергозатратные сценарии, где приходится доказывать свое право на счастье и уважение через сверхусилия.</p>
           </div>
 
           <div class="report-chapter">
-            <h3>⚡ 2. Психологический механизм: Почему это кажется нормой</h3>
-            <p>Твоя психика воспринимает привычное напряжение как знак надежности. Когда всё идет легко и без надрыва, внутри может возникать фоновая тревога: «Неужели так просто? Где подвох?». Из-за этого ты можешь сама возвращаться к сложным, энергозатратным сценариям.</p>
+            <h3>🏠 Глава 2. Преломление через твой жизненный контекст</h3>
+            <p><b>Входные данные анкеты:</b> Статус: <i>${familyText}</i> • Дети: <i>${kidsText}</i> • Занятость: <i>${jobText}</i>.</p>
+            <p>${lifeContextInsight}</p>
+            <p>${jobContextInsight}</p>
           </div>
 
           <div class="report-chapter">
-            <h3>🗝️ 3. Конструктивный фокус и точка разрыва круга</h3>
-            <p>1. <b>Пауза перед реакцией:</b> как только чувствуешь привычный порыв «спасать» или соглашаться через силу — дай себе 24 часа тишины.<br>
-            2. <b>Отказ от гиперконтроля:</b> позволь другим нести их долю ответственности.<br>
-            3. <b>Опора на состояние:</b> твое истинное расширение происходит через расслабление и достоинство, а не через подвиги.</p>
+            <h3>⚡ Глава 3. Теневая психологическая ловушка («Слепая зона»)</h3>
+            <p><b>Ловушка ${sProf.element}:</b> Твоя психика настолько привыкла жить в режиме скрытой мобилизации и преодоления, что спокойное, легкое течение жизни вызывает подсознательную тревогу: <i>«Неужели всё так гладко? Где скрыт подвох?»</i>.</p>
+            <p>Из-за этой слепой зоны ты сама можешь бессознательно саботировать гармоничные отношения или легкие деньги, возвращая себя на привычные «рельсы» борьбы и усталости. Теневая сторона твоего знака — ${sProf.shadow.toLowerCase()}</p>
+          </div>
+
+          <div class="report-chapter">
+            <h3>🗝️ Глава 4. Пошаговый алгоритм выхода и натальные ключи</h3>
+            <p>Чтобы окончательно разомкнуть этот повторяющийся круг в ближайшие 2–4 недели, карта рекомендует 4 конкретных шага:</p>
+            <p><b>1. Правило «Паузы достоинства»:</b> при первом импульсе включить спасателя или согласиться на компромисс из страха — возьми паузу в 24 часа. Спроси себя: <i>«Я делаю это из любви и изобилия или из страха отвержения?»</i>.</p>
+            <p><b>2. Возврат чужой ответственности:</b> позволь партнеру и коллегам ошибаться и нести последствия их выбора без твоего мгновенного вмешательства.</p>
+            <p><b>3. Активация ядра Солнца (${sun}):</b> ${sProf.growthKey}</p>
+            <p><b>4. Заземление Луны (${moon}):</b> выдели себе строго неприкосновенные часы отдыха в неделю без телефона, работы и домашних обязательств.</p>
           </div>
         </div>
 
         <div style="background: linear-gradient(135deg, rgba(38, 22, 60, 0.9) 0%, rgba(18, 12, 34, 0.95) 100%); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 14px; padding: 14px; text-align: center; margin-top: 16px;">
-          <div style="font-size: 14px; font-weight: 700; color: #FFF; margin-bottom: 4px;">Хочешь полную картину жизни? 📖</div>
+          <div style="font-size: 14px; font-weight: 700; color: #FFF; margin-bottom: 4px;">Хочешь полную картину всех сфер жизни? 📖</div>
           <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 12px; line-height: 1.4;">
-            Фундаментальная Натальная книга PRO раскрывает все 16 глав и 10 планет твоей карты.
+            Фундаментальная Натальная книга PRO раскрывает все 16 глав, аспекты планет и персональную стратегию судьбы.
           </div>
           <button class="btn-gold" style="padding: 10px 16px; font-size: 13px;" onclick="closeModal(); showProductModal('natal');">
             Открыть Натальную книгу PRO →
@@ -4661,6 +5692,10 @@
     updateNatalUI();
     updateCreditDisplays();
     updateCatalogCardsUI();
+    loadChatHistory();
+
+    // Setup Onboarding City Autocomplete
+    setupCityAutocomplete('obCity', 'obCityDropdown');
 
     // Authenticate with backend and fetch synced profile from database
     authenticateWithBackend();
