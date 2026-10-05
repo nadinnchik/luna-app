@@ -1192,10 +1192,10 @@
   #tab-chat {
     display: none;
     flex-direction: column;
-    height: calc(100vh - 120px);
-    height: calc(100dvh - 120px);
+    height: calc(100vh - 100px);
+    height: calc(100dvh - 100px);
     box-sizing: border-box;
-    padding: 0 0 8px 0;
+    padding: 0;
     margin: 0;
     overflow: hidden;
     position: relative;
@@ -1377,7 +1377,18 @@
           </div>
         </div>
 
-        <button class="btn-gold" style="margin-top: 12px;" onclick="submitOnboardingProfile()">
+        <!-- LEGAL CHECKBOX -->
+        <div style="margin: 14px 0 10px 0; display: flex; align-items: flex-start; gap: 10px; font-size: 11.5px; color: #CBD5E1; line-height: 1.45;">
+          <input type="checkbox" id="obTermsCheckbox" style="width: 18px; height: 18px; accent-color: var(--gold); margin-top: 2px; cursor: pointer; flex-shrink: 0;" checked>
+          <label for="obTermsCheckbox" style="cursor: pointer;">
+            Я ознакомился(ась) и согласен(на) с 
+            <a href="javascript:void(0)" onclick="openPrivacyPolicyModal()" style="color: #FFE8A3; text-decoration: underline;">Политикой конфиденциальности</a>, 
+            <a href="javascript:void(0)" onclick="openTermsOfServiceModal()" style="color: #FFE8A3; text-decoration: underline;">Пользовательским соглашением</a> и даю 
+            <a href="javascript:void(0)" onclick="openPersonalDataConsentModal()" style="color: #FFE8A3; text-decoration: underline;">согласие на обработку персональных данных (152-ФЗ)</a>.
+          </label>
+        </div>
+
+        <button class="btn-gold" style="margin-top: 6px;" onclick="submitOnboardingProfile()">
           ✨ Построить мою карту бесплатно
         </button>
       </div>
@@ -1645,17 +1656,17 @@
       </div>
     </div>
 
-    <!-- CHAT CREDIT BAR (BLUEPRINT §5) -->
+    <!-- CHAT CREDIT BAR -->
     <div class="chat-credit-bar">
-      <div style="color: var(--gold-light); font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 5px;">
-        <span>⚡ Баланс:</span> <span id="chatCreditsCount" style="color: #FFF; font-weight: 800; font-size: 14px;">1</span> <span>AI-запрос (Бесплатно)</span>
+      <div id="chatCreditStatusText" style="color: var(--gold-light); font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 5px;">
+        <span>⚡ Осталось: <b style="color: #FFF;">3 из 3</b> бесплатных запросов</span>
       </div>
       <div style="display: flex; gap: 6px; align-items: center;">
         <button style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); color: #94A3B8; border-radius: 10px; padding: 4px 8px; font-size: 11px; cursor: pointer;" onclick="clearChatHistory()" title="Очистить переписку">
           🗑️ Очистить
         </button>
-        <button style="background: rgba(229, 195, 120, 0.15); border: 1px solid rgba(229, 195, 120, 0.4); color: var(--gold); border-radius: 10px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;" onclick="openTripwireModal()">
-          ⭐ Разбор 99 ₽
+        <button style="background: linear-gradient(135deg, #FFE8A3 0%, #E5C378 50%, #C49B45 100%); color: #1A1028; border: none; border-radius: 10px; padding: 5px 11px; font-size: 11px; font-weight: 800; cursor: pointer;" onclick="openTopUpModal()">
+          + Купить запросы
         </button>
       </div>
     </div>
@@ -2645,81 +2656,138 @@
 
     const loveVariants = {
       "fire": [
-        `Период ярких чувств и искренних разговоров. В знаке ${sun} важно не перетягивать инициативу, а дать партнеру возможность проявить заботу.`,
-        `Теплый подъем в общении: отличное время для романтического свидания вне привычной домашней рутины.`
+        `Прояви мягкую инициативу: предложи партнеру совместный вечер без спешки. Избегай резких ультиматумов в спорах.`,
+        `Отличное время для свидания вне дома. Не пытайся всё контролировать — позволь партнеру проявить заботу.`
       ],
       "earth": [
-        `Время укрепления фундамента и надежности в союзе. С Луной в ${moon} уютные совместные вечера и практическая забота вернут полное доверие.`,
-        `Спокойная и стабильная волна: важные совместные решения по быту и планам пройдут без разногласий.`
+        `Укрепи доверие через практическую заботу и уютный домашний ужин. Не замалчивай мелкие обиды — проговори их спокойно.`,
+        `Благоприятно для обсуждения общих планов и бюджета семьи. Избегай критики и менторского тона.`
       ],
       "air": [
-        `Легкая волна взаимопонимания и вдохновляющих диалогов. Отличная неделя для совместных прогулок и обсуждения общих планов.`,
-        `Свежий воздух в отношениях: разговоры по душам помогут прояснить давние недомолвки без обид.`
+        `Выдели время для открытого разговора по душам. Проясни давние недомолвки без эмоциональных претензий.`,
+        `Отличный период для совместных прогулок и новых впечатлений. Не закрывайся в себе при разногласиях.`
       ],
       "water": [
-        `Глубокая эмоциональная близость. Твоя чуткость поможет мягко сгладить старые шероховатости без лишних слов и претензий.`,
-        `Период душевного единения: взаимная поддержка станет главным источником вдохновения на всю неделю.`
+        `Создай безопасную атмосферу для теплых бесед. Не принимай чужую эмоциональную усталость на свой счет.`,
+        `Подари партнеру искреннее принятие. Избегай манипуляций молчанием — говори прямо о своих чувствах.`
       ]
     };
 
     const moneyVariants = {
       "fire": [
-        `Благоприятно для лидерских инициатив, публичных выступлений и повышения прайса. Твой авторитет работает на тебя.`,
-        `Отличный момент для запуска авторских идей и презентации своего опыта широкой аудитории.`
+        `Зафиксируй договоренности на бумаге и не соглашайся на заниженный чек. Действуй смело, но без импульсивных трат.`,
+        `Отличное время для презентации своих услуг и запуска идей. Избегай спонтанных покупок под влиянием эмоций.`
       ],
       "earth": [
-        `Стабильный и предсказуемый финансовый поток. Фокусируйся на системных задачах и укреплении долгосрочных договоренностей.`,
-        `Удачное время для упорядочивания бюджета, крупных надежных покупок и фиксации прибыли.`
+        `Сфокусируйся на 1-2 главных задачах и заверши начатое. Время для аудита бюджета и структурирования расходов.`,
+        `Благоприятно для долгосрочных вложений и наведения порядка в счетах. Не форсируй сделки, если есть сомнения.`
       ],
       "air": [
-        `Отличный момент для монетизации контактов, упаковки мастер-классов и запуска новых инфо-продуктов.`,
-        `Интеллектуальный прорыв: твои идеи и консультации привлекают платежеспособных клиентов.`
+        `Используй нетворкинг и связи: проведи 2-3 ключевых диалога по проектам. Не распыляйся на пустую болтовню.`,
+        `Упакуй свои знания в понятный продукт или предложение. Избегай сомнительных быстрых обещаний дохода.`
       ],
       "water": [
-        `Деньги приходят на состояние доверия и авторского вдохновения. Избегай демпинга и пустой спешки.`,
-        `Укрепление ценности продукта: клиенты приходят на твою глубину и уникальную эстетику.`
+        `Продавай ценность и качество, а не свое рабочее время. Не работай через силу и выгорание.`,
+        `Принимай финансовые решения в спокойном состоянии. Избегай трат ради снятия эмоционального стресса.`
       ]
     };
 
     const energyVariants = {
       "fire": [
-        `Высокий тонус, но важно не сжечь ресурс в первые дни недели. Чередуй активность с качественным ночным сном.`,
-        `Огненный энтузиазм на высоте: направь его в творчество, береги нервную систему вечером.`
+        `Чередуй активные спринты с паузами тишины. Выдели минимум 8 часов на ночной сон в темноте.`,
+        `Сбрось накопившийся огонь через спорт или долгую прогулку. Не спорь перед сном — береги нервную систему.`
       ],
       "earth": [
-        `Устойчивая энергия. Поддерживай контакт с телом: массаж, прогулки на свежем воздухе и регулярное питание.`,
-        `Тело просит заземления: порядок вокруг и физический покой вернут максимальную продуктивность.`
+        `Заземлись через теплое питание, массаж и контакт с природой. Не взваливай на себя двойную нагрузку.`,
+        `Тело просит физического покоя: навели порядок в спальне и устрой вечер без гаджетов.`
       ],
       "air": [
-        `Ментальный тонус на пике. Защити нервную систему от бесконечного скроллинга новостей перед сном.`,
-        `Ясность мыслей высокая, но делай перерывы на тишину и легкую разминку в течение дня.`
+        `Устрой цифровой детокс: отключи уведомления после 20:00. Проветривай комнату и гуляй на свежем воздухе.`,
+        `Ментальная разгрузка — главный приоритет. Не загружай голову чужими проблемами и новостями.`
       ],
       "water": [
-        `Тонкая волнообразная чувствительность. Водные процедуры, теплый травяной чай и тишина восстановят силы.`,
-        `Глубокая регенерация через качественный сон и отсутствие необходимости общаться с токсичными людьми.`
+        `Водные процедуры (ванна с морской солью) и травяной чай снимут напряжение. Защити личные границы.`,
+        `Позволь себе замедлиться и побыть наедине с собой. Не кори себя за необходимость восстановиться.`
       ]
     };
 
     const themeVariants = {
-      "fire": `Смелое авторское проявление и верность своим амбициозным целям.`,
-      "earth": `Внутренняя устойчивость, кристаллизация планов и наведение порядка во всех сферах.`,
-      "air": `Свобода мысли, выход на новый уровень коммуникации и реализация смелых идей.`,
-      "water": `Глубинное доверие своей интуиции и бережное отношение к своим чувствам.`
+      "fire": `Смелое действие из чувства достоинства, отказ от суеты и защита своего времени.`,
+      "earth": `Кристаллизация главного приоритета, наведение порядка и опора на проверенное качество.`,
+      "air": `Ясность в коммуникациях, отсев лишнего информационного шума и запуск идей.`,
+      "water": `Доверие спокойной интуиции, бережность к своему ресурсу и мягкие границы.`
     };
-
-    const luckyDays = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"];
-    const luckyDay = luckyDays[(weekNum + sun.length) % 7];
 
     const lList = loveVariants[moonElem] || loveVariants["earth"];
     const mList = moneyVariants[sunElem] || moneyVariants["earth"];
     const eList = energyVariants[moonElem] || energyVariants["water"];
+
+    // 7-day practical breakdown
+    const dayPlan = [
+      {
+        day: "Понедельник",
+        theme: "Фокус и планирование",
+        energy: "Планетарный импульс требует четкости: голова работает быстро, но есть риск распылить силы.",
+        attention: "Не хватайся за 10 дел сразу — определи 1 главную задачу на день.",
+        toDo: "Составь письменный список приоритетов; начни утро без проверки соцсетей; сделай самый сложный звонок до обеда.",
+        avoid: "Пустых споров в чатах и обещаний, данных на эмоциях."
+      },
+      {
+        day: "Вторник",
+        theme: "Прорыв и реализация",
+        energy: "Марсианский тонус на максимуме: день прямого действия, переговоров и материальных решений.",
+        attention: "Твоя уверенность притягивает ресурсы — заявляй о своих условиях прямо.",
+        toDo: "Отправь важное коммерческое предложение; закрой зависшие задачи; проведи важный разговор с партнером.",
+        avoid: "Сомнений перед первым шагом и уступок из страха показаться неудобной."
+      },
+      {
+        day: "Среда",
+        theme: "Коммуникации и гибкость",
+        energy: "Меркурианский поток: информации много, легко договориться и найти нестандартный выход.",
+        attention: "Слушай не только слова собеседника, но и скрытые интонации.",
+        toDo: "Проведи нужные встречи; структурируй документы; обменяйся опытом с коллегами.",
+        avoid: "Перегрузки новостями и поспешных покупок под влиянием рекламы."
+      },
+      {
+        day: "Четверг",
+        theme: "Масштаб и авторитет",
+        energy: "Юпитерианский день: благоприятно для расширения горизонтов, обучения и стратегических целей.",
+        attention: "Смотри на ситуацию шире сиюминутных трудностей.",
+        toDo: "Запланируй обучение или поездку; подними вопрос о повышении чека/статуса; поблагодари себя за результаты.",
+        avoid: "Самокритики и застревания в мелкой механической рутине."
+      },
+      {
+        day: "Пятница",
+        theme: "Эстетика и гармония",
+        energy: "Венерианские энергии: время красоты, тепла в отношениях, вкусной еды и подведения итогов.",
+        attention: "Создай вокруг себя вдохновляющую и уютную атмосферу.",
+        toDo: "Устрой красивый романтический ужин или встречу с подругой; купи что-то приятное для дома; подведи итоги недели.",
+        avoid: "Выяснения отношений на повышенных тонах после тяжелой недели."
+      },
+      {
+        day: "Суббота",
+        theme: "Заземление и порядок",
+        energy: "Сатурнианская стабильность: очищение пространства и упорядочивание мыслей.",
+        attention: "Порядок вокруг мгновенно успокаивает внутреннюю тревогу Луны.",
+        toDo: "Разгрузи шкафы или рабочее место; проведи время на свежем воздухе; выспись без будильника.",
+        avoid: "Решения рабочих вопросов в выходной день."
+      },
+      {
+        day: "Воскресенье",
+        theme: "Ресурс и подготовка",
+        energy: "Солнечный день наполнения: восстановление витального огня перед новой неделей.",
+        attention: "Позволь себе несколько часов полной автономии и тишины.",
+        toDo: "Прими ванну с солью; почитай вдохновляющую книгу; настройся на спокойный темп.",
+        avoid: "Спешки и мыслей о понедельнике во второй половине дня."
+      }
+    ];
 
     return {
       love: lList[weekNum % lList.length],
       money: mList[weekNum % mList.length],
       energy: eList[weekNum % eList.length],
       theme: themeVariants[sunElem] || themeVariants["earth"],
-      luckyDay: luckyDay
+      days: dayPlan
     };
   }
 
@@ -2808,6 +2876,21 @@
   }
 
   function switchTab(tabId, btn) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo(0, 0);
+
+    const cont = document.querySelector('.container');
+    if (cont) {
+      if (tabId === 'chat') {
+        cont.style.paddingTop = '10px';
+        cont.style.paddingBottom = '0px';
+      } else {
+        cont.style.paddingTop = '16px';
+        cont.style.paddingBottom = 'calc(130px + env(safe-area-inset-bottom, 0px))';
+      }
+    }
+
     document.querySelectorAll('.tab-view').forEach(el => el.style.display = 'none');
     const target = document.getElementById('tab-' + tabId);
     if (target) {
@@ -2830,7 +2913,12 @@
       if (tabId === 'chat' && items[2]) items[2].classList.add('active');
       if (tabId === 'profile' && items[3]) items[3].classList.add('active');
     }
-    window.scrollTo({ top: 0, behavior: 'instant' });
+
+    setTimeout(() => {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      window.scrollTo(0, 0);
+    }, 20);
   }
 
   function openModal(contentHtml) {
@@ -3353,26 +3441,88 @@
           `).join('')}
         </div>
 
+        <!-- CHAPTER 5: PRACTICAL SUMMARY & RECOMMENDATIONS (NEW REQUIRED SPEC BLOCK) -->
+        <div style="margin-bottom: 18px; background: rgba(255, 255, 255, 0.03); border: 1.2px solid rgba(16, 185, 129, 0.4); border-radius: 18px; padding: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.35);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #6EE7B7; display: flex; align-items: center; gap: 6px;">
+              <span>📋</span> Итог и практические рекомендации
+            </div>
+            <span style="font-size: 10px; background: rgba(16, 185, 129, 0.2); color: #6EE7B7; padding: 3px 8px; border-radius: 8px; font-weight: 700;">ПРАКТИКА</span>
+          </div>
+
+          <div style="background: rgba(16, 185, 129, 0.08); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: #E2DFEC; margin-bottom: 12px; line-height: 1.5;">
+            <b>🎯 Главный вывод:</b> Твой натальный потенциал (${sun} / ${moon}) раскрывается максимально эффективно, когда ты действуешь из чувства внутреннего достоинства и спокойного мастерства, а не из страха потерять контроль или доказать свою ценность через подвиги.
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <b style="font-size: 12px; color: #FFE8A3;">👁️ На что обратить внимание:</b>
+            <ul style="padding-left: 18px; font-size: 12px; color: #CBD5E1; line-height: 1.5; margin-top: 4px;">
+              <li>Моменты, когда возникает импульс взять на себя чужие обязанности или спасать ситуацию в ущерб отдыху.</li>
+              <li>Склонность подавлять усталость и откладывать восстановление до критического выгорания.</li>
+              <li>Необходимость держать здоровые личные границы в личных и деловых отношениях.</li>
+              <li>Разделение ответственности: позволять другим людям нести последствия их решений.</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <b style="font-size: 12px; color: #6EE7B7;">✅ Что делать (Практические шаги):</b>
+            <ul style="padding-left: 18px; font-size: 12px; color: #CBD5E1; line-height: 1.5; margin-top: 4px;">
+              <li><b>Ввести «Паузу 24 часа»:</b> перед тем как согласиться на новую нагрузку — дать себе время на спокойный анализ.</li>
+              <li><b>Зафиксировать часы отдыха:</b> выделить в недельном графике неприкосновенное время для восстановления Луны.</li>
+              <li><b>Проговаривать чувства прямо:</b> говорить о своих потребностях спокойно, не дожидаясь эмоционального пика.</li>
+              <li><b>Опираться на факты:</b> в профессиональных вопросах фиксировать договорённости и не соглашаться на демпинг.</li>
+            </ul>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <b style="font-size: 12px; color: #FCA5A5;">🛑 Чего избегать:</b>
+            <ul style="padding-left: 18px; font-size: 12px; color: #CBD5E1; line-height: 1.5; margin-top: 4px;">
+              <li>Принятия важных жизненных и финансовых решений в состоянии физической усталости.</li>
+              <li>Попыток соответствовать чужим завышенным ожиданиям из страха отвержения.</li>
+              <li>Самоедства и перфекционизма: «достаточно хорошо» — это зрелый и устойчивый результат.</li>
+            </ul>
+          </div>
+
+          <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #FFE8A3; line-height: 1.45;">
+            🧭 <b>Фокус на ближайшие дни:</b> Сохраняй спокойный внутренний ритм, доверяй первому трезвому решению и береги вечернее время для качественного сна.
+          </div>
+        </div>
+
         <!-- ACTIONS & FOLLOW-UP -->
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
           <button onclick="closeModal(); switchTab('chat');" class="btn-gold" style="padding: 14px; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-            💬 Спросить LUNA о моей натальной карте →
+            💬 Задать вопрос LUNA по моей карте →
           </button>
         </div>
 
-        <!-- TRIPWIRE OFFER EMBEDDED DIRECTLY -->
-        <div style="background: linear-gradient(135deg, rgba(46, 26, 71, 0.95) 0%, rgba(20, 14, 38, 0.98) 100%); border: 1.5px solid rgba(243, 186, 47, 0.6); border-radius: 16px; padding: 16px; text-align: center; margin-top: 16px;">
-          <div class="tripwire-badge" style="margin-bottom: 6px;">🔥 Рекомендуемый следующий шаг</div>
-          <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 4px;">
-            Разбор повторяющегося сценария · 99 ₽
+        <!-- TRIPWIRE OFFER EMBEDDED DIRECTLY (STATE-AWARE) -->
+        ${isTripwirePurchased() ? `
+          <div style="background: linear-gradient(135deg, rgba(34, 22, 54, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%); border: 1.5px solid rgba(16, 185, 129, 0.5); border-radius: 16px; padding: 16px; text-align: center; margin-top: 16px;">
+            <div class="tripwire-badge" style="background: rgba(16, 185, 129, 0.25); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.4); margin-bottom: 6px;">✓ Разбор сценария пройден</div>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 4px;">
+              Твой персональный разбор готов
+            </div>
+            <div style="font-size: 12px; color: #D6D0E4; margin-bottom: 12px; line-height: 1.45;">
+              Все выводы, теневые ловушки и персональные ключи сохранены в твоем профиле.
+            </div>
+            <button onclick="closeModal(); openPurchasedTripwireModal();" class="btn-gold" style="width: 100%; padding: 12px; font-size: 13.5px;">
+              📖 Открыть готовый разбор →
+            </button>
           </div>
-          <div style="font-size: 12px; color: #D6D0E4; margin-bottom: 12px; line-height: 1.45;">
-            Узнай, почему в отношениях, деньгах или карьере повторяется один и тот же замкнутый круг и как его разомкнуть с опорой на натальную карту.
+        ` : `
+          <div style="background: linear-gradient(135deg, rgba(46, 26, 71, 0.95) 0%, rgba(20, 14, 38, 0.98) 100%); border: 1.5px solid rgba(243, 186, 47, 0.6); border-radius: 16px; padding: 16px; text-align: center; margin-top: 16px;">
+            <div class="tripwire-badge" style="margin-bottom: 6px;">🔥 Рекомендуемый следующий шаг</div>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 4px;">
+              Разбор повторяющегося сценария · 99 ₽
+            </div>
+            <div style="font-size: 12px; color: #D6D0E4; margin-bottom: 12px; line-height: 1.45;">
+              Узнай, почему в отношениях, деньгах или карьере повторяется один и тот же замкнутый круг и как его разомкнуть с опорой на натальную карту.
+            </div>
+            <button onclick="closeModal(); openTripwireModal();" class="btn-gold" style="width: 100%; padding: 12px; font-size: 13.5px;">
+              Разобрать мой сценарий за 99 ₽ →
+            </button>
           </div>
-          <button onclick="closeModal(); openTripwireModal();" class="btn-gold" style="width: 100%; padding: 12px; font-size: 13.5px;">
-            Разобрать мой сценарий за 99 ₽ →
-          </button>
-        </div>
+        `}
 
         <div style="background: rgba(22, 18, 38, 0.6); border: 1px dashed rgba(229, 195, 120, 0.3); border-radius: 12px; padding: 12px; text-align: center; margin-top: 14px;">
           <span style="font-size: 10px; color: #A78BFA; font-weight: 700; text-transform: uppercase;">Скоро в LUNA</span>
@@ -3827,6 +3977,12 @@
   }
 
   function submitOnboardingProfile() {
+    const termsCb = document.getElementById('obTermsCheckbox');
+    if (termsCb && !termsCb.checked) {
+      alert('Пожалуйста, подтвердите согласие с Политикой конфиденциальности и Пользовательским соглашением.');
+      return;
+    }
+
     const name = (document.getElementById('obName').value || '').trim();
     const date = document.getElementById('obDate').value;
     const time = document.getElementById('obTime').value || '12:00';
@@ -3984,44 +4140,48 @@
 
   function openWeekForecastModal() {
     if (!userNatalData) return;
-    const wfore = getPersonalWeekForecast(userNatalData.sun, userNatalData.moon);
+    const wfore = getPersonalWeekForecast(userNatalData.sun, userNatalData.moon, userNatalData.asc);
+
+    const daysHtml = (wfore.days || []).map(d => `
+      <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(229, 195, 120, 0.25); border-radius: 16px; padding: 14px; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <b style="font-size: 14px; color: #FFE8A3;">📅 ${d.day}</b>
+          <span style="font-size: 10px; background: rgba(229, 195, 120, 0.15); color: #FFE8A3; padding: 2px 8px; border-radius: 10px; font-weight: 700;">${d.theme}</span>
+        </div>
+        
+        <div style="font-size: 12.5px; color: #E2DFEC; line-height: 1.5; margin-bottom: 8px;">
+          <b>⚡ Энергия дня:</b> ${d.energy}
+        </div>
+
+        <div style="background: rgba(139, 92, 246, 0.08); border-radius: 10px; padding: 8px 10px; font-size: 12px; color: #DDD6FE; margin-bottom: 6px; line-height: 1.45;">
+          👁️ <b>На что обратить внимание:</b> ${d.attention}
+        </div>
+
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 10px; padding: 8px 10px; font-size: 12px; color: #6EE7B7; margin-bottom: 6px; line-height: 1.45;">
+          ✅ <b>Что лучше сделать:</b> ${d.toDo}
+        </div>
+
+        <div style="background: rgba(239, 68, 68, 0.06); border-radius: 10px; padding: 8px 10px; font-size: 12px; color: #FCA5A5; line-height: 1.45;">
+          🛑 <b>Чего избегать:</b> ${d.avoid}
+        </div>
+      </div>
+    `).join('');
 
     const html = `
-      <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
-        ✨ Твой прогноз на неделю
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
+        🌟 Прикладной прогноз на 7 дней
       </div>
       <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
-        Персональный анализ для знака ${userNatalData.sun} (Луна в знаке ${userNatalData.moon})
+        Персональные рекомендации для: <b>${escapeHtml(userNatalData.name || 'душа')}</b> (☀️ ${userNatalData.sun} • 🌙 ${userNatalData.moon})
       </div>
 
       <div class="report-content">
-        <div class="report-chapter">
-          <h3>❤️ Сфера чувств & Отношения</h3>
-          <p>${wfore.love}</p>
-          <p>Астрологический фокус: бережно выражай чувства без ожиданий мгновенной отдачи. Важна мягкость в интонациях.</p>
-        </div>
-
-        <div class="report-chapter">
-          <h3>💰 Деньги, Проекты & Работа</h3>
-          <p>${wfore.money}</p>
-          <p>Астрологический фокус: отличное время для закрепления авторитета, согласования условий и структурирования рабочих процессов.</p>
-        </div>
-
-        <div class="report-chapter">
-          <h3>⚡ Внутренняя энергия & Здоровье</h3>
-          <p>${wfore.energy}</p>
-          <p>Астрологический фокус: поддерживай контакт с телом — теплый чай, легкая физическая активность и время наедине с собой.</p>
-        </div>
-
-        <div class="report-chapter">
-          <h3>🌟 Главный ориентир недели</h3>
-          <p>${wfore.theme}</p>
-        </div>
+        ${daysHtml}
       </div>
 
       <div style="margin-top: 16px; text-align: center;">
         <button class="btn-gold" onclick="closeModal()">
-          Понятно ✨
+          ✨ Принять ориентиры недели
         </button>
       </div>
     `;
@@ -4789,8 +4949,8 @@
   function getUserCredits() {
     const raw = localStorage.getItem(getStorageKeyCredits());
     if (raw === null) {
-      localStorage.setItem(getStorageKeyCredits(), '1');
-      return 1;
+      localStorage.setItem(getStorageKeyCredits(), '3');
+      return 3;
     }
     return parseInt(raw, 10) || 0;
   }
@@ -4814,6 +4974,22 @@
     const cr = getUserCredits();
     const hEl = document.getElementById('headerCreditsCount');
     if (hEl) hEl.textContent = cr;
+
+    const chatStatusText = document.getElementById('chatCreditStatusText');
+    if (chatStatusText) {
+      if (cr === 3) {
+        chatStatusText.innerHTML = `<span>⚡ Осталось: <b style="color: #FFF;">3 из 3</b> бесплатных запросов</span>`;
+      } else if (cr === 2) {
+        chatStatusText.innerHTML = `<span>⚡ Осталось: <b style="color: #FFE8A3;">2 из 3</b> бесплатных запросов</span>`;
+      } else if (cr === 1) {
+        chatStatusText.innerHTML = `<span>⚡ Остался <b style="color: #FBBF24;">1</b> бесплатный запрос</span>`;
+      } else if (cr <= 0) {
+        chatStatusText.innerHTML = `<span style="color: #F87171;">⚡ Бесплатные запросы закончились</span>`;
+      } else {
+        chatStatusText.innerHTML = `<span>⚡ Баланс: <b style="color: #FFF;">${cr}</b> запросов</span>`;
+      }
+    }
+
     const cEl = document.getElementById('chatCreditsCount');
     if (cEl) cEl.textContent = cr;
     const pEl = document.getElementById('profCreditsCount');
@@ -5096,57 +5272,64 @@
       return `
         <b>${name}</b>, смотрю в твою натальную карту по вопросу отношений:
         <br><br>
-        Твоя ключевая ось чувств строится на синтезе <b>Солнца в знаке ${sun}</b> (твоя идентичность и сила) и <b>Луны в знаке ${moon}</b> (твои истинные потребности в близости).
-        <br><br>
-        ${styleText}
-        <br><br>
-        <b>Астрологический корень ситуации:</b>
+        <b>1. Что происходит по карте:</b>
         <br>
-        Когда возникает напряжение, Асцендент в <b>${asc}</b> может создавать фасад внешней независимости («я со всем справлюсь сама»), в то время как внутри накапливается усталость от невысказанных ожиданий.
+        Твоя ключевая ось чувств строится на синтезе <b>Солнца в знаке ${sun}</b> и <b>Луны в ${moon}</b>. ${styleText}
         <br><br>
-        💡 <b>Практический ориентир:</b>
+        <b>2. На что обратить внимание:</b>
         <br>
-        Не пытайся решать эмоциональные вопросы через логические претензии. Проговори свои чувства через мягкое «мне важно почувствовать твою поддержку», не дожидаясь момента переполнения терпения.
+        Когда возникает напряжение, Асцендент в <b>${asc}</b> может создавать фасад внешней холодности («я со всем справлюсь сама»), в то время как внутри накапливается усталость от невысказанных ожиданий.
         <br><br>
-        <div style="background: rgba(229, 195, 120, 0.1); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
-          ❤️ Хочешь разобрать язык любви и совместимость детально? 
-          <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="showProductModal('synastry')">Открыть разбор «Любовь & Отношения» →</div>
-        </div>
+        💡 <b>Что делать / Практический совет:</b>
+        <br>
+        1. <b>Пауза перед реакцией:</b> не принимай решений в момент эмоционального всплеска — дай себе 24 часа тишины.<br>
+        2. <b>Говори через «Мне важно»:</b> проговаривай свои чувства прямо и мягко, не дожидаясь момента, когда терпение лопнет.<br>
+        3. <b>Разделяй ответственность:</b> позволь партнеру проявлять заботу в его темпе, без ультиматумов.
+        <br><br>
+        ${isTripwirePurchased() ? `
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #6EE7B7;">
+            ✓ Твой подробный аудит сценария сохранён в профиле. 
+            <span style="text-decoration: underline; font-weight: 700; cursor: pointer; color: #FFF;" onclick="openPurchasedTripwireModal()">Открыть разбор →</span>
+          </div>
+        ` : `
+          <div style="background: rgba(229, 195, 120, 0.1); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
+            ❤️ Хочешь разобрать причины повторяющегося сценария в отношениях? 
+            <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="openTripwireModal('relations')">Открыть разбор сценария за 99 ₽ →</div>
+          </div>
+        `}
       `;
     }
 
     // 5. MONEY & FINANCES
     if (lower.includes('деньг') || lower.includes('доход') || lower.includes('финанс') || lower.includes('заработ') || lower.includes('богат') || lower.includes('чек') || lower.includes('стоимост') || lower.includes('потолок') || lower.includes('долг') || lower.includes('кредит')) {
-      let finStyle = "";
-      if (sunElem === "earth") {
-        finStyle = `Для земного Солнца в <b>${sun}</b> богатство — это системность, качество продукта и долгосрочные активы. Тебе противопоказаны хаотичные спекуляции и работа за копейки из страха.`;
-      } else if (sunElem === "fire") {
-        finStyle = `Для огненного Солнца в <b>${sun}</b> денежный поток напрямую связан с авторской проявленностью, личным брендом и смелостью заявлять о себе без стеснения.`;
-      } else if (sunElem === "air") {
-        finStyle = `Для воздушного Солнца в <b>${sun}</b> масштаб дохода открывается через нетворкинг, интеллектуальный капитал, преподавание и упаковку знаний.`;
-      } else {
-        finStyle = `Для водного Солнца в <b>${sun}</b> деньги приходят на состояние глубинного доверия, вдохновения и создание продуктов, меняющих состояние людей.`;
-      }
-
       return `
         <b>${name}</b>, анализирую финансовый код твоей натальной карты:
         <br><br>
-        Твой денежный потенциал определяется положением <b>Солнца в знаке ${sun}</b> и 2-го натального дома ресурсов при поддержке <b>Асцендента в ${asc}</b>.
-        <br><br>
-        ${finStyle}
-        <br><br>
-        <b>Где может возникать блок:</b>
+        <b>1. Что происходит по карте:</b>
         <br>
-        С Луной в <b>${moon}</b> в моменты нестабильности может включаться страх дефицита, заставляющий соглашаться на компромиссные заказы. Помни: демпинг разрушает твою мотивацию, а высокий чек притягивает осознанных клиентов.
+        Твой денежный потенциал определяется положением <b>Солнца в знаке ${sun}</b> при поддержке <b>Асцендента в ${asc}</b>. Твой доход растет, когда ты создаешь авторский продукт и ценишь свое мастерство.
         <br><br>
-        💎 <b>Фокус действий:</b>
+        <b>2. На что обратить внимание:</b>
         <br>
-        Перестань продавать просто «процесс» — продавай результат, состояние и трансформацию. Твой натальный авторитет позволяет работать в премиальном сегменте.
+        С Луной в <b>${moon}</b> в моменты турбулентности может включаться страх дефицита, заставляющий соглашаться на компромиссные заказы и демпинг.
         <br><br>
-        <div style="background: rgba(229, 195, 120, 0.1); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
-          💰 Полный аудит каналов заработка и финансовой стратегии:
-          <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="showProductModal('finance')">Открыть «Финансовый код & Деньги» →</div>
-        </div>
+        💡 <b>Что делать / Практический совет:</b>
+        <br>
+        1. <b>Продавай результат и трансформацию:</b> не продавай просто часы времени — упаковывай комплексную ценность.<br>
+        2. <b>Зафиксируй финансовую планку:</b> не соглашайся на работу ниже минимального комфортного чека.<br>
+        3. <b>Создай резерв спокойствия:</b> откладывай 10–15% в неприкосновенную подушку для снижения фоновой тревоги Луны.
+        <br><br>
+        ${isTripwirePurchased() ? `
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #6EE7B7;">
+            ✓ Твой подробный аудит сценария сохранён в профиле. 
+            <span style="text-decoration: underline; font-weight: 700; cursor: pointer; color: #FFF;" onclick="openPurchasedTripwireModal()">Открыть разбор →</span>
+          </div>
+        ` : `
+          <div style="background: rgba(229, 195, 120, 0.1); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
+            💰 Хочешь разобрать свой денежный сценарий и снять блоки?
+            <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="openTripwireModal('money')">Открыть разбор за 99 ₽ →</div>
+          </div>
+        `}
       `;
     }
 
@@ -5155,20 +5338,31 @@
       return `
         <b>${name}</b>, разбираем профессиональный вектор твоей карты:
         <br><br>
-        Твой 10-й дом Зенита и <b>Солнце в знаке ${sun}</b> наделяют тебя способностью выстраивать масштабные, качественные структуры и нести авторскую ответственность.
-        <br><br>
-        <b>Твой идеальный формат:</b>
+        <b>1. Что происходит по карте:</b>
         <br>
-        С Асцендентом в <b>${asc}</b> тебе жизненно необходима автономия в принятии решений. В жестких рамках механического найма без права голоса твой потенциал быстро угасает. Тебе подходит роль автора, эксперта или создателя собственного направления.
+        С <b>Солнцем в знаке ${sun}</b> и <b>Асцендентом в ${asc}</b> тебе органичен формат авторской автономии. В роли простого исполнителя без права голоса твой потенциал угасает.
         <br><br>
-        🎯 <b>Точка роста:</b>
+        <b>2. На что обратить внимание:</b>
         <br>
-        Переход от роли исполнителя к роли создателя смыслов. Не бойся делегировать рутину — твоя главная ценность в стратегии и видении.
+        Опасность застрять в рутине из-за убеждения: «Если я не сделаю сама, никто не сделает хорошо».
         <br><br>
-        <div style="background: rgba(229, 195, 120, 0.1); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
-          🧭 Твои сильные стороны и переход на новый профессиональный уровень:
-          <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="showProductModal('purpose')">Открыть «Реализация & Предназначение» →</div>
-        </div>
+        💡 <b>Что делать / Практический совет:</b>
+        <br>
+        1. <b>Делегируй механические задачи:</b> освободи время для стратегии и видения.<br>
+        2. <b>Развивай личный бренд:</b> открыто заявляй о своих результатах и авторской методологии.<br>
+        3. <b>Определи 1 главный проект:</b> не распыляй фокус на 5 направлений одновременно.
+        <br><br>
+        ${isTripwirePurchased() ? `
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #6EE7B7;">
+            ✓ Твой подробный аудит сценария сохранён в профиле. 
+            <span style="text-decoration: underline; font-weight: 700; cursor: pointer; color: #FFF;" onclick="openPurchasedTripwireModal()">Открыть разбор →</span>
+          </div>
+        ` : `
+          <div style="background: rgba(229, 195, 120, 0.1); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
+            🎯 Хочешь разобрать тупик в карьере и реализации?
+            <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="openTripwireModal('purpose')">Открыть разбор за 99 ₽ →</div>
+          </div>
+        `}
       `;
     }
 
@@ -5177,22 +5371,31 @@
       return `
         <b>${name}</b>, разбор повторяющегося сценария по натальной карте:
         <br><br>
-        В твоей карте ключевой механизм зацикливания связан с взаимодействием <b>Солнца в ${sun}</b> и <b>Луны в ${moon}</b>.
-        <br><br>
-        <b>Почему сценарий повторяется:</b>
+        <b>1. Что происходит по карте:</b>
         <br>
-        Подсознательно ты привыкла чувствовать свою безопасность через гиперконтроль и повышенную ответственность («если не я, то всё разрушится»). Ты притягиваешь ситуации, где снова приходится «спасать», терпеть или доказывать свое право на признание.
+        В твоей карте механизм зацикливания связан с взаимодействием <b>Солнца в ${sun}</b> и <b>Луны в ${moon}</b>. Подсознательно ты привыкла чувствовать безопасность через гиперконтроль.
         <br><br>
-        ⚡ <b>Как разомкнуть круг:</b>
+        <b>2. На что обратить внимание:</b>
         <br>
-        1. <i>Заметить импульс:</i> в момент, когда хочется взвалить всё на себя — остановись.<br>
-        2. <i>Разрешить паузу:</i> дай пространству и другим людям проявить инициативу.<br>
-        3. <i>Опора на достоинство:</i> твой масштаб раскрывается через спокойствие, а не через постоянную борьбу.
+        Привычка брать на себя двойную нагрузку, чтобы заслужить признание и спокойствие.
         <br><br>
-        <div style="background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
-          🔥 Хочешь глубокий экспресс-разбор конкретной ситуации?
-          <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="openTripwireModal()">Разобрать сценарий по карте за 99 ₽ →</div>
-        </div>
+        💡 <b>Что делать / Практический совет:</b>
+        <br>
+        1. <b>Заметь импульс спасателя:</b> в момент, когда хочется всё взвалить на себя — остановись.<br>
+        2. <b>Дай пространству проявиться:</b> сделай паузу и позволь другим людям сделать их шаг.<br>
+        3. <b>Опирайся на достоинство:</b> твой истинный масштаб раскрывается через спокойствие, а не через износ.
+        <br><br>
+        ${isTripwirePurchased() ? `
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #6EE7B7;">
+            ✓ Твой подробный аудит сценария сохранён в профиле. 
+            <span style="text-decoration: underline; font-weight: 700; cursor: pointer; color: #FFF;" onclick="openPurchasedTripwireModal()">Открыть разбор →</span>
+          </div>
+        ` : `
+          <div style="background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
+            🔥 Хочешь глубокий персональный аудит повторяющегося сценария?
+            <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="openTripwireModal()">Разобрать сценарий по карте за 99 ₽ →</div>
+          </div>
+        `}
       `;
     }
 
@@ -5200,27 +5403,31 @@
     if (lower.includes('энерг') || lower.includes('устал') || lower.includes('выгоран') || lower.includes('сил нет') || lower.includes('сон') || lower.includes('ресурс') || lower.includes('тревог') || lower.includes('тело') || lower.includes('отдых') || lower.includes('апати')) {
       let restAdvice = "";
       if (moonElem === "water") {
-        restAdvice = "Контакт с водой (теплая ванна с солью, бассейн), уединение в тишине и отсутствие необходимости отвечать на звонки.";
+        restAdvice = "Контакт с водой (ванна с морской солью), уединение в тишине и отсутствие необходимости отвечать на звонки.";
       } else if (moonElem === "earth") {
-        restAdvice = "Заземление через тело: качественный сон, массаж, порядок в комнате, прогулки среди деревьев и вкусная натуральная еда.";
+        restAdvice = "Заземление через тело: качественный сон, массаж, порядок в комнате, прогулки на свежем воздухе и вкусная натуральная еда.";
       } else if (moonElem === "fire") {
         restAdvice = "Смена обстановки, легкая активность (танцы, растяжка), вдохновляющее кино и творчество без дедлайнов.";
       } else {
-        restAdvice = "Ментальный детокс: отключение соцсетей, чтение эстетичных книг, свежий воздух и спокойные прогулки.";
+        restAdvice = "Ментальный детокс: отключение соцсетей после 20:00, чтение эстетичных книг и спокойные прогулки.";
       }
 
       return `
         <b>${name}</b>, смотрю на энергетический баланс твоей натальной карты:
         <br><br>
-        Запас твоих жизненных сил регулируется <b>Луной в знаке ${moon}</b>. Твоя нервная система работает волнообразно — периоды максимальной отдачи должны чередоваться с фазами полной тишины.
-        <br><br>
-        <b>Твои ключи к восстановлению:</b>
+        <b>1. Что происходит по карте:</b>
         <br>
-        ${restAdvice}
+        Запас жизненных сил регулируется <b>Луной в знаке ${moon}</b>. Твоя нервная система работает волнообразно — фазы отдачи требуют обязательных фаз тишины.
         <br><br>
-        🌿 <b>Совет от Луны:</b>
+        <b>2. На что обратить внимание:</b>
         <br>
-        Не кори себя за желание сделать паузу. Отдых — это не награда за подвиг, а базовое условие твоей натальной продуктивности.
+        Чувство вины за желание отдохнуть: отдых — это не награда за подвиг, а базовое условие твоей натальной силы.
+        <br><br>
+        💡 <b>Что делать / Практический совет:</b>
+        <br>
+        1. <b>Твой натальный ключ:</b> ${restAdvice}<br>
+        2. <b>Введи границы:</b> выдели минимум 1 час в день исключительно для себя без рабочих чатов.<br>
+        3. <b>Снизь планку требований:</b> позволь себе сегодня быть неидеальной.
       `;
     }
 
@@ -5229,9 +5436,19 @@
       return `
         <b>${name}</b>, смотрю сектор родительства и семьи в твоей карте:
         <br><br>
+        <b>1. Что происходит по карте:</b>
+        <br>
         Связка <b>Солнца в ${sun}</b> и <b>Луны в ${moon}</b> говорит о том, что для тебя важна гармония между разумной структурой и безусловным эмоциональным принятием.
         <br><br>
-        🌱 <b>Ориентир:</b> Главное в воспитании — не идеальный контроль, а создание доверительной среды, где ребенок чувствует безопасность быть собой.
+        <b>2. На что обратить внимание:</b>
+        <br>
+        Не переносить собственную натальную тревогу и гиперответственность на ребенка.
+        <br><br>
+        💡 <b>Что делать / Практический совет:</b>
+        <br>
+        1. <b>15 минут качественного внимания:</b> перед сном просто поговорите без нотаций и критики.<br>
+        2. <b>Давай право на ошибку:</b> поддержка важнее идеального результата.<br>
+        3. <b>Позаботься сначала о себе:</b> спокойная мама — главный залог безопасности ребенка.
       `;
     }
 
@@ -5239,13 +5456,21 @@
     return `
       <b>${name}</b>, смотрю на твой вопрос через призму натальной карты (☀️ <b>${sun}</b> • 🌙 <b>${moon}</b> • ↑ <b>${asc}</b>):
       <br><br>
+      <b>1. Что происходит по карте:</b>
+      <br>
       В этой теме карта советует опираться на зрелую силу Солнца в знаке ${sun} и природную интуицию Луны в ${moon}.
       <br><br>
-      <b>Астрологический фокус:</b>
+      <b>2. На что обратить внимание:</b>
       <br>
-      Не пытайся действовать из чувства спешки, тревоги или попытки соответствовать чужим ожиданиям. Твой Асцендент в ${asc} дает тебе дар видеть перспективу на несколько шагов вперед. Доверяй первому спокойному внутреннему решению — там, где чувствуется расширение и внутреннее достоинство.
+      Не поддавайся спешке и сомнениям: твой Асцендент в ${asc} помогает видеть общую картину на несколько шагов вперед.
       <br><br>
-      <i>Если ты хочешь разобрать конкретную сферу — выбери интересующий блок в каталоге или уточни свой вопрос в чате!</i>
+      💡 <b>Что делать / Практический совет:</b>
+      <br>
+      1. <b>Доверяй первому спокойному решению:</b> там, где чувствуется достоинство и внутреннее расширение.<br>
+      2. <b>Действуй пошагово:</b> разбей сложную задачу на 2–3 понятных действия на сегодня.<br>
+      3. <b>Сохраняй внутренний центр:</b> не позволяй чужой суете сбивать твой натальный компас.
+      <br><br>
+      <i>Если хочешь углубиться в конкретные детали — уточни свой вопрос в чате!</i>
     `;
   }
 
