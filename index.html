@@ -1452,60 +1452,77 @@
       </div>
 
       <!-- 2. ✨ МАГИЯ И ЗНАКИ НЕДЕЛИ (DYNAMIC SYMBOLS) -->
-      <div class="card">
-        <div class="card-title">✨ Магия и знаки недели</div>
-        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px;">Символы и фокус внимания для твоего знака на эту неделю:</p>
+      <div class="card" style="border: 1px solid rgba(229, 195, 120, 0.28); background: linear-gradient(160deg, rgba(28, 18, 48, 0.75) 0%, rgba(14, 10, 26, 0.92) 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <div class="card-title" style="margin-bottom: 0;">✨ Магия и знаки недели</div>
+          <span style="font-size: 10px; color: var(--gold); background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.3); padding: 2px 8px; border-radius: 10px; font-weight: 700;">АРХЕТИПЫ</span>
+        </div>
+        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px;">Символические ключи внимания для твоего натального профиля:</p>
         
         <div class="magic-grid">
           <div class="magic-card" onclick="showMagicModal('sync')">
             <div class="magic-tag">Синхрон</div>
             <div class="magic-icon" id="magicSyncIcon">🪐</div>
             <div class="magic-val" id="magicSyncVal">—</div>
-            <div class="magic-link">Подробнее →</div>
+            <div class="magic-link">Узнать силу →</div>
           </div>
           <div class="magic-card" onclick="showMagicModal('symbol')">
             <div class="magic-tag">Символ</div>
             <div class="magic-icon" id="magicSymbolIcon">🪶</div>
             <div class="magic-val" id="magicSymbolVal">—</div>
-            <div class="magic-link">Подробнее →</div>
+            <div class="magic-link">Узнать силу →</div>
           </div>
           <div class="magic-card" onclick="showMagicModal('totem')">
             <div class="magic-tag">Тотем</div>
             <div class="magic-icon" id="magicTotemIcon">🌿</div>
             <div class="magic-val" id="magicTotemVal">—</div>
-            <div class="magic-link">Подробнее →</div>
+            <div class="magic-link">Узнать силу →</div>
           </div>
         </div>
       </div>
 
-      <!-- 3. ✨ ТВОЯ ПЕРСОНАЛЬНАЯ НЕДЕЛЯ (FREE PERSONAL FORECAST) -->
-      <div class="card">
-        <div class="card-title">🌟 Твоя персональная неделя</div>
-        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px;">
-          Персональный недельный прогноз, рассчитанный по твоей натальной карте:
+      <!-- 3. ✨ ТВОЯ ПЕРСОНАЛЬНАЯ НЕДЕЛЯ (EDITORIAL DARK SPREAD) -->
+      <div class="card" style="border: 1px solid rgba(139, 92, 246, 0.3); background: linear-gradient(160deg, rgba(26, 17, 46, 0.8) 0%, rgba(13, 9, 25, 0.94) 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <div class="card-title" style="margin-bottom: 0;">🌟 Твоя неделя</div>
+          <span style="font-size: 10px; color: #DDD6FE; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.35); padding: 2px 8px; border-radius: 10px; font-weight: 700;">ПРОГНОЗ 7 ДНЕЙ</span>
+        </div>
+        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px;">
+          Персональный астрологический срез по положению твоих планет:
         </p>
         
-        <div class="week-preview-list">
-          <div class="week-preview-row">
-            <span>❤️</span>
-            <div><b>Отношения:</b> <span id="wprevLove">Период теплого контакта и взаимопонимания</span></div>
+        <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 14px;">
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(229, 195, 120, 0.2); border-left: 3px solid #E5C378; border-radius: 12px; padding: 10px 12px;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #FFE8A3; margin-bottom: 3px;">
+              <span>❤️</span> <span>Любовь & Отношения</span>
+            </div>
+            <div style="font-size: 12px; color: #E2DFEC; line-height: 1.45;" id="wprevLove">Период теплого контакта и взаимопонимания</div>
           </div>
-          <div class="week-preview-row">
-            <span>💰</span>
-            <div><b>Деньги & Работа:</b> <span id="wprevMoney">Благоприятно для запуска идей и авторских задач</span></div>
+
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(139, 92, 246, 0.2); border-left: 3px solid #8B5CF6; border-radius: 12px; padding: 10px 12px;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #DDD6FE; margin-bottom: 3px;">
+              <span>💎</span> <span>Деньги & Карьера</span>
+            </div>
+            <div style="font-size: 12px; color: #E2DFEC; line-height: 1.45;" id="wprevMoney">Благоприятно для запуска идей и авторских задач</div>
           </div>
-          <div class="week-preview-row">
-            <span>⚡</span>
-            <div><b>Энергия:</b> <span id="wprevEnergy">Устойчивый тонус, важно беречь вечерний отдых</span></div>
+
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(16, 185, 129, 0.2); border-left: 3px solid #10B981; border-radius: 12px; padding: 10px 12px;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #6EE7B7; margin-bottom: 3px;">
+              <span>🌿</span> <span>Энергия & Ресурс</span>
+            </div>
+            <div style="font-size: 12px; color: #E2DFEC; line-height: 1.45;" id="wprevEnergy">Устойчивый тонус, важно беречь вечерний отдых</div>
           </div>
-          <div class="week-preview-row">
-            <span>🌟</span>
-            <div><b>Главная тема:</b> <span id="wprevTheme">Внутренний баланс и верность своему вектору</span></div>
+
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(59, 130, 246, 0.2); border-left: 3px solid #3B82F6; border-radius: 12px; padding: 10px 12px;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #93C5FD; margin-bottom: 3px;">
+              <span>🧭</span> <span>Главный фокус недели</span>
+            </div>
+            <div style="font-size: 12px; color: #E2DFEC; line-height: 1.45;" id="wprevTheme">Внутренний баланс и верность своему вектору</div>
           </div>
         </div>
 
-        <button class="btn-outline" onclick="openWeekForecastModal()">
-          ✨ Открыть полный прогноз недели →
+        <button class="btn-outline" style="padding: 10px 14px; font-size: 12.5px;" onclick="openWeekForecastModal()">
+          ✨ Развернуть полный прогноз недели →
         </button>
       </div>
 
@@ -1752,11 +1769,11 @@
       </button>
     </div>
 
-    <!-- SYSTEM & VERSION INFO CARD -->
+    <!-- SYSTEM & LEGAL INFO CARD -->
     <div class="card" style="border: 1px solid rgba(212, 175, 55, 0.2); background: rgba(22, 18, 38, 0.5); padding: 14px 16px;">
       <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; margin-bottom: 6px;">
-        <span style="color: var(--text-muted);">Версия приложения</span>
-        <span style="color: var(--gold-light); font-weight: 700; letter-spacing: 0.5px;">v1.1.0 (MVP)</span>
+        <span style="color: var(--text-muted);">Версия LUNA</span>
+        <span style="color: var(--gold-light); font-weight: 700; letter-spacing: 0.5px;">v1.3.0 · Celestial</span>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; margin-bottom: 6px;">
         <span style="color: var(--text-muted);">Сервер & База данных</span>
@@ -1765,9 +1782,26 @@
           Railway Live
         </span>
       </div>
-      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
-        <span style="color: var(--text-muted);">Авторизация</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-bottom: 12px;">
+        <span style="color: var(--text-muted);">Шифрование данных</span>
         <span style="color: #A78BFA; font-weight: 500;">Telegram HMAC-SHA256</span>
+      </div>
+
+      <!-- LEGAL LINKS -->
+      <div style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 10px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 6px;">
+        <a href="javascript:void(0)" onclick="openPrivacyPolicyModal()" style="font-size: 11px; color: var(--gold); text-decoration: underline;">📄 Политика конфиденциальности</a>
+        <a href="javascript:void(0)" onclick="openTermsOfServiceModal()" style="font-size: 11px; color: var(--gold); text-decoration: underline;">📜 Пользовательское соглашение</a>
+        <a href="javascript:void(0)" onclick="openPersonalDataConsentModal()" style="font-size: 11px; color: var(--gold); text-decoration: underline;">🛡️ Согласие на обработку персональных данных (152-ФЗ)</a>
+      </div>
+
+      <!-- APP EXIT & RESET BUTTONS -->
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-outline" style="flex: 1; padding: 9px; font-size: 12px;" onclick="closeLunaApp()">
+          🚪 Закрыть LUNA
+        </button>
+        <button class="btn-outline" style="flex: 1; padding: 9px; font-size: 12px; border-color: rgba(239, 68, 68, 0.4); color: #FCA5A5;" onclick="resetUserProfileAndRestart()">
+          🔄 Сбросить профиль
+        </button>
       </div>
     </div>
   </div>
@@ -5659,12 +5693,10 @@
     }, 1100);
   }
 
-  // ================= 7. SUBSCRIPTIONS & TOP-UP MODALS =================
+  // ================= 7. SUBSCRIPTIONS, TOP-UP & LEGAL MODALS =================
   function openSubscriptionModal() {
     haptic();
     trackLunaEvent('subscription_viewed');
-
-    const curPlan = getUserPlan();
 
     const html = `
       <div style="padding: 6px 2px 14px;">
@@ -5672,7 +5704,7 @@
           💎 Подписка Luna Plus
         </div>
         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
-          Постоянный доступ к персональному AI-астрологу с фиксированным лимитом запросов.
+          Постоянный доступ к персональному AI-астрологу с ежемесячным балансом.
         </div>
 
         <!-- START PLAN -->
@@ -5681,8 +5713,8 @@
           <div class="sub-price">299 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
           <div class="sub-features">
             • <b>30 персональных AI-запросов</b> в месяц<br>
-            • Ежедневный персональный прогноз и советы Луны<br>
-            • Сохранение контекста и истории карты
+            • Расширенные подсказки карты и транзитов<br>
+            • Сохранение контекста переписки
           </div>
           <button class="btn-outline" style="padding: 9px;" onclick="selectSubscriptionPlan('Start', 299, 30)">
             Подключить за 299 ₽
@@ -5693,28 +5725,28 @@
         <div class="sub-card popular">
           <div class="sub-badge">Хит продаж</div>
           <div class="sub-title">Тариф Plus</div>
-          <div class="sub-price">599 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
+          <div class="sub-price">499 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
           <div class="sub-features">
-            • <b>100 персональных AI-запросов</b> в месяц<br>
-            • Расширенные лунные прогнозы и разбор транзитов<br>
-            • Приоритетная скорость обработки ответов
+            • <b>75 персональных AI-запросов</b> в месяц<br>
+            • Полные недельные срезы и советы Луны<br>
+            • Приоритетная скорость ответов
           </div>
-          <button class="btn-gold" style="padding: 10px;" onclick="selectSubscriptionPlan('Plus', 599, 100)">
-            Подключить за 599 ₽ →
+          <button class="btn-gold" style="padding: 10px;" onclick="selectSubscriptionPlan('Plus', 499, 75)">
+            Подключить за 499 ₽ →
           </button>
         </div>
 
         <!-- PREMIUM PLAN -->
         <div class="sub-card">
           <div class="sub-title">Тариф Premium</div>
-          <div class="sub-price">999 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
+          <div class="sub-price">799 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
           <div class="sub-features">
-            • <b>200 персональных AI-запросов</b> в месяц<br>
-            • Включены глубокие разборы тем без доплат<br>
-            • Персональный приоритетный канал связи
+            • <b>150 персональных AI-запросов</b> в месяц<br>
+            • Включены все тематические срезы без доплат<br>
+            • Максимальная глубина натального анализа
           </div>
-          <button class="btn-outline" style="padding: 9px;" onclick="selectSubscriptionPlan('Premium', 999, 200)">
-            Подключить за 999 ₽
+          <button class="btn-outline" style="padding: 9px;" onclick="selectSubscriptionPlan('Premium', 799, 150)">
+            Подключить за 799 ₽
           </button>
         </div>
 
@@ -5775,21 +5807,21 @@
 
         <div class="sub-card popular" style="display: flex; justify-content: space-between; align-items: center;">
           <div>
-            <div style="font-weight: 700; color: #FFF; font-size: 15px;">50 запросов 🔥</div>
+            <div style="font-weight: 700; color: #FFF; font-size: 15px;">45 запросов 🔥</div>
             <div style="font-size: 11.5px; color: #FFE8A3;">Оптимальный выбор</div>
           </div>
-          <button class="btn-gold" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="buyTopUpCredits(50, 249)">
-            249 ₽
+          <button class="btn-gold" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="buyTopUpCredits(45, 199)">
+            199 ₽
           </button>
         </div>
 
         <div class="sub-card" style="display: flex; justify-content: space-between; align-items: center;">
           <div>
-            <div style="font-weight: 700; color: #FFF; font-size: 15px;">120 запросов</div>
+            <div style="font-weight: 700; color: #FFF; font-size: 15px;">100 запросов</div>
             <div style="font-size: 11.5px; color: var(--text-muted);">Максимальный пакет</div>
           </div>
-          <button class="btn-gold" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="buyTopUpCredits(120, 399)">
-            399 ₽
+          <button class="btn-gold" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="buyTopUpCredits(100, 349)">
+            349 ₽
           </button>
         </div>
       </div>
@@ -5809,12 +5841,84 @@
           Баланс пополнен!
         </div>
         <p style="font-size: 13px; color: #D1CCDE; margin-bottom: 16px;">
-          Начислено <b>+${amount} запросов</b>. Текущий баланс: <b>${getUserCredits()}</b>.
+          Начислено <b>+${amount} запросов</b>. Они сохранены в вашем профиле и не сгорают.
         </p>
         <button class="btn-gold" onclick="closeModal(); switchTab('chat');">
           Продолжить диалог →
         </button>
       </div>
+    `);
+  }
+
+  // ================= 8. APP EXIT & LEGAL COMPLIANCE =================
+  function closeLunaApp() {
+    haptic('medium');
+    if (window.Telegram && Telegram.WebApp && typeof Telegram.WebApp.close === 'function') {
+      Telegram.WebApp.close();
+    } else {
+      alert('Чтобы закрыть приложение, закройте вкладку или окно Telegram.');
+    }
+  }
+
+  function resetUserProfileAndRestart() {
+    haptic('warning');
+    if (confirm('Вы уверены, что хотите сбросить сохранённые данные рождения и начать заново?')) {
+      localStorage.removeItem(getStorageKeyNatal());
+      localStorage.removeItem(getStorageKeyQuiz());
+      localStorage.removeItem(getStorageKeyChildren());
+      localStorage.removeItem(getStorageKeyCredits());
+      localStorage.removeItem(getStorageKeyPlan());
+      localStorage.removeItem(getStorageKeyTripwire());
+      localStorage.removeItem('luna_user_natal_data');
+      localStorage.removeItem('luna_user_quiz_profile');
+      localStorage.removeItem('luna_auth_jwt');
+      userNatalData = null;
+      userChildrenList = [];
+      location.reload();
+    }
+  }
+
+  function openPrivacyPolicyModal() {
+    haptic();
+    openModal(`
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px;">
+        📄 Политика конфиденциальности
+      </div>
+      <div style="font-size: 12px; color: #CBD5E1; line-height: 1.6; max-height: 60vh; overflow-y: auto; padding-right: 4px;">
+        <p><b>1. Общие положения:</b> Сервис LUNA собирает и обрабатывает только данные, необходимые для астрологических расчётов (имя, дата, время и город рождения).</p>
+        <p><b>2. Безопасность:</b> Передача данных защищена протоколами TLS и криптографической аутентификацией Telegram HMAC-SHA256. Мы не передаем персональные данные третьим лицам.</p>
+        <p><b>3. Хранение:</b> Ваши расчеты и история запросов шифруются и хранятся в защищенной базе данных сервиса.</p>
+      </div>
+      <button class="btn-gold" style="margin-top: 14px;" onclick="closeModal()">Понятно</button>
+    `);
+  }
+
+  function openTermsOfServiceModal() {
+    haptic();
+    openModal(`
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px;">
+        📜 Пользовательское соглашение
+      </div>
+      <div style="font-size: 12px; color: #CBD5E1; line-height: 1.6; max-height: 60vh; overflow-y: auto; padding-right: 4px;">
+        <p><b>1. Предмет соглашения:</b> LUNA предоставляет пользователю информационно-аналитические сервисы на основе астрономических алгоритмов и математических формул натальной карты.</p>
+        <p><b>2. Характер информации:</b> Предоставляемые разборы и советы носят консультационный, психологический и мотивационный характер и не заменяют профессиональную медицинскую или юридическую помощь.</p>
+      </div>
+      <button class="btn-gold" style="margin-top: 14px;" onclick="closeModal()">Понятно</button>
+    `);
+  }
+
+  function openPersonalDataConsentModal() {
+    haptic();
+    openModal(`
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 8px;">
+        🛡️ Согласие на обработку данных (152-ФЗ)
+      </div>
+      <div style="font-size: 12px; color: #CBD5E1; line-height: 1.6; max-height: 60vh; overflow-y: auto; padding-right: 4px;">
+        <p>Нажимая кнопки формирования карты и расчетов в приложении LUNA, вы даете согласие на обработку следующих данных:</p>
+        <p>• Имя или псевдоним пользователя;<br>• Дата, время и географический пункт рождения;<br>• Ответы на вопросы жизненного контекста.</p>
+        <p>Цель обработки: составление персональных астрологических отчетов и диалог с AI-астрологом.</p>
+      </div>
+      <button class="btn-gold" style="margin-top: 14px;" onclick="closeModal()">Принимаю</button>
     `);
   }
 
