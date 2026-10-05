@@ -165,9 +165,9 @@
       border-radius: var(--radius);
       padding: 18px 16px;
       margin-bottom: 14px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 232, 163, 0.2);
       position: relative;
     }
 
@@ -523,10 +523,10 @@
     }
 
     .modal-sheet {
-      background: #130F22;
-      border: 1px solid var(--gold-dark);
+      background: linear-gradient(180deg, #1A1230 0%, #0F0A20 100%);
+      border: 1.2px solid rgba(229, 195, 120, 0.5);
       border-bottom: none;
-      border-radius: 24px 24px 0 0;
+      border-radius: 26px 26px 0 0;
       width: 100%;
       max-width: 480px;
       max-height: 88vh;
@@ -535,6 +535,7 @@
       -webkit-overflow-scrolling: touch;
       padding: 22px 18px 50px 18px;
       position: relative;
+      box-shadow: 0 -10px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(139, 92, 246, 0.25);
     }
 
     .modal-handle {
@@ -1732,16 +1733,22 @@
       </button>
     </div>
 
+    <!-- UNIFIED LIFE CONTEXT CARD -->
     <div class="card">
-      <div class="card-title">Жизненная анкета</div>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-        Калибровка твоей текущей ситуации для точных формулировок разборов.
-      </p>
-      <div id="profQuizStatus" style="font-size: 13px; color: var(--gold-light); margin-bottom: 12px;">
-        Анкета: Не заполнена
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <div class="card-title" style="margin-bottom: 0;">✨ Жизненный контекст</div>
+        <button style="background: none; border: none; color: var(--gold); font-size: 12px; font-weight: 600; cursor: pointer;" onclick="openTripwireModal()">Изменить ✎</button>
       </div>
-      <button class="btn-gold" onclick="startLifeQuizModal()">
-        ✨ Заполнить / Обновить анкету
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+        Учитывается LUNA в каждом разборе и ответах в чате:
+      </p>
+      <div id="profQuizPills" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px;">
+        <div style="font-size: 12.5px; color: #E2DFEC;">❤️ <b>Статус:</b> <span id="profStatFamily">Свободна / в поиске</span></div>
+        <div style="font-size: 12.5px; color: #E2DFEC;">👶 <b>Дети:</b> <span id="profStatKids">Нет детей</span></div>
+        <div style="font-size: 12.5px; color: #E2DFEC;">💼 <b>Деятельность:</b> <span id="profStatJob">Фриланс / практика</span></div>
+      </div>
+      <button class="btn-outline" onclick="openTripwireModal()">
+        ✨ Настроить жизненный контекст ✎
       </button>
     </div>
 
@@ -3753,6 +3760,35 @@
       }
     }
 
+    // Update Profile Life Context pills
+    const pStatFam = document.getElementById('profStatFamily');
+    const pStatKids = document.getElementById('profStatKids');
+    const pStatJob = document.getElementById('profStatJob');
+
+    const familyLabels = {
+      single: '🌸 Свободна / в поиске',
+      relationship: '💖 В отношениях',
+      married: '💍 В браке',
+      crisis: '💔 Непростой период',
+      complicated: '💔 Непростой период'
+    };
+    const kidsLabels = {
+      none: '🌿 Нет детей',
+      planning: '🐣 Планирую',
+      one: '👶 1 ребёнок',
+      two_plus: '👨👩👧👦 2+ детей'
+    };
+    const jobLabels = {
+      business: '🚀 Свой бизнес / проект',
+      freelance: '💻 Фриланс / практика',
+      office: '💼 Найм / компания',
+      search: '🔍 В поиске себя / декрет'
+    };
+
+    if (pStatFam) pStatFam.textContent = familyLabels[twState.family] || 'Свободна / в поиске';
+    if (pStatKids) pStatKids.textContent = kidsLabels[twState.kids] || 'Нет детей';
+    if (pStatJob) pStatJob.textContent = jobLabels[twState.job] || 'Фриланс / практика';
+
     renderChildrenList();
   }
 
@@ -5216,6 +5252,26 @@
       parent.querySelectorAll('.tw-chip-btn').forEach(btn => btn.classList.remove('active'));
     }
     el.classList.add('active');
+
+    // Save state to unified profile quiz storage
+    const quizData = {
+      qRel: twState.family,
+      qKids: twState.kids,
+      qJob: twState.job,
+      completedAt: new Date().toISOString()
+    };
+    localStorage.setItem(getStorageKeyQuiz(), JSON.stringify(quizData));
+    localStorage.setItem('luna_user_quiz_profile', JSON.stringify(quizData));
+    updateNatalUI();
+
+    // Async sync with FastAPI Backend
+    if (lunaAuthToken) {
+      apiRequest('/api/v1/quiz', 'POST', {
+        q_rel: twState.family,
+        q_job: twState.job,
+        q_focus: twState.topic
+      }).catch(() => {});
+    }
   }
 
   function setTwQuickSituation(txt) {
@@ -5403,95 +5459,146 @@
       }
 
       const reportHtml = `
-        <div style="padding: 6px 2px 24px;">
+        <div style="padding: 6px 2px 28px;">
           <!-- EMBLEM HEADER -->
-          <div style="text-align: center; margin-bottom: 16px;">
-            <div class="hero-natal-badge" style="margin-bottom: 8px; background: linear-gradient(135deg, rgba(243, 186, 47, 0.3) 0%, rgba(138, 79, 158, 0.3) 100%);">
-              <span class="badge-star">⭐</span> ЭКСПРЕСС-АУДИТ СЦЕНАРИЯ
+          <div style="text-align: center; margin-bottom: 18px;">
+            <div class="hero-natal-badge" style="margin-bottom: 8px; background: linear-gradient(135deg, rgba(243, 186, 47, 0.35) 0%, rgba(138, 79, 158, 0.35) 100%);">
+              <span class="badge-star">⭐</span> VIP-АУДИТ ПОВТОРЯЮЩЕГОСЯ СЦЕНАРИЯ
             </div>
-            <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: #FFF; line-height: 1.2; margin-bottom: 4px;">
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 700; color: #FFF; line-height: 1.25; margin-bottom: 4px;">
               🎯 ${topicTitle}
             </div>
-            <div style="font-size: 12.5px; color: var(--gold); font-weight: 600;">
+            <div style="font-size: 13px; color: var(--gold); font-weight: 600;">
               ${escapeHtml(name)} • ☀️ ${sun} • 🌙 ${moon} • ↑ ${asc}
             </div>
           </div>
 
+          <!-- TRIAD SUMMARY CARDS -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 16px;">
+            <div style="background: rgba(255, 232, 163, 0.08); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 12px; padding: 8px 4px; text-align: center;">
+              <div style="font-size: 14px;">☀️</div>
+              <div style="font-size: 10px; color: var(--text-sub);">Солнце</div>
+              <div style="font-size: 12px; font-weight: 800; color: #FFE8A3;">${sun}</div>
+              <div style="font-size: 9.5px; color: #CBD5E1; margin-top: 2px;">Ядро воли</div>
+            </div>
+            <div style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.35); border-radius: 12px; padding: 8px 4px; text-align: center;">
+              <div style="font-size: 14px;">🌙</div>
+              <div style="font-size: 10px; color: var(--text-sub);">Луна</div>
+              <div style="font-size: 12px; font-weight: 800; color: #DDD6FE;">${moon}</div>
+              <div style="font-size: 9.5px; color: #CBD5E1; margin-top: 2px;">Психика & Тыл</div>
+            </div>
+            <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: 12px; padding: 8px 4px; text-align: center;">
+              <div style="font-size: 14px;">↑</div>
+              <div style="font-size: 10px; color: var(--text-sub);">Асцендент</div>
+              <div style="font-size: 12px; font-weight: 800; color: #93C5FD;">${asc}</div>
+              <div style="font-size: 9.5px; color: #CBD5E1; margin-top: 2px;">Вектор мира</div>
+            </div>
+          </div>
+
           <!-- CONTEXT PILLS -->
-          <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 16px;">
-            <span style="font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(229,195,120,0.3); padding: 3px 9px; border-radius: 12px; color: #FFE8A3;">❤️ ${familyText}</span>
-            <span style="font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(229,195,120,0.3); padding: 3px 9px; border-radius: 12px; color: #FFE8A3;">👶 ${kidsText}</span>
-            <span style="font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(229,195,120,0.3); padding: 3px 9px; border-radius: 12px; color: #FFE8A3;">💼 ${jobText}</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 18px;">
+            <span style="font-size: 11px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.35); padding: 4px 10px; border-radius: 12px; color: #FFE8A3;">❤️ ${familyText}</span>
+            <span style="font-size: 11px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.35); padding: 4px 10px; border-radius: 12px; color: #FFE8A3;">👶 ${kidsText}</span>
+            <span style="font-size: 11px; background: rgba(255,255,255,0.06); border: 1px solid rgba(229,195,120,0.35); padding: 4px 10px; border-radius: 12px; color: #FFE8A3;">💼 ${jobText}</span>
           </div>
 
           <!-- CHAPTER 1: NATAL ROOT -->
-          <div style="margin-bottom: 16px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(229, 195, 120, 0.35); border-radius: 16px; padding: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #FFE8A3;">
-                🔍 Глава 1. Натальный корень паттерна
+          <div style="margin-bottom: 18px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(229, 195, 120, 0.4); border-radius: 18px; padding: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.35);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #FFE8A3;">
+                🔍 Глава 1. Анатомия натального паттерна
               </div>
-              <span style="font-size: 10px; background: rgba(243, 186, 47, 0.2); color: #FFE8A3; padding: 3px 8px; border-radius: 8px; font-weight: 700;">ПЛАНЕТАРНЫЙ КОД</span>
+              <span style="font-size: 10px; background: rgba(243, 186, 47, 0.2); color: #FFE8A3; padding: 3px 8px; border-radius: 8px; font-weight: 700;">КОД КАРТЫ</span>
             </div>
-            <p style="margin: 0 0 10px 0; color: #E2DFEC; font-size: 13px; line-height: 1.55;">
-              Твой запрос: <i>«${escapeHtml(situation)}»</i>.
+            <p style="margin: 0 0 10px 0; color: #E2DFEC; font-size: 13.5px; line-height: 1.6;">
+              Твой конкретный запрос: <i>«${escapeHtml(situation)}»</i>.
             </p>
             <p style="margin: 0 0 12px 0; color: #CBD5E1; font-size: 13px; line-height: 1.6;">
               В твоей натальной карте ключевой механизм зацикливания ситуации формируется на стыке <b>Солнца в знаке ${sun}</b> (${sProf.archetype}) и <b>Луны в ${moon}</b> (${mProf.archetype}).
             </p>
-            <div style="background: rgba(243, 186, 47, 0.08); border: 1px solid rgba(243, 186, 47, 0.25); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: #FFE8A3; margin-bottom: 8px; line-height: 1.5;">
-              ⚡ <b>Как запускается круг:</b> Твое Солнце стремится к безупречному результату и достоинству, однако подсознательная программа Луны в ${moon} шепчет: <i>«Я в безопасности, только если всё держу под контролем сама»</i>. Это притягивает сложные сценарии, где приходится доказывать право на любовь или признание через сверхусилия.
+            <div style="background: rgba(243, 186, 47, 0.08); border: 1px solid rgba(243, 186, 47, 0.25); border-radius: 12px; padding: 12px; font-size: 12.5px; color: #FFE8A3; margin-bottom: 10px; line-height: 1.5;">
+              ⚡ <b>Как запускается круг:</b> Твое Солнце стремится к безупречному качеству и достоинству, однако подсознательная программа Луны в ${moon} создает глубокую установку: <i>«Я в безопасности, только если всё держу под контролем сама и не даю слабины»</i>.
+            </div>
+            <div style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.25); border-radius: 12px; padding: 12px; font-size: 12.5px; color: #DDD6FE; line-height: 1.5;">
+              🧲 <b>Почему это притягивается:</b> Из-за стремления быть безупречной ты бессознательно выбираешь ситуации, где приходится доказывать свое право на счастье через сверхусилия, терпение или спасательство.
             </div>
           </div>
 
           <!-- CHAPTER 2: LIFE CONTEXT -->
-          <div style="margin-bottom: 16px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(139, 92, 246, 0.35); border-radius: 16px; padding: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #DDD6FE;">
+          <div style="margin-bottom: 18px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(139, 92, 246, 0.4); border-radius: 18px; padding: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.35);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #DDD6FE;">
                 🏠 Глава 2. Преломление через реальную жизнь
               </div>
-              <span style="font-size: 10px; background: rgba(139, 92, 246, 0.2); color: #DDD6FE; padding: 3px 8px; border-radius: 8px; font-weight: 700;">РЕАЛЬНЫЙ КОНТЕКСТ</span>
+              <span style="font-size: 10px; background: rgba(139, 92, 246, 0.2); color: #DDD6FE; padding: 3px 8px; border-radius: 8px; font-weight: 700;">РЕАЛЬНЫЙ СТАТУС</span>
             </div>
             <p style="margin: 0 0 12px 0; color: #CBD5E1; font-size: 13px; line-height: 1.6;">
               ${lifeContextInsight}
             </p>
-            <div style="background: rgba(139, 92, 246, 0.08); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: #E2E8F0; line-height: 1.5;">
-              💼 <b>Профессиональный фактор:</b> ${jobContextInsight}
+            <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 12px; padding: 12px; font-size: 12.5px; color: #BFDBFE; line-height: 1.5;">
+              💼 <b>Фактор карьеры и реализации:</b> ${jobContextInsight}
             </div>
           </div>
 
-          <!-- CHAPTER 3: SHADOW TRAP -->
-          <div style="margin-bottom: 16px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(239, 68, 68, 0.35); border-radius: 16px; padding: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-              <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #FCA5A5;">
-                ⚡ Глава 3. Теневая ловушка («Слепая зона»)
+          <!-- CHAPTER 3: SHADOW TRAP & SECONDARY GAIN -->
+          <div style="margin-bottom: 18px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(239, 68, 68, 0.4); border-radius: 18px; padding: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.35);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #FCA5A5;">
+                ⚡ Глава 3. Теневая ловушка и слепая зона
               </div>
-              <span style="font-size: 10px; background: rgba(239, 68, 68, 0.2); color: #FCA5A5; padding: 3px 8px; border-radius: 8px; font-weight: 700;">СЛЕПАЯ ЗОНА</span>
+              <span style="font-size: 10px; background: rgba(239, 68, 68, 0.2); color: #FCA5A5; padding: 3px 8px; border-radius: 8px; font-weight: 700;">СЛЕПОЕ ПЯТНО</span>
             </div>
             <p style="margin: 0 0 12px 0; color: #CBD5E1; font-size: 13px; line-height: 1.6;">
-              Твоя психика привыкла жить в режиме скрытой мобилизации. Когда в отношениях или работе всё идет легко и без надрыва, внутри может возникать тревога: <i>«Неужели так просто? Где скрыт подвох?»</i>.
+              Твоя психика настолько привыкла к режиму внутренней мобилизации, что спокойное, безопасное течение жизни вызывает тревогу: <i>«Неужели так просто? Где скрыт подвох?»</i>.
             </p>
-            <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 10px 12px; font-size: 12px; color: #FECACA; line-height: 1.45;">
-              ⚠️ <b>Теневой триггер:</b> ${sProf.shadow}
+            <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 12px; padding: 12px; font-size: 12.5px; color: #FECACA; margin-bottom: 10px; line-height: 1.5;">
+              ⚠️ <b>Теневая программа знака (${sun}):</b> ${sProf.shadow}
+            </div>
+            <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 12px; padding: 12px; font-size: 12.5px; color: #6EE7B7; line-height: 1.5;">
+              💎 <b>Вторичная выгода:</b> Перегружая себя, ты получаешь бессознательное подтверждение своей незаменимости и силы. Разомкнуть круг — значит разрешить себе быть ценной без постоянного подвига.
             </div>
           </div>
 
-          <!-- CHAPTER 4: 4 ACTIONABLE KEYS -->
-          <div style="margin-bottom: 16px; background: linear-gradient(145deg, rgba(46, 28, 75, 0.85) 0%, rgba(22, 15, 42, 0.95) 100%); border: 1.5px solid rgba(229, 195, 120, 0.5); border-radius: 18px; padding: 18px;">
+          <!-- CHAPTER 4: FOCUS FOR TODAY (24 HOURS) -->
+          <div style="margin-bottom: 18px; background: linear-gradient(145deg, rgba(38, 24, 60, 0.9) 0%, rgba(18, 12, 34, 0.98) 100%); border: 1.5px solid rgba(243, 186, 47, 0.6); border-radius: 18px; padding: 18px; box-shadow: 0 4px 22px rgba(243, 186, 47, 0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #FFE8A3;">
+                🔥 Глава 4. Фокус прямо на сегодня (Первые 24 часа)
+              </div>
+              <span style="font-size: 10px; background: var(--gold-btn); color: #120C22; padding: 3px 8px; border-radius: 8px; font-weight: 800;">ДЕЙСТВИЕ</span>
+            </div>
+            <div style="font-size: 12.5px; color: #E2E8F0; line-height: 1.55; margin-bottom: 12px;">
+              Конкретная микро-практика для немедленной разрядки напряжения:
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #E5C378;">
+                <b style="color: #FFE8A3; font-size: 12px;">🛑 1. Стоп-вопрос при импульсе:</b>
+                <div style="font-size: 12px; color: #CBD5E1; margin-top: 2px;">Когда возникнет привычный порыв «спасти» или согласиться через силу — мысленно скажи: <i>«Я выбираю достоинство, а не спешку»</i>.</div>
+              </div>
+              <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #8B5CF6;">
+                <b style="color: #DDD6FE; font-size: 12px;">🌙 2. Разгрузка Луны (${moon}):</b>
+                <div style="font-size: 12px; color: #CBD5E1; margin-top: 2px;">Выдели сегодня минимум 30 минут без гаджетов, новостей и разговоров о делах для физического заземления.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CHAPTER 5: 4 ACTIONABLE KEYS -->
+          <div style="margin-bottom: 18px; background: linear-gradient(145deg, rgba(46, 28, 75, 0.85) 0%, rgba(22, 15, 42, 0.95) 100%); border: 1.5px solid rgba(229, 195, 120, 0.5); border-radius: 18px; padding: 18px;">
             <div style="font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; color: #FFE8A3; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-              <span>🗝️</span> Глава 4. Пошаговый алгоритм выхода
+              <span>🗝️</span> Глава 5. Пошаговый алгоритм на 2–4 недели
             </div>
             <div style="font-size: 12.5px; color: #E2E8F0; line-height: 1.5; margin-bottom: 14px;">
-              Практический натальный план для разрыва повторяющегося сценария на ближайшие 2–4 недели:
+              Фундаментальный натальный план для стойкого выхода из круга:
             </div>
             
             <div style="display: flex; flex-direction: column; gap: 8px;">
               <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #E5C378;">
                 <b style="color: #FFE8A3; font-size: 12.5px;">1. Правило «Паузы достоинства» (24 часа):</b>
-                <div style="font-size: 12px; color: #CBD5E1; margin-top: 3px; line-height: 1.45;">При первом импульсе взвалить на себя всё или согласиться из страха — возьми паузу на сутки. Действуй только из спокойствия, а не из спешки.</div>
+                <div style="font-size: 12px; color: #CBD5E1; margin-top: 3px; line-height: 1.45;">Никаких судьбоносных решений на эмоциях. Дай пространству и другим людям проявить их истинные намерения.</div>
               </div>
               <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #8B5CF6;">
                 <b style="color: #DDD6FE; font-size: 12.5px;">2. Возврат чужой ответственности:</b>
-                <div style="font-size: 12px; color: #CBD5E1; margin-top: 3px; line-height: 1.45;">Позволь партнеру и окружающим нести последствия их решений. Спасательство истощает твою карту.</div>
+                <div style="font-size: 12px; color: #CBD5E1; margin-top: 3px; line-height: 1.45;">Позволь партнеру и окружающим нести последствия их выбора без твоего мгновенного вмешательства.</div>
               </div>
               <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #10B981;">
                 <b style="color: #6EE7B7; font-size: 12.5px;">3. Активация ядра Солнца (${sun}):</b>
@@ -5499,9 +5606,22 @@
               </div>
               <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #60A5FA;">
                 <b style="color: #93C5FD; font-size: 12.5px;">4. Заземление Луны (${moon}):</b>
-                <div style="font-size: 12px; color: #CBD5E1; margin-top: 3px; line-height: 1.45;">Выдели строго неприкосновенные часы отдыха в неделю без телефона, работы и домашних задач.</div>
+                <div style="font-size: 12px; color: #CBD5E1; margin-top: 3px; line-height: 1.45;">Твое истинное расширение происходит через расслабление и внутренний покой, а не через подвиги на износ.</div>
               </div>
             </div>
+          </div>
+
+          <!-- CHAPTER 6: TIMING FORECAST -->
+          <div style="margin-bottom: 18px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(229, 195, 120, 0.35); border-radius: 18px; padding: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #FFE8A3;">
+                ⏳ Глава 6. Астрологический тайминг
+              </div>
+              <span style="font-size: 10px; background: rgba(229, 195, 120, 0.2); color: #FFE8A3; padding: 3px 8px; border-radius: 8px; font-weight: 700;">ПРОГНОЗ</span>
+            </div>
+            <p style="margin: 0; color: #CBD5E1; font-size: 13px; line-height: 1.6;">
+              Для перестройки нейронных связей и натального паттерна твоей карте требуется <b>полный лунный цикл (28 дней)</b>. Первые ощутимые сдвиги в поведении окружающих ты заметишь уже на 7–10 день соблюдения «Паузы достоинства».
+            </p>
           </div>
 
           <!-- FOOTER TEASER -->
@@ -5699,74 +5819,7 @@
   }
 
   function startLifeQuizModal() {
-    const html = `
-      <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 10px;">
-        ✨ Жизненная анкета
-      </div>
-      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
-        Ответь на несколько вопросов, чтобы LUNA могла учитывать твою реальную жизненную ситуацию в каждом разборе:
-      </p>
-
-      <div class="form-group">
-        <label class="form-label">1. Сфера отношений</label>
-        <select id="qRel" class="form-input">
-          <option value="single">Свободна / в поиске своего человека</option>
-          <option value="relationship">В отношениях</option>
-          <option value="married">В браке</option>
-          <option value="complicated">Непростой период / поиск ясности</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">2. Профессиональная деятельность</label>
-        <select id="qJob" class="form-input">
-          <option value="freelance">Фриланс / Творческая профессия</option>
-          <option value="business">Свое дело / Бизнес</option>
-          <option value="office">Работа в компании / Найм</option>
-          <option value="search">В поиске своего призвания</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">3. Главный фокус внимания сейчас</label>
-        <select id="qFocus" class="form-input">
-          <option value="growth">Финансовый рост и масштабирование</option>
-          <option value="harmony">Гармония в семье и отношениях</option>
-          <option value="balance">Внутренний баланс и восстановление ресурса</option>
-          <option value="purpose">Поиск истинного предназначения</option>
-        </select>
-      </div>
-
-      <button class="btn-gold" style="margin-top: 14px;" onclick="saveLifeQuizAnswers()">
-        Сохранить ответы в профиль
-      </button>
-    `;
-    openModal(html);
-  }
-
-  function saveLifeQuizAnswers() {
-    const qRel = document.getElementById('qRel').value;
-    const qJob = document.getElementById('qJob').value;
-    const qFocus = document.getElementById('qFocus').value;
-
-    const quizData = { qRel, qJob, qFocus, completedAt: new Date().toISOString() };
-    localStorage.setItem(getStorageKeyQuiz(), JSON.stringify(quizData));
-    localStorage.setItem('luna_user_quiz_profile', JSON.stringify(quizData));
-
-    const statusEl = document.getElementById('profQuizStatus');
-    if (statusEl) {
-      statusEl.textContent = 'Анкета: Заполнена ✨ (учитывается в анализе)';
-      statusEl.style.color = '#10B981';
-    }
-
-    closeModal();
-
-    // Async sync with FastAPI Backend
-    apiRequest('/api/v1/quiz', 'POST', {
-      q_rel: qRel,
-      q_job: qJob,
-      q_focus: qFocus
-    });
+    openTripwireModal();
   }
 
   // 2. STABLE INITIALIZATION & RESTORATION
@@ -5780,6 +5833,7 @@
       localStorage.removeItem(getStorageKeyChildren());
       localStorage.removeItem(getStorageKeyCredits());
       localStorage.removeItem(getStorageKeyPlan());
+      localStorage.removeItem(getStorageKeyTripwire());
       localStorage.removeItem('luna_user_natal_data');
       localStorage.removeItem('luna_user_quiz_profile');
       localStorage.removeItem('luna_auth_jwt');
@@ -5802,6 +5856,16 @@
         } catch(e) {
           userChildrenList = [];
         }
+      }
+
+      const savedQuiz = localStorage.getItem(getStorageKeyQuiz()) || localStorage.getItem('luna_user_quiz_profile');
+      if (savedQuiz) {
+        try {
+          const parsed = JSON.parse(savedQuiz);
+          if (parsed.qRel) twState.family = parsed.qRel;
+          if (parsed.qKids) twState.kids = parsed.qKids;
+          if (parsed.qJob) twState.job = parsed.qJob;
+        } catch(e) {}
       }
     }
 
