@@ -295,48 +295,59 @@
     }
 
     .magic-card {
-      background: rgba(14, 11, 26, 0.82);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(26, 20, 46, 0.85) 0%, rgba(14, 11, 26, 0.95) 100%);
+      border: 1px solid rgba(229, 195, 120, 0.35);
+      border-radius: 16px;
       padding: 12px 6px;
       text-align: center;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      transition: all 0.2s;
+      justify-content: center;
+      min-height: 94px;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
     }
 
     .magic-card:active {
-      border-color: var(--gold);
-      background: rgba(32, 25, 56, 0.95);
+      transform: scale(0.96);
+      border-color: rgba(229, 195, 120, 0.8);
+      background: linear-gradient(145deg, rgba(38, 28, 66, 0.95) 0%, rgba(20, 15, 38, 0.98) 100%);
+      box-shadow: 0 0 15px rgba(229, 195, 120, 0.3);
     }
 
     .magic-tag {
-      font-size: 9px;
+      font-size: 9.5px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--gold-light);
-      margin-bottom: 4px;
+      letter-spacing: 0.8px;
+      font-weight: 700;
+      color: #FFE8A3;
+      margin-bottom: 2px;
     }
 
     .magic-icon {
-      font-size: 20px;
-      margin: 3px 0;
+      font-size: 22px;
+      margin: 4px 0 2px 0;
+      line-height: 1;
     }
 
     .magic-val {
-      font-size: 11px;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #FFF;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 90%;
     }
 
     .magic-link {
       font-size: 10px;
       color: var(--gold);
-      text-decoration: underline;
+      opacity: 0.85;
+      font-weight: 600;
     }
 
     /* CATALOG FULL SCREEN */
@@ -800,33 +811,38 @@
   .triad-box-hero {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    gap: 6px;
     margin: 14px 0 14px;
   }
   .triad-hero-item {
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(229, 195, 120, 0.3);
+    border: 1px solid rgba(229, 195, 120, 0.35);
     border-radius: 14px;
-    padding: 10px 6px;
+    padding: 10px 4px;
     text-align: center;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 86px;
     transition: transform 0.2s ease, border-color 0.2s ease;
   }
   .triad-hero-item:hover {
-    border-color: rgba(229, 195, 120, 0.6);
+    border-color: rgba(229, 195, 120, 0.7);
   }
   .triad-hero-icon {
-    font-size: 20px;
+    font-size: 19px;
     margin-bottom: 2px;
   }
   .triad-hero-label {
-    font-size: 10.5px;
+    font-size: 10px;
     color: var(--text-sub);
     margin-bottom: 2px;
     font-weight: 600;
   }
   .triad-hero-val {
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 800;
     color: #FFE8A3;
   }
@@ -834,14 +850,12 @@
     font-size: 9.5px;
     color: #CBD5E1;
     margin-top: 3px;
-    line-height: 1.2;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.25;
+    text-align: center;
   }
   .hero-natal-insight-box {
     background: rgba(229, 195, 120, 0.08);
-    border: 1px solid rgba(229, 195, 120, 0.3);
+    border: 1px solid rgba(229, 195, 120, 0.35);
     border-radius: 14px;
     padding: 12px 14px;
     margin-bottom: 16px;
@@ -1240,14 +1254,47 @@
   }
   #tab-chat .chat-input-bar {
     flex-shrink: 0;
-    background: rgba(14, 11, 26, 0.98);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    padding: 8px 0 4px 0;
-    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    background: rgba(18, 13, 33, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.2px solid rgba(229, 195, 120, 0.45);
+    border-radius: 22px;
+    padding: 5px 6px 5px 14px;
     display: flex;
     gap: 8px;
     align-items: center;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 12px rgba(229, 195, 120, 0.15);
+    margin-top: 6px;
+  }
+  .chat-input {
+    flex: 1;
+    height: 38px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #FFF;
+    font-size: 13.5px;
+    outline: none;
+  }
+  .chat-send-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFE8A3 0%, #E5C378 45%, #C49B45 100%);
+    border: none;
+    color: #1A1028;
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(229, 195, 120, 0.35);
+    transition: transform 0.15s;
+    flex-shrink: 0;
+  }
+  .chat-send-btn:active {
+    transform: scale(0.92);
   }
 </style>
 
@@ -1501,29 +1548,41 @@
       </div>
     </div>
 
-    <!-- FILTER CHIPS -->
-    <div class="filter-chips">
-      <div class="filter-chip active" onclick="filterCatalog('all', this)">Все</div>
-      <div class="filter-chip" onclick="filterCatalog('tripwire', this)">⭐ Экспресс (99 ₽)</div>
-      <div class="filter-chip" onclick="filterCatalog('me', this)">Про меня</div>
-      <div class="filter-chip" onclick="filterCatalog('love', this)">Отношения</div>
-      <div class="filter-chip" onclick="filterCatalog('money', this)">Деньги</div>
-      <div class="filter-chip" onclick="filterCatalog('purpose', this)">Реализация</div>
-      <div class="filter-chip" onclick="filterCatalog('family', this)">Семья & Дети</div>
-    </div>
-
     <div id="catalogList">
 
-      <!-- ⭐ 0. TRIPWIRE PRODUCT (LEADING TEST OFFER 99 ₽) -->
-      <div class="catalog-card" id="catTripwireCard" data-category="tripwire" style="border: 1.5px solid rgba(243, 186, 47, 0.7); background: linear-gradient(135deg, rgba(38, 24, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);" onclick="openTripwireModal()">
+      <!-- 1. FREE NATAL MATRIX (PROMINENT) -->
+      <div class="catalog-card" style="border: 1.5px solid rgba(229, 195, 120, 0.6); background: linear-gradient(135deg, rgba(38, 26, 68, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);" onclick="openMiniNatalModal()">
         <div>
-          <span class="cat-badge" style="background: var(--gold-btn); color: #120C22; font-weight: 800;">⭐ Хит · Экспресс-разбор</span>
-          <div class="cat-title">🎯 Разбор повторяющегося сценария</div>
-          <div class="cat-desc">Точечный анализ одной актуальной темы: почему сценарий повторяется, какие натальные факторы за этим стоят и практический фокус на ближайшее время.</div>
+          <span class="cat-badge" style="background: rgba(16, 185, 129, 0.25); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.4);">✨ 100% Бесплатно · Базовый разбор</span>
+          <div class="cat-title">🪐 Натальная матрица & Код личности</div>
+          <div class="cat-desc">Фундаментальный астрологический разбор: точные координаты Солнца, Луны и Асцендента, ядро воли, эмоциональная глубина и суперсила.</div>
           <div class="cat-points">
-            <div class="cat-point">✨ Причина повторяющегося сценария в карте</div>
-            <div class="cat-point">🔍 Разбор конкретной ситуации: отношения, деньги или выбор</div>
-            <div class="cat-point">🧭 1 конструктивный фокус и ориентир действий</div>
+            <div class="cat-point">☀️ Глава 1: Солнце и истинное «Я»</div>
+            <div class="cat-point">🌙 Глава 2: Луна, зона комфорта и эмоции</div>
+            <div class="cat-point">↑ Глава 3: Асцендент и социальный образ</div>
+            <div class="cat-point">🔮 Глава 4: Синтез триады и 3 ключа силы</div>
+          </div>
+        </div>
+        <div class="cat-footer">
+          <div>
+            <div style="font-size: 10px; color: #10B981; font-weight: 700; text-transform: uppercase;">Доступ</div>
+            <div class="cat-price" style="color: #6EE7B7;">0 ₽</div>
+          </div>
+          <button class="cat-btn" style="background: var(--gold-btn); color: #120C22;">Читать бесплатно →</button>
+        </div>
+      </div>
+
+      <!-- 2. TRIPWIRE PRODUCT (EXPRESS SCENARIO 99 ₽) -->
+      <div class="catalog-card" id="catTripwireCard" style="border: 1.5px solid rgba(243, 186, 47, 0.7); background: linear-gradient(135deg, rgba(46, 26, 71, 0.95) 0%, rgba(20, 14, 38, 0.98) 100%);" onclick="openTripwireModal()">
+        <div>
+          <span class="cat-badge" style="background: var(--gold-btn); color: #120C22; font-weight: 800;">⭐ Хит · Экспресс-аудит</span>
+          <div class="cat-title">🎯 Разбор повторяющегося сценария</div>
+          <div class="cat-desc">Точечный интерактивный аудит: почему ситуация в отношениях, финансах или карьере повторяется по кругу, психологическая слепая зона и пошаговый алгоритм выхода.</div>
+          <div class="cat-points">
+            <div class="cat-point">🔍 Натальный корень паттерна по карте</div>
+            <div class="cat-point">🏠 Учёт семейного статуса, детей и работы</div>
+            <div class="cat-point">⚡ Теневая ловушка и слепая зона</div>
+            <div class="cat-point">🗝️ 4 персональных натальных ключа выхода</div>
           </div>
         </div>
         <div class="cat-footer">
@@ -1535,136 +1594,18 @@
         </div>
       </div>
 
-      <!-- 1. NATAL BOOK PRO (UNTOUCHED GOLD STANDARD) -->
-      <div class="catalog-card" data-category="me" onclick="showProductModal('natal')">
-        <div>
-          <span class="cat-badge">Фундаментальный разбор</span>
-          <div class="cat-title">🪐 Натальная книга личности PRO</div>
-          <div class="cat-desc">Глубокое исследование твоей природы: 16 глав, психологический портрет, таланты, скрытые триггеры и персональная стратегия развития.</div>
-          <div class="cat-points">
-            <div class="cat-point">✨ Твой психологический код и истинная мотивация</div>
-            <div class="cat-point">✨ Внутренние конфликты и точки душевного баланса</div>
-            <div class="cat-point">✨ 7 персональных опор для роста во всех сферах</div>
-          </div>
+      <!-- 3. UPCOMING REPORTS TEASER -->
+      <div class="card" style="border: 1px dashed rgba(229, 195, 120, 0.35); background: rgba(22, 18, 38, 0.45); text-align: center; padding: 18px 14px; margin-top: 10px;">
+        <span style="font-size: 10px; background: rgba(139, 92, 246, 0.2); color: #DDD6FE; border: 1px solid rgba(139, 92, 246, 0.4); padding: 3px 10px; border-radius: 12px; font-weight: 700; text-transform: uppercase;">В разработке · Скоро</span>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #E2DFEC; margin: 8px 0 4px 0;">
+          📖 Тематические книги и совместимость
         </div>
-        <div class="cat-footer">
-          <div class="cat-price">1 490 ₽</div>
-          <button class="cat-btn">Исследовать →</button>
-        </div>
+        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45; margin: 0;">
+          Полные исследования по сферам «Любовь & Отношения», «Финансовый код», «Реализация» и «Детская карта» находятся в финальной доработке и появятся в следующих версиях.
+        </p>
       </div>
 
-      <!-- 2. LOVE -->
-      <div class="catalog-card" data-category="love" onclick="showProductModal('synastry')">
-        <div>
-          <span class="cat-badge">Сфера чувств</span>
-          <div class="cat-title">❤️ Любовь & Отношения</div>
-          <div class="cat-desc">Полноценное персональное исследование: язык любви, психология привязанности, скрытые триггеры и ключи к безопасному доверию.</div>
-          <div class="cat-points">
-            <div class="cat-point">💗 Твой стиль проявления чувств и привязанности</div>
-            <div class="cat-point">🧲 Что тебя по-настоящему привлекает в партнере</div>
-            <div class="cat-point">💥 Причины непонимания и ключи к доверию</div>
-          </div>
-        </div>
-        <div class="cat-footer">
-          <div class="cat-price">690 ₽</div>
-          <button class="cat-btn">Исследовать →</button>
-        </div>
-      </div>
-
-      <!-- 3. FINANCE -->
-      <div class="catalog-card" data-category="money" onclick="showProductModal('finance')">
-        <div>
-          <span class="cat-badge">Материальный поток</span>
-          <div class="cat-title">💎 Финансовый код & Деньги</div>
-          <div class="cat-desc">Глубокий анализ финансовых сценариев: природные каналы заработка, психология трат, снятие блоков и стратегия устойчивого роста без выгорания.</div>
-          <div class="cat-points">
-            <div class="cat-point">💰 Твои природные источники дохода и ресурсы</div>
-            <div class="cat-point">⚖️ Отношение к деньгам, накоплениям и тратам</div>
-            <div class="cat-point">📈 Стратегия устойчивого финансового роста</div>
-          </div>
-        </div>
-        <div class="cat-footer">
-          <div class="cat-price">690 ₽</div>
-          <button class="cat-btn">Исследовать →</button>
-        </div>
-      </div>
-
-      <!-- 4. PURPOSE -->
-      <div class="catalog-card" data-category="purpose" onclick="showProductModal('purpose')">
-        <div>
-          <span class="cat-badge">Призвание</span>
-          <div class="cat-title">🎯 Реализация & Предназначение</div>
-          <div class="cat-desc">Твои профессиональные сильные стороны, естественный стиль лидерства, выбор формата (найм/фриланс/бизнес) и преодоление плато.</div>
-          <div class="cat-points">
-            <div class="cat-point">🌟 Твой уникальные таланты и ценность для мира</div>
-            <div class="cat-point">🏢 Найм, фриланс или собственный проект: твой формат</div>
-            <div class="cat-point">🧭 Направление для масштабного профессионального раскрытия</div>
-          </div>
-        </div>
-        <div class="cat-footer">
-          <div class="cat-price">690 ₽</div>
-          <button class="cat-btn">Исследовать →</button>
-        </div>
-      </div>
-
-      <!-- 5. FRIENDS -->
-      <div class="catalog-card" data-category="love" onclick="showProductModal('friends')">
-        <div>
-          <span class="cat-badge">Окружение</span>
-          <div class="cat-title">👭 Друзья & Социум</div>
-          <div class="cat-desc">Как ты формируешь близкий круг, твоя социальная роль, экологичные границы без чувства вины и ресурсное общение.</div>
-          <div class="cat-points">
-            <div class="cat-point">🤝 Твой стиль дружбы и социальные роли</div>
-            <div class="cat-point">🛡️ Личные границы в общении без чувства вины</div>
-            <div class="cat-point">🌱 Как формировать поддерживающее окружение</div>
-          </div>
-        </div>
-        <div class="cat-footer">
-          <div class="cat-price">690 ₽</div>
-          <button class="cat-btn">Исследовать →</button>
-        </div>
-      </div>
-
-      <!-- 6. KIDS (ZERO DEFAULT CHILD) -->
-      <div class="catalog-card" data-category="family" onclick="handleKidsCardClick()">
-        <div>
-          <span class="cat-badge">Детский гороскоп</span>
-          <div class="cat-title">👶 Детская карта PRO</div>
-          <div class="cat-desc">Глубокий психологический портрет ребенка: особенности мышления, таланты, эмоциональные потребности и ключи для бережного воспитания.</div>
-          <div class="cat-points">
-            <div class="cat-point">🧠 Как ребенок воспринимает мир и усваивает новое</div>
-            <div class="cat-point">🎨 Врожденные способности и потенциал для развития</div>
-            <div class="cat-point">🗝️ Ключи к доверительному общению без давления</div>
-          </div>
-        </div>
-        <div class="cat-footer">
-          <div class="cat-price">1 490 ₽</div>
-          <button class="cat-btn">Исследовать →</button>
-        </div>
-      </div>
-
-      <!-- 7. SOLAR -->
-      <div class="catalog-card" data-category="me" onclick="showProductModal('solar')">
-        <div>
-          <span class="cat-badge">Годовой прогноз</span>
-          <div class="cat-title">💫 Персональный Соляр</div>
-          <div class="cat-desc">Индивидуальный прогноз на твой личный астрологический год: главные темы, периоды активности и фокус внимания по кварталам.</div>
-          <div class="cat-points">
-            <div class="cat-point">✨ Главный лейтмотив твоего персонального года</div>
-            <div class="cat-point">📅 Поквартальная динамика и ключевые периоды</div>
-            <div class="cat-point">🧭 На что направить силы для максимального результата</div>
-          </div>
-        </div>
-        <div class="cat-footer">
-          <div class="cat-price">2 990 ₽</div>
-          <button class="cat-btn">Исследовать →</button>
-        </div>
-      </div>
-
-      <!-- 💎 SUBSCRIPTION TEASER BANNER IN CATALOG -->
-      <div class="card" style="border: 1.5px solid rgba(139, 92, 246, 0.5); background: linear-gradient(135deg, rgba(38, 22, 60, 0.9) 0%, rgba(18, 12, 34, 0.95) 100%); text-align: center; padding: 18px 16px;">
-        <div style="font-size: 11px; font-weight: 800; color: #A78BFA; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">💎 Подписка Luna Plus</div>
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 700; color: #FFF; margin-bottom: 6px;">Регулярный диалог с твоей картой</div>
+    </div>
         <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 14px; line-height: 1.45;">
           Подключи тариф от 299 ₽/мес: 30–200 персональных AI-запросов, прогнозы и глубокие разборы.
         </div>
@@ -1738,7 +1679,7 @@
       </div>
       <div class="chat-input-bar">
         <input type="text" id="chatInput" class="chat-input" placeholder="Напиши свой вопрос к карте..." onkeypress="if(event.key==='Enter') sendChatMessage()">
-        <button class="btn-gold" style="width: auto; padding: 10px 18px; border-radius: 12px;" onclick="sendChatMessage()">
+        <button class="chat-send-btn" onclick="sendChatMessage()" title="Отправить">
           ➤
         </button>
       </div>
@@ -3785,6 +3726,45 @@
       advText.textContent = getPersonalDailyAdvice(userNatalData.sun, userNatalData.moon, userNatalData.asc, userNatalData.date);
     }
 
+    // Update Home Tripwire Card based on purchased state
+    const twCard = document.getElementById('homeTripwireCard');
+    if (twCard) {
+      if (isTripwirePurchased()) {
+        const twData = getPurchasedTripwireData();
+        const tTitle = twData ? twData.topicTitle : 'Разбор повторяющегося сценария';
+        twCard.innerHTML = `
+          <div class="tripwire-badge" style="background: rgba(16, 185, 129, 0.25); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.45);">✅ Твой разбор готов</div>
+          <div class="tripwire-title">🎯 ${escapeHtml(tTitle)}</div>
+          <div class="tripwire-desc">Твой персональный аудит натального сценария сохранён и готов к изучению в любое время.</div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="btn-gold" style="padding: 11px 16px; font-size: 13.5px;" onclick="openPurchasedTripwireModal()">
+              Читать мой разбор →
+            </button>
+            <button class="btn-outline" style="padding: 11px 14px; font-size: 12px;" onclick="openTripwireModal()">
+              Пересчитать ✎
+            </button>
+          </div>
+        `;
+      } else {
+        twCard.innerHTML = `
+          <div class="tripwire-badge">🔥 Хит · Экспресс-разбор 99 ₽</div>
+          <div class="tripwire-title">🎯 Разбор повторяющегося сценария</div>
+          <div class="tripwire-desc">
+            Почему ситуация в отношениях, финансах или работе повторяется по кругу? Разбери свой ключевой паттерн по натальной карте.
+          </div>
+          <div class="tripwire-chips">
+            <span class="tripwire-chip-item">❤️ Отношения</span>
+            <span class="tripwire-chip-item">💰 Финансы</span>
+            <span class="tripwire-chip-item">🎯 Реализация</span>
+            <span class="tripwire-chip-item">🧭 Выбор</span>
+          </div>
+          <button class="btn-gold" style="padding: 11px 16px; font-size: 13.5px;" onclick="openTripwireModal()">
+            Разобрать сценарий за 99 ₽ →
+          </button>
+        `;
+      }
+    }
+
     renderChildrenList();
   }
 
@@ -4103,6 +4083,27 @@
   };
 
   function updateCatalogCardsUI() {
+    const catTw = document.getElementById('catTripwireCard');
+    if (catTw) {
+      if (isTripwirePurchased()) {
+        const btn = catTw.querySelector('.cat-btn');
+        if (btn) {
+          btn.innerHTML = '📖 Читать мой разбор ✨';
+          btn.style.background = 'linear-gradient(135deg, #10B981 0%, #059669 100%)';
+          btn.style.color = '#FFF';
+        }
+        const badge = catTw.querySelector('.cat-badge');
+        if (badge) {
+          badge.innerHTML = '✅ Разбор готов';
+          badge.style.background = 'rgba(16, 185, 129, 0.25)';
+          badge.style.color = '#6EE7B7';
+        }
+        catTw.onclick = openPurchasedTripwireModal;
+      } else {
+        catTw.onclick = () => openTripwireModal();
+      }
+    }
+
     const purchased = getPurchasedReports();
     const cards = document.querySelectorAll('.catalog-card');
     cards.forEach(card => {
@@ -4830,26 +4831,49 @@
     if (credits <= 0) {
       haptic('warning');
       trackLunaEvent('credits_exhausted');
-      openModal(`
-        <div style="text-align: center; padding: 10px 4px 16px;">
-          <div style="font-size: 34px; margin-bottom: 8px;">⚡</div>
-          <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
-            Бесплатный вопрос завершён
+      if (isTripwirePurchased()) {
+        openModal(`
+          <div style="text-align: center; padding: 10px 4px 16px;">
+            <div style="font-size: 34px; margin-bottom: 8px;">⚡</div>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+              Бесплатный вопрос завершён
+            </div>
+            <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
+              Ты задала свой бесплатный вопрос к карте. Твой персональный разбор сценария сохранён в профиле. Чтобы продолжить глубокий диалог с LUNA в чате:
+            </p>
+            <button class="btn-gold" style="margin-bottom: 10px;" onclick="closeModal(); openTopUpModal();">
+              ⚡ Докупить 15 запросов (99 ₽)
+            </button>
+            <button class="btn-outline" style="margin-bottom: 10px;" onclick="closeModal(); openPurchasedTripwireModal();">
+              📖 Открыть мой разбор сценария
+            </button>
+            <button class="btn-outline" style="opacity: 0.85; font-size: 12px;" onclick="closeModal(); openSubscriptionModal();">
+              💎 Безлимитная подписка LUNA
+            </button>
           </div>
-          <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
-            Ты задала свой бесплатный вопрос к карте. Чтобы детально разобрать свой повторяющийся тупик в отношениях, деньгах или призвании:
-          </p>
-          <button class="btn-gold" style="margin-bottom: 10px;" onclick="closeModal(); openTripwireModal();">
-            🎯 Разобрать сценарий по карте за 99 ₽ →
-          </button>
-          <button class="btn-outline" style="margin-bottom: 10px;" onclick="closeModal(); openTopUpModal();">
-            ⚡ Пакет запросов (99 ₽ за 15 шт.)
-          </button>
-          <button class="btn-outline" style="opacity: 0.85; font-size: 12px;" onclick="closeModal(); openSubscriptionModal();">
-            💎 Безлимитная подписка LUNA
-          </button>
-        </div>
-      `);
+        `);
+      } else {
+        openModal(`
+          <div style="text-align: center; padding: 10px 4px 16px;">
+            <div style="font-size: 34px; margin-bottom: 8px;">⚡</div>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+              Бесплатный вопрос завершён
+            </div>
+            <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
+              Ты задала свой бесплатный вопрос к карте. Чтобы детально разобрать свой повторяющийся тупик в отношениях, деньгах или призвании:
+            </p>
+            <button class="btn-gold" style="margin-bottom: 10px;" onclick="closeModal(); openTripwireModal();">
+              🎯 Разобрать сценарий по карте за 99 ₽ →
+            </button>
+            <button class="btn-outline" style="margin-bottom: 10px;" onclick="closeModal(); openTopUpModal();">
+              ⚡ Пакет запросов (99 ₽ за 15 шт.)
+            </button>
+            <button class="btn-outline" style="opacity: 0.85; font-size: 12px;" onclick="closeModal(); openSubscriptionModal();">
+              💎 Безлимитная подписка LUNA
+            </button>
+          </div>
+        `);
+      }
       return;
     }
 
@@ -4887,13 +4911,22 @@
       responded = true;
       let finalHtml = html;
       if (getUserCredits() <= 0) {
-        finalHtml += `
-          <div style="margin-top: 14px; padding: 10px 12px; background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 12px; font-size: 12px; color: #FFE8A3; line-height: 1.45;">
-            ✨ <b>Бесплатный вопрос к карте завершен.</b><br>
-            Если хочешь разобрать, почему в твоей жизни повторяется тупик в отношениях, деньгах или карьере — открой 
-            <span style="text-decoration: underline; font-weight: 800; cursor: pointer; color: #FFF;" onclick="openTripwireModal()">Экспресс-разбор за 99 ₽ →</span>
-          </div>
-        `;
+        if (isTripwirePurchased()) {
+          finalHtml += `
+            <div style="margin-top: 14px; padding: 10px 12px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 12px; font-size: 12px; color: #6EE7B7; line-height: 1.45;">
+              ✨ <b>Бесплатный вопрос к карте завершен.</b><br>
+              Твой персональный разбор сценария сохранён в профиле. <span style="text-decoration: underline; font-weight: 800; cursor: pointer; color: #FFF;" onclick="openPurchasedTripwireModal()">Открыть готовый разбор →</span>
+            </div>
+          `;
+        } else {
+          finalHtml += `
+            <div style="margin-top: 14px; padding: 10px 12px; background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 12px; font-size: 12px; color: #FFE8A3; line-height: 1.45;">
+              ✨ <b>Бесплатный вопрос к карте завершен.</b><br>
+              Если хочешь разобрать, почему в твоей жизни повторяется тупик в отношениях, деньгах или карьере — открой 
+              <span style="text-decoration: underline; font-weight: 800; cursor: pointer; color: #FFF;" onclick="openTripwireModal()">Экспресс-разбор за 99 ₽ →</span>
+            </div>
+          `;
+        }
       }
       typingBubble.innerHTML = finalHtml;
       appendToChatHistory('bot', finalHtml);
@@ -5159,6 +5192,26 @@
   }
 
   // ================= 6. TRIPWIRE (99 ₽) INTERACTIVE MODAL & DEEP ENGINE =================
+  function getStorageKeyTripwire() { return 'luna_user_tripwire_' + currentUserId; }
+  function isTripwirePurchased() {
+    return !!localStorage.getItem(getStorageKeyTripwire());
+  }
+  function getPurchasedTripwireData() {
+    try {
+      const raw = localStorage.getItem(getStorageKeyTripwire());
+      return raw ? JSON.parse(raw) : null;
+    } catch(e) { return null; }
+  }
+  function openPurchasedTripwireModal() {
+    const data = getPurchasedTripwireData();
+    if (!data || !data.reportHtml) {
+      openTripwireModal();
+      return;
+    }
+    haptic('success');
+    openModal(data.reportHtml);
+  }
+
   let twState = {
     topic: 'relations',
     family: 'relationship',
@@ -5405,11 +5458,27 @@
           <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 12px; line-height: 1.4;">
             Фундаментальная Натальная книга PRO раскрывает все 16 глав, аспекты планет и персональную стратегию судьбы.
           </div>
-          <button class="btn-gold" style="padding: 10px 16px; font-size: 13px;" onclick="closeModal(); showProductModal('natal');">
-            Открыть Натальную книгу PRO →
+          <button class="btn-gold" style="padding: 10px 16px; font-size: 13px;" onclick="closeModal(); switchTab('today');">
+            ✨ Готово
           </button>
         </div>
       `;
+
+      // Save purchased tripwire report permanently in user storage
+      const tripwireRecord = {
+        purchasedAt: new Date().toISOString(),
+        topic: topic,
+        topicTitle: topicTitle,
+        family: family,
+        kids: kids,
+        job: job,
+        situation: situation,
+        reportHtml: reportHtml
+      };
+      localStorage.setItem(getStorageKeyTripwire(), JSON.stringify(tripwireRecord));
+      updateNatalUI();
+      updateCatalogCardsUI();
+
       openModal(reportHtml);
     }, 1100);
   }
