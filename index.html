@@ -1370,10 +1370,13 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label">📍 Город рождения (выбери из списка или напиши свой)</label>
+          <label class="form-label">📍 Город / населённый пункт рождения</label>
           <div class="city-input-wrap">
-            <input type="text" id="obCity" class="form-input" placeholder="Начни вводить: Москва, Екатеринбург, Сочи..." autocomplete="off">
+            <input type="text" id="obCity" class="form-input" placeholder="Начни вводить: Красноуральск, Москва..." autocomplete="off">
             <div class="city-dropdown" id="obCityDropdown"></div>
+          </div>
+          <div id="obCityConfirmedBadge" style="display: none; margin-top: 5px; font-size: 11.5px; color: #10B981; align-items: center; gap: 4px;">
+            ✓ <span id="obCityConfirmedText"></span>
           </div>
         </div>
 
@@ -2089,9 +2092,31 @@
   const CITIES_DB = [
     { city: "Москва", region: "Московская обл.", country: "Россия", lat: 55.75, lng: 37.61, tz: 3 },
     { city: "Санкт-Петербург", region: "Ленинградская обл.", country: "Россия", lat: 59.93, lng: 30.33, tz: 3 },
+    { city: "Красноуральск", region: "Свердловская область", country: "Россия", lat: 58.35, lng: 60.05, tz: 5 },
+    { city: "Екатеринбург", region: "Свердловская область", country: "Россия", lat: 56.83, lng: 60.60, tz: 5 },
+    { city: "Нижний Тагил", region: "Свердловская область", country: "Россия", lat: 57.91, lng: 59.98, tz: 5 },
+    { city: "Первоуральск", region: "Свердловская область", country: "Россия", lat: 56.90, lng: 59.94, tz: 5 },
+    { city: "Каменск-Уральский", region: "Свердловская область", country: "Россия", lat: 56.41, lng: 61.93, tz: 5 },
+    { city: "Серов", region: "Свердловская область", country: "Россия", lat: 59.60, lng: 60.57, tz: 5 },
+    { city: "Новоуральск", region: "Свердловская область", country: "Россия", lat: 57.24, lng: 60.08, tz: 5 },
+    { city: "Асбест", region: "Свердловская область", country: "Россия", lat: 57.01, lng: 61.46, tz: 5 },
+    { city: "Полевской", region: "Свердловская область", country: "Россия", lat: 56.44, lng: 60.18, tz: 5 },
+    { city: "Ревда", region: "Свердловская область", country: "Россия", lat: 56.80, lng: 59.91, tz: 5 },
+    { city: "Краснотурьинск", region: "Свердловская область", country: "Россия", lat: 59.76, lng: 60.20, tz: 5 },
+    { city: "Верхняя Пышма", region: "Свердловская область", country: "Россия", lat: 56.97, lng: 60.58, tz: 5 },
+    { city: "Берёзовский", region: "Свердловская область", country: "Россия", lat: 56.91, lng: 60.80, tz: 5 },
+    { city: "Лесной", region: "Свердловская область", country: "Россия", lat: 58.63, lng: 59.79, tz: 5 },
+    { city: "Качканар", region: "Свердловская область", country: "Россия", lat: 58.70, lng: 59.48, tz: 5 },
+    { city: "Алапаевск", region: "Свердловская область", country: "Россия", lat: 57.85, lng: 61.70, tz: 5 },
+    { city: "Реж", region: "Свердловская область", country: "Россия", lat: 57.37, lng: 61.40, tz: 5 },
+    { city: "Сухой Лог", region: "Свердловская область", country: "Россия", lat: 56.91, lng: 62.04, tz: 5 },
+    { city: "Кушва", region: "Свердловская область", country: "Россия", lat: 58.28, lng: 59.76, tz: 5 },
+    { city: "Верхняя Тура", region: "Свердловская область", country: "Россия", lat: 58.36, lng: 59.81, tz: 5 },
+    { city: "Нижняя Тура", region: "Свердловская область", country: "Россия", lat: 58.62, lng: 59.84, tz: 5 },
+    { city: "Сысерть", region: "Свердловская область", country: "Россия", lat: 56.50, lng: 60.81, tz: 5 },
+    { city: "Арамиль", region: "Свердловская область", country: "Россия", lat: 56.70, lng: 60.83, tz: 5 },
     { city: "Пушкино", region: "Московская обл.", country: "Россия", lat: 56.01, lng: 37.85, tz: 3 },
     { city: "Пушкин", region: "Санкт-Петербург", country: "Россия", lat: 59.71, lng: 30.41, tz: 3 },
-    { city: "Екатеринбург", region: "Свердловская обл.", country: "Россия", lat: 56.83, lng: 60.60, tz: 5 },
     { city: "Новосибирск", region: "Новосибирская обл.", country: "Россия", lat: 55.03, lng: 82.92, tz: 7 },
     { city: "Казань", region: "Республика Татарстан", country: "Россия", lat: 55.79, lng: 49.12, tz: 3 },
     { city: "Нижний Новгород", region: "Нижегородская обл.", country: "Россия", lat: 56.32, lng: 44.00, tz: 3 },
@@ -2100,6 +2125,7 @@
     { city: "Уфа", region: "Республика Башкортостан", country: "Россия", lat: 54.73, lng: 55.95, tz: 5 },
     { city: "Ростов-на-Дону", region: "Ростовская обл.", country: "Россия", lat: 47.23, lng: 39.72, tz: 3 },
     { city: "Краснодар", region: "Краснодарский край", country: "Россия", lat: 45.03, lng: 38.97, tz: 3 },
+    { city: "Сочи", region: "Краснодарский край", country: "Россия", lat: 43.58, lng: 39.72, tz: 3 },
     { city: "Омск", region: "Омская обл.", country: "Россия", lat: 54.98, lng: 73.36, tz: 6 },
     { city: "Красноярск", region: "Красноярский край", country: "Россия", lat: 56.01, lng: 92.85, tz: 7 },
     { city: "Воронеж", region: "Воронежская обл.", country: "Россия", lat: 51.66, lng: 39.20, tz: 3 },
@@ -2135,14 +2161,12 @@
     { city: "Магнитогорск", region: "Челябинская обл.", country: "Россия", lat: 53.41, lng: 58.98, tz: 5 },
     { city: "Тверь", region: "Тверская обл.", country: "Россия", lat: 56.85, lng: 35.90, tz: 3 },
     { city: "Ставрополь", region: "Ставропольский край", country: "Россия", lat: 45.04, lng: 41.97, tz: 3 },
-    { city: "Сочи", region: "Краснодарский край", country: "Россия", lat: 43.58, lng: 39.72, tz: 3 },
     { city: "Белгород", region: "Белгородская обл.", country: "Россия", lat: 50.59, lng: 36.58, tz: 3 },
     { city: "Архангельск", region: "Архангельская обл.", country: "Россия", lat: 64.54, lng: 40.53, tz: 3 },
     { city: "Владимир", region: "Владимирская обл.", country: "Россия", lat: 56.12, lng: 40.40, tz: 3 },
     { city: "Севастополь", region: "Крым", country: "Россия", lat: 44.61, lng: 33.52, tz: 3 },
     { city: "Симферополь", region: "Крым", country: "Россия", lat: 44.95, lng: 34.10, tz: 3 },
     { city: "Сургут", region: "ХМАО", country: "Россия", lat: 61.25, lng: 73.41, tz: 5 },
-    { city: "Нижний Тагил", region: "Свердловская обл.", country: "Россия", lat: 57.91, lng: 59.98, tz: 5 },
     { city: "Калуга", region: "Калужская обл.", country: "Россия", lat: 54.52, lng: 36.27, tz: 3 },
     { city: "Чита", region: "Забайкальский край", country: "Россия", lat: 52.03, lng: 113.50, tz: 9 },
     { city: "Грозный", region: "Чеченская Республика", country: "Россия", lat: 43.31, lng: 45.69, tz: 3 },
@@ -2200,10 +2224,25 @@
     { city: "Пхукет", region: "Пхукет", country: "Таиланд", lat: 7.88, lng: 98.39, tz: 7 }
   ];
 
-  function setupCityAutocomplete(inputId, dropdownId) {
+  function setupCityAutocomplete(inputId, dropdownId, badgeId, badgeTextId) {
     const input = document.getElementById(inputId);
     const dropdown = document.getElementById(dropdownId);
+    const badge = badgeId ? document.getElementById(badgeId) : null;
+    const badgeText = badgeTextId ? document.getElementById(badgeTextId) : null;
     if (!input || !dropdown) return;
+
+    let debounceTimer = null;
+
+    function selectCity(item) {
+      input.value = item.city;
+      input.dataset.cityObj = JSON.stringify(item);
+      if (badge && badgeText) {
+        badgeText.textContent = `${item.city}, ${item.region}, ${item.country}`;
+        badge.style.display = 'flex';
+      }
+      dropdown.style.display = 'none';
+      haptic('light');
+    }
 
     function renderList(query) {
       const q = (query || '').toLowerCase().trim();
@@ -2212,13 +2251,68 @@
         matches = CITIES_DB.slice(0, 8);
       } else {
         matches = CITIES_DB.filter(item => 
-          item.city.toLowerCase().includes(q) || item.region.toLowerCase().includes(q) || item.country.toLowerCase().includes(q)
+          item.city.toLowerCase().includes(q) || 
+          item.region.toLowerCase().includes(q) || 
+          item.country.toLowerCase().includes(q)
         ).slice(0, 10);
       }
 
       if (matches.length === 0) {
-        dropdown.innerHTML = `<div class="city-dropdown-item" style="color: #94A3B8; font-style: italic;">Будет использован введенный город: «${escapeHtml(query)}»</div>`;
+        dropdown.innerHTML = `
+          <div class="city-dropdown-item" style="color: #94A3B8; font-style: italic;">
+            <span>Поиск по картам для «${escapeHtml(query)}»...</span>
+          </div>
+        `;
         dropdown.style.display = 'block';
+
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(async () => {
+          try {
+            const resp = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&addressdetails=1&limit=5&accept-language=ru`);
+            const data = await resp.json();
+            if (Array.isArray(data) && data.length > 0) {
+              const onlineMatches = data.map((item, i) => {
+                const addr = item.address || {};
+                const name = addr.city || addr.town || addr.village || addr.municipality || item.display_name.split(',')[0];
+                const region = addr.state || addr.county || addr.region || 'Регион';
+                const country = addr.country || 'Страна';
+                const lat = parseFloat(item.lat);
+                const lng = parseFloat(item.lon);
+                let tz = 3;
+                if (lng > 50 && lng <= 65) tz = 5;
+                else if (lng > 65 && lng <= 80) tz = 6;
+                else if (lng > 80 && lng <= 95) tz = 7;
+                else if (lng > 95 && lng <= 110) tz = 8;
+                else if (lng > 110 && lng <= 125) tz = 9;
+                else if (lng > 125) tz = 10;
+                else if (lng < 25) tz = 2;
+                return { city: name, region, country, lat, lng, tz, id: 'geo_' + i };
+              });
+
+              dropdown.innerHTML = onlineMatches.map((m, idx) => `
+                <div class="city-dropdown-item" data-online-idx="${idx}">
+                  <span>📍 <b>${escapeHtml(m.city)}</b></span>
+                  <span class="city-item-region">${escapeHtml(m.region)}, ${escapeHtml(m.country)}</span>
+                </div>
+              `).join('');
+
+              dropdown.querySelectorAll('[data-online-idx]').forEach(el => {
+                el.addEventListener('click', (e) => {
+                  e.stopPropagation();
+                  const idx = parseInt(el.getAttribute('data-online-idx'), 10);
+                  const item = onlineMatches[idx];
+                  if (item) selectCity(item);
+                });
+              });
+              dropdown.style.display = 'block';
+            } else {
+              dropdown.innerHTML = `<div class="city-dropdown-item" style="color: #F87171;">Не удалось найти такой город. Проверь написание или выбери вариант из списка.</div>`;
+              dropdown.style.display = 'block';
+            }
+          } catch(err) {
+            dropdown.innerHTML = `<div class="city-dropdown-item" style="color: #94A3B8;">Будет использован введенный город: «${escapeHtml(query)}»</div>`;
+          }
+        }, 400);
         return;
       }
 
@@ -2234,11 +2328,7 @@
           e.stopPropagation();
           const idx = parseInt(el.getAttribute('data-idx'), 10);
           const item = matches[idx];
-          if (item) {
-            input.value = item.city;
-            input.dataset.cityObj = JSON.stringify(item);
-          }
-          dropdown.style.display = 'none';
+          if (item) selectCity(item);
         });
       });
 
@@ -2250,6 +2340,7 @@
     });
 
     input.addEventListener('input', () => {
+      if (badge) badge.style.display = 'none';
       renderList(input.value);
     });
 
@@ -3943,7 +4034,13 @@
     if (pName) pName.textContent = userNatalData.name || '—';
     if (pDate) pDate.textContent = userNatalData.date || '—';
     if (pTime) pTime.textContent = userNatalData.time || 'Не указано';
-    if (pCity) pCity.textContent = userNatalData.city || '—';
+    if (pCity) {
+      if (userNatalData.cityObj) {
+        pCity.textContent = `${userNatalData.cityObj.city}, ${userNatalData.cityObj.region}, ${userNatalData.cityObj.country}`;
+      } else {
+        pCity.textContent = userNatalData.city || '—';
+      }
+    }
     if (pUid) pUid.textContent = currentUserId;
 
     // Deep personal daily advice tailored to user's Sun, Moon and Ascendant
@@ -4040,7 +4137,13 @@
       return;
     }
 
-    const natal = getCalculatedNatal(date, time);
+    let cityObj = null;
+    const obInp = document.getElementById('obCity');
+    if (obInp && obInp.dataset && obInp.dataset.cityObj) {
+      try { cityObj = JSON.parse(obInp.dataset.cityObj); } catch(e){}
+    }
+
+    const natal = getCalculatedNatal(date, time, cityObj);
     userNatalData = {
       user_id: currentUserId,
       name: name || 'Гость',
@@ -4048,6 +4151,7 @@
       birthDate: date,
       time: time,
       city: city || 'Не указан',
+      cityObj: cityObj,
       sun: natal.sun,
       moon: natal.moon,
       asc: natal.asc,
@@ -4131,8 +4235,11 @@
       <div class="form-group">
         <label class="form-label">📍 Город рождения (выбери из списка или напиши свой)</label>
         <div class="city-input-wrap">
-          <input type="text" id="editCity" class="form-input" value="${userNatalData ? escapeHtml(userNatalData.city || '') : ''}" placeholder="Начни вводить: Москва, Екатеринбург..." autocomplete="off">
+          <input type="text" id="editCity" class="form-input" value="${userNatalData ? escapeHtml(userNatalData.city || '') : ''}" placeholder="Начни вводить: Красноуральск, Москва..." autocomplete="off">
           <div class="city-dropdown" id="editCityDropdown"></div>
+        </div>
+        <div id="editCityConfirmedBadge" style="display: none; margin-top: 5px; font-size: 11.5px; color: #10B981; align-items: center; gap: 4px;">
+          ✓ <span id="editCityConfirmedText"></span>
         </div>
       </div>
       <button class="btn-gold" style="margin-top: 14px;" onclick="saveEditedProfile()">
@@ -4140,7 +4247,7 @@
       </button>
     `;
     openModal(html);
-    setupCityAutocomplete('editCity', 'editCityDropdown');
+    setupCityAutocomplete('editCity', 'editCityDropdown', 'editCityConfirmedBadge', 'editCityConfirmedText');
   }
 
   function saveEditedProfile() {
@@ -4154,7 +4261,16 @@
       return;
     }
 
-    const natal = getCalculatedNatal(date, time);
+    let cityObj = null;
+    const editInp = document.getElementById('editCity');
+    if (editInp && editInp.dataset && editInp.dataset.cityObj) {
+      try { cityObj = JSON.parse(editInp.dataset.cityObj); } catch(e){}
+    }
+    if (!cityObj && userNatalData && userNatalData.cityObj) {
+      cityObj = userNatalData.cityObj;
+    }
+
+    const natal = getCalculatedNatal(date, time, cityObj);
     userNatalData = {
       user_id: currentUserId,
       name: name || 'Гость',
@@ -4162,6 +4278,7 @@
       birthDate: date,
       time: time,
       city: city || 'Не указан',
+      cityObj: cityObj,
       sun: natal.sun,
       moon: natal.moon,
       asc: natal.asc,
@@ -6665,10 +6782,10 @@
     const html = `
       <div style="padding: 6px 2px 14px;">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
-          💎 Подписка Luna Plus
+          💎 Подписка LUNA Plus
         </div>
         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
-          Постоянный доступ к персональному AI-астрологу с ежемесячным балансом.
+          Постоянный доступ к персональному AI-астрологу с ежемесячным балансом запросов.
         </div>
 
         <!-- START PLAN -->
@@ -6680,7 +6797,7 @@
             • Расширенные подсказки карты и транзитов<br>
             • Сохранение контекста переписки
           </div>
-          <button class="btn-outline" style="padding: 9px;" onclick="selectSubscriptionPlan('Start', 299, 30)">
+          <button class="btn-outline" style="padding: 9px;" onclick="openSubscriptionCheckoutModal('Start', 299, 30)">
             Подключить за 299 ₽
           </button>
         </div>
@@ -6695,22 +6812,25 @@
             • Полные недельные срезы и советы Луны<br>
             • Приоритетная скорость ответов
           </div>
-          <button class="btn-gold" style="padding: 10px;" onclick="selectSubscriptionPlan('Plus', 499, 75)">
+          <button class="btn-gold" style="padding: 10px;" onclick="openSubscriptionCheckoutModal('Plus', 499, 75)">
             Подключить за 499 ₽ →
           </button>
         </div>
 
-        <!-- PREMIUM PLAN -->
-        <div class="sub-card">
-          <div class="sub-title">Тариф Premium</div>
-          <div class="sub-price">799 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
-          <div class="sub-features">
-            • <b>150 персональных AI-запросов</b> в месяц<br>
-            • Включены все тематические срезы без доплат<br>
-            • Максимальная глубина натального анализа
+        <!-- PREMIUM PLAN (999 ₽) -->
+        <div class="sub-card" style="border: 1.5px solid rgba(139, 92, 246, 0.6); background: linear-gradient(135deg, rgba(38, 22, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="sub-title" style="color: #FFE8A3;">Тариф Premium (LUNA Plus)</div>
+            <span style="font-size: 9.5px; background: linear-gradient(135deg, #A855F7, #EC4899); color: #FFF; padding: 2px 8px; border-radius: 8px; font-weight: 800;">VIP ВСЁ ВКЛЮЧЕНО</span>
           </div>
-          <button class="btn-outline" style="padding: 9px;" onclick="selectSubscriptionPlan('Premium', 799, 150)">
-            Подключить за 799 ₽
+          <div class="sub-price" style="color: #FFE8A3;">999 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
+          <div class="sub-features">
+            • <b>200 персональных AI-запросов</b> в месяц<br>
+            • <b>Полная книга LUNA PRO (17 глав)</b> включена<br>
+            • Персональный приоритетный канал связи и глубокие аудиты
+          </div>
+          <button class="btn-gold" style="padding: 10px; width: 100%; font-weight: 800;" onclick="openSubscriptionCheckoutModal('Premium', 999, 200)">
+            Оформить подписку за 999 ₽ →
           </button>
         </div>
 
@@ -6724,43 +6844,110 @@
     openModal(html);
   }
 
-  function selectSubscriptionPlan(planName, price, creditsToAdd) {
-    haptic('success');
-    const nextDate = new Date(Date.now() + 30 * 86400000).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
-    const subInfo = {
-      active: true,
-      plan: `Luna ${planName}`,
-      price: `${price} ₽ / месяц`,
-      totalCredits: creditsToAdd,
-      startDate: new Date().toISOString(),
-      nextBillingDate: nextDate,
-      features: [
-        `${creditsToAdd} персональных AI-запросов в месяц`,
-        'Расширенные лунные срезы и персональные рекомендации',
-        'Приоритетная скорость обработки ответов LUNA'
-      ]
-    };
-    localStorage.setItem(getStorageKeySubInfo(), JSON.stringify(subInfo));
-    setUserPlan(`Luna ${planName}`);
-    setUserCredits(creditsToAdd);
-    trackLunaEvent('subscription_started', { plan: planName, price, creditsAdded: creditsToAdd });
-    updateCreditDisplays();
-
-    openModal(`
-      <div style="text-align: center; padding: 20px 8px;">
-        <div style="font-size: 36px; margin-bottom: 8px;">✨</div>
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
-          Тариф Luna ${planName} активен!
+  function openSubscriptionCheckoutModal(planName, price, creditsToAdd) {
+    haptic('medium');
+    const html = `
+      <div style="padding: 6px 2px 18px;">
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div class="hero-natal-badge" style="margin-bottom: 8px;">💎 ОФОРМЛЕНИЕ ПОДПИСКИ</div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: #FFF;">
+            LUNA Plus ${planName}
+          </div>
+          <div style="font-size: 22px; font-weight: 800; color: #FFE8A3; margin-top: 4px;">
+            ${price} ₽ <span style="font-size: 13px; font-weight: 400; color: #CBD5E1;">/ месяц</span>
+          </div>
         </div>
-        <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
-          Вам начислено <b>+${creditsToAdd} персональных AI-запросов</b>.<br>
-          Дата следующего списания и обновления лимита: <b>${nextDate}</b>.
-        </p>
-        <button class="btn-gold" onclick="closeModal(); switchTab('chat');">
-          Перейти в чат с Луной →
-        </button>
+
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 14px; padding: 14px; margin-bottom: 16px;">
+          <b style="font-size: 13px; color: #FFE8A3;">В подписку входит:</b>
+          <ul style="padding-left: 18px; font-size: 12.5px; color: #CBD5E1; line-height: 1.6; margin-top: 6px;">
+            <li><b>+${creditsToAdd} персональных AI-запросов</b> в месяц</li>
+            ${price >= 999 ? '<li><b>Вся книга LUNA PRO (17 глав)</b> с PDF-экспортом</li>' : ''}
+            <li>Ежедневный персональный прогноз и знаки недели</li>
+            <li>Приоритетная обработка и сохранение контекста карты</li>
+            <li>Автоматическое продление каждые 30 дней (отмена в 1 клик)</li>
+          </ul>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button class="btn-gold" style="padding: 13px; font-size: 14px; font-weight: 800;" onclick="selectSubscriptionPlan('${planName}', ${price}, ${creditsToAdd})">
+            ✦ Оформить подписку за ${price} ₽ →
+          </button>
+          <button class="btn-outline" style="padding: 10px; font-size: 12px;" onclick="openSubscriptionModal()">
+            ← Выбрать другой тариф
+          </button>
+        </div>
       </div>
-    `);
+    `;
+    openModal(html);
+  }
+
+  function selectSubscriptionPlan(planName, price, creditsToAdd) {
+    try {
+      haptic('success');
+      const nextDate = new Date(Date.now() + 30 * 86400000).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+      const subInfo = {
+        active: true,
+        plan: `LUNA Plus ${planName}`,
+        price: `${price} ₽ / месяц`,
+        totalCredits: creditsToAdd,
+        startDate: new Date().toISOString(),
+        nextBillingDate: nextDate,
+        features: [
+          `${creditsToAdd} персональных AI-запросов в месяц`,
+          price >= 999 ? 'Полная книга LUNA PRO (17 глав)' : 'Расширенные срезы карты',
+          'Приоритетная скорость обработки ответов LUNA'
+        ]
+      };
+      localStorage.setItem(getStorageKeySubInfo(), JSON.stringify(subInfo));
+      setUserPlan(`LUNA Plus ${planName}`);
+      setUserCredits(creditsToAdd);
+
+      // If 999 plan, automatically unlock/generate LUNA PRO book as well
+      if (price >= 999 && userNatalData) {
+        const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
+        const book = generateLunaPro17Chapters(userNatalData, vedic, {});
+        currentLunaProBook = book;
+        const purchased = getPurchasedReports();
+        purchased['natal'] = {
+          purchasedAt: new Date().toISOString(),
+          bookData: book,
+          chaptersHtml: book.chapters.map(c => `<div class="report-chapter"><h3>${c.num}. ${c.title}</h3>${c.html}</div>`).join('')
+        };
+        savePurchasedReports(purchased);
+      }
+
+      trackLunaEvent('subscription_started', { plan: planName, price, creditsAdded: creditsToAdd });
+      updateCreditDisplays();
+      updateCatalogCardsUI();
+
+      openModal(`
+        <div style="text-align: center; padding: 20px 8px;">
+          <div style="font-size: 38px; margin-bottom: 8px;">✨</div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+            Подписка LUNA Plus оформлена!
+          </div>
+          <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
+            Вам начислено <b>+${creditsToAdd} персональных AI-запросов</b>.<br>
+            Тариф: <b>${subInfo.plan} (${price} ₽/мес)</b>.<br>
+            Дата следующего обновления лимита: <b>${nextDate}</b>.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            ${price >= 999 ? `
+              <button class="btn-gold" style="padding: 12px; font-size: 13.5px;" onclick="closeModal(); showProductModal('natal');">
+                📖 Открыть книгу LUNA PRO →
+              </button>
+            ` : ''}
+            <button class="btn-gold" style="padding: 12px; font-size: 13.5px;" onclick="closeModal(); switchTab('chat');">
+              💬 Перейти в чат с LUNA →
+            </button>
+          </div>
+        </div>
+      `);
+    } catch (err) {
+      console.error("Subscription checkout error:", err);
+      alert('Не удалось оформить подписку. Попробуйте ещё раз.');
+    }
   }
 
   function openTopUpModal() {
@@ -6969,7 +7156,17 @@
     loadChatHistory();
 
     // Setup Onboarding City Autocomplete
-    setupCityAutocomplete('obCity', 'obCityDropdown');
+    setupCityAutocomplete('obCity', 'obCityDropdown', 'obCityConfirmedBadge', 'obCityConfirmedText');
+
+    // If city was previously saved, show confirmation
+    if (userNatalData && userNatalData.cityObj) {
+      const bText = document.getElementById('obCityConfirmedText');
+      const bBadge = document.getElementById('obCityConfirmedBadge');
+      if (bText && bBadge) {
+        bText.textContent = `${userNatalData.cityObj.city}, ${userNatalData.cityObj.region}, ${userNatalData.cityObj.country}`;
+        bBadge.style.display = 'flex';
+      }
+    }
 
     // Authenticate with backend and fetch synced profile from database
     authenticateWithBackend();
