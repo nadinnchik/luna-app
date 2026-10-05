@@ -1613,24 +1613,26 @@
         </div>
       </div>
 
-      <!-- 3. UPCOMING REPORTS TEASER -->
-      <div class="card" style="border: 1px dashed rgba(229, 195, 120, 0.35); background: rgba(22, 18, 38, 0.45); text-align: center; padding: 18px 14px; margin-top: 10px;">
-        <span style="font-size: 10px; background: rgba(139, 92, 246, 0.2); color: #DDD6FE; border: 1px solid rgba(139, 92, 246, 0.4); padding: 3px 10px; border-radius: 12px; font-weight: 700; text-transform: uppercase;">В разработке · Скоро</span>
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #E2DFEC; margin: 8px 0 4px 0;">
-          📖 Тематические книги и совместимость
+      <!-- 3. FLAGSHIP PRODUCT (LUNA PRO BOOK 999 ₽) -->
+      <div class="catalog-card" id="catNatalProCard" style="border: 1.5px solid rgba(139, 92, 246, 0.6); background: linear-gradient(135deg, rgba(38, 22, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);" onclick="showProductModal('natal')">
+        <div>
+          <span class="cat-badge" style="background: linear-gradient(135deg, #A855F7, #EC4899); color: #FFF; font-weight: 800;">⭐ Флагман · Полный разбор</span>
+          <div class="cat-title">🪐 Персональная книга LUNA PRO</div>
+          <div class="cat-desc">17 полноценных разделов: характер, тень, сценарии, отношения, деньги, предназначение, периоды Vimshottari Dasha и 30-дневный план действий.</div>
+          <div class="cat-points">
+            <div class="cat-point">📖 17 глав глубокого ведического и психологического синтеза</div>
+            <div class="cat-point">🪐 Расчет Накшатры, Лагны и периодов Vimshottari Dasha</div>
+            <div class="cat-point">🗝️ Пошаговый 30-дневный план и 5 правил жизни</div>
+            <div class="cat-point">📥 Интерактивный веб-ридер и экспорт в PDF-книгу</div>
+          </div>
         </div>
-        <p style="font-size: 12px; color: var(--text-muted); line-height: 1.45; margin: 0;">
-          Полные исследования по сферам «Любовь & Отношения», «Финансовый код», «Реализация» и «Детская карта» находятся в финальной доработке и появятся в следующих версиях.
-        </p>
-      </div>
-
-    </div>
-        <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 14px; line-height: 1.45;">
-          Подключи тариф от 299 ₽/мес: 30–200 персональных AI-запросов, прогнозы и глубокие разборы.
+        <div class="cat-footer">
+          <div>
+            <div style="font-size: 10px; color: #10B981; font-weight: 700; text-transform: uppercase;">Стоимость</div>
+            <div class="cat-price" style="color: #FFE8A3;">999 ₽</div>
+          </div>
+          <button class="cat-btn">Открыть книгу →</button>
         </div>
-        <button class="btn-gold" style="padding: 10px 18px; font-size: 13px;" onclick="openSubscriptionModal()">
-          Выбрать тариф подписки →
-        </button>
       </div>
 
     </div>
@@ -4231,74 +4233,738 @@
     openModal(html);
   }
 
-  const productsInfo = {
-    natal: {
-      title: "🪐 Натальная книга личности PRO",
-      price: "1 490 ₽",
-      desc: "Фундаментальный энциклопедический разбор: 16 глубоких глав, все 10 планет, дома, аспекты, кармическая ось и персональная стратегия жизни.",
-      points: [
-        "16 глав глубокого психологического и астрологического исследования",
-        "Архитектура личности: синтез Солнца, Луны, Асцендента и планет",
-        "Эмоции, стиль мышления, таланты, сценарии отношений и денег",
-        "7 персональных жизненных опор и индивидуальная стратегия роста"
-      ]
-    },
-    synastry: {
-      title: "❤️ Любовь & Отношения",
-      price: "690 ₽",
-      desc: "Как ты любишь, кого выбираешь и почему отношения могут развиваться по определенным сценариям.",
-      points: [
-        "Твой стиль привязанности и язык любви (Венера и Марс)",
-        "Скрытые триггеры и причины повторяющихся сценариев",
-        "Что на самом деле привлекает тебя в партнере",
-        "Ключи к взаимопониманию и безопасному доверию"
-      ]
-    },
-    finance: {
-      title: "💎 Финансовый код & Деньги",
-      price: "690 ₽",
-      desc: "Как ты зарабатываешь, что помогает тебе расти и какие финансовые сценарии заложены в твоем личном гороскопе.",
-      points: [
-        "Твои природные денежные каналы и ресурсные сферы",
-        "Психология трат, накоплений и масштабирования дохода",
-        "Что блокирует твой финансовый поток и как это трансформировать",
-        "Практическая стратегия укрепления материальной опоры"
-      ]
-    },
-    purpose: {
-      title: "🎯 Реализация & Предназначение",
-      price: "690 ₽",
-      desc: "Твои профессиональные сильные стороны, подходящий формат работы и возможные точки роста.",
-      points: [
-        "Врожденные таланты и в чем твоя уникальная ценность",
-        "Найм, фриланс или собственный проект: твой формат",
-        "Профессиональные сферы для наибольшего признания",
-        "Пошаговые ориентиры для перехода на новый уровень"
-      ]
-    },
-    friends: {
-      title: "👭 Друзья & Социум",
-      price: "690 ₽",
-      desc: "Кто помогает тебе расти, как экологично выстраивать границы и формировать вдохновляющий круг общения.",
-      points: [
-        "Твоя социальная роль и потребности в дружбе",
-        "Как сохранять свои границы без чувства вины",
-        "Люди, которые дают тебе ресурс и поддержку",
-        "Экологичное разрешение споров и недопонимания"
-      ]
-    },
-    solar: {
-      title: "💫 Персональный Соляр",
-      price: "2 990 ₽",
-      desc: "Прогноз на твой личный астрологический год: главные темы, периоды активности и фокус внимания по кварталам.",
-      points: [
-        "Главная задача и лейтмотив наступающего личного года",
-        "Поквартальная динамика: когда действовать, а когда копить силы",
-        "Ключевые сферы фокуса: финансы, отношения, карьера",
-        "Персональные рекомендации для гармоничного проживания года"
-      ]
+  // ================= VEDIC JYOTISH & LUNA PRO 17-CHAPTER ENGINE =================
+  const VEDIC_NAKSHATRAS = [
+    { name: "Ашвини", lord: "Кету", symbol: "Голова коня", power: "Стремительное исцеление, инициатива и быстрота решений" },
+    { name: "Бхарани", lord: "Венера", symbol: "Йони / Врата", power: "Трансформация, глубинная страсть и способность выдерживать кризисы" },
+    { name: "Криттика", lord: "Солнце", symbol: "Пламя / Клинок", power: "Очищающий огонь правды, лидерство и отсечение лишнего" },
+    { name: "Рохини", lord: "Луна", symbol: "Колесница / Храм", power: "Магнетизм, чувственная красота, изобилие и притяжение ресурсов" },
+    { name: "Мригашира", lord: "Марс", symbol: "Голова оленя", power: "Исследовательский ум, поиск смыслов и чуткость к переменам" },
+    { name: "Ардра", lord: "Раху", symbol: "Слеза / Алмаз", power: "Прорыв через бури, очищение сознания и сила возрождения" },
+    { name: "Пунарвасу", lord: "Юпитер", symbol: "Лук и колчан", power: "Возвращение света, мудрость, обновление и защита пространства" },
+    { name: "Пушья", lord: "Сатурн", symbol: "Цветок лотоса", power: "Питание душ, духовная зрелость, безупречная надежность и опора" },
+    { name: "Ашлеша", lord: "Меркурий", symbol: "Свернувшаяся змея", power: "Проницательность, гипнотическая интуиция и защита тайн" },
+    { name: "Магха", lord: "Кету", symbol: "Царский трон", power: "Родовое величие, авторитет, благородство и масштабное влияние" },
+    { name: "Пурва Пхалгуни", lord: "Венера", symbol: "Ложе отдыха", power: "Радость жизни, творческий расцвет, притягательность и любовь" },
+    { name: "Уттара Пхалгуни", lord: "Солнце", symbol: "Солнечные врата", power: "Верность слову, создание союзов, покровительство и достоинство" },
+    { name: "Хаста", lord: "Луна", symbol: "Сжатая ладонь", power: "Мастерство рук, ювелирное внимание к деталям и целительство" },
+    { name: "Читра", lord: "Марс", symbol: "Сверкающий бриллиант", power: "Авторская эстетика, дизайн, создание шедевров и яркость" },
+    { name: "Свати", lord: "Раху", symbol: "Свежий росток", power: "Внутренняя свобода, гибкость, дипломатия и полет мысли" },
+    { name: "Вишакха", lord: "Юпитер", symbol: "Триумфальная арка", power: "Целеустремленность, победа над препятствиями и упорство" },
+    { name: "Анурадха", lord: "Сатурн", symbol: "Цветущий лотос", power: "Преданность дружбе, организация сообществ и глубинная вера" },
+    { name: "Джйештха", lord: "Меркурий", symbol: "Талисман защиты", power: "Старшинство, стратегическое руководство и защита близких" },
+    { name: "Мула", lord: "Кету", symbol: "Связка корней", power: "Исследование глубинной сути, снятие иллюзий и духовный фундамент" },
+    { name: "Пурва Ашадха", lord: "Венера", symbol: "Веер победы", power: "Непобедимое обаяние, вдохновение других и очищение чувств" },
+    { name: "Уттара Ашадха", lord: "Солнце", symbol: "Слоновий бивень", power: "Финальный триумф, непоколебимая правда и праведное лидерство" },
+    { name: "Шравана", lord: "Луна", symbol: "Чуткое ухо", power: "Дар слышать скрытую истину, глубокое обучение и передача знаний" },
+    { name: "Дхаништха", lord: "Марс", symbol: "Барабан ритма", power: "Ритм изобилия, музыкальность, щедрость и лидерская хватка" },
+    { name: "Шатабхиша", lord: "Раху", symbol: "Сто целителей", power: "Исцеление через уединение, визионерство и тонкая интуиция" },
+    { name: "Пурва Бхадрапада", lord: "Юпитер", symbol: "Двуликий меч", power: "Глубокая трансформация, страсть к истине и мистическая сила" },
+    { name: "Уттара Бхадрапада", lord: "Сатурн", symbol: "Змея глубин", power: "Космический покой, защита мудрости и целительное терпение" },
+    { name: "Ревати", lord: "Меркурий", symbol: "Рыбы в океане", power: "Безусловная любовь, проводник душ, забота и счастливый путь" }
+  ];
+
+  const DASHA_LORDS = [
+    { planet: "Кету", years: 7, theme: "Очищение от иллюзий, поиск внутреннего стержня и пересборка ориентиров" },
+    { planet: "Венера", years: 20, theme: "Расцвет чувств, притяжение изобилия, творчество и партнерство" },
+    { planet: "Солнце", years: 6, theme: "Проявление авторского авторитета, укрепление воли и социальное признание" },
+    { planet: "Луна", years: 10, theme: "Эмоциональное взросление, фокус на семье, тыле и душевном покое" },
+    { planet: "Марс", years: 7, theme: "Смелые прорывы, защита своих границ, активность и преодоление препятствий" },
+    { planet: "Раху", years: 18, theme: "Масштабные амбиции, выход за привычные рамки и инновационный рост" },
+    { planet: "Юпитер", years: 16, theme: "Мудрость, дхарма, финансовое расширение, наставничество и дети" },
+    { planet: "Сатурн", years: 19, theme: "Кристаллизация мастерства, дисциплина, устойчивый фундамент и зрелость" },
+    { planet: "Меркурий", years: 17, theme: "Интеллектуальный расцвет, коммерция, новые связи и упаковка смыслов" }
+  ];
+
+  function calculateVedicJyotishData(dateStr, timeStr) {
+    const d = new Date(dateStr || '1995-01-10');
+    const day = d.getDate() || 10;
+    const month = (d.getMonth() + 1) || 1;
+    const year = d.getFullYear() || 1995;
+
+    let hour = 12;
+    let min = 0;
+    if (timeStr) {
+      const parts = timeStr.split(':');
+      hour = parseInt(parts[0], 10) || 12;
+      min = parseInt(parts[1], 10) || 0;
     }
-  };
+
+    // Vedic Sidereal Ayanamsa approximation (~23.8 deg offset)
+    const signs = ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"];
+    
+    // Sun in Vedic
+    let sunBaseIdx = (month - 1);
+    if (day < 14) sunBaseIdx = (sunBaseIdx - 1 + 12) % 12;
+    const vedicSun = signs[sunBaseIdx];
+
+    // Moon & Nakshatra
+    const daySeed = (year * 365 + month * 31 + day + hour * 3) % 360;
+    const nakshatraIdx = Math.floor((daySeed / 360) * 27) % 27;
+    const nakshatra = VEDIC_NAKSHATRAS[nakshatraIdx];
+    const pada = (Math.floor(daySeed % 4) + 1);
+
+    const moonSignIdx = Math.floor(nakshatraIdx / 2.25) % 12;
+    const vedicMoon = signs[moonSignIdx];
+
+    // Lagna (Ascendant in Jyotish)
+    const lagnaIdx = (sunBaseIdx + Math.floor((hour * 60 + min) / 120)) % 12;
+    const vedicLagna = signs[lagnaIdx];
+
+    // Current Age & Vimshottari Dasha
+    const currentYear = new Date().getFullYear();
+    const age = Math.max(18, currentYear - year);
+
+    // Calculate current Mahadasha
+    let startDashaIdx = 0;
+    for (let i = 0; i < DASHA_LORDS.length; i++) {
+      if (DASHA_LORDS[i].planet === nakshatra.lord) {
+        startDashaIdx = i;
+        break;
+      }
+    }
+
+    let elapsed = age % 120;
+    let curDashaIdx = startDashaIdx;
+    let curDasha = DASHA_LORDS[curDashaIdx];
+    let runningYears = 0;
+
+    for (let count = 0; count < 18; count++) {
+      let dLord = DASHA_LORDS[(startDashaIdx + count) % DASHA_LORDS.length];
+      if (runningYears + dLord.years > elapsed) {
+        curDasha = dLord;
+        break;
+      }
+      runningYears += dLord.years;
+    }
+
+    // Antardasha
+    const antardashaIdx = (curDashaIdx + Math.floor((elapsed - runningYears) / 2)) % DASHA_LORDS.length;
+    const curAntardasha = DASHA_LORDS[antardashaIdx];
+
+    return {
+      sun: vedicSun,
+      moon: vedicMoon,
+      lagna: vedicLagna,
+      nakshatra: nakshatra,
+      pada: pada,
+      mahadasha: curDasha,
+      antardasha: curAntardasha,
+      age: age
+    };
+  }
+
+  // ================= 17-CHAPTER LUNA PRO BOOK GENERATOR & READER =================
+  let currentLunaProBook = null;
+
+  function generateLunaPro17Chapters(natal, vedic, quiz) {
+    const name = natal.name || 'душа';
+    const sun = vedic.sun || natal.sun || 'Козерог';
+    const moon = vedic.moon || natal.moon || 'Козерог';
+    const lagna = vedic.lagna || natal.asc || 'Стрелец';
+    const nakshatra = vedic.nakshatra || VEDIC_NAKSHATRAS[21];
+    const pada = vedic.pada || 2;
+    const dasha = vedic.mahadasha || DASHA_LORDS[7];
+    const antardasha = vedic.antardasha || DASHA_LORDS[1];
+    const sProf = DEEP_SUN_DATA[natal.sun] || DEEP_SUN_DATA["Козерог"];
+    const mProf = DEEP_MOON_DATA[natal.moon] || DEEP_MOON_DATA["Козерог"];
+    const aProf = DEEP_ASC_DATA[natal.asc] || DEEP_ASC_DATA["Стрелец"];
+
+    const family = (quiz && quiz.qRel) || twState.family || 'relationship';
+    const job = (quiz && quiz.qJob) || twState.job || 'freelance';
+
+    const chapters = [
+      // 01
+      {
+        num: "01",
+        title: "Твоя LUNA · Персональный портрет",
+        badge: "АРХИТЕКТУРА ЛИЧНОСТИ",
+        html: `
+          <div style="background: rgba(255, 232, 163, 0.06); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 16px; padding: 16px; margin-bottom: 14px;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px;">✦ Твой космический код:</div>
+            <div style="font-size: 13px; color: #FFF; line-height: 1.6;">
+              <b>☉ Солнце:</b> ${sun} • <b>☾ Луна:</b> ${moon} (${nakshatra.name}, Пада ${pada}) • <b>↑ Лагна:</b> ${lagna}
+            </div>
+          </div>
+          <p>Ты обладаешь редким сочетанием глубокой внутренней восприимчивости и фундаментального авторского достоинства. Для твоей натальной карты жизнь строится не по шаблонным сценариям извне, а через поиск собственного ритма, мастерства и создание безупречного качества.</p>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin: 14px 0;">
+            <div style="background: rgba(0,0,0,0.3); border-left: 3px solid #E5C378; padding: 10px 12px; border-radius: 10px; font-size: 12.5px; color: #E2DFEC;">
+              <b>✨ Твоя главная сила:</b> ${sProf.superpower}
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-left: 3px solid #8B5CF6; padding: 10px 12px; border-radius: 10px; font-size: 12.5px; color: #E2DFEC;">
+              <b>🎯 Твоя главная внутренняя задача:</b> ${sProf.growthKey}
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-left: 3px solid #10B981; padding: 10px 12px; border-radius: 10px; font-size: 12.5px; color: #E2DFEC;">
+              <b>🌿 Ты особенно раскрываешься, когда:</b> ${sProf.fuel}
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-left: 3px solid #EF4444; padding: 10px 12px; border-radius: 10px; font-size: 12.5px; color: #E2DFEC;">
+              <b>⚠️ Ты теряешь себя, когда:</b> ${sProf.shadow}
+            </div>
+          </div>
+          <div style="background: linear-gradient(135deg, rgba(46, 28, 75, 0.85) 0%, rgba(22, 15, 42, 0.95) 100%); border: 1.2px solid rgba(229, 195, 120, 0.4); border-radius: 14px; padding: 14px; text-align: center; margin-top: 14px;">
+            <div style="font-size: 11px; color: var(--gold); font-weight: 700; text-transform: uppercase;">Если описать тебя одной фразой:</div>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #FFE8A3; margin-top: 4px; line-height: 1.35;">
+              «Личность, создающая долговечную ценность через спокойное достоинство и верность своему внутреннему компасу»
+            </div>
+          </div>
+        `
+      },
+      // 02
+      {
+        num: "02",
+        title: "Три твоих слоя · Синтез триады",
+        badge: "СОЛНЦЕ • ЛУНА • ЛАГНА",
+        html: `
+          <p>В ведической традиции личность никогда не сводится к одному знаку. Ты — это многослойная симфония трех энергий:</p>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(229,195,120,0.25); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+            <b style="color: #FFE8A3;">☉ Солнце в ${sun} (Сурья — Ядро воли):</b>
+            <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 4px; line-height: 1.55;">
+              Определяет твою сознательную цель, авторскую гордость и способность нести ответственность. ${sProf.desc}
+            </div>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(139,92,246,0.25); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
+            <b style="color: #DDD6FE;">☾ Луна в ${moon} • Накшатра ${nakshatra.name} (Чандра — Психика и Тыл):</b>
+            <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 4px; line-height: 1.55;">
+              Символ: <i>${nakshatra.symbol}</i>. Суперсила накшатры: ${nakshatra.power}. Твоя эмоциональная потребность — ${mProf.need}.
+            </div>
+          </div>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(59,130,246,0.25); border-radius: 14px; padding: 14px; margin-bottom: 14px;">
+            <b style="color: #93C5FD;">↑ Лагна в ${lagna} (Вход в мир и Социальный код):</b>
+            <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 4px; line-height: 1.55;">
+              Твой фасад проявления: ${aProf.impression}. Твоя аура: ${aProf.aura}.
+            </div>
+          </div>
+          <div style="background: linear-gradient(135deg, rgba(38,24,60,0.9) 0%, rgba(18,12,34,0.95) 100%); border: 1.2px solid rgba(229,195,120,0.45); border-radius: 14px; padding: 14px;">
+            <b style="color: var(--gold-light);">🔮 Итоговый синтез триады:</b>
+            <p style="font-size: 13px; color: #E2DFEC; margin-top: 6px; line-height: 1.6;">
+              Снаружи ты кажешься <b>самодостаточной и уверенной (${lagna})</b>, внутри тебе жизненно необходимы <b>безопасность, душевное принятие и тишина (${moon})</b>, а сознательно ты стремишься к <b>высокому мастерству и признанию своей ценности (${sun})</b>.
+            </p>
+          </div>
+        `
+      },
+      // 03
+      {
+        num: "03",
+        title: "Твоя внутренняя формула · Ключевые противоречия",
+        badge: "ФОРМУЛА БАЛАНСА",
+        html: `
+          <p>В твоей натальной карте заложено фундаментальное внутреннее напряжение между полюсами <b>Контроль ↔ Доверие</b> и <b>Автономия ↔ Близость</b>.</p>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin: 14px 0;">
+            <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 12px; border-left: 3px solid #E5C378;">
+              <b style="color: #FFE8A3;">1. Что ты хочешь:</b>
+              <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 3px;">Легкости, глубокого союза и спокойного масштаба без необходимости постоянно быть начеку.</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 12px; border-left: 3px solid #EF4444;">
+              <b style="color: #FCA5A5;">2. Что тебя останавливает:</b>
+              <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 3px;">Подсознательный страх, что если ты отпустишь гиперконтроль, ситуация выйдет из-под контроля или тобой воспользуются.</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 12px; border-left: 3px solid #8B5CF6;">
+              <b style="color: #DDD6FE;">3. Почему возникает конфликт:</b>
+              <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 3px;">Солнце требует перфекционизма, а Луна в ${moon} устает от постоянного напряжения и требует отдыха.</div>
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 12px; border-left: 3px solid #10B981;">
+              <b style="color: #6EE7B7;">4. Как сбалансировать:</b>
+              <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 3px;">Перейти от модели «Я должна всё спасти» к модели «Я создаю пространство и позволяю другим нести их долю ответственности».</div>
+            </div>
+          </div>
+        `
+      },
+      // 04
+      {
+        num: "04",
+        title: "Твои сильные стороны · 3 суперсилы",
+        badge: "ПРИРОДНЫЙ КАПИТАЛ",
+        html: `
+          <p>Твои главные натальные преимущества подтверждаются связкой 1-го, 5-го и 10-го домов карты:</p>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(229,195,120,0.3); border-radius: 14px; padding: 14px;">
+              <b style="color: #FFE8A3; font-size: 14px;">1. Тонкая калибровка людей и фальши</b>
+              <p style="font-size: 12.5px; color: #CBD5E1; margin: 4px 0 6px 0;">Ты замечаешь перемены в микроклимате задолго до слов. В работе это дает феноменальное преимущество в переговорах и создании продуктов, меняющих состояние людей.</p>
+              <div style="font-size: 11.5px; color: var(--gold);"><b>Как использовать сильнее:</b> доверяй первому телесному отклику при первом знакомстве.</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(139,92,246,0.3); border-radius: 14px; padding: 14px;">
+              <b style="color: #DDD6FE; font-size: 14px;">2. Архитектура безупречного качества</b>
+              <p style="font-size: 12.5px; color: #CBD5E1; margin: 4px 0 6px 0;">Ты не соглашаешься на дешевку и полумеры. Твои результаты выдерживают проверку временем и вызывают искреннее уважение.</p>
+              <div style="font-size: 11.5px; color: #A78BFA;"><b>Как использовать сильнее:</b> продавай именно премиальную глубину, а не конкурируй по цене.</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(16,185,129,0.3); border-radius: 14px; padding: 14px;">
+              <b style="color: #6EE7B7; font-size: 14px;">3. Несокрушимая внутренняя стойкость</b>
+              <p style="font-size: 12.5px; color: #CBD5E1; margin: 4px 0 6px 0;">Способность сохранять хладнокровие и внутреннее достоинство в шторм, когда другие теряют почву под ногами.</p>
+              <div style="font-size: 11.5px; color: #34D399;"><b>Как использовать сильнее:</b> будь якорем спокойствия для своей команды и семьи.</div>
+            </div>
+          </div>
+        `
+      },
+      // 05
+      {
+        num: "05",
+        title: "Твоя теневая сторона · Анатомия ловушки",
+        badge: "СЛЕПЫЕ ЗОНЫ",
+        html: `
+          <p>Тень — это не порок, а <b>твоя сила, вышедшая из равновесия</b> под воздействием усталости.</p>
+          <div style="background: rgba(239, 68, 68, 0.08); border: 1.2px solid rgba(239, 68, 68, 0.35); border-radius: 16px; padding: 16px; margin: 14px 0;">
+            <div style="font-size: 12px; color: #FCA5A5; font-weight: 700; margin-bottom: 6px;">⚠️ Цепочка развертывания тени:</div>
+            <p style="font-size: 12.5px; color: #CBD5E1; line-height: 1.55; margin-bottom: 8px;">
+              <b>Триггер:</b> Долгий период давления или ощущение, что твой вклад обесценивают.<br>
+              <b>Реакция:</b> Стремление взять тотальный контроль на себя и закрыться в холодную независимость.<br>
+              <b>Последствия:</b> Физическое истощение, раздражение на близких и чувство одиночества.<br>
+              <b>Новая стратегия:</b> Разделять «это действительно моя ответственность» и «я просто боюсь отпустить контроль».
+            </p>
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 12px; padding: 12px; font-size: 12.5px; color: #6EE7B7; line-height: 1.5;">
+            💎 <b>Практический совет:</b> Как только ловишь себя на мысли «Если не я, то всё рухнет» — сделай паузу на 24 часа и передай часть дел.
+          </div>
+        `
+      },
+      // 06
+      {
+        num: "06",
+        title: "Твои повторяющиеся сценарии",
+        badge: "РАЗРЫВ КРУГА",
+        html: `
+          <p>В твоей карте ключевой сценарий зацикливания выглядит так:</p>
+          <div style="background: rgba(0,0,0,0.3); border-radius: 14px; padding: 14px; border: 1px solid rgba(229,195,120,0.3); margin: 12px 0;">
+            <div style="font-size: 13px; color: #FFE8A3; font-weight: 700; margin-bottom: 6px;">🔁 Цикл гиперответственности:</div>
+            <div style="font-size: 12.5px; color: #E2DFEC; line-height: 1.6;">
+              1. <b>Как начинается:</b> Ты видишь проблему и искренне берешь на себя обязательства.<br>
+              2. <b>Как развивается:</b> Окружающие привыкают и перекладывают на тебя свой груз.<br>
+              3. <b>Где ломается:</b> Накапливается глухая обида и эмоциональный тупик.<br>
+              4. <b>Как выйти:</b> С самого начала четко очерчивать берега и границы, не соглашаясь из чувства вины.
+            </div>
+          </div>
+        `
+      },
+      // 07
+      {
+        num: "07",
+        title: "Ты в отношениях · Любовь и партнерство",
+        badge: "7-Й ДОМ & ВЕНЕРА",
+        html: `
+          <p>Синтез 7-го дома партнерства, Венеры и Луны в знаке ${moon}:</p>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin: 12px 0;">
+            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: #E2DFEC;">
+              <b>💗 Как ты привязываешься:</b> Глубоко, основательно и преданно. Тебе нужно время, чтобы открыться.
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: #E2DFEC;">
+              <b>🛡️ Что тебя ранит:</b> Обесценивание твоих стараний, холодная отстраненность и ненадежность.
+            </div>
+            <div style="background: rgba(16,185,129,0.08); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: #6EE7B7;">
+              <b>✨ Раскрывающий партнер:</b> Зрелый, спокойный человек с прочным внутренним стержнем, уважающий твою автономию.
+            </div>
+            <div style="background: rgba(239,68,68,0.06); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: #FCA5A5;">
+              <b>⚠️ Истощающий партнер:</b> Инфантильный критик, требующий постоянного спасательства и одобрения.
+            </div>
+          </div>
+        `
+      },
+      // 08
+      {
+        num: "08",
+        title: "Деньги и финансовый код",
+        badge: "2-Й & 11-Й ДОМА",
+        html: `
+          <p>Твой денежный сектор активируется через создание качественного авторского продукта и уважение к своей экспертности.</p>
+          <div style="background: rgba(243, 186, 47, 0.08); border: 1.2px solid rgba(243, 186, 47, 0.35); border-radius: 16px; padding: 16px; margin: 12px 0;">
+            <b style="color: #FFE8A3;">💎 Что конкретно делать для роста дохода:</b>
+            <ul style="padding-left: 18px; font-size: 12.5px; color: #CBD5E1; line-height: 1.55; margin-top: 6px;">
+              <li><b>Откажись от демпинга:</b> твоя целевая аудитория — люди, ценящие премиальную глубину и надежность.</li>
+              <li><b>Упаковывай опыт:</b> переходи от разовых услуг к комплексным авторским программам/продуктам.</li>
+              <li><b>Держи подушку спокойствия:</b> резерв на 3–6 месяцев мгновенно снимает спазм Луны.</li>
+            </ul>
+          </div>
+        `
+      },
+      // 09
+      {
+        num: "09",
+        title: "Реализация и карьера",
+        badge: "10-Й ДОМ ЗЕНИТА",
+        html: `
+          <p>С 10-м домом и Солнцем в ${sun} тебе жизненно необходима роль создателя смыслов и автономия в принятии решений.</p>
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(229,195,120,0.25); border-radius: 14px; padding: 14px; margin: 12px 0;">
+            <div style="font-size: 12.5px; color: #E2DFEC; line-height: 1.55;">
+              <b>Твой идеальный ритм:</b> Проектные спринты с глубоким погружением и обязательными днями восстановления.<br>
+              <b>Подходящие направления:</b> Авторские проекты, наставничество, продюсирование, экспертный консалтинг, дизайн и управление качеством.
+            </div>
+          </div>
+        `
+      },
+      // 10
+      {
+        num: "10",
+        title: "Твоё предназначение · Зачем ты здесь",
+        badge: "ДХАРМА & МИССИЯ",
+        html: `
+          <div style="background: linear-gradient(145deg, rgba(46, 28, 75, 0.9) 0%, rgba(18, 12, 34, 0.95) 100%); border: 1.5px solid rgba(229, 195, 120, 0.5); border-radius: 18px; padding: 18px; margin: 10px 0;">
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; color: #FFE8A3; margin-bottom: 6px;">
+              Зачем ты здесь:
+            </div>
+            <p style="font-size: 13px; color: #E2DFEC; line-height: 1.6;">
+              Твоя натальная карта указывает не столько на одну узкую профессию, сколько на <b>способ влиять на мир</b>: возвращать людям веру в их достоинство, создавать красоту и структурный порядок там, где царил хаос.
+            </p>
+          </div>
+        `
+      },
+      // 11
+      {
+        num: "11",
+        title: "Твой главный жизненный период · Vimshottari Dasha",
+        badge: "МАХАДАША & АНТАРДАША",
+        html: `
+          <div style="background: rgba(255,255,255,0.03); border: 1.2px solid rgba(139,92,246,0.35); border-radius: 16px; padding: 16px; margin: 12px 0;">
+            <div style="font-size: 13px; color: #FFE8A3; font-weight: 700; margin-bottom: 4px;">
+              🪐 Большая глава жизни (Mahadasha): <b>${dasha.planet} (${dasha.years} лет)</b>
+            </div>
+            <p style="font-size: 12.5px; color: #CBD5E1; line-height: 1.5; margin-bottom: 8px;">
+              Главный лейтмотив эпохи: ${dasha.theme}.
+            </p>
+            <div style="font-size: 13px; color: #DDD6FE; font-weight: 700; margin-bottom: 4px;">
+              ⏳ Текущая тема внутри главы (Antardasha): <b>${antardasha.planet}</b>
+            </div>
+            <p style="font-size: 12.5px; color: #CBD5E1; line-height: 1.5;">
+              Фокус сейчас: ${antardasha.theme}.
+            </p>
+          </div>
+        `
+      },
+      // 12
+      {
+        num: "12",
+        title: "Ты сейчас · Синтез Даши и транзитов",
+        badge: "ТЕКУЩИЙ МОМЕНТ",
+        html: `
+          <div style="background: rgba(0,0,0,0.3); border-radius: 14px; padding: 14px; border-left: 3px solid #E5C378; margin: 12px 0;">
+            <b style="color: #FFE8A3; font-size: 13px;">Что сейчас активировано:</b>
+            <p style="font-size: 12.5px; color: #E2DFEC; margin-top: 4px; line-height: 1.55;">
+              Период пересмотра обязательств. Задача этапа — не работать больше, а понять, какие задачи действительно твои, а какие ты тянешь по инерции.
+            </p>
+            <div style="margin-top: 8px; font-size: 12px; color: #6EE7B7;">
+              ✅ <b>Что развивать:</b> авторские проекты, личные границы, делегирование.<br>
+              🛑 <b>Чего не форсировать:</b> сомнительных союзов и работы на износ.
+            </div>
+          </div>
+        `
+      },
+      // 13
+      {
+        num: "13",
+        title: "Ближайший поворот · Визуальная timeline",
+        badge: "ТАЙМЛАЙН",
+        html: `
+          <div style="display: flex; flex-direction: column; gap: 10px; margin: 14px 0;">
+            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #E5C378;">
+              <b style="color: #FFE8A3;">1. СЕЙЧАС (0–3 мес):</b>
+              <div style="font-size: 12px; color: #CBD5E1; margin-top: 2px;">Зачистка лишних обязательств и кристаллизация финансового ядра.</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #8B5CF6;">
+              <b style="color: #DDD6FE;">2. СМЕНА ПОДПЕРИОДА (3–6 мес):</b>
+              <div style="font-size: 12px; color: #CBD5E1; margin-top: 2px;">Новые контакты, рост социального признания и масштабирование.</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #10B981;">
+              <b style="color: #6EE7B7;">3. БОЛЬШАЯ ПЕРСПЕКТИВА (1–2 года):</b>
+              <div style="font-size: 12px; color: #CBD5E1; margin-top: 2px;">Выход на стабильный высокий уровень автономии и душевного тыла.</div>
+            </div>
+          </div>
+        `
+      },
+      // 14
+      {
+        num: "14",
+        title: "Твой персональный план изменений",
+        badge: "5 НАПРАВЛЕНИЙ",
+        html: `
+          <div style="display: flex; flex-direction: column; gap: 8px; margin: 12px 0;">
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #E2DFEC;">
+              <b>🌿 01. Состояние:</b> 1 час полной тишины в день без телефона и обязательств.
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #E2DFEC;">
+              <b>❤️ 02. Отношения:</b> проговаривать желания через «Мне важно», без ультиматумов.
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #E2DFEC;">
+              <b>💼 03. Работа:</b> делегировать 30% рутинных действий и сфокусироваться на стратегии.
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #E2DFEC;">
+              <b>💰 04. Деньги:</b> поднять планку чека и откладывать 10% в резерв спокойствия.
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #E2DFEC;">
+              <b>🎯 05. Развитие:</b> развивать личный авторский бренд и экспертный авторитет.
+            </div>
+          </div>
+        `
+      },
+      // 15
+      {
+        num: "15",
+        title: "Твои 30 дней · Понедельный маршрут",
+        badge: "30 ДНЕЙ",
+        html: `
+          <div style="display: flex; flex-direction: column; gap: 8px; margin: 12px 0;">
+            <div style="background: rgba(255,255,255,0.03); border-left: 3px solid #E5C378; border-radius: 10px; padding: 10px 12px;">
+              <b style="color: #FFE8A3; font-size: 12.5px;">Неделя 1 · Наблюдай:</b>
+              <div style="font-size: 12px; color: #CBD5E1; margin-top: 2px;">Замечай моменты, когда хочется взвалить всё на себя из страха.</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border-left: 3px solid #EF4444; border-radius: 10px; padding: 10px 12px;">
+              <b style="color: #FCA5A5; font-size: 12.5px;">Неделя 2 · Убери:</b>
+              <div style="font-size: 12px; color: #CBD5E1; margin-top: 2px;">Откажись от 1–2 токсичных обязательств или согласий через силу.</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border-left: 3px solid #8B5CF6; border-radius: 10px; padding: 10px 12px;">
+              <b style="color: #DDD6FE; font-size: 12.5px;">Неделя 3 · Попробуй:</b>
+              <div style="font-size: 12px; color: #CBD5E1; margin-top: 2px;">Введи правило «Паузы 24 часа» перед каждым новым согласием.</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.03); border-left: 3px solid #10B981; border-radius: 10px; padding: 10px 12px;">
+              <b style="color: #6EE7B7; font-size: 12.5px;">Неделя 4 · Закрепи:</b>
+              <div style="font-size: 12px; color: #CBD5E1; margin-top: 2px;">Зафиксируй новое ощущение легкости и награди себя за пройденный путь.</div>
+            </div>
+          </div>
+        `
+      },
+      // 16
+      {
+        num: "16",
+        title: "Твои 5 настроек LUNA",
+        badge: "ПРАВИЛА ЖИЗНИ",
+        html: `
+          <div style="display: flex; flex-direction: column; gap: 8px; margin: 12px 0;">
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; color: #FFF;">
+              <b>01.</b> Не принимай судьбоносных решений из состояния перегруза.
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; color: #FFF;">
+              <b>02.</b> Не соглашайся на среду, в которой твоя сила становится твоей проблемой.
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; color: #FFF;">
+              <b>03.</b> В отношениях не путай эмоциональный надрыв с настоящей близостью.
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; color: #FFF;">
+              <b>04.</b> Деньги растут через правильный формат работы и ценность, а не износ.
+            </div>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; color: #FFF;">
+              <b>05.</b> Сейчас тебе важнее построить устойчивый фундамент, чем спешить.
+            </div>
+          </div>
+        `
+      },
+      // 17
+      {
+        num: "17",
+        title: "Твоя карта в 10 фразах",
+        badge: "ИТОГОВЫЙ РАЗВОРОТ",
+        html: `
+          <div style="background: linear-gradient(145deg, rgba(38,24,60,0.92) 0%, rgba(18,12,34,0.98) 100%); border: 1.5px solid rgba(229,195,120,0.5); border-radius: 18px; padding: 18px;">
+            <div style="font-size: 12.5px; color: #CBD5E1; line-height: 1.8;">
+              • Ты раскрываешься, когда <b>доверяешь своему мастерству</b>.<br>
+              • Ты теряешь себя, когда <b>пытаешься быть удобной для всех</b>.<br>
+              • Твоя главная сила — <b>видение глубины и непоколебимое достоинство</b>.<br>
+              • Твоя главная ловушка — <b>гиперконтроль из страха уязвимости</b>.<br>
+              • В отношениях тебе важно <b>эмоциональное тепло и безопасность</b>.<br>
+              • В работе тебе нужна <b>автономия и авторское признание</b>.<br>
+              • Твои деньги растут, когда <b>ты продаешь ценность и результат</b>.<br>
+              • Сейчас жизнь учит тебя <b>разделять чужую и свою ответственность</b>.<br>
+              • Тебе стоит перестать <b>доказывать свое право на счастье подвигами</b>.<br>
+              • А начать <b>проявляться из состояния спокойной силы</b>.
+            </div>
+          </div>
+        `
+      }
+    ];
+
+    return {
+      name,
+      sun,
+      moon,
+      lagna,
+      nakshatra,
+      pada,
+      dasha,
+      antardasha,
+      chapters
+    };
+  }
+
+  function openLunaProFirstImpressionModal(bookData) {
+    haptic('success');
+    currentLunaProBook = bookData;
+
+    const html = `
+      <div style="padding: 6px 2px 24px;">
+        <!-- EMBLEM -->
+        <div style="text-align: center; margin-bottom: 16px;">
+          <div class="hero-natal-badge" style="margin-bottom: 8px; background: linear-gradient(135deg, rgba(243, 186, 47, 0.35) 0%, rgba(138, 79, 158, 0.35) 100%);">
+            <span class="badge-star">🪐</span> LUNA PRO · ПЕРСОНАЛЬНАЯ КНИГА
+          </div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 25px; font-weight: 700; color: #FFF; line-height: 1.25; margin-bottom: 4px;">
+            Твоя LUNA: Главный фокус сейчас
+          </div>
+          <div style="font-size: 12.5px; color: var(--gold); font-weight: 600;">
+            ${escapeHtml(bookData.name)} • ☉ ${bookData.sun} • ☾ ${bookData.moon} • ↑ ${bookData.lagna}
+          </div>
+        </div>
+
+        <!-- 3 ACTIONS FOR TODAY -->
+        <div style="background: linear-gradient(145deg, rgba(38,24,60,0.9) 0%, rgba(18,12,34,0.95) 100%); border: 1.5px solid rgba(243, 186, 47, 0.6); border-radius: 18px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(243, 186, 47, 0.2);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <b style="font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #FFE8A3;">🔥 Если сегодня сделать только 3 вещи:</b>
+            <span style="font-size: 10px; background: var(--gold-btn); color: #120C22; font-weight: 800; padding: 2px 8px; border-radius: 8px;">СЕГОДНЯ</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: #E2DFEC; line-height: 1.45;">
+            <div><b>01.</b> Сделать паузу перед каждым новым обязательством (правило 24 часов).</div>
+            <div><b>02.</b> Выделить вечерний час для полного заземления без рабочих чатов.</div>
+            <div><b>03.</b> Проговорить свои чувства прямо и мягко, не доводя до перегруза.</div>
+          </div>
+        </div>
+
+        <!-- MONTH FOCUS -->
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(229,195,120,0.3); border-radius: 16px; padding: 14px; margin-bottom: 16px;">
+          <b style="font-size: 13px; color: #FFE8A3;">🗓️ В ближайший месяц:</b>
+          <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #CBD5E1; margin-top: 6px; line-height: 1.45;">
+            <div><b>Начни:</b> развивать свой авторский бренд и передавать рутинные дела.</div>
+            <div><b>Перестань:</b> соглашаться на демпинг и тянуть чужую ответственность.</div>
+            <div><b>Попробуй:</b> опираться на внутреннее спокойствие вместо постоянной борьбы.</div>
+          </div>
+        </div>
+
+        <div style="background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.3); border-radius: 14px; padding: 12px; text-align: center; margin-bottom: 18px;">
+          <div style="font-size: 11px; color: #DDD6FE; font-weight: 700; text-transform: uppercase;">А сейчас особенно важно:</div>
+          <div style="font-size: 13px; color: #FFF; margin-top: 4px; line-height: 1.45; font-style: italic;">
+            «Построить устойчивый фундамент и беречь силы. Твой масштаб раскрывается через спокойствие.»
+          </div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn-gold" style="padding: 14px; font-size: 14px; font-weight: 800;" onclick="openLunaProReaderModal(0)">
+            📖 Читать все 17 глав книги LUNA PRO →
+          </button>
+          <button class="btn-outline" style="padding: 12px; font-size: 13px;" onclick="exportLunaProBookToPDF()">
+            📥 Сохранить всю книгу в PDF / Распечатать
+          </button>
+        </div>
+      </div>
+    `;
+    openModal(html);
+  }
+
+  function openLunaProReaderModal(initialChapterIndex = 0) {
+    if (!currentLunaProBook) return;
+    haptic();
+
+    let curIdx = initialChapterIndex || 0;
+    const book = currentLunaProBook;
+
+    function renderReaderContent(idx) {
+      const ch = book.chapters[idx];
+      return `
+        <div style="padding: 4px 2px 24px;">
+          <!-- TOP READER BAR -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(229,195,120,0.25); padding-bottom: 8px;">
+            <div style="font-size: 11px; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">
+              ГЛАВА ${ch.num} ИЗ 17
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn-outline" style="padding: 4px 8px; font-size: 11px;" onclick="openLunaProFirstImpressionModal(currentLunaProBook)">
+                ⚡ Резюме
+              </button>
+              <button class="btn-outline" style="padding: 4px 8px; font-size: 11px;" onclick="exportLunaProBookToPDF()">
+                📥 PDF
+              </button>
+            </div>
+          </div>
+
+          <!-- CHAPTER SELECTOR CHIPS -->
+          <div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 14px; scrollbar-width: none;">
+            ${book.chapters.map((c, i) => `
+              <div onclick="openLunaProReaderModal(${i})" style="flex-shrink: 0; padding: 4px 10px; border-radius: 12px; font-size: 11.5px; cursor: pointer; ${i === idx ? 'background: var(--gold-btn); color: #120C22; font-weight: 800;' : 'background: rgba(255,255,255,0.05); color: #CBD5E1; border: 1px solid rgba(255,255,255,0.1);'}">
+                ${c.num}. ${c.title.split('·')[0].trim()}
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- CHAPTER HEADER -->
+          <div style="margin-bottom: 14px;">
+            <span style="font-size: 9.5px; background: rgba(229,195,120,0.15); color: #FFE8A3; padding: 2px 8px; border-radius: 8px; font-weight: 700; text-transform: uppercase;">${ch.badge}</span>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: #FFF; margin-top: 4px; line-height: 1.25;">
+              ${ch.title}
+            </div>
+          </div>
+
+          <!-- CHAPTER BODY -->
+          <div class="report-content">
+            ${ch.html}
+          </div>
+
+          <!-- BOTTOM CHAPTER NAV -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid rgba(229,195,120,0.2); padding-top: 14px;">
+            ${idx > 0 ? `<button class="btn-outline" style="padding: 8px 14px; font-size: 12px;" onclick="openLunaProReaderModal(${idx - 1})">← Назад</button>` : '<div></div>'}
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">${idx + 1} / 17</div>
+            ${idx < book.chapters.length - 1 ? `<button class="btn-gold" style="padding: 8px 16px; font-size: 12.5px;" onclick="openLunaProReaderModal(${idx + 1})">Далее →</button>` : `<button class="btn-gold" style="padding: 8px 16px; font-size: 12.5px;" onclick="closeModal()">✨ Завершить</button>`}
+          </div>
+        </div>
+      `;
+    }
+
+    openModal(renderReaderContent(curIdx));
+  }
+
+  function exportLunaProBookToPDF() {
+    if (!currentLunaProBook) {
+      if (userNatalData) {
+        const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
+        currentLunaProBook = generateLunaPro17Chapters(userNatalData, vedic, {});
+      } else {
+        return;
+      }
+    }
+
+    haptic('success');
+    const book = currentLunaProBook;
+
+    const printWin = window.open('', '_blank');
+    if (!printWin) {
+      alert('Пожалуйста, разрешите всплывающие окна для печати/сохранения книги в PDF.');
+      return;
+    }
+
+    const allChaptersHtml = book.chapters.map(c => `
+      <div style="page-break-after: always; padding: 40px 20px; max-width: 700px; margin: 0 auto; font-family: 'Times New Roman', serif;">
+        <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin-bottom: 20px;">
+          LUNA PRO · ГЛАВА ${c.num} · ${c.badge}
+        </div>
+        <h2 style="font-size: 24px; color: #111; margin-bottom: 16px;">${c.title}</h2>
+        <div style="font-size: 14px; line-height: 1.7; color: #222;">
+          ${c.html.replace(/color:\s*#[a-fA-F0-9]+/g, 'color: #111;').replace(/background:\s*[^;]+/g, 'background: #f9f9f9;')}
+        </div>
+      </div>
+    `).join('');
+
+    printWin.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>LUNA PRO — Персональная книга (${escapeHtml(book.name)})</title>
+        <style>
+          body { font-family: 'Georgia', serif; background: #fff; color: #111; margin: 0; padding: 0; }
+          h1, h2, h3 { color: #111; }
+          @media print {
+            body { background: #fff; }
+          }
+        </style>
+      </head>
+      <body>
+        <div style="page-break-after: always; text-align: center; padding: 120px 20px; font-family: 'Georgia', serif;">
+          <div style="font-size: 18px; letter-spacing: 6px; color: #666; margin-bottom: 20px;">L U N A · ✦</div>
+          <h1 style="font-size: 38px; color: #111; margin-bottom: 12px;">ПЕРСОНАЛЬНАЯ КНИГА</h1>
+          <div style="font-size: 18px; color: #888; margin-bottom: 30px;">Ведический натальный синтез и 30-дневный план действий</div>
+          <div style="font-size: 20px; font-weight: bold; color: #222;">${escapeHtml(book.name)}</div>
+          <div style="font-size: 14px; color: #666; margin-top: 8px;">☉ ${book.sun} • ☾ ${book.moon} (${book.nakshatra.name}) • ↑ ${book.lagna}</div>
+        </div>
+        ${allChaptersHtml}
+        <script>
+          window.onload = function() { window.print(); };
+        <\/script>
+      </body>
+      </html>
+    `);
+    printWin.document.close();
+  }
 
   function updateCatalogCardsUI() {
     const catTw = document.getElementById('catTripwireCard');
@@ -4350,6 +5016,15 @@
   function showProductModal(prodKey) {
     const prod = productsInfo[prodKey];
     if (!prod) return;
+
+    if (prodKey === 'natal') {
+      const purchased = getPurchasedReports();
+      if (purchased['natal'] && purchased['natal'].bookData) {
+        currentLunaProBook = purchased['natal'].bookData;
+        openLunaProFirstImpressionModal(currentLunaProBook);
+        return;
+      }
+    }
 
     // Check if product was already purchased / generated
     const purchased = getPurchasedReports();
@@ -4648,96 +5323,28 @@
     setTimeout(() => {
       try {
         if (prodKey === 'natal') {
-          chaptersHtml = `
-            <div class="report-chapter">
-              <h3>📖 Глава 1. Введение — Персональный портрет</h3>
-              <p>Ты обладаешь редким сочетанием психологической тонкости и фундаментального внутреннего стержня. Для личности с Солнцем в знаке <b>${userNatalData.sun}</b>, Луной в знаке <b>${userNatalData.moon}</b> и Асцендентом в знаке <b>${userNatalData.asc}</b> жизнь строится не по шаблонным сценариям, а через поиск глубокого личного смысла и создание безупречного качества.</p>
-              <p>Эта натальная книга раскрывает, как природные планетарные настройки работают на твои главные жизненные ориентиры — от расширения масштаба и признания до душевного спокойствия и теплоты близких отношений.</p>
-            </div>
+          const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
+          const book = generateLunaPro17Chapters(userNatalData, vedic, {
+            qJob: pJobVal,
+            qRel: pRelVal,
+            qFocus: pFocusVal,
+            qQuery: pQueryVal
+          });
+          currentLunaProBook = book;
+          
+          // Save in purchased reports
+          const purchased = getPurchasedReports();
+          purchased['natal'] = {
+            purchasedAt: new Date().toISOString(),
+            bookData: book,
+            chaptersHtml: book.chapters.map(c => `<div class="report-chapter"><h3>${c.num}. ${c.title}</h3>${c.html}</div>`).join('')
+          };
+          savePurchasedReports(purchased);
+          updateCatalogCardsUI();
 
-            <div class="report-chapter">
-              <h3>🏛️ Глава 2. Архитектура личности: Триада Солнца, Луны и ASC</h3>
-              <p><b>Солнце в знаке ${userNatalData.sun}</b> дает тебе фундаментальную потребность в авторстве, качестве и уважении к своему труду. Ты не выносишь поверхностности и пустых обещаний.</p>
-              <p><b>Луна в знаке ${userNatalData.moon}</b> делает тебя чутким эмпатом, для которого дом, безопасность близких и теплое пространство являются главным источником восстановления сил.</p>
-              <p><b>Асцендент в знаке ${userNatalData.asc}</b> — твой фасад проявления в социуме: легкость в контактах, визуальный шарм, харизма и умение мгновенно считывать атмосферу аудитории.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>🌊 Глава 3. Эмоциональный мир и восстановление ресурса</h3>
-              <p>Твоя психика функционирует волнообразно: периоды яркой социальной отдачи обязательно должны сменяться днями тишины и уединения. Если ты игнорируешь потребность Луны в отдыхе и пытаешься «держать планку на силе воли», накапливается внутренняя усталость.</p>
-              <p>Чувство безопасности тебе возвращают: вода, порядок в физическом пространстве, эстетичные ритуалы и возможность побыть наедине со своими мыслями без необходимости соответствовать чужим ожиданиям.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>💡 Глава 4. Мышление, речь и принятие решений</h3>
-              <p>Твой Меркурий синтезирует логику и образное чутье. Ты воспринимаешь информацию через визуальные образы, интонации и контекст. Тебе сложно воспринимать сухие инструкции — тебе нужно видеть общую картину и чувствовать эстетику процесса.</p>
-              <p>Принимая решения, доверяй первому спокойному импульсу: когда ты начинаешь слишком долго сомневаться и взвешивать чужие мнения, ментальный шум перекрывает ясность.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>🎯 Глава 5. Самореализация и характер действий</h3>
-              <p>В твоей профессиональной реализации тебе противопоказаны жесткие рамки механического найма. Твой Марс раскрывает максимальную продуктивность в условиях проектной автономии, когда ты сама задаешь темп и несешь авторскую ответственность за результат.</p>
-              <p>Ты расцветаешь, когда видишь реальную ценность своего продукта и отклик благодарных людей. Твоя амбициозность носит не агрессивный, а качественный характер — делать лучшее, на что ты способна.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>💗 Глава 6. Отношения и партнерство</h3>
-              <p>В сфере любви и близкого союза твоя Венера и Луна требуют партнерства равных: эмоциональной зрелости, надежности и защиты. Тебе важно, чтобы партнер уважал твое творчество и личное пространство.</p>
-              <p>Конфликтные триггеры чаще всего возникают из-за бытового выгорания или ощущения, что твой огромный вклад воспринимается как само собой разумеющееся. Лекарство — регулярные паузы только для двоих и честное проговаривание потребностей без накопления обид.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>💎 Глава 7. Деньги, профессия и масштаб</h3>
-              <p>Финансовый код твоей карты напрямую связан с проявленностью, авторским брендом и высоким чеком. Попытки конкурировать в эконом-сегменте или демпинговать разрушают твою мотивацию.</p>
-              <p>Твой денежный поток расширяется через эксклюзивность, упаковку опыта, премиальные проекты и наставничество. Деньги приходят к тебе на состояние легкости, вдохновения и достоинства.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>👭 Глава 8. Социальное окружение и границы</h3>
-              <p>Твой 11-й дом предпочитает качество количеству. Тебе не нужна огромная толпа поверхностных знакомых — тебе необходим круг единомышленников, которые вдохновляют на рост и не тянут в токсичные жалобы.</p>
-              <p>Важнейший навык — твердое и спокойное «нет» без чувства вины тем, кто пытается использовать твою эмпатию в роли бесплатной жилетки.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>🏰 Глава 9. Дома натальной карты: Ключевые сферы</h3>
-              <p><b>1-й дом:</b> Личная харизма и магнетизм. Твое тело и внешность — инструмент влияния на мир.<br><b>4-й дом:</b> Семья как опора и фундамент. Дом — место твоей силы.<br><b>10-й дом:</b> Карьерный Зенит. Признание твоего мастерства в обществе неизбежно при системном проявлении.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>🪐 Глава 10. Анализ планет в твоем гороскопе</h3>
-              <p>• <b>Солнце в ${userNatalData.sun}:</b> Ядро воли и духа.<br>• <b>Луна в ${userNatalData.moon}:</b> Эмоциональная база и подсознание.<br>• <b>Меркурий:</b> Образное мышление и дар убеждения.<br>• <b>Венера:</b> Эстетическое чутье, чувство стиля и ценность себя.<br>• <b>Марс:</b> Точечная концентрация энергии и действий.<br>• <b>Юпитер:</b> Масштаб социального авторитета.<br>• <b>Сатурн:</b> Внутренняя дисциплина и способность доводить начатое до совершенства.<br>• <b>Уран, Нептун, Плутон:</b> Поколенческие планеты, дающие тебе глубокую интуицию и чутье на тренды.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>⚡ Глава 11. Аспекты и динамика карты</h3>
-              <p>Гармоничные тригоны в твоей карте дают природную одаренность в создании эстетичного визуального контента и работе с людьми. Напряженные аспекты между волей и чувствами работают как мотор: именно они заставляют тебя не сидеть на месте, а постоянно расти и искать новые форматы проявления.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>🧭 Глава 12. Кармическая ось (Узлы Судьбы)</h3>
-              <p>Северный Узел указывает на переход от избыточных сомнений и обслуживания чужих ожиданий к смелому авторскому лидерству. Твоя эволюционная задача — доверять своей уникальности и не бояться быть заметной.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>💥 Глава 13. Внутренние противоречия и их трансформация</h3>
-              <p>Главный конфликт: желание спрятаться в уютную ракушку покоя (Луна) против амбициозного зова реализовать свой огромный потенциал (Солнце и 10 дом). Решение — не выбирать что-то одно, а выстроить бережный ритм: 3 дня активного проявления, затем день тишины.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>🌱 Глава 14. Сильные стороны и ресурсные точки</h3>
-              <p>Твой главный супер-ресурс — умение создавать атмосферу доверия и эстетики. Люди рядом с тобой расслабляются и раскрывают свои лучшие грани. В бизнесе и блогинге это монетизируется лучше любых агрессивных продаж.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>🌟 Глава 15. Итоговый портрет личности</h3>
-              <p>Ты — создатель смыслов и проводник красоты. В тебе соединились глубина исследователя, теплота матери и решительность профессионала. Твой путь — это раскрытие через радость созидания без надрыва и самоедства.</p>
-            </div>
-
-            <div class="report-chapter">
-              <h3>🗝️ Глава 16. Семь персональных опор для жизни</h3>
-              <p>1. <b>Состояние первично:</b> Сначала наполненность и отдых, затем съемки и контент.<br>2. <b>Цена твоего мастерства:</b> Достойный чек отсекает токсичность и притягивает идеальных клиентов.<br>3. <b>Личное пространство:</b> Право на тишину и закрытую дверь без чувства вины.<br>4. <b>Честность в блоге:</b> Твоя сила — в искренности и показе живой жизни.<br>5. <b>Доверие партнеру:</b> Снимай контроль и позволяй близким заботиться о тебе.<br>6. <b>Магия повседневности:</b> Маленькие ритуалы красоты заряжают твою натальную Венеру.<br>7. <b>Масштаб без спешки:</b> Твое от тебя не уйдет, двигайся в удовольствие.</p>
-            </div>
-          `;
+          // Open First Impression Screen
+          openLunaProFirstImpressionModal(book);
+          return;
         } else if (prodKey === 'synastry') {
           chaptersHtml = `
             <div class="report-chapter">
