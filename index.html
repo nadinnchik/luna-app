@@ -10,17 +10,18 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
-      --bg: #09080F;
-      --card-bg: rgba(22, 18, 38, 0.82);
-      --card-border: rgba(212, 175, 55, 0.28);
+      --bg: #0B0814;
+      --card-bg: linear-gradient(160deg, rgba(28, 20, 48, 0.82) 0%, rgba(15, 11, 28, 0.94) 100%);
+      --card-border: rgba(229, 195, 120, 0.32);
       --gold: #E5C378;
-      --gold-light: #F7E7B4;
-      --gold-dark: #9A7B38;
-      --gold-gradient: linear-gradient(135deg, #FFF0BE 0%, #D4AF37 50%, #AA7C11 100%);
-      --gold-btn: linear-gradient(135deg, #F3E0A3 0%, #D4AF37 50%, #9E7412 100%);
-      --text: #F0EDF6;
-      --text-muted: #A098BA;
-      --accent-purple: #8B5CF6;
+      --gold-light: #FFE8A3;
+      --gold-dark: #C49B45;
+      --gold-gradient: linear-gradient(135deg, #FFF5D0 0%, #E5C378 45%, #C49B45 100%);
+      --gold-btn: linear-gradient(135deg, #FFE8A3 0%, #E5C378 45%, #C49B45 100%);
+      --text: #F5F3FB;
+      --text-sub: #D1CCDE;
+      --text-muted: #9E96B5;
+      --accent-purple: #9D67FF;
       --radius: 20px;
     }
 
@@ -32,18 +33,18 @@
     }
 
     body {
-      background-color: var(--bg);
+      background-color: #0B0814;
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.28) 0%, transparent 60%),
-        radial-gradient(circle at 100% 35%, rgba(212, 175, 55, 0.18) 0%, transparent 55%),
-        radial-gradient(circle at 0% 70%, rgba(76, 29, 149, 0.25) 0%, transparent 60%),
-        radial-gradient(circle at 50% 100%, rgba(139, 92, 246, 0.22) 0%, transparent 65%);
+        radial-gradient(circle at 50% 0%, rgba(157, 103, 255, 0.24) 0%, transparent 55%),
+        radial-gradient(circle at 100% 30%, rgba(229, 195, 120, 0.16) 0%, transparent 50%),
+        radial-gradient(circle at 0% 65%, rgba(94, 38, 180, 0.2) 0%, transparent 55%),
+        radial-gradient(circle at 50% 100%, rgba(139, 92, 246, 0.18) 0%, transparent 60%);
       background-attachment: fixed;
       color: var(--text);
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
       min-height: 100dvh;
-      padding-bottom: 125px;
+      padding-bottom: 110px;
       overflow-x: hidden;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
@@ -1190,14 +1191,11 @@
   #tab-chat {
     display: none;
     flex-direction: column;
-    height: calc(100vh - 90px);
-    height: calc(100dvh - 90px);
+    height: calc(100vh - 120px);
+    height: calc(100dvh - 120px);
     box-sizing: border-box;
-    padding: 10px 14px 6px 14px;
-    margin-left: -16px;
-    margin-right: -16px;
-    margin-top: -16px;
-    margin-bottom: -140px;
+    padding: 0 0 8px 0;
+    margin: 0;
     overflow: hidden;
     position: relative;
     z-index: 2;
@@ -1206,17 +1204,17 @@
     flex-shrink: 0;
     margin-bottom: 8px;
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+    border-bottom: 1px solid rgba(229, 195, 120, 0.2);
   }
   #tab-chat .chat-credit-bar {
     flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(22, 18, 38, 0.92);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    border-radius: 12px;
-    padding: 6px 12px;
+    background: linear-gradient(145deg, rgba(28, 20, 48, 0.9) 0%, rgba(15, 11, 28, 0.95) 100%);
+    border: 1px solid rgba(229, 195, 120, 0.35);
+    border-radius: 14px;
+    padding: 7px 12px;
     margin-bottom: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   }
@@ -1328,8 +1326,8 @@
           <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
           <span>v1.2.0 • Live</span>
         </div>
-        <div class="credit-header-pill" onclick="openSubscriptionModal()">
-          ✨ <span id="headerCreditsCount">3</span> AI-запроса ⚡
+        <div class="credit-header-pill" onclick="openTopUpModal()">
+          ✨ <span id="headerCreditsCount">1</span> AI-запрос ⚡
         </div>
       </div>
     </div>
@@ -1452,19 +1450,38 @@
         </button>
       </div>
 
-      <!-- 2. 🌙 СОВЕТ ОТ ЛУНЫ НА СЕГОДНЯ -->
-      <div class="card" style="border-color: rgba(212, 175, 55, 0.35); background: linear-gradient(180deg, rgba(28, 22, 50, 0.82) 0%, rgba(16, 12, 30, 0.92) 100%);">
-        <div class="card-title">🌙 Совет от Луны на сегодня</div>
-        <p id="dailyAdviceText" style="font-size: 13.5px; color: #E5E2F0; font-style: italic; line-height: 1.55; margin-bottom: 4px;">
-          «Сегодня тебе может быть особенно полезно прислушаться к собственному ощущению правильного направления — особенно там, где чужие ожидания начинают перебивать твой внутренний голос.»
-        </p>
+      <!-- 2. ✨ МАГИЯ И ЗНАКИ НЕДЕЛИ (DYNAMIC SYMBOLS) -->
+      <div class="card">
+        <div class="card-title">✨ Магия и знаки недели</div>
+        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px;">Символы и фокус внимания для твоего знака на эту неделю:</p>
+        
+        <div class="magic-grid">
+          <div class="magic-card" onclick="showMagicModal('sync')">
+            <div class="magic-tag">Синхрон</div>
+            <div class="magic-icon" id="magicSyncIcon">🪐</div>
+            <div class="magic-val" id="magicSyncVal">—</div>
+            <div class="magic-link">Подробнее →</div>
+          </div>
+          <div class="magic-card" onclick="showMagicModal('symbol')">
+            <div class="magic-tag">Символ</div>
+            <div class="magic-icon" id="magicSymbolIcon">🪶</div>
+            <div class="magic-val" id="magicSymbolVal">—</div>
+            <div class="magic-link">Подробнее →</div>
+          </div>
+          <div class="magic-card" onclick="showMagicModal('totem')">
+            <div class="magic-tag">Тотем</div>
+            <div class="magic-icon" id="magicTotemIcon">🌿</div>
+            <div class="magic-val" id="magicTotemVal">—</div>
+            <div class="magic-link">Подробнее →</div>
+          </div>
+        </div>
       </div>
 
-      <!-- 3. ✨ ТВОЯ НЕДЕЛЯ (FREE PERSONAL FORECAST) -->
+      <!-- 3. ✨ ТВОЯ ПЕРСОНАЛЬНАЯ НЕДЕЛЯ (FREE PERSONAL FORECAST) -->
       <div class="card">
-        <div class="card-title">✨ Твоя неделя</div>
+        <div class="card-title">🌟 Твоя персональная неделя</div>
         <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px;">
-          Персональный недельный срез для твоего натального профиля:
+          Персональный недельный прогноз, рассчитанный по твоей натальной карте:
         </p>
         
         <div class="week-preview-list">
@@ -1491,37 +1508,10 @@
         </button>
       </div>
 
-      <!-- 4. ✨ МАГИЯ И ЗНАКИ НЕДЕЛИ (DYNAMIC SYMBOLS) -->
-      <div class="card">
-        <div class="card-title">✨ Магия и знаки недели</div>
-        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 6px;">Символы и фокус внимания для твоего знака:</p>
-        
-        <div class="magic-grid">
-          <div class="magic-card" onclick="showMagicModal('sync')">
-            <div class="magic-tag">Синхрон</div>
-            <div class="magic-icon" id="magicSyncIcon">🪐</div>
-            <div class="magic-val" id="magicSyncVal">—</div>
-            <div class="magic-link">Подробнее →</div>
-          </div>
-          <div class="magic-card" onclick="showMagicModal('symbol')">
-            <div class="magic-tag">Символ</div>
-            <div class="magic-icon" id="magicSymbolIcon">🪶</div>
-            <div class="magic-val" id="magicSymbolVal">—</div>
-            <div class="magic-link">Подробнее →</div>
-          </div>
-          <div class="magic-card" onclick="showMagicModal('totem')">
-            <div class="magic-tag">Тотем</div>
-            <div class="magic-icon" id="magicTotemIcon">🌿</div>
-            <div class="magic-val" id="magicTotemVal">—</div>
-            <div class="magic-link">Подробнее →</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5. 💬 СПРОСИТЬ LUNA (FAST AI ASTROLOGER ENTRY) -->
+      <!-- 4. 💬 СПРОСИТЬ LUNA (FAST AI ASTROLOGER ENTRY) -->
       <div class="card" style="text-align: center; padding: 16px;">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
-          💬 Есть личный вопрос?
+          💬 Есть личный вопрос к карте?
         </div>
         <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
           LUNA разберет твою ситуацию с учетом натальной карты и текущих энергий.
@@ -1698,21 +1688,18 @@
       </div>
     </div>
 
-    <!-- 💎 SUBSCRIPTION & CREDITS CARD (BLUEPRINT §5) -->
-    <div class="card" style="border-color: rgba(243, 186, 47, 0.45); background: linear-gradient(145deg, rgba(34, 22, 54, 0.9) 0%, rgba(18, 12, 34, 0.95) 100%);">
+    <!-- 💎 CREDITS & STATUS CARD -->
+    <div class="card" style="border-color: rgba(229, 195, 120, 0.4); background: linear-gradient(145deg, rgba(34, 22, 54, 0.85) 0%, rgba(18, 12, 34, 0.95) 100%);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <div class="card-title" style="margin-bottom: 0;">💎 Тариф и AI-запросы</div>
-        <span id="profPlanBadge" style="background: rgba(229, 195, 120, 0.2); border: 1px solid rgba(229, 195, 120, 0.5); color: #FFE8A3; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Free (Старт)</span>
+        <div class="card-title" style="margin-bottom: 0;">⚡ AI-диалог с картой</div>
+        <span id="profPlanBadge" style="background: rgba(229, 195, 120, 0.2); border: 1px solid rgba(229, 195, 120, 0.5); color: #FFE8A3; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Free доступ</span>
       </div>
       <div style="font-size: 13px; color: #E2DFEC; margin-bottom: 10px; line-height: 1.5;">
         Осталось персональных AI-запросов: <b id="profCreditsCount" style="color: var(--gold-light); font-size: 15px;">1</b>
       </div>
       <div style="display: flex; gap: 8px;">
-        <button class="btn-gold" style="padding: 10px 14px; font-size: 12.5px;" onclick="openSubscriptionModal()">
-          Управление подпиской ⚡
-        </button>
-        <button class="btn-outline" style="padding: 10px 14px; font-size: 12.5px;" onclick="openTopUpModal()">
-          + Пакет запросов
+        <button class="btn-gold" style="padding: 10px 14px; font-size: 12.5px;" onclick="openTopUpModal()">
+          + Докупить 15 вопросов (99 ₽)
         </button>
       </div>
     </div>
@@ -3346,10 +3333,11 @@
           </button>
         </div>
 
-        <div style="text-align: center; margin-top: 14px;">
-          <button onclick="closeModal(); switchTab('catalog');" style="background: none; border: none; color: var(--gold); font-size: 12px; text-decoration: underline; cursor: pointer;">
-            Или смотреть полный каталог PRO-книг →
-          </button>
+        <div style="background: rgba(22, 18, 38, 0.6); border: 1px dashed rgba(229, 195, 120, 0.3); border-radius: 12px; padding: 12px; text-align: center; margin-top: 14px;">
+          <span style="font-size: 10px; color: #A78BFA; font-weight: 700; text-transform: uppercase;">Скоро в LUNA</span>
+          <div style="font-size: 12px; color: #CBD5E1; margin-top: 4px; line-height: 1.4;">
+            Фундаментальная Натальная книга PRO на 16 глав и тематические разборы появятся в следующих обновлениях.
+          </div>
         </div>
       </div>
     `;
@@ -5415,52 +5403,120 @@
       }
 
       const reportHtml = `
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
-          🎯 Разбор сценария: ${topicTitle}
-        </div>
-        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
-          Персональный аудит для: <b>${escapeHtml(name)}</b> (☀️ <b>${sun}</b> • 🌙 <b>${moon}</b> • ↑ <b>${asc}</b>)
-        </div>
-
-        <div class="report-content">
-          <div class="report-chapter">
-            <h3>🔍 Глава 1. Натальный корень и планетарная матрица</h3>
-            <p>Твой исходный запрос: <i>«${escapeHtml(situation)}»</i>.</p>
-            <p>В твоей натальной карте ключевой механизм зацикливания ситуации формируется на стыке <b>Солнца в знаке ${sun}</b> (${sProf.archetype}) и <b>Луны в ${moon}</b> (${mProf.archetype}).</p>
-            <p>Твое Солнце стремится к масштабу, безупречному результату и достоинству, однако подсознательная программа Луны в ${moon} шепчет: <b>«Я ценна и в безопасности только тогда, когда всё контролирую сама и не даю слабины»</b>. В сфере (${topicTitle}) это заставляет тебя бессознательно выбирать самые сложные, энергозатратные сценарии, где приходится доказывать свое право на счастье и уважение через сверхусилия.</p>
+        <div style="padding: 6px 2px 24px;">
+          <!-- EMBLEM HEADER -->
+          <div style="text-align: center; margin-bottom: 16px;">
+            <div class="hero-natal-badge" style="margin-bottom: 8px; background: linear-gradient(135deg, rgba(243, 186, 47, 0.3) 0%, rgba(138, 79, 158, 0.3) 100%);">
+              <span class="badge-star">⭐</span> ЭКСПРЕСС-АУДИТ СЦЕНАРИЯ
+            </div>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: #FFF; line-height: 1.2; margin-bottom: 4px;">
+              🎯 ${topicTitle}
+            </div>
+            <div style="font-size: 12.5px; color: var(--gold); font-weight: 600;">
+              ${escapeHtml(name)} • ☀️ ${sun} • 🌙 ${moon} • ↑ ${asc}
+            </div>
           </div>
 
-          <div class="report-chapter">
-            <h3>🏠 Глава 2. Преломление через твой жизненный контекст</h3>
-            <p><b>Входные данные анкеты:</b> Статус: <i>${familyText}</i> • Дети: <i>${kidsText}</i> • Занятость: <i>${jobText}</i>.</p>
-            <p>${lifeContextInsight}</p>
-            <p>${jobContextInsight}</p>
+          <!-- CONTEXT PILLS -->
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 16px;">
+            <span style="font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(229,195,120,0.3); padding: 3px 9px; border-radius: 12px; color: #FFE8A3;">❤️ ${familyText}</span>
+            <span style="font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(229,195,120,0.3); padding: 3px 9px; border-radius: 12px; color: #FFE8A3;">👶 ${kidsText}</span>
+            <span style="font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid rgba(229,195,120,0.3); padding: 3px 9px; border-radius: 12px; color: #FFE8A3;">💼 ${jobText}</span>
           </div>
 
-          <div class="report-chapter">
-            <h3>⚡ Глава 3. Теневая психологическая ловушка («Слепая зона»)</h3>
-            <p><b>Ловушка ${sProf.element}:</b> Твоя психика настолько привыкла жить в режиме скрытой мобилизации и преодоления, что спокойное, легкое течение жизни вызывает подсознательную тревогу: <i>«Неужели всё так гладко? Где скрыт подвох?»</i>.</p>
-            <p>Из-за этой слепой зоны ты сама можешь бессознательно саботировать гармоничные отношения или легкие деньги, возвращая себя на привычные «рельсы» борьбы и усталости. Теневая сторона твоего знака — ${sProf.shadow.toLowerCase()}</p>
+          <!-- CHAPTER 1: NATAL ROOT -->
+          <div style="margin-bottom: 16px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(229, 195, 120, 0.35); border-radius: 16px; padding: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #FFE8A3;">
+                🔍 Глава 1. Натальный корень паттерна
+              </div>
+              <span style="font-size: 10px; background: rgba(243, 186, 47, 0.2); color: #FFE8A3; padding: 3px 8px; border-radius: 8px; font-weight: 700;">ПЛАНЕТАРНЫЙ КОД</span>
+            </div>
+            <p style="margin: 0 0 10px 0; color: #E2DFEC; font-size: 13px; line-height: 1.55;">
+              Твой запрос: <i>«${escapeHtml(situation)}»</i>.
+            </p>
+            <p style="margin: 0 0 12px 0; color: #CBD5E1; font-size: 13px; line-height: 1.6;">
+              В твоей натальной карте ключевой механизм зацикливания ситуации формируется на стыке <b>Солнца в знаке ${sun}</b> (${sProf.archetype}) и <b>Луны в ${moon}</b> (${mProf.archetype}).
+            </p>
+            <div style="background: rgba(243, 186, 47, 0.08); border: 1px solid rgba(243, 186, 47, 0.25); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: #FFE8A3; margin-bottom: 8px; line-height: 1.5;">
+              ⚡ <b>Как запускается круг:</b> Твое Солнце стремится к безупречному результату и достоинству, однако подсознательная программа Луны в ${moon} шепчет: <i>«Я в безопасности, только если всё держу под контролем сама»</i>. Это притягивает сложные сценарии, где приходится доказывать право на любовь или признание через сверхусилия.
+            </div>
           </div>
 
-          <div class="report-chapter">
-            <h3>🗝️ Глава 4. Пошаговый алгоритм выхода и натальные ключи</h3>
-            <p>Чтобы окончательно разомкнуть этот повторяющийся круг в ближайшие 2–4 недели, карта рекомендует 4 конкретных шага:</p>
-            <p><b>1. Правило «Паузы достоинства»:</b> при первом импульсе включить спасателя или согласиться на компромисс из страха — возьми паузу в 24 часа. Спроси себя: <i>«Я делаю это из любви и изобилия или из страха отвержения?»</i>.</p>
-            <p><b>2. Возврат чужой ответственности:</b> позволь партнеру и коллегам ошибаться и нести последствия их выбора без твоего мгновенного вмешательства.</p>
-            <p><b>3. Активация ядра Солнца (${sun}):</b> ${sProf.growthKey}</p>
-            <p><b>4. Заземление Луны (${moon}):</b> выдели себе строго неприкосновенные часы отдыха в неделю без телефона, работы и домашних обязательств.</p>
+          <!-- CHAPTER 2: LIFE CONTEXT -->
+          <div style="margin-bottom: 16px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(139, 92, 246, 0.35); border-radius: 16px; padding: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #DDD6FE;">
+                🏠 Глава 2. Преломление через реальную жизнь
+              </div>
+              <span style="font-size: 10px; background: rgba(139, 92, 246, 0.2); color: #DDD6FE; padding: 3px 8px; border-radius: 8px; font-weight: 700;">РЕАЛЬНЫЙ КОНТЕКСТ</span>
+            </div>
+            <p style="margin: 0 0 12px 0; color: #CBD5E1; font-size: 13px; line-height: 1.6;">
+              ${lifeContextInsight}
+            </p>
+            <div style="background: rgba(139, 92, 246, 0.08); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: #E2E8F0; line-height: 1.5;">
+              💼 <b>Профессиональный фактор:</b> ${jobContextInsight}
+            </div>
           </div>
-        </div>
 
-        <div style="background: linear-gradient(135deg, rgba(38, 22, 60, 0.9) 0%, rgba(18, 12, 34, 0.95) 100%); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 14px; padding: 14px; text-align: center; margin-top: 16px;">
-          <div style="font-size: 14px; font-weight: 700; color: #FFF; margin-bottom: 4px;">Хочешь полную картину всех сфер жизни? 📖</div>
-          <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 12px; line-height: 1.4;">
-            Фундаментальная Натальная книга PRO раскрывает все 16 глав, аспекты планет и персональную стратегию судьбы.
+          <!-- CHAPTER 3: SHADOW TRAP -->
+          <div style="margin-bottom: 16px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(239, 68, 68, 0.35); border-radius: 16px; padding: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #FCA5A5;">
+                ⚡ Глава 3. Теневая ловушка («Слепая зона»)
+              </div>
+              <span style="font-size: 10px; background: rgba(239, 68, 68, 0.2); color: #FCA5A5; padding: 3px 8px; border-radius: 8px; font-weight: 700;">СЛЕПАЯ ЗОНА</span>
+            </div>
+            <p style="margin: 0 0 12px 0; color: #CBD5E1; font-size: 13px; line-height: 1.6;">
+              Твоя психика привыкла жить в режиме скрытой мобилизации. Когда в отношениях или работе всё идет легко и без надрыва, внутри может возникать тревога: <i>«Неужели так просто? Где скрыт подвох?»</i>.
+            </p>
+            <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 10px 12px; font-size: 12px; color: #FECACA; line-height: 1.45;">
+              ⚠️ <b>Теневой триггер:</b> ${sProf.shadow}
+            </div>
           </div>
-          <button class="btn-gold" style="padding: 10px 16px; font-size: 13px;" onclick="closeModal(); switchTab('today');">
-            ✨ Готово
-          </button>
+
+          <!-- CHAPTER 4: 4 ACTIONABLE KEYS -->
+          <div style="margin-bottom: 16px; background: linear-gradient(145deg, rgba(46, 28, 75, 0.85) 0%, rgba(22, 15, 42, 0.95) 100%); border: 1.5px solid rgba(229, 195, 120, 0.5); border-radius: 18px; padding: 18px;">
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; color: #FFE8A3; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+              <span>🗝️</span> Глава 4. Пошаговый алгоритм выхода
+            </div>
+            <div style="font-size: 12.5px; color: #E2E8F0; line-height: 1.5; margin-bottom: 14px;">
+              Практический натальный план для разрыва повторяющегося сценария на ближайшие 2–4 недели:
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #E5C378;">
+                <b style="color: #FFE8A3; font-size: 12.5px;">1. Правило «Паузы достоинства» (24 часа):</b>
+                <div style="font-size: 12px; color: #CBD5E1; margin-top: 3px; line-height: 1.45;">При первом импульсе взвалить на себя всё или согласиться из страха — возьми паузу на сутки. Действуй только из спокойствия, а не из спешки.</div>
+              </div>
+              <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #8B5CF6;">
+                <b style="color: #DDD6FE; font-size: 12.5px;">2. Возврат чужой ответственности:</b>
+                <div style="font-size: 12px; color: #CBD5E1; margin-top: 3px; line-height: 1.45;">Позволь партнеру и окружающим нести последствия их решений. Спасательство истощает твою карту.</div>
+              </div>
+              <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #10B981;">
+                <b style="color: #6EE7B7; font-size: 12.5px;">3. Активация ядра Солнца (${sun}):</b>
+                <div style="font-size: 12px; color: #CBD5E1; margin-top: 3px; line-height: 1.45;">${sProf.growthKey}</div>
+              </div>
+              <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; border-left: 3px solid #60A5FA;">
+                <b style="color: #93C5FD; font-size: 12.5px;">4. Заземление Луны (${moon}):</b>
+                <div style="font-size: 12px; color: #CBD5E1; margin-top: 3px; line-height: 1.45;">Выдели строго неприкосновенные часы отдыха в неделю без телефона, работы и домашних задач.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOOTER TEASER -->
+          <div style="background: rgba(22, 18, 38, 0.6); border: 1px dashed rgba(229, 195, 120, 0.35); border-radius: 14px; padding: 14px; text-align: center; margin-top: 16px;">
+            <div style="font-size: 10.5px; font-weight: 700; color: #DDD6FE; text-transform: uppercase;">Скоро в LUNA</div>
+            <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 4px; line-height: 1.45;">
+              Фундаментальная Натальная книга PRO на 16 глав и персональная синастрия находятся в разработке и появятся в следующих обновлениях.
+            </div>
+          </div>
+
+          <div style="margin-top: 18px;">
+            <button class="btn-gold" style="padding: 13px; font-size: 14px;" onclick="closeModal(); switchTab('today');">
+              ✨ Сохранить и вернуться в меню
+            </button>
+          </div>
         </div>
       `;
 
