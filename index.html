@@ -1719,18 +1719,32 @@
       </div>
     </div>
 
-    <!-- 💎 CREDITS & STATUS CARD -->
-    <div class="card" style="border-color: rgba(229, 195, 120, 0.4); background: linear-gradient(145deg, rgba(34, 22, 54, 0.85) 0%, rgba(18, 12, 34, 0.95) 100%);">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-        <div class="card-title" style="margin-bottom: 0;">⚡ AI-диалог с картой</div>
-        <span id="profPlanBadge" style="background: rgba(229, 195, 120, 0.2); border: 1px solid rgba(229, 195, 120, 0.5); color: #FFE8A3; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Free доступ</span>
+    <!-- 💎 MY SUBSCRIPTION BLOCK (SECTION 14 SPEC) -->
+    <div class="card" id="profSubscriptionCard" style="border-color: rgba(229, 195, 120, 0.4); background: linear-gradient(145deg, rgba(34, 22, 54, 0.85) 0%, rgba(18, 12, 34, 0.95) 100%);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <div class="card-title" style="margin-bottom: 0;">💎 Моя подписка</div>
+        <span id="profSubStatusBadge" style="background: rgba(229, 195, 120, 0.2); border: 1px solid rgba(229, 195, 120, 0.5); color: #FFE8A3; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Подписка не активна</span>
       </div>
-      <div style="font-size: 13px; color: #E2DFEC; margin-bottom: 10px; line-height: 1.5;">
-        Осталось персональных AI-запросов: <b id="profCreditsCount" style="color: var(--gold-light); font-size: 15px;">1</b>
+
+      <div style="font-size: 13px; color: #E2DFEC; line-height: 1.7; margin-bottom: 12px;">
+        <div><b>Текущий тариф:</b> <span id="profSubPlanName">Бесплатный доступ</span></div>
+        <div><b>Стоимость:</b> <span id="profSubPrice">0 ₽</span></div>
+        <div><b>Доступно AI-запросов:</b> <b id="profSubCreditsAvailable" style="color: var(--gold-light);">3 из 3</b></div>
+        <div><b>Использовано запросов:</b> <span id="profSubCreditsUsed">0</span></div>
+        <div><b>Дата следующего обновления / списания:</b> <span id="profSubBillingDate">—</span></div>
       </div>
-      <div style="display: flex; gap: 8px;">
-        <button class="btn-gold" style="padding: 10px 14px; font-size: 12.5px;" onclick="openTopUpModal()">
-          + Докупить 15 вопросов (99 ₽)
+
+      <div id="profSubFeaturesWrap" style="background: rgba(0, 0, 0, 0.25); border-radius: 12px; padding: 10px 12px; margin-bottom: 14px; font-size: 12px; color: #CBD5E1; line-height: 1.5;">
+        <div style="font-weight: 700; color: #FFE8A3; margin-bottom: 4px;">В тариф входит:</div>
+        <div id="profSubFeaturesList">• 3 бесплатных вопроса к натальной карте (Lifetime)<br>• Базовый разбор личности<br>• Еженедельные знаки и архетипы недели</div>
+      </div>
+
+      <div id="profSubActions" style="display: flex; gap: 8px;">
+        <button id="profSubBtnMain" class="btn-gold" style="flex: 1; padding: 10px 12px; font-size: 12.5px;" onclick="openSubscriptionModal()">
+          Подключить подписку →
+        </button>
+        <button class="btn-outline" style="padding: 10px 12px; font-size: 12px;" onclick="openTopUpModal()">
+          + Пакет запросов
         </button>
       </div>
     </div>
@@ -5569,6 +5583,7 @@
 
   function getStorageKeyCredits() { return 'luna_user_credits_' + currentUserId; }
   function getStorageKeyPlan() { return 'luna_user_plan_' + currentUserId; }
+  function getStorageKeySubInfo() { return 'luna_user_sub_' + currentUserId; }
 
   function getUserCredits() {
     const raw = localStorage.getItem(getStorageKeyCredits());
@@ -5594,23 +5609,100 @@
     if (badge) badge.textContent = planName;
   }
 
+  function getSubscriptionInfo() {
+    try {
+      const raw = localStorage.getItem(getStorageKeySubInfo());
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        const cr = getUserCredits();
+        const total = parsed.totalCredits || 75;
+        parsed.availableCredits = cr;
+        parsed.usedCredits = Math.max(0, total - cr);
+        return parsed;
+      }
+    } catch(e) {}
+
+    const cr = getUserCredits();
+    return {
+      active: false,
+      plan: 'Бесплатный доступ',
+      price: '0 ₽',
+      totalCredits: 3,
+      availableCredits: cr,
+      usedCredits: Math.max(0, 3 - cr),
+      nextBillingDate: '—',
+      features: [
+        '3 бесплатных вопроса к натальной карте (Lifetime)',
+        'Базовый разбор личности (4 главы)',
+        'Еженедельные знаки и архетипы недели'
+      ]
+    };
+  }
+
   function updateCreditDisplays() {
     const cr = getUserCredits();
+    const sub = getSubscriptionInfo();
+
     const hEl = document.getElementById('headerCreditsCount');
     if (hEl) hEl.textContent = cr;
 
+    // Chat Bar Status (Dynamic live count)
     const chatStatusText = document.getElementById('chatCreditStatusText');
     if (chatStatusText) {
-      if (cr === 3) {
-        chatStatusText.innerHTML = `<span>⚡ Осталось: <b style="color: #FFF;">3 из 3</b> бесплатных запросов</span>`;
-      } else if (cr === 2) {
-        chatStatusText.innerHTML = `<span>⚡ Осталось: <b style="color: #FFE8A3;">2 из 3</b> бесплатных запросов</span>`;
-      } else if (cr === 1) {
-        chatStatusText.innerHTML = `<span>⚡ Остался <b style="color: #FBBF24;">1</b> бесплатный запрос</span>`;
-      } else if (cr <= 0) {
-        chatStatusText.innerHTML = `<span style="color: #F87171;">⚡ Бесплатные запросы закончились</span>`;
+      if (sub.active) {
+        chatStatusText.innerHTML = `<span>✨ <b style="color: #FFF;">${cr} из ${sub.totalCredits}</b> AI-запросов (${sub.plan})</span>`;
       } else {
-        chatStatusText.innerHTML = `<span>⚡ Баланс: <b style="color: #FFF;">${cr}</b> запросов</span>`;
+        if (cr === 3) {
+          chatStatusText.innerHTML = `<span>⚡ Осталось: <b style="color: #FFF;">3 из 3</b> бесплатных запросов</span>`;
+        } else if (cr === 2) {
+          chatStatusText.innerHTML = `<span>⚡ Осталось: <b style="color: #FFE8A3;">2 из 3</b> бесплатных запросов</span>`;
+        } else if (cr === 1) {
+          chatStatusText.innerHTML = `<span>⚡ Остался <b style="color: #FBBF24;">1</b> бесплатный запрос</span>`;
+        } else if (cr <= 0) {
+          chatStatusText.innerHTML = `<span style="color: #F87171;">⚡ Бесплатные запросы закончились</span>`;
+        } else {
+          chatStatusText.innerHTML = `<span>⚡ Баланс: <b style="color: #FFF;">${cr}</b> запросов</span>`;
+        }
+      }
+    }
+
+    // Profile Subscription Block Fields
+    const pSubBadge = document.getElementById('profSubStatusBadge');
+    const pSubPlan = document.getElementById('profSubPlanName');
+    const pSubPrice = document.getElementById('profSubPrice');
+    const pSubAvail = document.getElementById('profSubCreditsAvailable');
+    const pSubUsed = document.getElementById('profSubCreditsUsed');
+    const pSubBilling = document.getElementById('profSubBillingDate');
+    const pSubFeaturesList = document.getElementById('profSubFeaturesList');
+    const pSubBtnMain = document.getElementById('profSubBtnMain');
+
+    if (pSubBadge) {
+      if (sub.active) {
+        pSubBadge.textContent = '✅ Подписка активна';
+        pSubBadge.style.background = 'rgba(16, 185, 129, 0.25)';
+        pSubBadge.style.color = '#6EE7B7';
+        pSubBadge.style.border = '1px solid rgba(16, 185, 129, 0.45)';
+      } else {
+        pSubBadge.textContent = 'Подписка не активна';
+        pSubBadge.style.background = 'rgba(229, 195, 120, 0.15)';
+        pSubBadge.style.color = '#FFE8A3';
+        pSubBadge.style.border = '1px solid rgba(229, 195, 120, 0.35)';
+      }
+    }
+
+    if (pSubPlan) pSubPlan.textContent = sub.plan;
+    if (pSubPrice) pSubPrice.textContent = sub.price;
+    if (pSubAvail) pSubAvail.textContent = `${cr} из ${sub.totalCredits}`;
+    if (pSubUsed) pSubUsed.textContent = `${sub.usedCredits} запросов`;
+    if (pSubBilling) pSubBilling.textContent = sub.nextBillingDate;
+    if (pSubFeaturesList) {
+      pSubFeaturesList.innerHTML = (sub.features || []).map(f => `• ${escapeHtml(f)}`).join('<br>');
+    }
+    if (pSubBtnMain) {
+      if (sub.active) {
+        pSubBtnMain.textContent = 'Управление подпиской ⚡';
+      } else {
+        pSubBtnMain.textContent = 'Подключить подписку →';
       }
     }
 
@@ -5619,7 +5711,7 @@
     const pEl = document.getElementById('profCreditsCount');
     if (pEl) pEl.textContent = cr;
     const pBadge = document.getElementById('profPlanBadge');
-    if (pBadge) pBadge.textContent = getUserPlan();
+    if (pBadge) pBadge.textContent = sub.plan;
   }
 
   function askQuickPrompt(txt) {
@@ -6631,9 +6723,25 @@
 
   function selectSubscriptionPlan(planName, price, creditsToAdd) {
     haptic('success');
+    const nextDate = new Date(Date.now() + 30 * 86400000).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+    const subInfo = {
+      active: true,
+      plan: `Luna ${planName}`,
+      price: `${price} ₽ / месяц`,
+      totalCredits: creditsToAdd,
+      startDate: new Date().toISOString(),
+      nextBillingDate: nextDate,
+      features: [
+        `${creditsToAdd} персональных AI-запросов в месяц`,
+        'Расширенные лунные срезы и персональные рекомендации',
+        'Приоритетная скорость обработки ответов LUNA'
+      ]
+    };
+    localStorage.setItem(getStorageKeySubInfo(), JSON.stringify(subInfo));
     setUserPlan(`Luna ${planName}`);
-    setUserCredits(getUserCredits() + creditsToAdd);
+    setUserCredits(creditsToAdd);
     trackLunaEvent('subscription_started', { plan: planName, price, creditsAdded: creditsToAdd });
+    updateCreditDisplays();
 
     openModal(`
       <div style="text-align: center; padding: 20px 8px;">
@@ -6642,7 +6750,8 @@
           Тариф Luna ${planName} активен!
         </div>
         <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
-          Вам начислено <b>+${creditsToAdd} персональных AI-запросов</b>. Теперь вы можете задавать любые вопросы вашей натальной карте.
+          Вам начислено <b>+${creditsToAdd} персональных AI-запросов</b>.<br>
+          Дата следующего списания и обновления лимита: <b>${nextDate}</b>.
         </p>
         <button class="btn-gold" onclick="closeModal(); switchTab('chat');">
           Перейти в чат с Луной →
