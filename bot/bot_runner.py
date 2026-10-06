@@ -124,12 +124,37 @@ def send_chat_answer(chat_id: int, question: str, user_first_name: str = "Гос
     # 3. LLM API (OpenAI / Gemini)
     openai_key = os.getenv("OPENAI_API_KEY")
     gemini_key = os.getenv("GEMINI_API_KEY")
+
     sys_prompt = (
-        f"Ты — LUNA, чуткий, бережный и глубокий персональный астролог и психолог. "
-        f"Имя пользователя: {name}. "
-        f"Отвечай тепло, психологично, без фатализма и клише, опираясь на астрологический синтез. "
-        f"Используй HTML теги <b>, <i> для форматирования. Текст до 150 слов."
+        "Ты — LUNA, чуткий, бережный, психологичный и профессиональный персональный AI-астролог.\n\n"
+        "### КАТЕГОРИЧЕСКИЕ ПРАВИЛА И ЗАЩИТА ОТ ВЫДУМЫВАНИЯ (ANTI-HALLUCINATION MANDATE):\n"
+        "1. СТРОГАЯ ОПОРА НА ВХОДНЫЕ ДАННЫЕ: Опирайся ИСКЛЮЧИТЕЛЬНО на предоставленные входные данные в блоке [INPUT DATA: ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ].\n"
+        "2. ЗАПРЕТ НА ВЫДУМЫВАНИЕ: Если каких-то данных нет — КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО их выдумывать или домысливать. Разбирай только реально переданные данные.\n"
+        "3. ОБРАБОТКА ПРИВЕТСТВИЙ И БЛАГОДАРНОСТЕЙ: Если вопрос пользователя — это просто приветствие или благодарность, отвечай тепло по имени и предлагай темы разбора (отношения, деньги, карьера, ресурс).\n"
+        "4. СТРУКТУРА ОТВЕТА (обязательно 3 блока с заголовками <b>):\n"
+        "   • <b>1. Что происходит по карте:</b> астрологический и психологический срез.\n"
+        "   • <b>2. На что обратить внимание:</b> триггеры, скрытый сценарий или слепая зона.\n"
+        "   • <b>3. 💡 Что делать / Практический совет:</b> 2–3 конкретных прикладных шага.\n"
+        "5. Форматируй с помощью HTML тегов <b>, <i>, <br>. Объем: 130–200 слов."
     )
+
+    user_payload = (
+        f"=== [INPUT DATA: ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ] ===\n"
+        f"• Имя: {name}\n"
+        f"==========================================\n\n"
+        f"=== [ВОПРОС ПОЛЬЗОВАТЕЛЯ] ===\n"
+        f"{question.strip()}\n"
+        f"============================="
+    )
+
+    log_banner = (
+        "\n" + "=" * 65 + "\n"
+        f"🤖 [LUNA BOT LLM DISPATCH] Name: {name}, Question: {question}\n"
+        f"▶ [SYSTEM PROMPT]:\n{sys_prompt}\n\n"
+        f"▶ [USER MESSAGE / INPUT DATA]:\n{user_payload}\n"
+        + "=" * 65 + "\n"
+    )
+    print(log_banner, flush=True)
 
     if openai_key:
         try:
@@ -137,7 +162,7 @@ def send_chat_answer(chat_id: int, question: str, user_first_name: str = "Гос
                 "model": "gpt-4o-mini",
                 "messages": [
                     {"role": "system", "content": sys_prompt},
-                    {"role": "user", "content": question}
+                    {"role": "user", "content": user_payload}
                 ],
                 "temperature": 0.7,
                 "max_tokens": 500
@@ -158,7 +183,7 @@ def send_chat_answer(chat_id: int, question: str, user_first_name: str = "Гос
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
             gemini_payload = {
                 "system_instruction": {"parts": [{"text": sys_prompt}]},
-                "contents": [{"role": "user", "parts": [{"text": question}]}],
+                "contents": [{"role": "user", "parts": [{"text": user_payload}]}],
                 "generationConfig": {"temperature": 0.7, "maxOutputTokens": 500}
             }
             req_post = urllib.request.Request(url, data=json.dumps(gemini_payload).encode("utf-8"), headers={"Content-Type": "application/json"})

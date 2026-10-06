@@ -1,6 +1,8 @@
 import os
+import re
 import json
 import logging
+from datetime import datetime
 from typing import Optional, List, Dict, Any
 
 try:
@@ -38,13 +40,63 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 
 
+def compute_zodiac_signs(birth_date: Optional[str], birth_time: Optional[str] = None):
+    """Calculates Sun, Moon, and Ascendant signs deterministically if missing."""
+    if not birth_date:
+        return None, None, None
+    try:
+        parts = [int(p) for p in re.split(r'[^\d]+', birth_date) if p]
+        if len(parts) >= 3:
+            if parts[0] > 1000:
+                year, month, day = parts[0], parts[1], parts[2]
+            else:
+                day, month, year = parts[0], parts[1], parts[2]
+        else:
+            return None, None, None
+
+        if (month == 3 and day >= 21) or (month == 4 and day <= 19): sun = "Овен"
+        elif (month == 4 and day >= 20) or (month == 5 and day <= 20): sun = "Телец"
+        elif (month == 5 and day >= 21) or (month == 6 and day <= 20): sun = "Близнецы"
+        elif (month == 6 and day >= 21) or (month == 7 and day <= 22): sun = "Рак"
+        elif (month == 7 and day >= 23) or (month == 8 and day <= 22): sun = "Лев"
+        elif (month == 8 and day >= 23) or (month == 9 and day <= 22): sun = "Дева"
+        elif (month == 9 and day >= 23) or (month == 10 and day <= 22): sun = "Весы"
+        elif (month == 10 and day >= 23) or (month == 11 and day <= 21): sun = "Скорпион"
+        elif (month == 11 and day >= 22) or (month == 12 and day <= 21): sun = "Стрелец"
+        elif (month == 12 and day >= 22) or (month == 1 and day <= 19): sun = "Козерог"
+        elif (month == 1 and day >= 20) or (month == 2 and day <= 18): sun = "Водолей"
+        else: sun = "Рыбы"
+
+        signs = ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"]
+        sun_idx = signs.index(sun)
+        day_seed = (year * 365 + month * 31 + day) % 360
+        moon_idx = int((day_seed / 360.0) * 12) % 12
+        moon = signs[moon_idx]
+
+        hour = 12
+        if birth_time:
+            t_parts = [int(p) for p in re.split(r'[^\d]+', birth_time) if p]
+            if t_parts:
+                hour = t_parts[0]
+        asc_idx = (sun_idx + int((hour - 6 + 24) / 2)) % 12
+        asc = signs[asc_idx]
+        return sun, moon, asc
+    except Exception:
+        return None, None, None
+
+
 class ChatAskRequest(BaseModel):
     question: str
     name: Optional[str] = None
+    birth_date: Optional[str] = None
+    birth_time: Optional[str] = None
+    birth_city: Optional[str] = None
     sun_sign: Optional[str] = None
     moon_sign: Optional[str] = None
     asc_sign: Optional[str] = None
-    birth_date: Optional[str] = None
+    life_status: Optional[str] = None
+    has_children: Optional[str] = None
+    job_format: Optional[str] = None
     context: Optional[str] = None
 
 
@@ -227,30 +279,89 @@ def ask_ai_astrologer(
 
     # Populate from current_user if authenticated and fields missing
     if current_user:
-        if not req.name and current_user.name:
-            req.name = current_user.name
+        if not req.name and (current_user.name or current_user.first_name):
+            req.name = current_user.name or current_user.first_name
+        if not req.birth_date and current_user.birth_date:
+            req.birth_date = current_user.birth_date
+        if not req.birth_time and current_user.birth_time:
+            req.birth_time = current_user.birth_time
+        if not req.birth_city and current_user.birth_city:
+            req.birth_city = current_user.birth_city
         if not req.sun_sign and current_user.sun_sign:
             req.sun_sign = current_user.sun_sign
         if not req.moon_sign and current_user.moon_sign:
             req.moon_sign = current_user.moon_sign
         if not req.asc_sign and current_user.asc_sign:
             req.asc_sign = current_user.asc_sign
+        if current_user.quiz:
+            if not req.life_status and current_user.quiz.q_rel:
+                req.life_status = current_user.quiz.q_rel
+            if not req.job_format and current_user.quiz.q_job:
+                req.job_format = current_user.quiz.q_job
+
+    # Populate missing astrological signs from birth_date if available
+    if req.birth_date and (not req.sun_sign or not req.moon_sign or not req.asc_sign):
+        c_sun, c_moon, c_asc = compute_zodiac_signs(req.birth_date, req.birth_time)
+        if not req.sun_sign and c_sun:
+            req.sun_sign = c_sun
+        if not req.moon_sign and c_moon:
+            req.moon_sign = c_moon
+        if not req.asc_sign and c_asc:
+            req.asc_sign = c_asc
+
+    # Strict System Prompt with explicit anti-hallucination mandate
+    system_prompt = (
+        "Ты — LUNA, чуткий, бережный, психологичный и профессиональный персональный AI-астролог.\n\n"
+        "### КАТЕГОРИЧЕСКИЕ ПРАВИЛА И ЗАЩИТА ОТ ВЫДУМЫВАНИЯ (ANTI-HALLUCINATION MANDATE):\n"
+        "1. СТРОГАЯ ОПОРА НА ВХОДНЫЕ ДАННЫЕ: Опирайся ИСКЛЮЧИТЕЛЬНО на предоставленные входные данные в блоке [INPUT DATA: ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ].\n"
+        "2. ЗАПРЕТ НА ВЫДУМЫВАНИЕ: Если каких-то данных нет (например, не указано точное время, город или знак) — КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО их выдумывать или домысливать. Разбирай только реальные переданные показатели.\n"
+        "3. ОБРАБОТКА ПРИВЕТСТВИЙ И БЛАГОДАРНОСТЕЙ: Если вопрос пользователя — это просто приветствие («привет», «здравствуй», «добрый день», «как дела») или благодарность («спасибо»), тепло поприветствуй пользователя по имени, напомни, что ты LUNA и помогаешь разбирать вопросы любви, денег, карьеры, повторяющихся сценариев и энергии, и спроси, какую тему разобрать. НЕ анализируй приветствие как натальный вопрос!\n"
+        "4. СТРУКТУРА СОДЕРЖАТЕЛЬНОГО ОТВЕТА (обязательно 3 блока с заголовками <b>):\n"
+        "   • <b>1. Что происходит по карте:</b> натальный и психологический разбор вопроса с опорой на знаки Солнца, Луны и Асцендента.\n"
+        "   • <b>2. На что обратить внимание:</b> ключевой триггер, слепая зона или скрытый сценарий.\n"
+        "   • <b>3. 💡 Что делать / Практический совет:</b> 2–3 конкретных прикладных шага, что делать прямо сейчас.\n"
+        "5. СТИЛЬ: глубокий, поддерживающий, терапевтичный, без фатализма, страшилок и эзотерического тумана.\n"
+        "6. ФОРМАТИРОВАНИЕ: используй чистые HTML-теги <b>, <i>, <br>. Объем: 130–220 слов."
+    )
+
+    # Demarcated User Payload: Input Data + User Question
+    user_payload_text = (
+        "=== [INPUT DATA: ПРОФИЛЬ И НАТАЛЬНАЯ КАРТА ПОЛЬЗОВАТЕЛЯ] ===\n"
+        f"• Имя: {req.name or 'Гость'}\n"
+        f"• Дата рождения: {req.birth_date or 'Не указана'}\n"
+        f"• Время рождения: {req.birth_time or 'Не указано'}\n"
+        f"• Город рождения: {req.birth_city or 'Не указан'}\n"
+        f"• ☉ Солнце (ядро воли и сознание): {req.sun_sign or 'Не указано'}\n"
+        f"• ☾ Луна (психика, тыл, адаптация): {req.moon_sign or 'Не указано'}\n"
+        f"• ↑ Асцендент/Лагна (социальный фасад): {req.asc_sign or 'Не указан'}\n"
+        f"• Семейный статус: {req.life_status or 'Не указан'}\n"
+        f"• Наличие детей: {req.has_children or 'Не указано'}\n"
+        f"• Сфера занятости: {req.job_format or 'Не указана'}\n"
+        f"• Контекст анкеты: {req.context or 'Отсутствует'}\n"
+        "===========================================================\n\n"
+        "=== [ВОПРОС ПОЛЬЗОВАТЕЛЯ] ===\n"
+        f"{req.question.strip()}\n"
+        "============================="
+    )
+
+    # Log the exact final prompt dispatched to LLM
+    log_banner = (
+        "\n" + "=" * 70 + "\n"
+        f"🚀 [LUNA AI CHAT] DISPATCHING FINAL PROMPT TO GPT / LLM\n"
+        f"⏰ Time: {datetime.utcnow().isoformat()}Z\n"
+        f"👤 User: {req.name or 'Гость'} | Date: {req.birth_date} | Time: {req.birth_time} | City: {req.birth_city}\n"
+        f"✨ Natal Triad: ☉ {req.sun_sign} • ☾ {req.moon_sign} • ↑ {req.asc_sign}\n"
+        "=" * 70 + "\n"
+        f"▶ [SYSTEM PROMPT]:\n{system_prompt}\n\n"
+        f"▶ [USER MESSAGE / INPUT DATA]:\n{user_payload_text}\n"
+        "=" * 70 + "\n"
+    )
+    logger.info(log_banner)
+    print(log_banner, flush=True)
 
     # Check for OpenAI or Gemini key in environment
     openai_key = os.getenv("OPENAI_API_KEY")
     gemini_key = os.getenv("GEMINI_API_KEY")
-
-    system_prompt = (
-        f"Ты — LUNA, чуткий, бережный и глубокий персональный астролог и психолог. "
-        f"Данные пользователя: Имя: {req.name or 'Гость'}, Солнце: {req.sun_sign or 'не указано'}, "
-        f"Луна: {req.moon_sign or 'не указано'}, Асцендент: {req.asc_sign or 'не указано'}. "
-        f"ПРАВИЛА ОБЩЕНИЯ:\n"
-        f"1. Если пользователь просто здоровается (например: «привет», «здравствуй», «добрый день»), поприветствуй его тепло по имени, напомни, что ты LUNA и поможешь разобрать любые вопросы по карте (любовь, деньги, карьера, сценарии, энергия), и спроси, о чем ему хочется узнать. НЕ делай разбор слова «привет».\n"
-        f"2. Если пользователь благодарит — ответь тепло и доброжелательно.\n"
-        f"3. На вопросы по отношениям, деньгам, призванию, ситуациям — отвечай глубоко, психологично, с опорой на его натальные координаты, без фатализма и клише.\n"
-        f"4. ОБЯЗАТЕЛЬНАЯ СТРУКТУРА ОТВЕТА: каждый содержательный ответ строй по цепочке: «Что происходит по карте» -> «На что обратить внимание» -> «💡 Что делать / Практический совет» (1–3 конкретных шага, что человеку делать прямо сейчас).\n"
-        f"5. Используй HTML теги <b>, <i>, <br> для красивого и структурированного оформления."
-    )
 
     if openai_key:
         try:
@@ -259,7 +370,7 @@ def ask_ai_astrologer(
                 "model": "gpt-4o-mini",
                 "messages": [
                     {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": req.question}
+                    {"role": "user", "content": user_payload_text}
                 ],
                 "temperature": 0.7,
                 "max_tokens": 600
@@ -275,6 +386,7 @@ def ask_ai_astrologer(
             with urllib.request.urlopen(req_post, timeout=12) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 ans = data["choices"][0]["message"]["content"]
+                logger.info("✅ [LUNA LLM RESPONSE] Provider: OpenAI gpt-4o-mini | Length: %d chars", len(ans))
                 return ChatAskResponse(answer=ans, source="llm")
         except Exception as e:
             logger.warning("OpenAI API call failed, trying next provider or fallback: %s", e)
@@ -290,7 +402,7 @@ def ask_ai_astrologer(
                 "contents": [
                     {
                         "role": "user",
-                        "parts": [{"text": req.question}]
+                        "parts": [{"text": user_payload_text}]
                     }
                 ],
                 "generationConfig": {
@@ -309,7 +421,9 @@ def ask_ai_astrologer(
                 if candidates:
                     parts = candidates[0].get("content", {}).get("parts", [])
                     if parts and "text" in parts[0]:
-                        return ChatAskResponse(answer=parts[0]["text"], source="llm")
+                        ans = parts[0]["text"]
+                        logger.info("✅ [LUNA LLM RESPONSE] Provider: Google Gemini | Length: %d chars", len(ans))
+                        return ChatAskResponse(answer=ans, source="llm")
         except Exception as e:
             logger.warning("Gemini API call failed, using fallback engine: %s", e)
 

@@ -307,15 +307,29 @@
       align-items: center;
       justify-content: center;
       min-height: 94px;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      transition: all 0.25s ease;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
     }
 
-    .magic-card:active {
-      transform: scale(0.96);
-      border-color: rgba(229, 195, 120, 0.8);
-      background: linear-gradient(145deg, rgba(38, 28, 66, 0.95) 0%, rgba(20, 15, 38, 0.98) 100%);
-      box-shadow: 0 0 15px rgba(229, 195, 120, 0.3);
+    .magic-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(229, 195, 120, 0.12) 0%, transparent 60%);
+      opacity: 0.7;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .magic-card:hover, .magic-card:active {
+      transform: translateY(-2px) scale(0.98);
+      border-color: rgba(229, 195, 120, 0.85);
+      box-shadow: 0 0 20px rgba(229, 195, 120, 0.35), inset 0 0 10px rgba(229, 195, 120, 0.15);
     }
 
     .magic-tag {
@@ -3546,18 +3560,17 @@
     haptic();
     trackLunaEvent('mini_reading_viewed');
 
-    const data = userNatalData || {
-      name: 'Надин',
-      sun: 'Козерог',
-      moon: 'Козерог',
-      asc: 'Стрелец',
-      date: '1995-01-10'
-    };
+    const data = getEffectiveNatalData();
+    if (!data || !data.date) {
+      openMissingDataModal();
+      return;
+    }
     const name = data.name || 'Гость';
     const sun = data.sun || 'Козерог';
     const moon = data.moon || 'Козерог';
     const asc = data.asc || 'Стрелец';
     const birthDate = data.date || data.birthDate || 'Не указана';
+    const birthCity = (data.cityObj && data.cityObj.city) ? data.cityObj.city : (data.city || 'Не указан');
 
     const sProf = DEEP_SUN_DATA[sun] || DEEP_SUN_DATA["Козерог"];
     const mProf = DEEP_MOON_DATA[moon] || DEEP_MOON_DATA["Козерог"];
@@ -5140,7 +5153,14 @@
   }
 
   function openLunaProReaderModal(initialChapterIndex = 0) {
-    if (!currentLunaProBook) return;
+    if (!currentLunaProBook) {
+      if (userNatalData) {
+        const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
+        currentLunaProBook = generateLunaPro17Chapters(userNatalData, vedic, getPurchasedTripwireData() || {});
+      } else {
+        return;
+      }
+    }
     haptic();
 
     let curIdx = initialChapterIndex || 0;
@@ -5149,17 +5169,17 @@
     function renderReaderContent(idx) {
       const ch = book.chapters[idx];
       return `
-        <div style="padding: 4px 2px 24px;">
-          <!-- TOP READER BAR -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(229,195,120,0.25); padding-bottom: 8px;">
-            <div style="font-size: 11px; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">
-              ГЛАВА ${ch.num} ИЗ 17
+        <div style="padding: 0 2px 24px;">
+          <!-- TOP STICKY READER BAR -->
+          <div style="position: sticky; top: -18px; z-index: 25; background: rgba(22, 16, 36, 0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(229,195,120,0.25); padding: 10px 0; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 11.5px; color: var(--gold-light); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 6px;">
+              <span>🪐</span> <span>ГЛАВА ${ch.num} ИЗ 17</span>
             </div>
             <div style="display: flex; gap: 6px;">
-              <button class="btn-outline" style="padding: 4px 8px; font-size: 11px;" onclick="openLunaProFirstImpressionModal(currentLunaProBook)">
-                ⚡ Резюме
+              <button class="btn-outline" style="padding: 4px 10px; font-size: 11px; border-color: rgba(229,195,120,0.4);" onclick="openLunaProFirstImpressionModal(currentLunaProBook)">
+                ⚡ Главный фокус
               </button>
-              <button class="btn-outline" style="padding: 4px 8px; font-size: 11px;" onclick="exportLunaProBookToPDF()">
+              <button class="btn-outline" style="padding: 4px 10px; font-size: 11px;" onclick="exportLunaProBookToPDF()">
                 📥 PDF
               </button>
             </div>
@@ -5168,7 +5188,7 @@
           <!-- CHAPTER SELECTOR CHIPS -->
           <div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 14px; scrollbar-width: none;">
             ${book.chapters.map((c, i) => `
-              <div onclick="openLunaProReaderModal(${i})" style="flex-shrink: 0; padding: 4px 10px; border-radius: 12px; font-size: 11.5px; cursor: pointer; ${i === idx ? 'background: var(--gold-btn); color: #120C22; font-weight: 800;' : 'background: rgba(255,255,255,0.05); color: #CBD5E1; border: 1px solid rgba(255,255,255,0.1);'}">
+              <div onclick="openLunaProReaderModal(${i})" style="flex-shrink: 0; padding: 5px 11px; border-radius: 12px; font-size: 11.5px; cursor: pointer; transition: all 0.2s ease; ${i === idx ? 'background: var(--gold-btn); color: #120C22; font-weight: 800; box-shadow: 0 0 10px rgba(229,195,120,0.3);' : 'background: rgba(255,255,255,0.05); color: #CBD5E1; border: 1px solid rgba(255,255,255,0.1);'}">
                 ${c.num}. ${c.title.split('·')[0].trim()}
               </div>
             `).join('')}
@@ -5176,8 +5196,8 @@
 
           <!-- CHAPTER HEADER -->
           <div style="margin-bottom: 14px;">
-            <span style="font-size: 9.5px; background: rgba(229,195,120,0.15); color: #FFE8A3; padding: 2px 8px; border-radius: 8px; font-weight: 700; text-transform: uppercase;">${ch.badge}</span>
-            <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: #FFF; margin-top: 4px; line-height: 1.25;">
+            <span style="font-size: 9.5px; background: rgba(229,195,120,0.15); border: 1px solid rgba(229,195,120,0.3); color: #FFE8A3; padding: 3px 9px; border-radius: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">${ch.badge}</span>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 700; color: #FFF; margin-top: 6px; line-height: 1.25;">
               ${ch.title}
             </div>
           </div>
@@ -5188,9 +5208,9 @@
           </div>
 
           <!-- BOTTOM CHAPTER NAV -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid rgba(229,195,120,0.2); padding-top: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 22px; border-top: 1px solid rgba(229,195,120,0.2); padding-top: 14px;">
             ${idx > 0 ? `<button class="btn-outline" style="padding: 8px 14px; font-size: 12px;" onclick="openLunaProReaderModal(${idx - 1})">← Назад</button>` : '<div></div>'}
-            <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">${idx + 1} / 17</div>
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">Глава ${idx + 1} из 17</div>
             ${idx < book.chapters.length - 1 ? `<button class="btn-gold" style="padding: 8px 16px; font-size: 12.5px;" onclick="openLunaProReaderModal(${idx + 1})">Далее →</button>` : `<button class="btn-gold" style="padding: 8px 16px; font-size: 12.5px;" onclick="closeModal()">✨ Завершить</button>`}
           </div>
         </div>
@@ -5198,13 +5218,20 @@
     }
 
     openModal(renderReaderContent(curIdx));
+
+    // Scroll reader modal to top on every chapter change
+    setTimeout(() => {
+      const modalCard = document.querySelector('.modal-card') || document.querySelector('.modal-body') || document.getElementById('modalContainer');
+      if (modalCard) modalCard.scrollTop = 0;
+      window.scrollTo(0, 0);
+    }, 10);
   }
 
   function exportLunaProBookToPDF() {
     if (!currentLunaProBook) {
       if (userNatalData) {
         const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
-        currentLunaProBook = generateLunaPro17Chapters(userNatalData, vedic, {});
+        currentLunaProBook = generateLunaPro17Chapters(userNatalData, vedic, getPurchasedTripwireData() || {});
       } else {
         return;
       }
@@ -5212,12 +5239,6 @@
 
     haptic('success');
     const book = currentLunaProBook;
-
-    const printWin = window.open('', '_blank');
-    if (!printWin) {
-      alert('Пожалуйста, разрешите всплывающие окна для печати/сохранения книги в PDF.');
-      return;
-    }
 
     const allChaptersHtml = book.chapters.map(c => `
       <div style="page-break-after: always; padding: 40px 20px; max-width: 700px; margin: 0 auto; font-family: 'Times New Roman', serif;">
@@ -5231,10 +5252,11 @@
       </div>
     `).join('');
 
-    printWin.document.write(`
+    const fullDoc = `
       <!DOCTYPE html>
       <html>
       <head>
+        <meta charset="utf-8">
         <title>LUNA PRO — Персональная книга (${escapeHtml(book.name)})</title>
         <style>
           body { font-family: 'Georgia', serif; background: #fff; color: #111; margin: 0; padding: 0; }
@@ -5245,21 +5267,65 @@
         </style>
       </head>
       <body>
-        <div style="page-break-after: always; text-align: center; padding: 120px 20px; font-family: 'Georgia', serif;">
+        <div style="page-break-after: always; text-align: center; padding: 100px 20px; font-family: 'Georgia', serif;">
           <div style="font-size: 18px; letter-spacing: 6px; color: #666; margin-bottom: 20px;">L U N A · ✦</div>
-          <h1 style="font-size: 38px; color: #111; margin-bottom: 12px;">ПЕРСОНАЛЬНАЯ КНИГА</h1>
-          <div style="font-size: 18px; color: #888; margin-bottom: 30px;">Ведический натальный синтез и 30-дневный план действий</div>
+          <h1 style="font-size: 36px; color: #111; margin-bottom: 12px;">ПЕРСОНАЛЬНАЯ КНИГА LUNA PRO</h1>
+          <div style="font-size: 17px; color: #777; margin-bottom: 30px;">Ведический натальный синтез и 30-дневный план действий (17 глав)</div>
           <div style="font-size: 20px; font-weight: bold; color: #222;">${escapeHtml(book.name)}</div>
           <div style="font-size: 14px; color: #666; margin-top: 8px;">☉ ${book.sun} • ☾ ${book.moon} (${book.nakshatra.name}) • ↑ ${book.lagna}</div>
         </div>
         ${allChaptersHtml}
         <script>
-          window.onload = function() { window.print(); };
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+            }, 250);
+          };
         <\/script>
       </body>
       </html>
-    `);
-    printWin.document.close();
+    `;
+
+    try {
+      const printWin = window.open('', '_blank');
+      if (printWin && printWin.document) {
+        printWin.document.open();
+        printWin.document.write(fullDoc);
+        printWin.document.close();
+        return;
+      }
+    } catch (e) {
+      console.warn("Direct window.open failed, fallback to iframe", e);
+    }
+
+    try {
+      let printFrame = document.getElementById('luna_print_iframe');
+      if (!printFrame) {
+        printFrame = document.createElement('iframe');
+        printFrame.id = 'luna_print_iframe';
+        printFrame.style.position = 'fixed';
+        printFrame.style.right = '0';
+        printFrame.style.bottom = '0';
+        printFrame.style.width = '0';
+        printFrame.style.height = '0';
+        printFrame.style.border = '0';
+        document.body.appendChild(printFrame);
+      }
+      const frameDoc = printFrame.contentWindow.document;
+      frameDoc.open();
+      frameDoc.write(fullDoc);
+      frameDoc.close();
+      setTimeout(() => {
+        try {
+          printFrame.contentWindow.focus();
+          printFrame.contentWindow.print();
+        } catch (err) {
+          alert('Для сохранения в PDF откройте страницу в браузере Safari/Chrome.');
+        }
+      }, 400);
+    } catch (err2) {
+      alert('Пожалуйста, откройте LUNA в браузере для печати и экспорта книги.');
+    }
   }
 
   function updateCatalogCardsUI() {
@@ -5359,9 +5425,9 @@
           currentLunaProBook = purchased['natal'].bookData;
         } else {
           const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
-          currentLunaProBook = generateLunaPro17Chapters(userNatalData, vedic, {});
+          currentLunaProBook = generateLunaPro17Chapters(userNatalData, vedic, getPurchasedTripwireData() || {});
         }
-        openLunaProFirstImpressionModal(currentLunaProBook);
+        openLunaProReaderModal(0);
         return;
       }
     }
@@ -5464,6 +5530,12 @@
       openMissingDataModal();
       return;
     }
+
+    if (!isQuizCompleted()) {
+      openLifeQuizModal(() => openProductCheckoutModal(prodKey));
+      return;
+    }
+
     const prod = productsInfo[prodKey] || productsInfo['natal'];
     haptic('medium');
 
@@ -5573,8 +5645,8 @@
             updateCreditDisplays();
             updateNatalUI();
 
-            // Open First Impression Screen
-            openLunaProFirstImpressionModal(book);
+            // Open Reader Screen directly at Chapter 1
+            openLunaProReaderModal(0);
           } else {
             generateAndShowReport(prodKey);
           }
@@ -5751,39 +5823,52 @@
   }
 
   function generateAndShowReport(prodKey) {
-    if (!userNatalData || !userNatalData.date) {
+    const natal = getEffectiveNatalData();
+    if (!natal || !natal.date) {
       openMissingDataModal();
       return;
     }
 
-    // Capture and validate form inputs
-    let pJobVal = (document.getElementById('pq_pro_job')?.value || '').trim() || twState.job || 'Творческая деятельность и проекты';
-    let pRelVal = (document.getElementById('pq_pro_rel')?.value || '').trim() || twState.family || 'Близкие доверительные отношения';
-    let pFocusVal = (document.getElementById('pq_pro_focus')?.value || '').trim() || twState.topic || 'Масштабирование и баланс сил';
-    let pQueryVal = (document.getElementById('pq_pro_query')?.value || '').trim() || twState.situation || 'Ключевые точки роста и внутренняя опора';
+    if (!isQuizCompleted()) {
+      openLifeQuizModal(() => generateAndShowReport(prodKey));
+      return;
+    }
 
-    const pSynStatus = document.getElementById('pq_status')?.value || 'married';
-    const pSynFocus = (document.getElementById('pq_focus')?.value || '').trim() || 'Эмоциональное тепло и взаимное уважение';
-    const pSynBarrier = (document.getElementById('pq_barrier')?.value || '').trim() || 'Бытовая рутина и усталость';
-    const pSynQuery = (document.getElementById('pq_query')?.value || '').trim() || 'Как сохранять доверие и легкость';
+    const name = natal.name || 'душа';
+    const sun = natal.sun || 'Козерог';
+    const moon = natal.moon || 'Козерог';
+    const asc = natal.asc || 'Стрелец';
+    const birthCity = (natal.cityObj && natal.cityObj.city) ? natal.cityObj.city : (natal.city || 'Не указан');
+    const sProf = DEEP_SUN_DATA[sun] || DEEP_SUN_DATA["Козерог"];
+    const mProf = DEEP_MOON_DATA[moon] || DEEP_MOON_DATA["Козерог"];
+    const aProf = DEEP_ASC_DATA[asc] || DEEP_ASC_DATA["Стрелец"];
+    const sunElem = ZODIAC_ELEMENTS[sun] || "earth";
+    const moonElem = ZODIAC_ELEMENTS[moon] || "earth";
 
-    const pFinJob = (document.getElementById('pq_job')?.value || '').trim() || 'Творчество и авторские проекты';
-    const pFinFormat = document.getElementById('pq_format')?.value || 'freelance';
-    const pFinGoal = (document.getElementById('pq_goal')?.value || '').trim() || 'Рост чека и стабильный доход';
-    const pFinBarrier = (document.getElementById('pq_barrier')?.value || '').trim() || 'Сомнения в стоимости и синдром самозванца';
+    const family = twState.family || 'relationship';
+    const kids = twState.kids || 'none';
+    const job = twState.job || 'freelance';
 
-    const pPurAct = (document.getElementById('pq_activity')?.value || '').trim() || 'Творчество и контент';
-    const pPurSat = document.getElementById('pq_satisfaction')?.value || 'love';
-    const pPurVis = (document.getElementById('pq_vision')?.value || '').trim() || 'Авторские проекты и масштаб';
-    const pPurQ = (document.getElementById('pq_question')?.value || '').trim() || 'Куда направить основной ресурс';
+    let familyText = "Свободна / в поиске";
+    if (family === 'relationship') familyText = "В отношениях";
+    if (family === 'married') familyText = "В браке";
+    if (family === 'crisis' || family === 'complicated') familyText = "Непростой период / поиск ясности";
 
-    const pFrCircle = document.getElementById('pq_circle')?.value || 'small';
-    const pFrNeed = (document.getElementById('pq_need')?.value || '').trim() || 'Глубокие доверительные отношения';
-    const pFrSit = (document.getElementById('pq_situation')?.value || '').trim() || 'Личные границы в общении';
+    let jobText = "Фриланс / частная практика";
+    if (job === 'business') jobText = "Свой бизнес / авторский проект";
+    if (job === 'office') jobText = "Работа в найме";
+    if (job === 'search') jobText = "В поиске своего пути / декрет";
 
-    const pSolPrio = (document.getElementById('pq_priorities')?.value || '').trim() || 'Масштабирование и семья';
-    const pSolChg = document.getElementById('pq_changes')?.value || 'yes';
-    const pSolQ = (document.getElementById('pq_year_q')?.value || '').trim() || 'Главные точки прорыва в этом году';
+    let kidsText = "Нет детей";
+    if (kids === 'planning') kidsText = "Планирую детей";
+    if (kids === 'one') kidsText = "1 ребёнок";
+    if (kids === 'two_plus') kidsText = "2 и более детей";
+
+    // Capture form values if questionnaire inputs exist
+    const pSynFocus = (document.getElementById('pq_focus')?.value || '').trim() || 'Эмоциональное тепло, уважение и доверие';
+    const pFinGoal = (document.getElementById('pq_goal')?.value || '').trim() || 'Рост чека и стабильный высокий доход';
+    const pFinBarrier = (document.getElementById('pq_barrier')?.value || '').trim() || 'Сомнения в стоимости и страх дефицита';
+    const pPurVis = (document.getElementById('pq_vision')?.value || '').trim() || 'Авторские проекты и признание мастерства';
 
     const prod = productsInfo[prodKey] || { title: 'Персональный разбор LUNA' };
     let chaptersHtml = "";
@@ -5796,7 +5881,7 @@
           LUNA рассчитывает персональный разбор...
         </div>
         <div style="font-size: 12.5px; color: var(--text-muted);">
-          Синтезируем натальные координаты и твой жизненный контекст
+          Синтезируем натальные координаты (☉ ${sun} • ☾ ${moon} • ↑ ${asc}) и жизненный контекст (${familyText}, ${jobText})
         </div>
       </div>
     `);
@@ -5804,16 +5889,15 @@
     setTimeout(() => {
       try {
         if (prodKey === 'natal') {
-          const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
-          const book = generateLunaPro17Chapters(userNatalData, vedic, {
-            qJob: pJobVal,
-            qRel: pRelVal,
-            qFocus: pFocusVal,
-            qQuery: pQueryVal
+          const vedic = calculateVedicJyotishData(natal.date, natal.time);
+          const book = generateLunaPro17Chapters(natal, vedic, {
+            qJob: jobText,
+            qRel: familyText,
+            qFocus: twState.topic || 'Масштабирование и баланс сил',
+            qQuery: twState.situation || 'Ключевые точки роста и внутренняя опора'
           });
           currentLunaProBook = book;
           
-          // Save in purchased reports
           const purchased = getPurchasedReports();
           purchased['natal'] = {
             purchasedAt: new Date().toISOString(),
@@ -5822,154 +5906,187 @@
           };
           savePurchasedReports(purchased);
           updateCatalogCardsUI();
-
-          // Open First Impression Screen
-          openLunaProFirstImpressionModal(book);
+          openLunaProReaderModal(0);
           return;
         } else if (prodKey === 'synastry') {
           chaptersHtml = `
             <div class="report-chapter">
-              <h3>💗 1. Как ты проявляешь любовь & Язык чувств</h3>
-              <p>При положении Солнца в знаке <b>${userNatalData.sun}</b> и Луны в знаке <b>${userNatalData.moon}</b>, твой язык любви — это не громкие слова, а создание безопасного пространства, чуткая забота и искреннее сопереживание. Ты вкладываешь душу в отношения и ценишь взаимную тактичность.</p>
+              <h3>💗 1. Твой натальный язык чувств & Проявление любви</h3>
+              <p>При положении <b>Солнца в знаке ${sun}</b> (${sProf.archetype}) и <b>Луны в знаке ${moon}</b>, твой истинный язык любви — это не громкие слова, а создание надежного эмоционального тыла, искренняя преданность и чуткая забота. Твоей Луне жизненно необходима безопасность: <i>${mProf.need}</i>.</p>
+              <p>В текущем статусе (<b>${familyText}</b>) ты раскрываешься, когда чувствуешь, что твой вклад ценят и не принимают как должное.</p>
             </div>
             <div class="report-chapter">
-              <h3>🧲 2. Что тебе важно получать от партнёра & Тип близости</h3>
-              <p>Для тебя критически важно ощущение надежного тыла и уважение к твоему личному творческому пространству. Тебе необходим зрелый партнер, с которым можно разделить глубинные переживания без страха быть осужденной или обесцененной.</p>
+              <h3>🧲 2. Что тебе жизненно важно получать от партнёра</h3>
+              <p>Твой 7-й дом партнерства и планетарная конфигурация показывают потребность в психологически зрелом партнере со спокойным стержнем. Тебе противопоказаны инфантильность и манипуляции эмоциональным холодом. Твой ключевой фокус в отношениях: <i>«${escapeHtml(pSynFocus)}»</i>.</p>
             </div>
             <div class="report-chapter">
-              <h3>💥 3. Что создаёт напряжение & Зоны роста</h3>
-              <p>Основное напряжение возникает, когда накапливается бытовой контроль или ощущение, что эмоциональный вклад неравномерен. В моменты стресса ты склонна замыкаться и копить переживания внутри, пока чаша терпения не переполнится. Лекарство — проговаривать потребности сразу в мягкой доверительной форме.</p>
+              <h3>💥 3. Зоны напряжения, триггеры и слепые зоны</h3>
+              <p>Когда в паре возникает недопонимание, твой Асцендент в знаке <b>${asc}</b> может выстраивать защитный барьер внешней автономии («я со всем справлюсь сама»), в то время как внутри копится скрытая обида. Главный триггер — страх уязвимости и попытка контролировать все процессы в одиночку.</p>
             </div>
             <div class="report-chapter">
               <h3>🔍 4. Персональная стратегия гармонизации союза</h3>
-              <p>Чтобы союз развивался гармонично и чувственно, астрологическая карта рекомендует ввести регулярное совместное время вне домашних забот — короткие свидания, поездки и диалоги по душам без смартфонов.</p>
+              <p>Для знака ${sun} и Луны в ${moon} наилучшая стратегия — переход от модели накопления претензий к регулярному диалогу через мягкое <i>«Мне важно»</i>. Рекомендуется ввести традицию совместного заземляющего времени вне бытовых списков и гаджетов.</p>
             </div>
             <div class="report-chapter">
-              <h3>🗝️ 5. Семь ключей к долгосрочному доверию</h3>
-              <p>1. <b>Честный диалог:</b> говорить о чувствах до момента выгорания.<br>2. <b>Свое пространство:</b> сохранять личные увлечения и паузы тишины.<br>3. <b>Снятие гиперконтроля:</b> позволять партнеру проявлять заботу по-своему.<br>4. <b>Благодарность:</b> отмечать даже маленькие поступки заботы.<br>5. <b>Эмоциональный контакт:</b> теплые объятия без повода.<br>6. <b>Уважение границ:</b> не терпеть обесценивание.<br>7. <b>Общий вектор:</b> совпадение долгосрочных ценностей.</p>
+              <h3>🗝️ 5. Семь натальных ключей к долгосрочному доверию</h3>
+              <p>1. <b>Пауза 24 часа:</b> не выяснять отношения в состоянии эмоционального пика или усталости.<br>
+              2. <b>Личное пространство:</b> сохранять неприкосновенные часы тишины для наполнения Луны.<br>
+              3. <b>Снятие гиперконтроля:</b> позволять партнеру проявлять инициативу в его темпе.<br>
+              4. <b>Прямая речь:</b> озвучивать свои потребности мягко и конкретно.<br>
+              5. <b>Благодарность:</b> подмечать и подкреплять реальные поступки заботы.<br>
+              6. <b>Границы:</b> не допускать обесценивания своих чувств и труда.<br>
+              7. <b>Общий вектор:</b> сверять ценности и глобальные цели раз в несколько месяцев.</p>
             </div>
           `;
         } else if (prodKey === 'finance') {
           chaptersHtml = `
             <div class="report-chapter">
-              <h3>💰 1. Твое отношение к деньгам & Финансовые сценарии</h3>
-              <p>В твоей натальной карте богатство неразрывно связано с эстетикой, авторским взглядом и высокой планкой качества. Для знака <b>${userNatalData.sun}</b> губительна работа в режиме дешевого потока: деньги приходят к тебе на состояние вдохновения, достоинства и уважения к своему мастерству.</p>
+              <h3>💰 1. Твой натальный финансовый код</h3>
+              <p>В твоей натальной карте деньги приходят через <b>качество, авторское достоинство и высокий стандарт мастерства (${sun})</b>. Для твоей энергетики губителен демпинг и суета: финансовый канал блокируется, когда ты работаешь из страха дефицита или берешься за заказы через внутреннее сопротивление.</p>
             </div>
             <div class="report-chapter">
-              <h3>📈 2. Природные каналы заработка и подходящий формат</h3>
-              <p>Твоя главная суперсила — умение создавать продукт премиального уровня, который дарит клиентам сильные эмоции и трансформацию. Формат проектной автономии, авторского бизнеса и наставничества идеально раскрывает финансовый потенциал 2-го и 8-го домов.</p>
+              <h3>📈 2. Природные каналы заработка в формате «${jobText}»</h3>
+              <p>В формате <b>${jobText.toLowerCase()}</b> твоя главная точка масштаба — переход от продажи своего линейного времени к упаковке комплексной авторской ценности. Твоя натальная суперсила: <i>${sProf.superpower}</i>.</p>
             </div>
             <div class="report-chapter">
-              <h3>⚖️ 3. Психология барьеров: Преодоление сомнений</h3>
-              <p>Сомнения и синдром самозванца уходят, когда ты перестаешь ориентироваться на средний рынок и фокусируешься на глубине своей экспертности. Достойная цена является естественным фильтром, притягивающим самых осознанных и благодарных заказчиков.</p>
+              <h3>⚖️ 3. Психология барьеров: преодоление «${escapeHtml(pFinBarrier)}»</h3>
+              <p>Синдром самозванца и сомнения в чеке исчезают, когда ты осознаешь, что клиент платит не за затраченные часы, а за результат, глубину опыта и безопасность, которую ты транслируешь. Достойный чек — это инструмент отсева неэкологичных клиентов.</p>
             </div>
             <div class="report-chapter">
-              <h3>🎯 4. Реалистичная стратегия устойчивого роста</h3>
-              <p>Без иллюзий и пустых обещаний: ключевыми шагами являются структурирование продуктовой линейки, делегирование рутины, повышение среднего чека и уверенное позиционирование личного бренда.</p>
+              <h3>🎯 4. Пошаговая стратегия роста под цель «${escapeHtml(pFinGoal)}»</h3>
+              <p>• <b>Шаг 1:</b> Провести ревизию услуг и убрать наименее маржинальные и выматывающие задачи.<br>
+              • <b>Шаг 2:</b> Поднять чек на 20–30% для новых клиентов, зафиксировав стандарты сервиса.<br>
+              • <b>Шаг 3:</b> Делегировать рутину, освободив минимум 2 рабочих часа в день для стратегии.<br>
+              • <b>Шаг 4:</b> Сформировать финансовый резерв спокойствия на 3–6 месяцев.</p>
             </div>
             <div class="report-chapter">
               <h3>💎 5. Шесть финансовых опор стабильности</h3>
-              <p>1. <b>Состояние первично:</b> не работать из чувства дефицита и паники.<br>2. <b>Обоснованный чек:</b> цена отражает реальный опыт и ценность.<br>3. <b>Финансовая подушка:</b> резерв на 3–6 месяцев дает внутреннее спокойствие.<br>4. <b>Отказ от токсичных заказов:</b> освобождение места под крупные проекты.<br>5. <b>Инвестиции в инструменты:</b> качественная техника и комфорт окупаются быстрее всего.<br>6. <b>Масштаб без надрыва:</b> расти поступательно, сохраняя здоровье.</p>
+              <p>1. <b>Состояние первично:</b> ресурсное состояние притягивает крупные возможности.<br>
+              2. <b>Отказ от демпинга:</b> уважение к своему труду формирует уважение клиентов.<br>
+              3. <b>Подушка безопасности:</b> снимает спазм Луны в ${moon} и дает право выбирать проекты.<br>
+              4. <b>Инвестиции в инструменты:</b> качественные условия труда окупаются первыми.<br>
+              5. <b>Четкие договоренности:</b> фиксация предоплат и зон ответственности на берегу.<br>
+              6. <b>Масштаб без надрыва:</b> расти поступательно, без ущерба здоровью и семье.</p>
             </div>
           `;
         } else if (prodKey === 'purpose') {
           chaptersHtml = `
             <div class="report-chapter">
-              <h3>🌟 1. Сильные профессиональные качества & Стиль работы</h3>
-              <p>Синтез Солнца в <b>${userNatalData.sun}</b> и Асцендента в <b>${userNatalData.asc}</b> наделяет тебя визионерским чутьем, способностью видеть общую картину и вдохновлять людей. Твой стиль работы — не механическое исполнение инструкций, а авторское кураторство и создание смыслов.</p>
+              <h3>🌟 1. Вектор кармической реализации & Дхарма души</h3>
+              <p>Синтез <b>Солнца в знаке ${sun}</b> и <b>Асцендента в ${asc}</b> указывает на миссию создания порядка, вдохновения и долговременной ценности. Твоя эволюционная задача — перестать доказывать право на успех подвигами и начать проявляться из спокойной силы.</p>
             </div>
             <div class="report-chapter">
-              <h3>🏢 2. Найм, фриланс или свой проект?</h3>
-              <p>Для твоей натальной карты органичен формат автономии. Тебе необходима свобода в принятии решений и возможность напрямую влиять на конечный результат. В жестких рамках найма твой внутренний огонь быстро угасает.</p>
+              <h3>💫 2. Твои врожденные таланты и авторский стиль</h3>
+              <p>Ты обладаешь редким сочетанием стратегического мышления и тонкой человеческой проницательности. Твое авторское видение: <i>«${escapeHtml(pPurVis)}»</i>.</p>
             </div>
             <div class="report-chapter">
-              <h3>🧭 3. Разбор профессионального вектора и масштаба</h3>
-              <p>Ключевая эволюционная задача — переход от роли простого исполнителя к роли автора концепций. Люди идут за твоим авторским видением и высокими стандартами качества.</p>
+              <h3>🏢 3. Найм, фриланс или бизнес: идеальный баланс</h3>
+              <p>Для твоей натальной карты органичен формат <b>${jobText.toLowerCase()}</b>, где ты обладаешь автономией в принятии ключевых решений. Рутина без права голоса гасит твой натальный потенциал.</p>
             </div>
             <div class="report-chapter">
               <h3>🚀 4. Преодоление профессиональных плато</h3>
-              <p>Когда наступает усталость, не пытайся давить на себя. Периоды затишья в твоем гороскопе предшествуют качественным скачкам. Дай себе время пересобрать насмотренность и набраться сил.</p>
+              <p>Когда кажется, что наступил тупик, помни: периоды затишья в твоем гороскопе предшествуют качественному квантовому скачку. В это время необходимо не форсировать события, а копить насмотренность и пересобирать структуру.</p>
+            </div>
+            <div class="report-chapter">
+              <h3>🗝️ 5. Пять правил реализации без выгорания</h3>
+              <p>1. Не брать на себя чужую ответственность из чувства ложной вины.<br>
+              2. Фокусироваться на 1 ключевом проекте за спринт.<br>
+              3. Окружать себя людьми, уважающими твое достоинство.<br>
+              4. Чередовать периоды интенсивного труда с днями полной тишины.<br>
+              5. Доверять своему внутреннему натальному компасу.</p>
             </div>
           `;
         } else if (prodKey === 'kids') {
-          const kid = userChildrenList[0] || { name: 'Малыш', sunSign: 'Овен', birthDate: '2020-01-01' };
+          const kid = (userChildrenList && userChildrenList.length > 0) ? userChildrenList[0] : { name: 'Ребёнок', sunSign: 'Овен', birthDate: '2020-01-01' };
           chaptersHtml = `
             <div class="report-chapter">
-              <h3>👼 1. Психологический портрет: ${kid.name} (${kid.sunSign})</h3>
-              <p>Ребенок со знаком <b>${kid.sunSign}</b> обладает яркой индивидуальностью и чуткой нервной системой. Для раскрытия потенциала ему требуются уважение к его интересам, право на ошибки и эмоциональная поддержка без жесткой критики.</p>
+              <h3>👼 1. Психологический портрет: ${escapeHtml(kid.name)} (${kid.sunSign})</h3>
+              <p>Ребенок со знаком <b>${kid.sunSign}</b> обладает яркой индивидуальностью. В сочетании с твоей натальной картой (мама: ☉ <b>${sun}</b> / ☾ <b>${moon}</b>) ему требуется эмоциональная безопасность, предсказуемость и признание его самостоятельности.</p>
             </div>
             <div class="report-chapter">
               <h3>🌱 2. Природные таланты и векторы развития</h3>
-              <p>Врожденные способности лежат на стыке креативности, образного мышления и эмоционального интеллекта. Поощряйте творческие занятия, моторику и исследовательские игры.</p>
+              <p>Врожденные способности лежат на стыке креативности, образного мышления и любознательности. Поощряйте занятия, развивающие моторику, исследовательский интерес и эмоциональный интеллект.</p>
             </div>
             <div class="report-chapter">
-              <h3>🗝️ 3. Ключи для родителей к гармоничному общению</h3>
-              <p>1. <b>Мягкий авторитет:</b> договариваться через объяснение причин, а не давление.<br>2. <b>Личное пространство:</b> уголок, где ребенок чувствует себя хозяином.<br>3. <b>Эмоциональный контакт:</b> искренний интерес к его переживаниям каждый вечер.</p>
+              <h3>🛡️ 3. Зоны уязвимости и эмоциональная поддержка</h3>
+              <p>При перегрузках ребенок может реагировать капризами или замыканием. В такие моменты важнее не строгость, а спокойный физический контакт и искреннее сопереживание.</p>
+            </div>
+            <div class="report-chapter">
+              <h3>🗝️ 4. Ключи для родителей к гармоничному общению</h3>
+              <p>1. <b>Мягкий авторитет:</b> договариваться через объяснение причин, а не давление.<br>
+              2. <b>Личное пространство:</b> уголок, где ребенок чувствует себя полноправным хозяином.<br>
+              3. <b>15 минут искреннего внимания:</b> вечерние душевные беседы без критики и гаджетов.<br>
+              4. <b>Спокойная мама:</b> забота о собственном ресурсе — лучший подарок ребенку.</p>
             </div>
           `;
         } else if (prodKey === 'solar') {
+          const curYear = new Date().getFullYear();
           chaptersHtml = `
             <div class="report-chapter">
-              <h3>💫 1. Лейтмотив твоего персонального года</h3>
-              <p>Наступающий личный астрологический год активирует ключевую ось реализации: это время укрепления внутренней зрелости, пересмотра круга контактов и кристаллизации приоритетов.</p>
+              <h3>💫 1. Лейтмотив твоего персонального ${curYear} года</h3>
+              <p>Для знака <b>${sun}</b> (Луна в <b>${moon}</b>) наступающий солярный год активирует ось зрелости, кристаллизации приоритетов и выхода на новый уровень авторского достоинства.</p>
             </div>
             <div class="report-chapter">
-              <h3>📅 2. Поквартальный ритм и динамика</h3>
-              <p><b>1-й квартал:</b> Очищение пространства, формулирование целей, аудит сил.<br><b>2-й квартал:</b> Пик социальной активности, запуски, повышение видимости в блоге.<br><b>3-й квартал:</b> Укрепление семейного тыла, путешествия, набор ресурса.<br><b>4-й квартал:</b> Фиксация результатов, финансовый сбор плодов и выход на новый уровень.</p>
+              <h3>📅 2. Поквартальный натальный маршрут</h3>
+              <p><b>1-й квартал (Закладка фундамента):</b> Очищение пространства, аудит ресурсов, формулирование ключевых намерений.<br>
+              <b>2-й квартал (Социальная экспансия):</b> Запуск проектов, рост проявленности, новые партнерства.<br>
+              <b>3-й квартал (Укрепление тыла):</b> Восстановление сил, путешествия, забота о здоровье и семье.<br>
+              <b>4-й квартал (Фиксация плодов):</b> Сбор финансовых результатов и переход на новую ступень.</p>
             </div>
             <div class="report-chapter">
-              <h3>🧭 3. Главный совет на год</h3>
-              <p>Год учит гибкости: не держись за старые схемы, если они перестали приносить радость. Главная подсказка звезд — идти туда, где чувствуется живой интерес и внутреннее расширение.</p>
+              <h3>🧭 3. Главный натальный совет на год</h3>
+              <p>Год учит гибкости: не держись за устаревшие схемы из страха перемен. Иди туда, где чувствуется внутреннее расширение и живой созидательный интерес.</p>
             </div>
           `;
         } else {
           chaptersHtml = `
             <div class="report-chapter">
-              <h3>👭 1. Как ты выбираешь близкий круг & Социальная роль</h3>
-              <p>Ты выбираешь людей не по статусу или выгоде, а по душевной созвучности и чистоте помыслов. Твоя социальная роль — вдохновитель, чуткий слушатель и ориентир в вопросах стиля и вкуса.</p>
+              <h3>👥 1. Твой социальный код и 11-й дом окружения</h3>
+              <p>Ты выбираешь близкий круг не по статусу или выгоде, а по душевной чистоте, глубине и совпадению фундаментальных ценностей. Твоя роль — вдохновитель, надежный ориентир и создатель теплой поддерживающей среды.</p>
             </div>
             <div class="report-chapter">
               <h3>🛡️ 2. Личные границы и защита ресурса</h3>
-              <p>Важно вовремя замечать, где ты начинаешь терпеть чужие жалобы или обесценивание в ущерб собственному ресурсу. Здоровые границы — это акт уважения к себе.</p>
+              <p>При положении Луны в ${moon} важно вовремя замечать, когда общение начинает превращаться в односторонний «слив чужого негатива». Здоровые границы — это не холодность, а проявление заботы о своей энергии.</p>
             </div>
             <div class="report-chapter">
-              <h3>🌱 3. Разрешение скрытых трений</h3>
-              <p>Мягкое сокращение дистанции с токсичными контактами освобождает колоссальный объем энергии для вдохновляющих проектов и искренней дружбы.</p>
+              <h3>🌱 3. Привлечение масштабных единомышленников</h3>
+              <p>Когда ты открыто транслируешь свои ценности и не боишься проявлять авторский масштаб, пространство автоматически притягивает зрелых, сильных и благодарных людей.</p>
             </div>
           `;
         }
 
-      const reportModalHtml = `
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
-          ${prod.title}
-        </div>
-        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
-          Персональный разбор для: ${userNatalData.name} (${userNatalData.date}, ${userNatalData.city})
-        </div>
+        const reportModalHtml = `
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
+            ${prod.title}
+          </div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+            Персональный разбор для: ${escapeHtml(name)} (${natal.date}, ${escapeHtml(birthCity)})
+          </div>
 
-        <div class="report-content">
-          ${chaptersHtml}
-        </div>
+          <div class="report-content">
+            ${chaptersHtml}
+          </div>
 
-        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
-          <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="copyReportText('${prod.title}')">
-            📋 Скопировать весь текст разбора
-          </button>
-          <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="shareReportTelegram('${prod.title}')">
-            📤 Поделиться в Telegram
-          </button>
-          <button class="btn-gold" style="padding: 12px;" onclick="closeModal()">
-            ✨ Сохранить и закрыть
-          </button>
-        </div>
-      `;
-      savePurchasedReport(prodKey, reportModalHtml, chaptersHtml);
-      trackLunaEvent('pro_report_generated', { product: prodKey });
-      openModal(reportModalHtml);
+          <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+            <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="copyReportText('${escapeHtml(prod.title)}')">
+              📋 Скопировать весь текст разбора
+            </button>
+            <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="shareReportTelegram('${escapeHtml(prod.title)}')">
+              📤 Поделиться в Telegram
+            </button>
+            <button class="btn-gold" style="padding: 12px;" onclick="closeModal()">
+              ✨ Сохранить и закрыть
+            </button>
+          </div>
+        `;
+        savePurchasedReport(prodKey, reportModalHtml, chaptersHtml);
+        trackLunaEvent('pro_report_generated', { product: prodKey });
+        openModal(reportModalHtml);
       } catch (err) {
         console.error("Error generating report:", err);
       }
     }, 1200);
+  }
   }
 
   function copyReportText(title) {
@@ -6102,16 +6219,16 @@
       if (sub.active) {
         chatStatusText.innerHTML = `<span>✨ <b style="color: #FFF;">${cr} из ${sub.totalCredits}</b> AI-запросов (${sub.plan})</span>`;
       } else {
-        if (cr === 3) {
+        if (cr > 3) {
+          chatStatusText.innerHTML = `<span>⚡ Баланс: <b style="color: #FFF;">${cr}</b> AI-запросов (Пакет)</span>`;
+        } else if (cr === 3) {
           chatStatusText.innerHTML = `<span>⚡ Осталось: <b style="color: #FFF;">3 из 3</b> бесплатных запросов</span>`;
         } else if (cr === 2) {
           chatStatusText.innerHTML = `<span>⚡ Осталось: <b style="color: #FFE8A3;">2 из 3</b> бесплатных запросов</span>`;
         } else if (cr === 1) {
-          chatStatusText.innerHTML = `<span>⚡ Остался <b style="color: #FBBF24;">1</b> бесплатный запрос</span>`;
+          chatStatusText.innerHTML = `<span>⚡ Остался <b style="color: #FBBF24;">1 из 3</b> бесплатный запрос</span>`;
         } else if (cr <= 0) {
           chatStatusText.innerHTML = `<span style="color: #F87171;">⚡ Бесплатные запросы закончились</span>`;
-        } else {
-          chatStatusText.innerHTML = `<span>⚡ Баланс: <b style="color: #FFF;">${cr}</b> запросов</span>`;
         }
       }
     }
@@ -6142,8 +6259,24 @@
 
     if (pSubPlan) pSubPlan.textContent = sub.plan;
     if (pSubPrice) pSubPrice.textContent = sub.price;
-    if (pSubAvail) pSubAvail.textContent = `${cr} из ${sub.totalCredits}`;
-    if (pSubUsed) pSubUsed.textContent = `${sub.usedCredits} запросов`;
+    if (pSubAvail) {
+      if (sub.active) {
+        pSubAvail.textContent = `${cr} из ${sub.totalCredits}`;
+      } else if (cr > 3) {
+        pSubAvail.textContent = `${cr} (Пакет запросов)`;
+      } else {
+        pSubAvail.textContent = `${cr} из 3`;
+      }
+    }
+    if (pSubUsed) {
+      if (sub.active) {
+        pSubUsed.textContent = `${Math.max(0, sub.totalCredits - cr)} запросов`;
+      } else if (cr <= 3) {
+        pSubUsed.textContent = `${Math.max(0, 3 - cr)} запросов`;
+      } else {
+        pSubUsed.textContent = '—';
+      }
+    }
     if (pSubBilling) pSubBilling.textContent = sub.nextBillingDate;
     if (pSubFeaturesList) {
       pSubFeaturesList.innerHTML = (sub.features || []).map(f => `• ${escapeHtml(f)}`).join('<br>');
@@ -6280,50 +6413,72 @@
     }
   }
 
+  function getEffectiveNatalData() {
+    if (userNatalData && userNatalData.date) return userNatalData;
+    try {
+      const saved = localStorage.getItem(getStorageKeyNatal()) || localStorage.getItem('luna_user_natal_data');
+      if (saved) {
+        userNatalData = JSON.parse(saved);
+        return userNatalData;
+      }
+    } catch(e) {}
+    return userNatalData || null;
+  }
+
   function sendChatMessage() {
     const input = document.getElementById('chatInput');
     const txt = (input.value || '').trim();
     if (!txt) return;
 
+    if (!userNatalData || !userNatalData.date) {
+      openMissingDataModal();
+      return;
+    }
+
+    if (!isQuizCompleted()) {
+      openLifeQuizModal(() => sendChatMessage());
+      return;
+    }
+
+    haptic('light');
+
     const credits = getUserCredits();
     if (credits <= 0) {
-      haptic('warning');
       trackLunaEvent('credits_exhausted');
       if (isTripwirePurchased()) {
         openModal(`
-          <div style="text-align: center; padding: 10px 4px 16px;">
-            <div style="font-size: 34px; margin-bottom: 8px;">⚡</div>
+          <div style="text-align: center; padding: 22px 10px 24px;">
+            <div style="font-size: 38px; margin-bottom: 8px;">💎</div>
             <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
-              Бесплатный вопрос завершён
+              Лимит бесплатных запросов исчерпан
             </div>
-            <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
-              Ты задала свой бесплатный вопрос к карте. Твой персональный разбор сценария сохранён в профиле. Чтобы продолжить глубокий диалог с LUNA в чате:
+            <p style="font-size: 13px; color: #CBD5E1; line-height: 1.5; margin-bottom: 18px;">
+              Пополните баланс пакетом запросов или подключите ежемесячную подписку LUNA Plus.
             </p>
-            <button class="btn-gold" style="margin-bottom: 10px;" onclick="closeModal(); openTopUpModal();">
-              ⚡ Докупить 15 запросов (99 ₽)
-            </button>
-            <button class="btn-outline" style="margin-bottom: 10px;" onclick="closeModal(); openPurchasedTripwireModal();">
-              📖 Открыть мой разбор сценария
-            </button>
-            <button class="btn-outline" style="opacity: 0.85; font-size: 12px;" onclick="closeModal(); openSubscriptionModal();">
-              💎 Безлимитная подписка LUNA
-            </button>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <button class="btn-gold" style="padding: 12px;" onclick="closeModal(); openTopUpModal();">
+                ⚡ Докупить запросы (от 99 ₽) →
+              </button>
+              <button class="btn-outline" style="padding: 10px;" onclick="closeModal(); openSubscriptionModal();">
+                💎 Подключить подписку
+              </button>
+            </div>
           </div>
         `);
       } else {
         openModal(`
-          <div style="text-align: center; padding: 10px 4px 16px;">
-            <div style="font-size: 34px; margin-bottom: 8px;">⚡</div>
+          <div style="text-align: center; padding: 22px 10px 24px;">
+            <div style="font-size: 38px; margin-bottom: 8px;">✨</div>
             <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
-              Бесплатный вопрос завершён
+              Твои бесплатные вопросы завершены
             </div>
-            <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
-              Ты задала свой бесплатный вопрос к карте. Чтобы детально разобрать свой повторяющийся тупик в отношениях, деньгах или призвании:
+            <p style="font-size: 13px; color: #CBD5E1; line-height: 1.5; margin-bottom: 18px;">
+              Раскрой, почему в твоей жизни повторяется один и тот же сценарий, в подробном астрологическом аудите.
             </p>
-            <button class="btn-gold" style="margin-bottom: 10px;" onclick="closeModal(); openTripwireModal();">
-              🎯 Разобрать сценарий по карте за 99 ₽ →
+            <button class="btn-gold" style="width: 100%; padding: 13px; margin-bottom: 8px;" onclick="closeModal(); openTripwireModal();">
+              🎯 Разобрать сценарий за 99 ₽ →
             </button>
-            <button class="btn-outline" style="margin-bottom: 10px;" onclick="closeModal(); openTopUpModal();">
+            <button class="btn-outline" style="margin-bottom: 8px; font-size: 12.5px;" onclick="closeModal(); openTopUpModal();">
               ⚡ Пакет запросов (99 ₽ за 15 шт.)
             </button>
             <button class="btn-outline" style="opacity: 0.85; font-size: 12px;" onclick="closeModal(); openSubscriptionModal();">
@@ -6356,13 +6511,28 @@
     box.scrollTop = box.scrollHeight;
 
     let responded = false;
+    const effNatal = getEffectiveNatalData();
+    const cityStr = effNatal ? (effNatal.cityObj ? `${effNatal.cityObj.city}, ${effNatal.cityObj.region || ''}, ${effNatal.cityObj.country || ''}` : (effNatal.city || '')) : '';
     const postData = {
       question: txt,
-      name: userNatalData ? userNatalData.name : null,
-      sun_sign: userNatalData ? userNatalData.sun : null,
-      moon_sign: userNatalData ? userNatalData.moon : null,
-      asc_sign: userNatalData ? userNatalData.asc : null
+      name: effNatal ? (effNatal.name || 'Гость') : 'Гость',
+      birth_date: effNatal ? (effNatal.date || effNatal.birthDate || null) : null,
+      birth_time: effNatal ? (effNatal.time || null) : null,
+      birth_city: cityStr || null,
+      sun_sign: effNatal ? effNatal.sun : null,
+      moon_sign: effNatal ? effNatal.moon : null,
+      asc_sign: effNatal ? effNatal.asc : null,
+      life_status: twState ? twState.family : null,
+      has_children: twState ? twState.kids : null,
+      job_format: twState ? twState.job : null,
+      context: `Статус: ${twState ? twState.family : 'не указан'}, Дети: ${twState ? twState.kids : 'не указано'}, Работа: ${twState ? twState.job : 'не указано'}, Тема: ${twState ? twState.topic : 'общий'}`
     };
+
+    console.log('%c[🚀 LUNA AI PROMPT DISPATCH]', 'color: #FFE8A3; font-weight: bold; background: #1E1538; padding: 4px 8px; border-radius: 4px;', {
+      endpoint: '/api/v1/chat/ask',
+      payload: postData,
+      natal: effNatal
+    });
 
     const handleBotResponse = (html) => {
       if (responded) return;
@@ -6728,7 +6898,7 @@
     `;
   }
 
-  // ================= 6. TRIPWIRE (99 ₽) INTERACTIVE MODAL & DEEP ENGINE =================
+  // ================= 6. LIFE CONTEXT QUIZ & TRIPWIRE (99 ₽) ENGINE =================
   function getStorageKeyTripwire() { return 'luna_user_tripwire_' + currentUserId; }
   function isTripwirePurchased() {
     return !!localStorage.getItem(getStorageKeyTripwire());
@@ -6757,6 +6927,19 @@
     situation: ''
   };
 
+  let pendingQuizCallback = null;
+
+  function isQuizCompleted() {
+    try {
+      const saved = localStorage.getItem(getStorageKeyQuiz()) || localStorage.getItem('luna_user_quiz_profile');
+      if (saved) {
+        const q = JSON.parse(saved);
+        if (q && (q.completedAt || (q.qRel && q.qJob))) return true;
+      }
+    } catch(e) {}
+    return false;
+  }
+
   function selectTwChip(group, val, el) {
     haptic('light');
     twState[group] = val;
@@ -6771,6 +6954,8 @@
       qRel: twState.family,
       qKids: twState.kids,
       qJob: twState.job,
+      qFocus: twState.topic,
+      qSituation: twState.situation,
       completedAt: new Date().toISOString()
     };
     localStorage.setItem(getStorageKeyQuiz(), JSON.stringify(quizData));
@@ -6793,6 +6978,127 @@
     if (inp) {
       inp.value = txt;
       twState.situation = txt;
+    }
+  }
+
+  function openLifeQuizModal(onCompleteCallback = null) {
+    haptic();
+    pendingQuizCallback = onCompleteCallback;
+
+    const savedQuiz = localStorage.getItem(getStorageKeyQuiz()) || localStorage.getItem('luna_user_quiz_profile');
+    if (savedQuiz) {
+      try {
+        const parsed = JSON.parse(savedQuiz);
+        if (parsed.qRel) twState.family = parsed.qRel;
+        if (parsed.qKids) twState.kids = parsed.qKids;
+        if (parsed.qJob) twState.job = parsed.qJob;
+        if (parsed.qFocus) twState.topic = parsed.qFocus;
+        if (parsed.qSituation) twState.situation = parsed.qSituation;
+      } catch(e) {}
+    }
+
+    const html = `
+      <div style="padding: 6px 2px 14px;">
+        <div class="hero-natal-badge" style="margin-bottom: 6px;">
+          ✨ ЖИЗНЕННЫЙ КОНТЕКСТ
+        </div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+          Настройка твоей натальной анкеты
+        </div>
+        <div style="font-size: 12.5px; color: #D1CCDE; line-height: 1.45; margin-bottom: 14px;">
+          Заполни анкету один раз — LUNA сохранит твою реальную ситуацию (семья, дети, формат работы) и будет учитывать её во всех разборах и ответах AI-астролога.
+        </div>
+
+        <!-- 1. СФЕРА -->
+        <label class="form-label">1. В какой сфере сейчас главный фокус внимания?</label>
+        <div class="tw-chip-group" id="twGroupTopic">
+          <div class="tw-chip-btn ${twState.topic === 'relations' ? 'active' : ''}" onclick="selectTwChip('topic', 'relations', this)">❤️ Отношения и партнёр</div>
+          <div class="tw-chip-btn ${twState.topic === 'money' ? 'active' : ''}" onclick="selectTwChip('topic', 'money', this)">💰 Деньги и доход</div>
+          <div class="tw-chip-btn ${twState.topic === 'purpose' ? 'active' : ''}" onclick="selectTwChip('topic', 'purpose', this)">🎯 Работа и призвание</div>
+          <div class="tw-chip-btn ${twState.topic === 'choice' ? 'active' : ''}" onclick="selectTwChip('topic', 'choice', this)">🧭 Выбор и кризис</div>
+        </div>
+
+        <!-- 2. СЕМЕЙНОЕ ПОЛОЖЕНИЕ -->
+        <label class="form-label">2. Твоё семейное положение / статус:</label>
+        <div class="tw-chip-group" id="twGroupFamily">
+          <div class="tw-chip-btn ${twState.family === 'single' ? 'active' : ''}" onclick="selectTwChip('family', 'single', this)">🌸 Свободна / в поиске</div>
+          <div class="tw-chip-btn ${twState.family === 'relationship' ? 'active' : ''}" onclick="selectTwChip('family', 'relationship', this)">💖 В отношениях</div>
+          <div class="tw-chip-btn ${twState.family === 'married' ? 'active' : ''}" onclick="selectTwChip('family', 'married', this)">💍 В браке</div>
+          <div class="tw-chip-btn ${twState.family === 'crisis' || twState.family === 'complicated' ? 'active' : ''}" onclick="selectTwChip('family', 'crisis', this)">💔 Непростой период / поиск ясности</div>
+        </div>
+
+        <!-- 3. ДЕТИ -->
+        <label class="form-label">3. Есть ли у тебя дети?</label>
+        <div class="tw-chip-group" id="twGroupKids">
+          <div class="tw-chip-btn ${twState.kids === 'none' ? 'active' : ''}" onclick="selectTwChip('kids', 'none', this)">🌿 Нет детей</div>
+          <div class="tw-chip-btn ${twState.kids === 'planning' ? 'active' : ''}" onclick="selectTwChip('kids', 'planning', this)">🐣 Планирую</div>
+          <div class="tw-chip-btn ${twState.kids === 'one' ? 'active' : ''}" onclick="selectTwChip('kids', 'one', this)">👶 1 ребёнок</div>
+          <div class="tw-chip-btn ${twState.kids === 'two_plus' ? 'active' : ''}" onclick="selectTwChip('kids', 'two_plus', this)">👨👩👧👦 2 и более детей</div>
+        </div>
+
+        <!-- 4. ДЕЯТЕЛЬНОСТЬ -->
+        <label class="form-label">4. Твой формат занятости:</label>
+        <div class="tw-chip-group" id="twGroupJob">
+          <div class="tw-chip-btn ${twState.job === 'business' ? 'active' : ''}" onclick="selectTwChip('job', 'business', this)">🚀 Свой бизнес / проект</div>
+          <div class="tw-chip-btn ${twState.job === 'freelance' ? 'active' : ''}" onclick="selectTwChip('job', 'freelance', this)">💻 Фриланс / частная практика</div>
+          <div class="tw-chip-btn ${twState.job === 'office' ? 'active' : ''}" onclick="selectTwChip('job', 'office', this)">💼 Найм / компания</div>
+          <div class="tw-chip-btn ${twState.job === 'search' ? 'active' : ''}" onclick="selectTwChip('job', 'search', this)">🔍 В поиске себя / декрет</div>
+        </div>
+
+        <!-- 5. ОПИСАНИЕ СИТУАЦИИ -->
+        <div class="form-group" style="margin-top: 6px;">
+          <label class="form-label">5. Что сейчас больше всего беспокоит? (кратко)</label>
+          <input type="text" id="tw_situation" class="form-input" placeholder="Например: быстро выгораю / партнер отстраняется / страх сделать шаг" value="${escapeHtml(twState.situation || '')}">
+          <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px;">
+            <span style="font-size: 10.5px; color: #94A3B8;">Быстрый выбор:</span>
+            <span class="tw-chip-btn" style="padding: 3px 8px; font-size: 11px;" onclick="setTwQuickSituation('Партнер отдаляется, чувствую холод')">Партнер отдаляется</span>
+            <span class="tw-chip-btn" style="padding: 3px 8px; font-size: 11px;" onclick="setTwQuickSituation('Упираюсь в финансовый потолок')">Потолок в доходах</span>
+            <span class="tw-chip-btn" style="padding: 3px 8px; font-size: 11px;" onclick="setTwQuickSituation('Нет сил, эмоциональное выгорание')">Выгорание и упадок сил</span>
+            <span class="tw-chip-btn" style="padding: 3px 8px; font-size: 11px;" onclick="setTwQuickSituation('Страх сделать неверный выбор')">Страх ошибки</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <button class="btn-gold" style="width: 100%; padding: 13px; font-size: 14px; font-weight: 800;" onclick="saveLifeQuizAndProceed()">
+            ✨ Сохранить анкету и продолжить →
+          </button>
+        </div>
+      </div>
+    `;
+    openModal(html);
+  }
+
+  function saveLifeQuizAndProceed() {
+    const sitInp = document.getElementById('tw_situation');
+    if (sitInp) twState.situation = sitInp.value.trim();
+
+    const quizData = {
+      qRel: twState.family,
+      qKids: twState.kids,
+      qJob: twState.job,
+      qFocus: twState.topic,
+      qSituation: twState.situation,
+      completedAt: new Date().toISOString()
+    };
+    localStorage.setItem(getStorageKeyQuiz(), JSON.stringify(quizData));
+    localStorage.setItem('luna_user_quiz_profile', JSON.stringify(quizData));
+    haptic('success');
+    updateNatalUI();
+
+    if (lunaAuthToken) {
+      apiRequest('/api/v1/quiz', 'POST', {
+        q_rel: twState.family,
+        q_job: twState.job,
+        q_focus: twState.topic
+      }).catch(() => {});
+    }
+
+    closeModal();
+
+    if (typeof pendingQuizCallback === 'function') {
+      const cb = pendingQuizCallback;
+      pendingQuizCallback = null;
+      setTimeout(() => cb(), 150);
     }
   }
 
@@ -7173,58 +7479,61 @@
           💎 Подписка LUNA Plus
         </div>
         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
-          Постоянный доступ к персональному AI-астрологу с ежемесячным балансом запросов.
+          Регулярный доступ к персональному AI-астрологу с ежемесячным пополнением баланса запросов.
         </div>
 
-        <!-- START PLAN -->
+        <!-- TIER 1: БАЗОВЫЙ (START) -->
         <div class="sub-card">
-          <div class="sub-title">Тариф Start</div>
+          <div class="sub-title">Тариф «Базовый»</div>
           <div class="sub-price">299 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
           <div class="sub-features">
-            • <b>30 персональных AI-запросов</b> в месяц<br>
-            • Расширенные подсказки карты и транзитов<br>
-            • Сохранение контекста переписки
+            • <b>30 персональных AI-запросов</b> к натальной карте в месяц<br>
+            • Ежедневные персональные астро-подсказки<br>
+            • Расширенный анализ транзитов и знаков недели<br>
+            • Сохранение контекста переписки и натальной карты
           </div>
-          <button class="btn-outline" style="padding: 9px;" onclick="openSubscriptionCheckoutModal('Start', 299, 30)">
-            Подключить за 299 ₽
+          <button class="btn-outline" style="padding: 9px;" onclick="openSubscriptionCheckoutModal('Базовый', 299, 30)">
+            Подключить за 299 ₽ / месяц
           </button>
         </div>
 
-        <!-- PLUS PLAN (POPULAR) -->
+        <!-- TIER 2: ПРОДВИНУТЫЙ (PLUS / POPULAR) -->
         <div class="sub-card popular">
-          <div class="sub-badge">Хит продаж</div>
-          <div class="sub-title">Тариф Plus</div>
+          <div class="sub-badge">Хит продаж · Рекомендуем</div>
+          <div class="sub-title">Тариф «Продвинутый»</div>
           <div class="sub-price">499 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
           <div class="sub-features">
-            • <b>75 персональных AI-запросов</b> в месяц<br>
-            • Полные недельные срезы и советы Луны<br>
-            • Приоритетная скорость ответов
+            • <b>75 персональных AI-запросов</b> к натальной карте в месяц<br>
+            • <b>Приоритетная скорость</b> ответов AI-астролога LUNA<br>
+            • Глубокие еженедельные аудиты (Отношения, Деньги, Энергия)<br>
+            • Персональные лунные ритуалы и точки баланса
           </div>
-          <button class="btn-gold" style="padding: 10px;" onclick="openSubscriptionCheckoutModal('Plus', 499, 75)">
-            Подключить за 499 ₽ →
+          <button class="btn-gold" style="padding: 10px;" onclick="openSubscriptionCheckoutModal('Продвинутый', 499, 75)">
+            Подключить за 499 ₽ / месяц →
           </button>
         </div>
 
-        <!-- PREMIUM PLAN (999 ₽) -->
+        <!-- TIER 3: ПРЕМИУМ (VIP MAXIMUM) -->
         <div class="sub-card" style="border: 1.5px solid rgba(139, 92, 246, 0.6); background: linear-gradient(135deg, rgba(38, 22, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div class="sub-title" style="color: #FFE8A3;">Тариф Premium (LUNA Plus)</div>
-            <span style="font-size: 9.5px; background: linear-gradient(135deg, #A855F7, #EC4899); color: #FFF; padding: 2px 8px; border-radius: 8px; font-weight: 800;">VIP ВСЁ ВКЛЮЧЕНО</span>
+            <div class="sub-title" style="color: #FFE8A3;">Тариф «Премиум»</div>
+            <span style="font-size: 9.5px; background: linear-gradient(135deg, #A855F7, #EC4899); color: #FFF; padding: 2px 8px; border-radius: 8px; font-weight: 800;">VIP МАКСИМУМ</span>
           </div>
           <div class="sub-price" style="color: #FFE8A3;">999 ₽ <span style="font-size: 12px; color: var(--text-muted); font-weight: 400;">/ месяц</span></div>
           <div class="sub-features">
-            • <b>200 персональных AI-запросов</b> в месяц<br>
-            • <b>Полная книга LUNA PRO (17 глав)</b> включена<br>
-            • Персональный приоритетный канал связи и глубокие аудиты
+            • <b>150 персональных AI-запросов</b> к натальной карте в месяц<br>
+            • Выделенный VIP-канал с максимальной глубиной астрологического синтеза<br>
+            • Неограниченные глубокие аудиты по всем сферам жизни и домам карты<br>
+            • Постоянный приоритетный контекст
           </div>
-          <button class="btn-gold" style="padding: 10px; width: 100%; font-weight: 800;" onclick="openSubscriptionCheckoutModal('Premium', 999, 200)">
-            Оформить подписку за 999 ₽ →
+          <button class="btn-gold" style="padding: 10px; width: 100%; font-weight: 800;" onclick="openSubscriptionCheckoutModal('Премиум', 999, 150)">
+            Оформить подписку за 999 ₽ / месяц →
           </button>
         </div>
 
         <div style="text-align: center; margin-top: 12px;">
           <button style="background: none; border: none; color: var(--gold); font-size: 12px; cursor: pointer; text-decoration: underline;" onclick="openTopUpModal()">
-            Нужно просто докупить запросы без подписки? ⚡
+            Нужно просто докупить разовый пакет запросов без подписки? ⚡
           </button>
         </div>
       </div>
@@ -7239,10 +7548,13 @@
         <div style="text-align: center; margin-bottom: 16px;">
           <div class="hero-natal-badge" style="margin-bottom: 8px;">💎 ОФОРМЛЕНИЕ ПОДПИСКИ</div>
           <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: #FFF;">
-            LUNA Plus ${planName}
+            Тариф «${planName}»
           </div>
           <div style="font-size: 22px; font-weight: 800; color: #FFE8A3; margin-top: 4px;">
             ${price} ₽ <span style="font-size: 13px; font-weight: 400; color: #CBD5E1;">/ месяц</span>
+          </div>
+          <div style="font-size: 11px; color: #94A3B8; margin-top: 2px;">
+            (регулярный доступ с автообновлением каждые 30 дней)
           </div>
         </div>
 
@@ -7250,16 +7562,15 @@
           <b style="font-size: 13px; color: #FFE8A3;">В подписку входит:</b>
           <ul style="padding-left: 18px; font-size: 12.5px; color: #CBD5E1; line-height: 1.6; margin-top: 6px;">
             <li><b>+${creditsToAdd} персональных AI-запросов</b> в месяц</li>
-            ${price >= 999 ? '<li><b>Вся книга LUNA PRO (17 глав)</b> с PDF-экспортом</li>' : ''}
             <li>Ежедневный персональный прогноз и знаки недели</li>
             <li>Приоритетная обработка и сохранение контекста карты</li>
-            <li>Автоматическое продление каждые 30 дней (отмена в 1 клик)</li>
+            <li>Автоматическое продление каждые 30 дней (отмена в 1 клик в любое время)</li>
           </ul>
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 8px;">
           <button class="btn-gold" style="padding: 13px; font-size: 14px; font-weight: 800;" onclick="selectSubscriptionPlan('${planName}', ${price}, ${creditsToAdd})">
-            ✦ Оформить подписку за ${price} ₽ →
+            ✦ Оформить подписку за ${price} ₽/мес →
           </button>
           <button class="btn-outline" style="padding: 10px; font-size: 12px;" onclick="openSubscriptionModal()">
             ← Выбрать другой тариф
@@ -7276,56 +7587,38 @@
       const nextDate = new Date(Date.now() + 30 * 86400000).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
       const subInfo = {
         active: true,
-        plan: `LUNA Plus ${planName}`,
+        plan: `Тариф «${planName}»`,
         price: `${price} ₽ / месяц`,
         totalCredits: creditsToAdd,
         startDate: new Date().toISOString(),
         nextBillingDate: nextDate,
         features: [
           `${creditsToAdd} персональных AI-запросов в месяц`,
-          price >= 999 ? 'Полная книга LUNA PRO (17 глав)' : 'Расширенные срезы карты',
-          'Приоритетная скорость обработки ответов LUNA'
+          'Приоритетная скорость обработки ответов LUNA',
+          'Глубокий ежемесячный астрологический аудит'
         ]
       };
       localStorage.setItem(getStorageKeySubInfo(), JSON.stringify(subInfo));
-      setUserPlan(`LUNA Plus ${planName}`);
+      setUserPlan(`Тариф «${planName}»`);
       setUserCredits(creditsToAdd);
-
-      // If 999 plan, automatically unlock/generate LUNA PRO book as well
-      if (price >= 999 && userNatalData) {
-        const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
-        const book = generateLunaPro17Chapters(userNatalData, vedic, {});
-        currentLunaProBook = book;
-        const purchased = getPurchasedReports();
-        purchased['natal'] = {
-          purchasedAt: new Date().toISOString(),
-          bookData: book,
-          chaptersHtml: book.chapters.map(c => `<div class="report-chapter"><h3>${c.num}. ${c.title}</h3>${c.html}</div>`).join('')
-        };
-        savePurchasedReports(purchased);
-      }
 
       trackLunaEvent('subscription_started', { plan: planName, price, creditsAdded: creditsToAdd });
       updateCreditDisplays();
       updateCatalogCardsUI();
+      updateNatalUI();
 
       openModal(`
         <div style="text-align: center; padding: 20px 8px;">
           <div style="font-size: 38px; margin-bottom: 8px;">✨</div>
           <div style="font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
-            Подписка LUNA Plus оформлена!
+            Подписка «${planName}» оформлена!
           </div>
           <p style="font-size: 13px; color: #D1CCDE; line-height: 1.5; margin-bottom: 16px;">
-            Вам начислено <b>+${creditsToAdd} персональных AI-запросов</b>.<br>
+            Вам начислено <b>${creditsToAdd} персональных AI-запросов</b>.<br>
             Тариф: <b>${subInfo.plan} (${price} ₽/мес)</b>.<br>
             Дата следующего обновления лимита: <b>${nextDate}</b>.
           </p>
           <div style="display: flex; flex-direction: column; gap: 8px;">
-            ${price >= 999 ? `
-              <button class="btn-gold" style="padding: 12px; font-size: 13.5px;" onclick="closeModal(); showProductModal('natal');">
-                📖 Открыть книгу LUNA PRO →
-              </button>
-            ` : ''}
             <button class="btn-gold" style="padding: 12px; font-size: 13.5px;" onclick="closeModal(); switchTab('chat');">
               💬 Перейти в чат с LUNA →
             </button>
@@ -7345,16 +7638,16 @@
     const html = `
       <div style="padding: 6px 2px 14px;">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
-          ⚡ Докупить пакет запросов
+          ⚡ Пакеты запросов (Одноразовая покупка)
         </div>
         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
-          Разовое пополнение баланса без автопродления и подписки.
+          Разовое пополнение баланса без подписки и автопродлений. Запросы не сгорают и действуют бессрочно.
         </div>
 
         <div class="sub-card" style="display: flex; justify-content: space-between; align-items: center;">
           <div>
             <div style="font-weight: 700; color: #FFF; font-size: 15px;">15 запросов</div>
-            <div style="font-size: 11.5px; color: var(--text-muted);">Экспресс-пакет</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">Стартовый пакет</div>
           </div>
           <button class="btn-gold" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="buyTopUpCredits(15, 99)">
             99 ₽
@@ -7364,7 +7657,7 @@
         <div class="sub-card popular" style="display: flex; justify-content: space-between; align-items: center;">
           <div>
             <div style="font-weight: 700; color: #FFF; font-size: 15px;">45 запросов 🔥</div>
-            <div style="font-size: 11.5px; color: #FFE8A3;">Оптимальный выбор</div>
+            <div style="font-size: 11.5px; color: #FFE8A3;">Оптимальный выбор · Хит</div>
           </div>
           <button class="btn-gold" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="buyTopUpCredits(45, 199)">
             199 ₽
@@ -7373,8 +7666,8 @@
 
         <div class="sub-card" style="display: flex; justify-content: space-between; align-items: center;">
           <div>
-            <div style="font-weight: 700; color: #FFF; font-size: 15px;">100 запросов</div>
-            <div style="font-size: 11.5px; color: var(--text-muted);">Максимальный пакет</div>
+            <div style="font-weight: 700; color: #FFF; font-size: 15px;">100 запросов 👑</div>
+            <div style="font-size: 11.5px; color: #6EE7B7;">Максимальный пакет · Выгода</div>
           </div>
           <button class="btn-gold" style="width: auto; padding: 8px 14px; font-size: 13px;" onclick="buyTopUpCredits(100, 349)">
             349 ₽
@@ -7418,19 +7711,17 @@
 
   function resetUserProfileAndRestart() {
     haptic('warning');
-    if (confirm('Вы уверены, что хотите сбросить сохранённые данные рождения и начать заново?')) {
-      localStorage.removeItem(getStorageKeyNatal());
-      localStorage.removeItem(getStorageKeyQuiz());
-      localStorage.removeItem(getStorageKeyChildren());
-      localStorage.removeItem(getStorageKeyCredits());
-      localStorage.removeItem(getStorageKeyPlan());
-      localStorage.removeItem(getStorageKeyTripwire());
-      localStorage.removeItem('luna_user_natal_data');
-      localStorage.removeItem('luna_user_quiz_profile');
-      localStorage.removeItem('luna_auth_jwt');
+    if (confirm('Вы уверены, что хотите сбросить профиль и все сохранённые данные? Это очистит историю переписки, расчёты и создаст новую чистую сессию.')) {
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+      } catch (e) {
+        console.error("Storage clear error", e);
+      }
       userNatalData = null;
       userChildrenList = [];
-      location.reload();
+      lunaAuthToken = null;
+      window.location.href = window.location.pathname;
     }
   }
 
@@ -7488,17 +7779,13 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('reset') === '1') {
-      localStorage.removeItem(getStorageKeyNatal());
-      localStorage.removeItem(getStorageKeyQuiz());
-      localStorage.removeItem(getStorageKeyChildren());
-      localStorage.removeItem(getStorageKeyCredits());
-      localStorage.removeItem(getStorageKeyPlan());
-      localStorage.removeItem(getStorageKeyTripwire());
-      localStorage.removeItem('luna_user_natal_data');
-      localStorage.removeItem('luna_user_quiz_profile');
-      localStorage.removeItem('luna_auth_jwt');
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+      } catch (e) {}
       userNatalData = null;
       userChildrenList = [];
+      lunaAuthToken = null;
     } else {
       const saved = localStorage.getItem(getStorageKeyNatal()) || localStorage.getItem('luna_user_natal_data');
       if (saved) {
