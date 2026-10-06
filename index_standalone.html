@@ -4330,6 +4330,136 @@
     };
   }
 
+  
+  function generateStoryCanvas(name, sun, moon, asc, affirmation) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1080;
+    canvas.height = 1920;
+    const ctx = canvas.getContext('2d');
+
+    // Background Gradient
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, 1920);
+    bgGrad.addColorStop(0, '#0D081D');
+    bgGrad.addColorStop(0.35, '#1B113B');
+    bgGrad.addColorStop(0.7, '#26144D');
+    bgGrad.addColorStop(1, '#090514');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, 1080, 1920);
+
+    // Ornate Border
+    ctx.strokeStyle = '#C49B45';
+    ctx.lineWidth = 10;
+    ctx.strokeRect(50, 50, 980, 1820);
+    ctx.strokeStyle = 'rgba(229, 195, 120, 0.4)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(70, 70, 940, 1780);
+
+    // Stars / Sparkles
+    ctx.fillStyle = '#FFE8A3';
+    const stars = [
+      [150, 180, 3], [900, 220, 4], [200, 450, 2], [880, 520, 3],
+      [140, 900, 4], [920, 980, 3], [180, 1450, 3], [890, 1500, 4],
+      [540, 180, 5], [540, 1720, 4]
+    ];
+    stars.forEach(([x, y, r]) => {
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Brand Title
+    ctx.fillStyle = '#E5C378';
+    ctx.font = 'bold 36px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.letterSpacing = '8px';
+    ctx.fillText('✦  L U N A  ✦', 540, 280);
+
+    ctx.fillStyle = '#CBD5E1';
+    ctx.font = '28px sans-serif';
+    ctx.fillText('ПЕРСОНАЛЬНЫЙ КОД ДУШИ', 540, 340);
+
+    // User Name
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'bold 72px Georgia, serif';
+    ctx.fillText(name, 540, 480);
+
+    // Triad Card Background
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.strokeStyle = 'rgba(229, 195, 120, 0.5)';
+    ctx.lineWidth = 3;
+    
+    // 3 Boxes for Sun, Moon, Ascendant
+    const boxY = 600;
+    const boxH = 220;
+    const boxW = 270;
+    const gap = 30;
+    const startX = (1080 - (boxW * 3 + gap * 2)) / 2;
+
+    const triadData = [
+      { icon: '☀️', label: 'Солнце', val: sun },
+      { icon: '🌙', label: 'Луна', val: moon },
+      { icon: '↑', label: 'Асцендент', val: asc }
+    ];
+
+    triadData.forEach((item, idx) => {
+      const bx = startX + idx * (boxW + gap);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+      ctx.fillRect(bx, boxY, boxW, boxH);
+      ctx.strokeRect(bx, boxY, boxW, boxH);
+
+      ctx.font = '48px sans-serif';
+      ctx.fillText(item.icon, bx + boxW / 2, boxY + 70);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '24px sans-serif';
+      ctx.fillText(item.label, bx + boxW / 2, boxY + 120);
+
+      ctx.fillStyle = '#FFE8A3';
+      ctx.font = 'bold 34px Georgia, serif';
+      ctx.fillText(item.val, bx + boxW / 2, boxY + 175);
+    });
+
+    // Affirmation Box
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+    ctx.fillRect(120, 940, 840, 340);
+    ctx.strokeStyle = 'rgba(229, 195, 120, 0.3)';
+    ctx.strokeRect(120, 940, 840, 340);
+
+    ctx.fillStyle = '#E5C378';
+    ctx.font = 'bold 28px sans-serif';
+    ctx.fillText('ГЛАВНЫЙ МАНИФЕСТ СИЛЫ', 540, 1020);
+
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = 'italic 34px Georgia, serif';
+    
+    // Wrap affirmation text
+    const words = affirmation.split(' ');
+    let line = '';
+    let curY = 1100;
+    for (let w of words) {
+      const testLine = line + w + ' ';
+      if (ctx.measureText(testLine).width > 760) {
+        ctx.fillText(line.trim(), 540, curY);
+        line = w + ' ';
+        curY += 50;
+      } else {
+        line = testLine;
+      }
+    }
+    if (line) ctx.fillText(line.trim(), 540, curY);
+
+    // Footer Call To Action
+    ctx.fillStyle = '#E5C378';
+    ctx.font = 'bold 30px sans-serif';
+    ctx.fillText('Рассчитай свою натальную карту в приложении LUNA', 540, 1580);
+
+    ctx.fillStyle = '#94A3B8';
+    ctx.font = '24px sans-serif';
+    ctx.fillText('https://nadinnchik.github.io/luna-app/', 540, 1640);
+
+    return canvas.toDataURL('image/png');
+  }
+
   function openShareStoryModal() {
     haptic('success');
     trackLunaEvent('share_story_opened');
@@ -4344,65 +4474,32 @@
     const sun = natal.sun || 'Козерог';
     const moon = natal.moon || 'Козерог';
     const asc = natal.asc || 'Стрелец';
-    const elems = calculateNatalElements(sun, moon, asc);
     const traffic = getPersonalDayTrafficLight(sun, moon, asc);
+    const storyImgData = generateStoryCanvas(name, sun, moon, asc, traffic.affirmation);
 
     const html = `
       <div style="padding: 4px 2px 20px;">
         <div class="hero-natal-badge" style="margin-bottom: 8px;">
-          📲 STORIES CARD · 9:16
+          📲 STORIES КАРТОЧКА · 9:16
         </div>
-        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: #FFF; margin-bottom: 4px;">
-          Карточка для Telegram & Соцсетей
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 700; color: #FFF; margin-bottom: 4px;">
+          Твоя натальная карточка
         </div>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
-          Поделись своей космической матрицей LUNA с друзьями:
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">
+          Скачай готовое изображение в галерею или опубликуй в Stories:
         </p>
 
-        <div class="story-card-wrap" id="storyCaptureCard">
-          <div style="font-size: 13px; letter-spacing: 5px; color: #E5C378; font-weight: 800; margin-bottom: 12px;">
-            ✦ L U N A · A S T R O ✦
-          </div>
-          <div style="font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: #FFE8A3; line-height: 1.2; margin-bottom: 4px;">
-            ${escapeHtml(name)}
-          </div>
-          <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 18px;">
-            Натальная триада & Код души
-          </div>
-
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 18px;">
-            <div style="background: rgba(255, 232, 163, 0.1); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 12px; padding: 8px 4px;">
-              <div style="font-size: 14px;">☀️</div>
-              <div style="font-size: 10px; color: var(--text-sub);">Солнце</div>
-              <div style="font-size: 12px; font-weight: 800; color: #FFE8A3;">${sun}</div>
-            </div>
-            <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 12px; padding: 8px 4px;">
-              <div style="font-size: 14px;">🌙</div>
-              <div style="font-size: 10px; color: var(--text-sub);">Луна</div>
-              <div style="font-size: 12px; font-weight: 800; color: #DDD6FE;">${moon}</div>
-            </div>
-            <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; padding: 8px 4px;">
-              <div style="font-size: 14px;">↑</div>
-              <div style="font-size: 10px; color: var(--text-sub);">Асцендент</div>
-              <div style="font-size: 12px; font-weight: 800; color: #93C5FD;">${asc}</div>
-            </div>
-          </div>
-
-          <div style="background: rgba(0, 0, 0, 0.3); border-radius: 14px; padding: 12px; margin-bottom: 16px; font-size: 12px; color: #E2DFEC; line-height: 1.5; font-style: italic;">
-            ${traffic.affirmation}
-          </div>
-
-          <div style="font-size: 11px; color: #94A3B8; letter-spacing: 1px;">
-            Рассчитай свою карту в Telegram: @Luna_Astrologer_Bot
-          </div>
+        <!-- PREVIEW IMAGE -->
+        <div style="text-align: center; margin-bottom: 16px;">
+          <img src="${storyImgData}" style="width: 100%; max-width: 280px; border-radius: 16px; border: 2px solid rgba(229, 195, 120, 0.6); box-shadow: 0 8px 25px rgba(0,0,0,0.6);" alt="LUNA Stories">
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 8px;">
-          <button class="btn-gold" style="padding: 12px; font-size: 13.5px;" onclick="shareStoryToTelegram()">
-            📤 Поделиться в Telegram Stories / Чат
-          </button>
-          <button class="btn-outline" style="padding: 10px; font-size: 12px;" onclick="copyStoryText('${escapeHtml(name)}', '${sun}', '${moon}', '${asc}')">
-            📋 Скопировать текст для блога
+          <a href="${storyImgData}" download="LUNA_${encodeURIComponent(name)}_Stories.png" class="btn-gold" style="padding: 13px; font-size: 14px; font-weight: 800; text-align: center; text-decoration: none; display: block;" onclick="haptic('success')">
+            📥 Сохранить картинку в галерею (PNG)
+          </a>
+          <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="shareStoryToTelegram()">
+            📤 Поделиться ссылкой на LUNA
           </button>
           <button class="btn-outline" style="padding: 10px; font-size: 12px; opacity: 0.8;" onclick="closeModal()">
             Закрыть
@@ -4415,7 +4512,8 @@
 
   function shareStoryToTelegram() {
     haptic('success');
-    const shareUrl = 'https://t.me/share/url?url=' + encodeURIComponent('https://t.me/Luna_Astrologer_Bot') + '&text=' + encodeURIComponent('🌙 Моя персональная натальная карта и код души в LUNA Astrologer ✨ Рассчитай свою бесплатно!');
+    const appUrl = 'https://nadinnchik.github.io/luna-app/';
+    const shareUrl = 'https://t.me/share/url?url=' + encodeURIComponent(appUrl) + '&text=' + encodeURIComponent('🌙 Моя персональная натальная карта и код души в приложении LUNA ✨ Рассчитай свою бесплатно:');
     if (window.Telegram && Telegram.WebApp && typeof Telegram.WebApp.openTelegramLink === 'function') {
       Telegram.WebApp.openTelegramLink(shareUrl);
     } else {
@@ -4423,11 +4521,6 @@
     }
   }
 
-  function copyStoryText(name, sun, moon, asc) {
-    haptic('success');
-    const text = `🌙 Моя натальная карта в LUNA:\n👤 ${name}\n☀️ Солнце: ${sun}\n🌙 Луна: ${moon}\n↑ Асцендент: ${asc}\n\nУзнай свой код души в боте: @Luna_Astrologer_Bot ✨`;
-    fallbackCopyText(text);
-  }
 
   function updateNatalUI() {
     const onb = document.getElementById('onboardingScreen');
@@ -5650,11 +5743,12 @@
     }, 10);
   }
 
+  
   function exportLunaProBookToPDF() {
     if (!currentLunaProBook) {
       if (userNatalData) {
         const vedic = calculateVedicJyotishData(userNatalData.date, userNatalData.time);
-        currentLunaProBook = generateLunaPro17Chapters(userNatalData, vedic, getPurchasedTripwireData() || {});
+        currentLunaProBook = generateLunaPro37Chapters(userNatalData, vedic, getPurchasedTripwireData() || {});
       } else {
         return;
       }
@@ -5678,213 +5772,113 @@
 
     const curDateStr = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 
-    const fullDoc = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <title>LUNA PRO — Персональная книга (${escapeHtml(book.name)})</title>
-        <style>
-          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-          
-          @page {
-            size: A4;
-            margin: 18mm 14mm 18mm 14mm;
-          }
-          
-          body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #1A1028;
-            background: #FFFFFF;
-            margin: 0;
-            padding: 0;
-            line-height: 1.65;
-            font-size: 13.5px;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-          }
-          
-          .cover-page {
-            page-break-after: always;
-            min-height: 90vh;
-            background: linear-gradient(145deg, #120A2A 0%, #1D123D 50%, #0D081D 100%);
-            color: #FFFFFF;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 60px 40px;
-            box-sizing: border-box;
-            border: 6px solid #C49B45;
-            border-radius: 8px;
-            text-align: center;
-          }
-          
-          .cover-logo {
-            font-size: 20px;
-            letter-spacing: 8px;
-            color: #E5C378;
-            font-weight: 700;
-          }
-          
-          .cover-title {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 44px;
-            font-weight: 700;
-            color: #FFE8A3;
-            letter-spacing: 1.5px;
-            margin: 14px 0 6px 0;
-          }
-          
-          .cover-sub {
-            font-size: 14px;
-            color: #CBD5E1;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-          }
-          
-          .cover-user-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1.5px solid rgba(229, 195, 120, 0.5);
-            border-radius: 16px;
-            padding: 24px 20px;
-            margin: 40px auto;
-            max-width: 480px;
-          }
-          
-          .cover-name {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: #FFF;
-            margin-bottom: 6px;
-          }
-          
-          .cover-triad {
-            font-size: 14px;
-            color: #FFE8A3;
-            line-height: 1.6;
-          }
-          
-          .chapter-wrap {
-            page-break-after: always;
-            padding: 24px 0;
-          }
-          
-          .chapter-header-ribbon {
-            border-bottom: 2px solid #E5C378;
-            padding-bottom: 8px;
-            margin-bottom: 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
-          
-          .chapter-num-badge {
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.2px;
-            color: #926C15;
-            text-transform: uppercase;
-          }
-          
-          .chapter-title {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-            font-size: 26px;
-            color: #120A2A;
-            font-weight: 700;
-            margin: 0 0 16px 0;
-          }
-          
-          .report-content {
-            font-size: 13.5px;
-            color: #2D253D;
-          }
-          
-          .report-content p {
-            margin-bottom: 12px;
-          }
-          
-          .report-content div {
-            box-sizing: border-box;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="cover-page">
-          <div>
-            <div class="cover-logo">✦ L U N A ✦</div>
-            <div class="cover-title">ПЕРСОНАЛЬНАЯ КНИГА</div>
-            <div class="cover-sub">Астрологический синтез и 30-дневный натальный маршрут</div>
-          </div>
-          
-          <div class="cover-user-card">
-            <div class="cover-name">${escapeHtml(book.name)}</div>
-            <div class="cover-triad">
-              <b>☉ Солнце:</b> ${book.sun} &nbsp;•&nbsp; <b>☾ Луна:</b> ${book.moon} &nbsp;•&nbsp; <b>↑ Асцендент:</b> ${book.lagna}<br>
-              <b>🪐 Накшатра:</b> ${book.nakshatra.name} (Пада ${book.pada})<br>
-              <b>⏳ Махадаша:</b> ${book.dasha.planet} / ${book.antardasha.planet}
-            </div>
-          </div>
-          
-          <div style="font-size: 12px; color: #94A3B8; letter-spacing: 1px;">
-            Создано LUNA AI Astrologer • ${curDateStr}
-          </div>
+    const fullDoc = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>LUNA PRO — Персональная книга (${escapeHtml(book.name)})</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+    @page { size: A4; margin: 18mm 14mm 18mm 14mm; }
+    body { font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; color: #1A1028; background: #FFFFFF; margin: 0; padding: 0; line-height: 1.65; font-size: 13.5px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cover-page { page-break-after: always; min-height: 90vh; background: linear-gradient(145deg, #120A2A 0%, #1D123D 50%, #0D081D 100%); color: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between; padding: 60px 40px; box-sizing: border-box; border: 6px solid #C49B45; border-radius: 8px; text-align: center; }
+    .cover-logo { font-size: 20px; letter-spacing: 8px; color: #E5C378; font-weight: 700; }
+    .cover-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 44px; font-weight: 700; color: #FFE8A3; letter-spacing: 1.5px; margin: 14px 0 6px 0; }
+    .cover-sub { font-size: 14px; color: #CBD5E1; letter-spacing: 3px; text-transform: uppercase; }
+    .cover-user-card { background: rgba(255, 255, 255, 0.05); border: 1.5px solid rgba(229, 195, 120, 0.5); border-radius: 16px; padding: 24px 20px; margin: 40px auto; max-width: 480px; }
+    .cover-name { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; font-weight: 700; color: #FFF; margin-bottom: 6px; }
+    .cover-triad { font-size: 14px; color: #FFE8A3; line-height: 1.6; }
+    .chapter-wrap { page-break-after: always; padding: 24px 0; }
+    .chapter-header-ribbon { border-bottom: 2px solid #E5C378; padding-bottom: 8px; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; }
+    .chapter-num-badge { font-size: 11px; font-weight: 800; letter-spacing: 1.2px; color: #926C15; text-transform: uppercase; }
+    .chapter-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; color: #120A2A; font-weight: 700; margin: 0 0 16px 0; }
+    .report-content { font-size: 13.5px; color: #2D253D; }
+    .report-content p { margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <div class="cover-page">
+    <div>
+      <div class="cover-logo">✦ L U N A ✦</div>
+      <div class="cover-title">ПЕРСОНАЛЬНАЯ КНИГА</div>
+      <div class="cover-sub">Полный натальный синтез и 30-дневный маршрут (37 глав)</div>
+    </div>
+    <div class="cover-user-card">
+      <div class="cover-name">${escapeHtml(book.name)}</div>
+      <div class="cover-triad">
+        <b>☉ Солнце:</b> ${book.sun} &nbsp;•&nbsp; <b>☾ Луна:</b> ${book.moon} &nbsp;•&nbsp; <b>↑ Асцендент:</b> ${book.lagna}<br>
+        <b>🪐 Накшатра:</b> ${book.nakshatra.name} (Пада ${book.pada})<br>
+        <b>⏳ Махадаша:</b> ${book.dasha.planet} / ${book.antardasha.planet}
+      </div>
+    </div>
+    <div style="font-size: 12px; color: #94A3B8; letter-spacing: 1px;">
+      Создано LUNA AI Astrologer • ${curDateStr}
+    </div>
+  </div>
+  ${allChaptersHtml}
+</body>
+</html>`;
+
+    // Downloadable Standalone HTML File Blob
+    const blob = new Blob([fullDoc], { type: 'text/html;charset=utf-8' });
+    const blobUrl = URL.createObjectURL(blob);
+
+    openModal(`
+      <div style="padding: 6px 2px 20px; text-align: center;">
+        <div style="font-size: 38px; margin-bottom: 8px;">📖</div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: #FFE8A3; margin-bottom: 6px;">
+          Экспорт книги LUNA PRO
         </div>
+        <p style="font-size: 13px; color: #CBD5E1; line-height: 1.5; margin-bottom: 20px;">
+          Все 37 глав сформированы. Выберите удобный способ сохранения:
+        </p>
 
-        ${allChaptersHtml}
-        
-        <script>
-          window.onload = function() {
-            setTimeout(function() {
-              window.print();
-            }, 300);
-          };
-        <\/script>
-      </body>
-      </html>
-    `;
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a href="${blobUrl}" download="LUNA_PRO_${encodeURIComponent(book.name)}_37Chapters.html" class="btn-gold" style="padding: 13px; font-size: 14px; font-weight: 800; text-decoration: none; display: block;" onclick="haptic('success'); setTimeout(() => closeModal(), 1000);">
+            📥 Скачать офлайн-книгу (.html)
+          </a>
+          <button class="btn-outline" style="padding: 12px; font-size: 13px;" onclick="printDirectDocument('${encodeURIComponent(fullDoc)}')">
+            🖨️ Открыть для печати в PDF
+          </button>
+          <button class="btn-outline" style="padding: 11px; font-size: 12.5px;" onclick="copyAll37ChaptersText()">
+            📋 Скопировать весь текст книги
+          </button>
+          <button class="btn-outline" style="padding: 10px; font-size: 12px; opacity: 0.8;" onclick="closeModal()">
+            Закрыть
+          </button>
+        </div>
+      </div>
+    `);
+  }
 
+  function printDirectDocument(encodedDoc) {
+    haptic('light');
     try {
+      const docStr = decodeURIComponent(encodedDoc);
       const printWin = window.open('', '_blank');
       if (printWin && printWin.document) {
         printWin.document.open();
-        printWin.document.write(fullDoc);
+        printWin.document.write(docStr + '<script>window.onload = function() { window.print(); };<\/script>');
         printWin.document.close();
         return;
       }
-    } catch (e) {
-      console.warn("Direct window.open failed, fallback to iframe", e);
-    }
-
-    try {
-      let printFrame = document.getElementById('luna_print_iframe');
-      if (!printFrame) {
-        printFrame = document.createElement('iframe');
-        printFrame.id = 'luna_print_iframe';
-        printFrame.style.position = 'fixed';
-        printFrame.style.right = '0';
-        printFrame.style.bottom = '0';
-        printFrame.style.width = '0';
-        printFrame.style.height = '0';
-        printFrame.style.border = '0';
-        document.body.appendChild(printFrame);
-      }
-      const frameDoc = printFrame.contentWindow.document;
-      frameDoc.open();
-      frameDoc.write(fullDoc);
-      frameDoc.close();
-      setTimeout(() => {
-        try {
-          printFrame.contentWindow.focus();
-          printFrame.contentWindow.print();
-        } catch (err) {
-          alert('Для сохранения в PDF откройте страницу в браузере Safari/Chrome.');
-        }
-      }, 400);
-    } catch (err2) {
-      alert('Пожалуйста, откройте LUNA в браузере для печати и экспорта книги.');
-    }
+    } catch(e) {}
+    alert('Для прямой печати сохраните офлайн-книгу и откройте в браузере Safari/Chrome.');
   }
+
+  function copyAll37ChaptersText() {
+    if (!currentLunaProBook) return;
+    haptic('success');
+    const book = currentLunaProBook;
+    let fullText = `✦ LUNA PRO — ПЕРСОНАЛЬНАЯ КНИГА (${book.name}) ✦\n☉ Солнце: ${book.sun} • ☾ Луна: ${book.moon} • ↑ Асцендент: ${book.lagna}\n\n`;
+    book.chapters.forEach(c => {
+      const tmpDiv = document.createElement('div');
+      tmpDiv.innerHTML = c.html;
+      fullText += `\n====================================\nГЛАВА ${c.num}. ${c.title}\n====================================\n` + tmpDiv.innerText + '\n';
+    });
+    fallbackCopyText(fullText);
+  }
+
 
   function updateCatalogCardsUI() {
     const catTw = document.getElementById('catTripwireCard');
