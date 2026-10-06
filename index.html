@@ -287,6 +287,90 @@
       border: 1px solid rgba(212, 175, 55, 0.18);
     }
 
+    
+    /* 4 ELEMENTS SPECTRUM */
+    .elements-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 12px 0;
+    }
+    .element-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+    }
+    .element-name {
+      width: 75px;
+      color: #CBD5E1;
+      font-weight: 600;
+    }
+    .element-track {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .element-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.6s ease;
+    }
+    .element-pct {
+      width: 35px;
+      text-align: right;
+      font-weight: 700;
+      color: #FFE8A3;
+      font-size: 11px;
+    }
+
+    /* DAILY DOS AND DONTS */
+    .dos-donts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .dos-card {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .donts-card {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      padding: 10px;
+    }
+    .traffic-header {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* STORY PREVIEW CARD (9:16) */
+    .story-card-wrap {
+      background: linear-gradient(160deg, #160D30 0%, #26164A 50%, #0D071E 100%);
+      border: 2px solid #E5C378;
+      border-radius: 20px;
+      padding: 24px 20px;
+      text-align: center;
+      color: #FFF;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin: 10px 0 16px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
     /* MAGIC CARDS */
     .magic-grid {
       display: grid;
@@ -1455,10 +1539,57 @@
           </div>
         </div>
 
-        <button class="hero-natal-btn" onclick="openMiniNatalModal()">
-          <span>✨ Читать полный бесплатный разбор личности →</span>
-          <span class="hero-natal-btn-sub">4 главы • Характер • Теневая сторона • Суперсила • 100% Бесплатно</span>
-        </button>
+
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <button class="hero-natal-btn" style="flex: 2; margin-top: 0;" onclick="openMiniNatalModal()">
+            <span>✨ Полный бесплатный разбор личности →</span>
+            <span class="hero-natal-btn-sub">4 главы • Характер • Тень • Суперсила • 100% Бесплатно</span>
+          </button>
+          <button class="btn-outline" style="flex: 1; padding: 10px; font-size: 12px; border-color: rgba(229,195,120,0.5); color: #FFE8A3; border-radius: 14px;" onclick="openShareStoryModal()" title="Поделиться в Stories">
+            📲 Stories
+          </button>
+        </div>
+
+      </div>
+
+      
+      <!-- 🔋 DAILY ENERGY METER & TRAFFIC LIGHT (DO'S & DON'TS) -->
+      <div class="card" style="border: 1px solid rgba(229, 195, 120, 0.35); background: linear-gradient(160deg, rgba(30, 20, 52, 0.85) 0%, rgba(14, 10, 26, 0.95) 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div class="card-title" style="margin-bottom: 0;">⚡ Фокус и Светофор дня</div>
+          <span id="dailyEnergyBadge" style="font-size: 11px; background: rgba(16, 185, 129, 0.2); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.4); padding: 3px 8px; border-radius: 10px; font-weight: 800;">
+            🔋 Тонус 88%
+          </span>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;" id="dailyAdviceText">
+          Загрузка натальных рекомендаций на сегодня...
+        </p>
+
+        <!-- DO'S & DON'TS -->
+        <div class="dos-donts-grid">
+          <div class="dos-card">
+            <div class="traffic-header" style="color: #6EE7B7;">🟢 Сегодня супер:</div>
+            <div id="trafficDosList" style="font-size: 11.5px; color: #E2DFEC; line-height: 1.45;">
+              • Проявить смелую инициативу<br>• Довести начатое до конца
+            </div>
+          </div>
+          <div class="donts-card">
+            <div class="traffic-header" style="color: #FCA5A5;">🔴 Притормозить:</div>
+            <div id="trafficDontsList" style="font-size: 11.5px; color: #E2DFEC; line-height: 1.45;">
+              • Спешить на эмоциях<br>• Тянуть чужую нагрузку
+            </div>
+          </div>
+        </div>
+
+        <!-- AFFIRMATION BANNER -->
+        <div style="margin-top: 12px; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <div style="font-size: 11.5px; color: #FFE8A3; line-height: 1.4; font-style: italic;" id="dailyAffirmationText">
+            «Моя сила раскрывается через спокойное достоинство и веру в свой масштаб.»
+          </div>
+          <button style="background: none; border: none; color: var(--gold); font-size: 14px; cursor: pointer;" onclick="copyStoryText(userNatalData?.name||'Я', userNatalData?.sun||'Козерог', userNatalData?.moon||'Телец', userNatalData?.asc||'Стрелец')" title="Скопировать">
+            📋
+          </button>
+        </div>
       </div>
 
       <!-- 🎯 TRIPWIRE BANNER ON DASHBOARD (BLUEPRINT §4 & §8) -->
@@ -4124,6 +4255,180 @@
     }, 1200);
   }
 
+  
+  // ================= 4 ELEMENTS & ENHANCED NATAL SYNTHESIS =================
+  function calculateNatalElements(sun, moon, asc) {
+    const signs = [sun, moon, asc];
+    let counts = { fire: 0, earth: 0, air: 0, water: 0 };
+    
+    signs.forEach(s => {
+      const elem = ZODIAC_ELEMENTS[s] || 'earth';
+      counts[elem] += 1;
+    });
+
+    const total = 3;
+    const firePct = Math.round((counts.fire / total) * 100);
+    const earthPct = Math.round((counts.earth / total) * 100);
+    const airPct = Math.round((counts.air / total) * 100);
+    const waterPct = Math.round((counts.water / total) * 100);
+
+    let dominant = 'earth';
+    let deficient = 'air';
+    let max = -1;
+    let min = 999;
+    for (const [el, val] of Object.entries(counts)) {
+      if (val > max) { max = val; dominant = el; }
+      if (val < min) { min = val; deficient = el; }
+    }
+
+    const elemTitles = { fire: 'Огонь 🔥', earth: 'Земля ⛰️', air: 'Воздух 💨', water: 'Вода 💧' };
+    const compensationKeys = {
+      fire: 'Добавляй яркую физическую активность, заявляй о своих амбициях и не бойся первого шага.',
+      earth: 'Заземляйся через порядок, массаж, контакт с телом и качественное теплое питание.',
+      air: 'Проветривай пространство, устраивай информационные паузы и делись мыслями с близкими.',
+      water: 'Принимай ванны с солью, пей травяной чай и защищай эмоциональные границы от чужого негатива.'
+    };
+
+    return {
+      firePct, earthPct, airPct, waterPct,
+      dominant: elemTitles[dominant],
+      deficient: elemTitles[deficient],
+      compensation: compensationKeys[deficient]
+    };
+  }
+
+  function getPersonalDayTrafficLight(sun, moon, asc) {
+    const sunElem = ZODIAC_ELEMENTS[sun] || 'earth';
+    const moonElem = ZODIAC_ELEMENTS[moon] || 'earth';
+
+    const dos = {
+      fire: ['Проявить смелую инициативу в делах', 'Начать диалог о повышении чека/статуса'],
+      earth: ['Зафиксировать договоренности на бумаге', 'Навести порядок в расписании и счетах'],
+      air: ['Провести 2–3 важных созвона/встречи', 'Упаковать мысли в лаконичный пост/план'],
+      water: ['Довериться первому спокойному чутью', 'Выделить вечер для тишины и уюта']
+    };
+
+    const donts = {
+      fire: ['Спешить с выводами на эмоциях', 'Вступать в пустые споры за первенство'],
+      earth: ['Тянуть чужую ответственность из вины', 'Брать работу в ущерб ночному сну'],
+      air: ['Распыляться на 10 мелких задач сразу', 'Зависать в новостях после 20:00'],
+      water: ['Терпеть дискомфорт ради удобства других', 'Принимать решения в состоянии усталости']
+    };
+
+    const affirmations = {
+      fire: '«Моя сила раскрывается через спокойное достоинство и веру в свой масштаб.»',
+      earth: '«Я создаю прочный фундамент и позволяю изобилию приходить легко.»',
+      air: '«Мои мысли ясны, мои слова точны, я открыта вдохновляющим возможностям.»',
+      water: '«Я в безопасности. Моя интуиция безошибочно ведет меня к благу.»'
+    };
+
+    return {
+      dos: dos[sunElem] || dos['earth'],
+      donts: donts[moonElem] || donts['water'],
+      energyScore: 80 + (Math.abs(sun.length * 7 + moon.length * 3) % 18),
+      affirmation: affirmations[sunElem] || affirmations['earth']
+    };
+  }
+
+  function openShareStoryModal() {
+    haptic('success');
+    trackLunaEvent('share_story_opened');
+
+    const natal = getEffectiveNatalData();
+    if (!natal || !natal.date) {
+      openMissingDataModal();
+      return;
+    }
+
+    const name = natal.name || 'Гость';
+    const sun = natal.sun || 'Козерог';
+    const moon = natal.moon || 'Козерог';
+    const asc = natal.asc || 'Стрелец';
+    const elems = calculateNatalElements(sun, moon, asc);
+    const traffic = getPersonalDayTrafficLight(sun, moon, asc);
+
+    const html = `
+      <div style="padding: 4px 2px 20px;">
+        <div class="hero-natal-badge" style="margin-bottom: 8px;">
+          📲 STORIES CARD · 9:16
+        </div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: #FFF; margin-bottom: 4px;">
+          Карточка для Telegram & Соцсетей
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+          Поделись своей космической матрицей LUNA с друзьями:
+        </p>
+
+        <div class="story-card-wrap" id="storyCaptureCard">
+          <div style="font-size: 13px; letter-spacing: 5px; color: #E5C378; font-weight: 800; margin-bottom: 12px;">
+            ✦ L U N A · A S T R O ✦
+          </div>
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 700; color: #FFE8A3; line-height: 1.2; margin-bottom: 4px;">
+            ${escapeHtml(name)}
+          </div>
+          <div style="font-size: 12px; color: #CBD5E1; margin-bottom: 18px;">
+            Натальная триада & Код души
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 18px;">
+            <div style="background: rgba(255, 232, 163, 0.1); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 12px; padding: 8px 4px;">
+              <div style="font-size: 14px;">☀️</div>
+              <div style="font-size: 10px; color: var(--text-sub);">Солнце</div>
+              <div style="font-size: 12px; font-weight: 800; color: #FFE8A3;">${sun}</div>
+            </div>
+            <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.4); border-radius: 12px; padding: 8px 4px;">
+              <div style="font-size: 14px;">🌙</div>
+              <div style="font-size: 10px; color: var(--text-sub);">Луна</div>
+              <div style="font-size: 12px; font-weight: 800; color: #DDD6FE;">${moon}</div>
+            </div>
+            <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; padding: 8px 4px;">
+              <div style="font-size: 14px;">↑</div>
+              <div style="font-size: 10px; color: var(--text-sub);">Асцендент</div>
+              <div style="font-size: 12px; font-weight: 800; color: #93C5FD;">${asc}</div>
+            </div>
+          </div>
+
+          <div style="background: rgba(0, 0, 0, 0.3); border-radius: 14px; padding: 12px; margin-bottom: 16px; font-size: 12px; color: #E2DFEC; line-height: 1.5; font-style: italic;">
+            ${traffic.affirmation}
+          </div>
+
+          <div style="font-size: 11px; color: #94A3B8; letter-spacing: 1px;">
+            Рассчитай свою карту в Telegram: @Luna_Astrologer_Bot
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button class="btn-gold" style="padding: 12px; font-size: 13.5px;" onclick="shareStoryToTelegram()">
+            📤 Поделиться в Telegram Stories / Чат
+          </button>
+          <button class="btn-outline" style="padding: 10px; font-size: 12px;" onclick="copyStoryText('${escapeHtml(name)}', '${sun}', '${moon}', '${asc}')">
+            📋 Скопировать текст для блога
+          </button>
+          <button class="btn-outline" style="padding: 10px; font-size: 12px; opacity: 0.8;" onclick="closeModal()">
+            Закрыть
+          </button>
+        </div>
+      </div>
+    `;
+    openModal(html);
+  }
+
+  function shareStoryToTelegram() {
+    haptic('success');
+    const shareUrl = 'https://t.me/share/url?url=' + encodeURIComponent('https://t.me/Luna_Astrologer_Bot') + '&text=' + encodeURIComponent('🌙 Моя персональная натальная карта и код души в LUNA Astrologer ✨ Рассчитай свою бесплатно!');
+    if (window.Telegram && Telegram.WebApp && typeof Telegram.WebApp.openTelegramLink === 'function') {
+      Telegram.WebApp.openTelegramLink(shareUrl);
+    } else {
+      window.open(shareUrl, '_blank');
+    }
+  }
+
+  function copyStoryText(name, sun, moon, asc) {
+    haptic('success');
+    const text = `🌙 Моя натальная карта в LUNA:\n👤 ${name}\n☀️ Солнце: ${sun}\n🌙 Луна: ${moon}\n↑ Асцендент: ${asc}\n\nУзнай свой код души в боте: @Luna_Astrologer_Bot ✨`;
+    fallbackCopyText(text);
+  }
+
   function updateNatalUI() {
     const onb = document.getElementById('onboardingScreen');
     const dash = document.getElementById('activeDashboard');
@@ -4232,6 +4537,19 @@
     if (pUid) pUid.textContent = currentUserId;
 
     // Deep personal daily advice tailored to user's Sun, Moon and Ascendant
+    
+    // Update Daily Traffic Light & Energy Meter
+    const traffic = getPersonalDayTrafficLight(userNatalData.sun, userNatalData.moon, userNatalData.asc);
+    const eBadge = document.getElementById('dailyEnergyBadge');
+    const tDos = document.getElementById('trafficDosList');
+    const tDonts = document.getElementById('trafficDontsList');
+    const tAff = document.getElementById('dailyAffirmationText');
+
+    if (eBadge) eBadge.textContent = `🔋 Тонус ${traffic.energyScore}%`;
+    if (tDos) tDos.innerHTML = traffic.dos.map(d => `• ${escapeHtml(d)}`).join('<br>');
+    if (tDonts) tDonts.innerHTML = traffic.donts.map(d => `• ${escapeHtml(d)}`).join('<br>');
+    if (tAff) tAff.textContent = traffic.affirmation;
+
     const advText = document.getElementById('dailyAdviceText');
     if (advText) {
       advText.textContent = getPersonalDailyAdvice(userNatalData.sun, userNatalData.moon, userNatalData.asc, userNatalData.date);
