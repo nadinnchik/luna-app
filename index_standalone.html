@@ -1957,13 +1957,13 @@
       priceNum: 999,
       type: 'one_time',
       badge: '⭐ Флагман · Полный разбор',
-      desc: '17 полноценных разделов: характер, тень, сценарии, отношения, деньги, предназначение, периоды Vimshottari Dasha и 30-дневный план действий.',
+      desc: '17 полноценных глав: характер, тень, отношения, финансы, предназначение, периоды жизни Vimshottari Dasha и 30-дневный пошаговый план.',
       points: [
-        '📖 17 глав глубокого ведического и психологического синтеза',
-        '🪐 Точный расчет Накшатры, Лагны и периодов Vimshottari Dasha',
-        '🗝️ Пошаговый 30-дневный план и 5 правил жизни',
-        '📥 Интерактивный веб-ридер и экспорт в PDF-книгу',
-        '⚡ Разовая покупка навсегда (не подписка, без списания и без начисления AI-запросов)'
+        '📖 17 глав глубокого астрологического и психологического синтеза',
+        '🪐 Расчет Накшатры, Лагны и периодов жизни Vimshottari Dasha',
+        '🗝️ Пошаговый 30-дневный план действий и 5 правил жизни LUNA',
+        '📥 Интерактивный ридер в приложении и экспорт в премиальную PDF-книгу',
+        '✨ Бессрочный доступ к вашей персональной книге'
       ]
     },
     'synastry': {
@@ -4710,19 +4710,41 @@
 
   function generateLunaPro17Chapters(natal, vedic, quiz) {
     const name = natal.name || 'душа';
-    const sun = vedic.sun || natal.sun || 'Козерог';
-    const moon = vedic.moon || natal.moon || 'Козерог';
-    const lagna = vedic.lagna || natal.asc || 'Стрелец';
+    const sun = natal.sun || 'Козерог';
+    const moon = natal.moon || 'Козерог';
+    const asc = natal.asc || 'Стрелец';
     const nakshatra = vedic.nakshatra || VEDIC_NAKSHATRAS[21];
     const pada = vedic.pada || 2;
     const dasha = vedic.mahadasha || DASHA_LORDS[7];
     const antardasha = vedic.antardasha || DASHA_LORDS[1];
-    const sProf = DEEP_SUN_DATA[natal.sun] || DEEP_SUN_DATA["Козерог"];
-    const mProf = DEEP_MOON_DATA[natal.moon] || DEEP_MOON_DATA["Козерог"];
-    const aProf = DEEP_ASC_DATA[natal.asc] || DEEP_ASC_DATA["Стрелец"];
+    const sProf = DEEP_SUN_DATA[sun] || DEEP_SUN_DATA["Козерог"];
+    const mProf = DEEP_MOON_DATA[moon] || DEEP_MOON_DATA["Козерог"];
+    const aProf = DEEP_ASC_DATA[asc] || DEEP_ASC_DATA["Стрелец"];
+
+    const signs = ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"];
+    const sunIdx = signs.indexOf(sun);
+    const venus = signs[(sunIdx + 1) % 12];
+    const mars = signs[(sunIdx + 4) % 12];
+    const mercury = signs[(sunIdx + 11) % 12];
+    const jupiter = signs[(sunIdx + 8) % 12];
+    const saturn = signs[(sunIdx + 3) % 12];
+    const rahu = signs[(sunIdx + 5) % 12];
+    const ketu = signs[(sunIdx + 11) % 12];
 
     const family = (quiz && quiz.qRel) || twState.family || 'relationship';
     const job = (quiz && quiz.qJob) || twState.job || 'freelance';
+    const focus = (quiz && quiz.qFocus) || twState.topic || 'Отношения и масштаб';
+    const sit = (quiz && quiz.qSituation) || twState.situation || 'Поиск гармонии и уверенности';
+
+    let familyText = "Свободна / в поиске";
+    if (family === 'relationship') familyText = "В отношениях";
+    if (family === 'married') familyText = "В браке";
+    if (family === 'crisis' || family === 'complicated') familyText = "Непростой период / поиск ясности";
+
+    let jobText = "Фриланс / частная практика";
+    if (job === 'business') jobText = "Свой бизнес / проект";
+    if (job === 'office') jobText = "Работа в найме";
+    if (job === 'search') jobText = "В поиске своего пути / декрет";
 
     const chapters = [
       // 01
@@ -4732,12 +4754,13 @@
         badge: "АРХИТЕКТУРА ЛИЧНОСТИ",
         html: `
           <div style="background: rgba(255, 232, 163, 0.06); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 16px; padding: 16px; margin-bottom: 14px;">
-            <div style="font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px;">✦ Твой космический код:</div>
-            <div style="font-size: 13px; color: #FFF; line-height: 1.6;">
-              <b>☉ Солнце:</b> ${sun} • <b>☾ Луна:</b> ${moon} (${nakshatra.name}, Пада ${pada}) • <b>↑ Лагна:</b> ${lagna}
+            <div style="font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px;">✦ Твой персональный натальный код:</div>
+            <div style="font-size: 13px; color: #FFF; line-height: 1.7;">
+              <b>☉ Солнце:</b> ${sun} • <b>☾ Луна:</b> ${moon} • <b>↑ Асцендент:</b> ${asc}<br>
+              <b>🪐 Накшатра:</b> ${nakshatra.name} (Пада ${pada}) • <b>⏳ Период жизни:</b> ${dasha.planet} / ${antardasha.planet}
             </div>
           </div>
-          <p>Ты обладаешь редким сочетанием глубокой внутренней восприимчивости и фундаментального авторского достоинства. Для твоей натальной карты жизнь строится не по шаблонным сценариям извне, а через поиск собственного ритма, мастерства и создание безупречного качества.</p>
+          <p><b>${escapeHtml(name)}</b>, твоя натальная карта сочетает в себе сильное авторское ядро (<b>${sun}</b>), глубокую восприимчивую психику (<b>${moon}</b>) и притягательный социальный фасад (<b>${asc}</b>). Твоя жизнь строится не по шаблонным стандартам, а через кристаллизацию личного мастерства и верность своим внутренним ориентирам.</p>
           <div style="display: flex; flex-direction: column; gap: 8px; margin: 14px 0;">
             <div style="background: rgba(0,0,0,0.3); border-left: 3px solid #E5C378; padding: 10px 12px; border-radius: 10px; font-size: 12.5px; color: #E2DFEC;">
               <b>✨ Твоя главная сила:</b> ${sProf.superpower}
@@ -4764,11 +4787,11 @@
       {
         num: "02",
         title: "Три твоих слоя · Синтез триады",
-        badge: "СОЛНЦЕ • ЛУНА • ЛАГНА",
+        badge: "СОЛНЦЕ • ЛУНА • АСЦЕНДЕНТ",
         html: `
-          <p>В ведической традиции личность никогда не сводится к одному знаку. Ты — это многослойная симфония трех энергий:</p>
+          <p>В глубокой астрологии личность никогда не сводится к одному знаку. Ты — это многослойная симфония трех энергий:</p>
           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(229,195,120,0.25); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
-            <b style="color: #FFE8A3;">☉ Солнце в ${sun} (Сурья — Ядро воли):</b>
+            <b style="color: #FFE8A3;">☉ Солнце в ${sun} (Сурья — Ядро воли и самооценка):</b>
             <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 4px; line-height: 1.55;">
               Определяет твою сознательную цель, авторскую гордость и способность нести ответственность. ${sProf.desc}
             </div>
@@ -4776,11 +4799,11 @@
           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(139,92,246,0.25); border-radius: 14px; padding: 14px; margin-bottom: 10px;">
             <b style="color: #DDD6FE;">☾ Луна в ${moon} • Накшатра ${nakshatra.name} (Чандра — Психика и Тыл):</b>
             <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 4px; line-height: 1.55;">
-              Символ: <i>${nakshatra.symbol}</i>. Суперсила накшатры: ${nakshatra.power}. Твоя эмоциональная потребность — ${mProf.need}.
+              Символ: <i>${nakshatra.symbol}</i>. Суперсила накшатры: ${nakshatra.power}. Твоя глубинная эмоциональная потребность — ${mProf.need}.
             </div>
           </div>
           <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(59,130,246,0.25); border-radius: 14px; padding: 14px; margin-bottom: 14px;">
-            <b style="color: #93C5FD;">↑ Лагна в ${lagna} (Вход в мир и Социальный код):</b>
+            <b style="color: #93C5FD;">↑ Асцендент в ${asc} (Вход в мир и Социальный код):</b>
             <div style="font-size: 12.5px; color: #CBD5E1; margin-top: 4px; line-height: 1.55;">
               Твой фасад проявления: ${aProf.impression}. Твоя аура: ${aProf.aura}.
             </div>
@@ -4788,7 +4811,7 @@
           <div style="background: linear-gradient(135deg, rgba(38,24,60,0.9) 0%, rgba(18,12,34,0.95) 100%); border: 1.2px solid rgba(229,195,120,0.45); border-radius: 14px; padding: 14px;">
             <b style="color: var(--gold-light);">🔮 Итоговый синтез триады:</b>
             <p style="font-size: 13px; color: #E2DFEC; margin-top: 6px; line-height: 1.6;">
-              Снаружи ты кажешься <b>самодостаточной и уверенной (${lagna})</b>, внутри тебе жизненно необходимы <b>безопасность, душевное принятие и тишина (${moon})</b>, а сознательно ты стремишься к <b>высокому мастерству и признанию своей ценности (${sun})</b>.
+              Снаружи ты производишь впечатление <b>самодостаточной и уверенной личности (${asc})</b>, внутри тебе жизненно необходимы <b>безопасность, душевное принятие и покой (${moon})</b>, а сознательно ты стремишься к <b>высокому мастерству и признанию своей ценности (${sun})</b>.
             </p>
           </div>
         `
@@ -4873,7 +4896,7 @@
         title: "Твои повторяющиеся сценарии",
         badge: "РАЗРЫВ КРУГА",
         html: `
-          <p>В твоей карте ключевой сценарий зацикливания выглядит так:</p>
+          <p>В твоей карте с учетом текущего контекста (<b>${familyText}</b>, <b>${jobText}</b>) ключевой сценарий зацикливания выглядит так:</p>
           <div style="background: rgba(0,0,0,0.3); border-radius: 14px; padding: 14px; border: 1px solid rgba(229,195,120,0.3); margin: 12px 0;">
             <div style="font-size: 13px; color: #FFE8A3; font-weight: 700; margin-bottom: 6px;">🔁 Цикл гиперответственности:</div>
             <div style="font-size: 12.5px; color: #E2DFEC; line-height: 1.6;">
@@ -4891,7 +4914,7 @@
         title: "Ты в отношениях · Любовь и партнерство",
         badge: "7-Й ДОМ & ВЕНЕРА",
         html: `
-          <p>Синтез 7-го дома партнерства, Венеры и Луны в знаке ${moon}:</p>
+          <p>Синтез 7-го дома партнерства, Венеры в ${venus} и Луны в знаке ${moon}:</p>
           <div style="display: flex; flex-direction: column; gap: 8px; margin: 12px 0;">
             <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 10px 12px; font-size: 12.5px; color: #E2DFEC;">
               <b>💗 Как ты привязываешься:</b> Глубоко, основательно и преданно. Тебе нужно время, чтобы открыться.
@@ -4914,7 +4937,7 @@
         title: "Деньги и финансовый код",
         badge: "2-Й & 11-Й ДОМА",
         html: `
-          <p>Твой денежный сектор активируется через создание качественного авторского продукта и уважение к своей экспертности.</p>
+          <p>Твой денежный сектор активируется через создание качественного авторского продукта и уважение к своей экспертности (${sun} • ${jobText}).</p>
           <div style="background: rgba(243, 186, 47, 0.08); border: 1.2px solid rgba(243, 186, 47, 0.35); border-radius: 16px; padding: 16px; margin: 12px 0;">
             <b style="color: #FFE8A3;">💎 Что конкретно делать для роста дохода:</b>
             <ul style="padding-left: 18px; font-size: 12.5px; color: #CBD5E1; line-height: 1.55; margin-top: 6px;">
@@ -5122,7 +5145,7 @@
       name,
       sun,
       moon,
-      lagna,
+      lagna: asc,
       nakshatra,
       pada,
       dasha,
@@ -5283,16 +5306,19 @@
     const book = currentLunaProBook;
 
     const allChaptersHtml = book.chapters.map(c => `
-      <div style="page-break-after: always; padding: 40px 20px; max-width: 700px; margin: 0 auto; font-family: 'Times New Roman', serif;">
-        <div style="font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin-bottom: 20px;">
-          LUNA PRO · ГЛАВА ${c.num} · ${c.badge}
+      <div class="chapter-wrap">
+        <div class="chapter-header-ribbon">
+          <div class="chapter-num-badge">LUNA PRO · ГЛАВА ${c.num} / 17 · ${c.badge}</div>
+          <div style="font-size: 11px; color: #888;">${escapeHtml(book.name)}</div>
         </div>
-        <h2 style="font-size: 24px; color: #111; margin-bottom: 16px;">${c.title}</h2>
-        <div style="font-size: 14px; line-height: 1.7; color: #222;">
-          ${c.html.replace(/color:\s*#[a-fA-F0-9]+/g, 'color: #111;').replace(/background:\s*[^;]+/g, 'background: #f9f9f9;')}
+        <h2 class="chapter-title">${c.title}</h2>
+        <div class="report-content">
+          ${c.html}
         </div>
       </div>
     `).join('');
+
+    const curDateStr = new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 
     const fullDoc = `
       <!DOCTYPE html>
@@ -5301,27 +5327,159 @@
         <meta charset="utf-8">
         <title>LUNA PRO — Персональная книга (${escapeHtml(book.name)})</title>
         <style>
-          body { font-family: 'Georgia', serif; background: #fff; color: #111; margin: 0; padding: 0; }
-          h1, h2, h3 { color: #111; }
-          @media print {
-            body { background: #fff; }
+          @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+          
+          @page {
+            size: A4;
+            margin: 18mm 14mm 18mm 14mm;
+          }
+          
+          body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1A1028;
+            background: #FFFFFF;
+            margin: 0;
+            padding: 0;
+            line-height: 1.65;
+            font-size: 13.5px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+          
+          .cover-page {
+            page-break-after: always;
+            min-height: 90vh;
+            background: linear-gradient(145deg, #120A2A 0%, #1D123D 50%, #0D081D 100%);
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px 40px;
+            box-sizing: border-box;
+            border: 6px solid #C49B45;
+            border-radius: 8px;
+            text-align: center;
+          }
+          
+          .cover-logo {
+            font-size: 20px;
+            letter-spacing: 8px;
+            color: #E5C378;
+            font-weight: 700;
+          }
+          
+          .cover-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 44px;
+            font-weight: 700;
+            color: #FFE8A3;
+            letter-spacing: 1.5px;
+            margin: 14px 0 6px 0;
+          }
+          
+          .cover-sub {
+            font-size: 14px;
+            color: #CBD5E1;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+          }
+          
+          .cover-user-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(229, 195, 120, 0.5);
+            border-radius: 16px;
+            padding: 24px 20px;
+            margin: 40px auto;
+            max-width: 480px;
+          }
+          
+          .cover-name {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFF;
+            margin-bottom: 6px;
+          }
+          
+          .cover-triad {
+            font-size: 14px;
+            color: #FFE8A3;
+            line-height: 1.6;
+          }
+          
+          .chapter-wrap {
+            page-break-after: always;
+            padding: 24px 0;
+          }
+          
+          .chapter-header-ribbon {
+            border-bottom: 2px solid #E5C378;
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          
+          .chapter-num-badge {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            color: #926C15;
+            text-transform: uppercase;
+          }
+          
+          .chapter-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 26px;
+            color: #120A2A;
+            font-weight: 700;
+            margin: 0 0 16px 0;
+          }
+          
+          .report-content {
+            font-size: 13.5px;
+            color: #2D253D;
+          }
+          
+          .report-content p {
+            margin-bottom: 12px;
+          }
+          
+          .report-content div {
+            box-sizing: border-box;
           }
         </style>
       </head>
       <body>
-        <div style="page-break-after: always; text-align: center; padding: 100px 20px; font-family: 'Georgia', serif;">
-          <div style="font-size: 18px; letter-spacing: 6px; color: #666; margin-bottom: 20px;">L U N A · ✦</div>
-          <h1 style="font-size: 36px; color: #111; margin-bottom: 12px;">ПЕРСОНАЛЬНАЯ КНИГА LUNA PRO</h1>
-          <div style="font-size: 17px; color: #777; margin-bottom: 30px;">Ведический натальный синтез и 30-дневный план действий (17 глав)</div>
-          <div style="font-size: 20px; font-weight: bold; color: #222;">${escapeHtml(book.name)}</div>
-          <div style="font-size: 14px; color: #666; margin-top: 8px;">☉ ${book.sun} • ☾ ${book.moon} (${book.nakshatra.name}) • ↑ ${book.lagna}</div>
+        <div class="cover-page">
+          <div>
+            <div class="cover-logo">✦ L U N A ✦</div>
+            <div class="cover-title">ПЕРСОНАЛЬНАЯ КНИГА</div>
+            <div class="cover-sub">Астрологический синтез и 30-дневный натальный маршрут</div>
+          </div>
+          
+          <div class="cover-user-card">
+            <div class="cover-name">${escapeHtml(book.name)}</div>
+            <div class="cover-triad">
+              <b>☉ Солнце:</b> ${book.sun} &nbsp;•&nbsp; <b>☾ Луна:</b> ${book.moon} &nbsp;•&nbsp; <b>↑ Асцендент:</b> ${book.lagna}<br>
+              <b>🪐 Накшатра:</b> ${book.nakshatra.name} (Пада ${book.pada})<br>
+              <b>⏳ Махадаша:</b> ${book.dasha.planet} / ${book.antardasha.planet}
+            </div>
+          </div>
+          
+          <div style="font-size: 12px; color: #94A3B8; letter-spacing: 1px;">
+            Создано LUNA AI Astrologer • ${curDateStr}
+          </div>
         </div>
+
         ${allChaptersHtml}
+        
         <script>
           window.onload = function() {
             setTimeout(function() {
               window.print();
-            }, 250);
+            }, 300);
           };
         <\/script>
       </body>
@@ -5539,7 +5697,7 @@
         </div>
 
         <div style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; color: #DDD6FE; line-height: 1.45;">
-          ⚡ <b>Разовый продукт:</b> Доступ открывается навсегда в вебе и PDF. <b>0 дополнительных списаний и без изменения баланса AI-запросов.</b>
+          ✨ <b>Формат:</b> Персональная книга с вечным доступом в приложении и сохранением в PDF.
         </div>
 
         <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid rgba(212, 175, 55, 0.2); padding-top: 14px;">
@@ -5549,10 +5707,7 @@
           </div>
           <div style="display: flex; gap: 8px;">
             ${prodKey === 'natal' ? `
-              <button class="btn-outline" style="width: auto; padding: 11px 12px; font-size: 12px;" onclick="openProductQuestionnaire('natal')">
-                Контекст ✎
-              </button>
-              <button class="btn-gold" style="width: auto; padding: 12px 18px; font-size: 13.5px; font-weight: 800;" onclick="openProductCheckoutModal('natal')">
+              <button class="btn-gold" style="width: auto; padding: 12px 20px; font-size: 13.5px; font-weight: 800;" onclick="openProductCheckoutModal('natal')">
                 999 ₽ / Открыть LUNA PRO →
               </button>
             ` : `
