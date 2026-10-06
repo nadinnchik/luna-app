@@ -3112,29 +3112,71 @@
     return "Козерог";
   }
 
+  function parseDateStrict(dateStr) {
+    if (!dateStr) return { day: 10, month: 1, year: 1995 };
+    const parts = String(dateStr).split(/[^\d]+/).map(p => parseInt(p, 10)).filter(n => !isNaN(n));
+    if (parts.length >= 3) {
+      if (parts[0] > 1000) {
+        return { year: parts[0], month: parts[1], day: parts[2] };
+      } else {
+        return { day: parts[0], month: parts[1], year: parts[2] };
+      }
+    }
+    return { day: 10, month: 1, year: 1995 };
+  }
+
+  function calculateAstronomicalMoon(year, month, day, hour = 12, min = 0) {
+    let y = year;
+    let m = month;
+    if (m <= 2) {
+      y -= 1;
+      m += 12;
+    }
+    const A = Math.floor(y / 100);
+    const B = 2 - A + Math.floor(A / 4);
+    const dayFraction = day + (hour + min / 60) / 24.0;
+    const JD = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + dayFraction + B - 1524.5;
+    const d = JD - 2451545.0;
+    
+    const L0 = 218.3164477 + 13.17639648 * d;
+    const M = 134.9633964 + 13.06499295 * d;
+    const M_sun = 357.5291092 + 0.98560028 * d;
+    const D = 297.8501921 + 12.19074912 * d;
+    
+    const toRad = Math.PI / 180;
+    let lambda = L0 
+      + 6.289 * Math.sin(M * toRad) 
+      + 1.274 * Math.sin((2 * D - M) * toRad)
+      + 0.658 * Math.sin(2 * D * toRad)
+      - 0.186 * Math.sin(M_sun * toRad)
+      - 0.114 * Math.sin((2 * D - 2 * M) * toRad);
+      
+    lambda = ((lambda % 360) + 360) % 360;
+    const signs = ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"];
+    const signIdx = Math.floor(lambda / 30) % 12;
+    return { sign: signs[signIdx], longitude: lambda };
+  }
+
   function getCalculatedNatal(dateStr, timeStr, cityObj) {
-    const d = new Date(dateStr || '1995-01-10');
-    const day = d.getDate() || 10;
-    const month = (d.getMonth() + 1) || 1;
-    const year = d.getFullYear() || 1995;
+    const pd = parseDateStrict(dateStr);
+    const day = pd.day;
+    const month = pd.month;
+    const year = pd.year;
     const sun = getZodiacSign(day, month);
 
-    const signs = ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"];
-    let sunIdx = signs.indexOf(sun);
-
-    // Moon calculation based on day of month + year cycle
-    const daySeed = (year * 365 + month * 31 + day) % 360;
-    const moonIdx = Math.floor((daySeed / 360) * 12) % 12;
-    const moon = signs[moonIdx];
-
-    // Local solar time for Ascendant (Lagna)
     let hour = 12;
     let min = 0;
     if (timeStr) {
-      const parts = timeStr.split(':');
+      const parts = String(timeStr).split(':');
       hour = parseInt(parts[0], 10) || 12;
       min = parseInt(parts[1], 10) || 0;
     }
+
+    const moonRes = calculateAstronomicalMoon(year, month, day, hour, min);
+    const moon = moonRes.sign;
+
+    const signs = ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"];
+    const sunIdx = signs.indexOf(sun);
 
     // Longitude adjustment if city coordinates available
     let solarHour = hour + (min / 60);
@@ -3143,7 +3185,6 @@
       solarHour += solarOffsetHours;
     }
 
-    // Sun rises around 6:00 (Ascendant = Sun sign at sunrise)
     let ascIdx = (sunIdx + Math.floor((solarHour - 6 + 24) / 2)) % 12;
     if (ascIdx < 0) ascIdx = (ascIdx + 12) % 12;
     const asc = signs[ascIdx];
@@ -4586,37 +4627,38 @@
   ];
 
   function calculateVedicJyotishData(dateStr, timeStr) {
-    const d = new Date(dateStr || '1995-01-10');
-    const day = d.getDate() || 10;
-    const month = (d.getMonth() + 1) || 1;
-    const year = d.getFullYear() || 1995;
+    const pd = parseDateStrict(dateStr);
+    const day = pd.day;
+    const month = pd.month;
+    const year = pd.year;
 
     let hour = 12;
     let min = 0;
     if (timeStr) {
-      const parts = timeStr.split(':');
+      const parts = String(timeStr).split(':');
       hour = parseInt(parts[0], 10) || 12;
       min = parseInt(parts[1], 10) || 0;
     }
 
-    // Vedic Sidereal Ayanamsa approximation (~23.8 deg offset)
     const signs = ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"];
     
-    // Sun in Vedic
+    // Vedic Sun (Sidereal Sun)
     let sunBaseIdx = (month - 1);
     if (day < 14) sunBaseIdx = (sunBaseIdx - 1 + 12) % 12;
     const vedicSun = signs[sunBaseIdx];
 
-    // Moon & Nakshatra
-    const daySeed = (year * 365 + month * 31 + day + hour * 3) % 360;
-    const nakshatraIdx = Math.floor((daySeed / 360) * 27) % 27;
-    const nakshatra = VEDIC_NAKSHATRAS[nakshatraIdx];
-    const pada = (Math.floor(daySeed % 4) + 1);
+    // Astronomical Moon & Sidereal Nakshatra
+    const moonAstr = calculateAstronomicalMoon(year, month, day, hour, min);
+    const siderealMoonLong = ((moonAstr.longitude - 23.85) + 360) % 360;
+    
+    const nakshatraIdx = Math.floor(siderealMoonLong / (360 / 27)) % 27;
+    const nakshatra = VEDIC_NAKSHATRAS[nakshatraIdx] || VEDIC_NAKSHATRAS[0];
+    const pada = Math.floor((siderealMoonLong % (360 / 27)) / (360 / 108)) + 1;
 
-    const moonSignIdx = Math.floor(nakshatraIdx / 2.25) % 12;
-    const vedicMoon = signs[moonSignIdx];
+    const vedicMoonIdx = Math.floor(siderealMoonLong / 30) % 12;
+    const vedicMoon = signs[vedicMoonIdx];
 
-    // Lagna (Ascendant in Jyotish)
+    // Lagna (Vedic Ascendant)
     const lagnaIdx = (sunBaseIdx + Math.floor((hour * 60 + min) / 120)) % 12;
     const vedicLagna = signs[lagnaIdx];
 
@@ -4656,7 +4698,7 @@
       moon: vedicMoon,
       lagna: vedicLagna,
       nakshatra: nakshatra,
-      pada: pada,
+      pada: Math.min(4, Math.max(1, pada)),
       mahadasha: curDasha,
       antardasha: curAntardasha,
       age: age

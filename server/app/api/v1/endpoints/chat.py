@@ -37,11 +37,12 @@ except Exception:
     get_current_user_optional = None
 
 router = APIRouter()
+import math
 logger = logging.getLogger(__name__)
 
 
 def compute_zodiac_signs(birth_date: Optional[str], birth_time: Optional[str] = None):
-    """Calculates Sun, Moon, and Ascendant signs deterministically if missing."""
+    """Calculates Sun, Moon, and Ascendant signs deterministically using astronomical formulas."""
     if not birth_date:
         return None, None, None
     try:
@@ -69,15 +70,45 @@ def compute_zodiac_signs(birth_date: Optional[str], birth_time: Optional[str] = 
 
         signs = ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"]
         sun_idx = signs.index(sun)
-        day_seed = (year * 365 + month * 31 + day) % 360
-        moon_idx = int((day_seed / 360.0) * 12) % 12
-        moon = signs[moon_idx]
 
         hour = 12
+        min_val = 0
         if birth_time:
             t_parts = [int(p) for p in re.split(r'[^\d]+', birth_time) if p]
             if t_parts:
                 hour = t_parts[0]
+                if len(t_parts) > 1:
+                    min_val = t_parts[1]
+
+        # Ephemeris Astronomical Moon
+        y = year
+        m = month
+        if m <= 2:
+            y -= 1
+            m += 12
+        A = math.floor(y / 100)
+        B = 2 - A + math.floor(A / 4)
+        dayFraction = day + (hour + min_val / 60.0) / 24.0
+        JD = math.floor(365.25 * (y + 4716)) + math.floor(30.6001 * (m + 1)) + dayFraction + B - 1524.5
+        d = JD - 2451545.0
+        
+        L0 = 218.3164477 + 13.17639648 * d
+        M_moon = 134.9633964 + 13.06499295 * d
+        M_sun = 357.5291092 + 0.98560028 * d
+        D = 297.8501921 + 12.19074912 * d
+        
+        toRad = math.pi / 180.0
+        lambda_deg = (L0 
+          + 6.289 * math.sin(M_moon * toRad) 
+          + 1.274 * math.sin((2 * D - M_moon) * toRad)
+          + 0.658 * math.sin(2 * D * toRad)
+          - 0.186 * math.sin(M_sun * toRad)
+          - 0.114 * math.sin((2 * D - 2 * M_moon) * toRad))
+          
+        lambda_deg = ((lambda_deg % 360) + 360) % 360
+        moon_idx = int(math.floor(lambda_deg / 30.0)) % 12
+        moon = signs[moon_idx]
+
         asc_idx = (sun_idx + int((hour - 6 + 24) / 2)) % 12
         asc = signs[asc_idx]
         return sun, moon, asc
