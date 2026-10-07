@@ -17,7 +17,8 @@
       --gold-light: #FFE8A3;
       --gold-dark: #C49B45;
       --gold-gradient: linear-gradient(135deg, #FFF5D0 0%, #E5C378 45%, #C49B45 100%);
-      --gold-btn: linear-gradient(135deg, #FFE8A3 0%, #E5C378 45%, #C49B45 100%);
+      --gold-btn: linear-gradient(135deg, #FFF0B8 0%, #E5C378 35%, #C49B45 75%, #9E7928 100%);
+      --gold-btn-shadow: 0 4px 20px rgba(229, 195, 120, 0.35);
       --text: #F5F3FB;
       --text-sub: #D1CCDE;
       --text-muted: #9E96B5;
@@ -33,12 +34,12 @@
     }
 
     body {
-      background-color: #0B0814;
+      background-color: #090614;
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(157, 103, 255, 0.24) 0%, transparent 55%),
-        radial-gradient(circle at 100% 30%, rgba(229, 195, 120, 0.16) 0%, transparent 50%),
-        radial-gradient(circle at 0% 65%, rgba(94, 38, 180, 0.2) 0%, transparent 55%),
-        radial-gradient(circle at 50% 100%, rgba(139, 92, 246, 0.18) 0%, transparent 60%);
+        radial-gradient(circle at 50% -15%, rgba(229, 195, 120, 0.09) 0%, transparent 60%),
+        radial-gradient(circle at 100% 35%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 0% 70%, rgba(22, 14, 44, 0.95) 0%, transparent 55%),
+        radial-gradient(circle at 50% 100%, rgba(18, 12, 36, 0.98) 0%, transparent 60%);
       background-attachment: fixed;
       color: var(--text);
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -1418,7 +1419,8 @@
 
     <!-- TOP HEADER & AVATAR -->
     <div class="top-bar">
-      <div class="brand-title">LUNA ✦</div>
+      <div class="brand-title" id="lunaBrandLogo" onclick="handleLogoMultiTap()" style="cursor: pointer;" title="LUNA">LUNA ✦</div>
+      <div id="testerModeBadge" style="display: none; font-size: 10px; background: rgba(16, 185, 129, 0.2); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.4); padding: 2px 8px; border-radius: 8px; font-weight: 800; margin-top: 4px;">⚡ ТЕСТОВЫЙ РЕЖИМ АКТИВЕН</div>
       <div class="brand-subtitle">ПЕРСОНАЛЬНЫЙ AI-АСТРОЛОГ • НЕ ПРО ЗНАК, ПРО ТЕБЯ</div>
       <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px;">
         <div style="display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: var(--gold); background: rgba(212, 175, 55, 0.12); border: 1px solid rgba(212, 175, 55, 0.3); padding: 2px 8px; border-radius: 12px;">
@@ -1715,9 +1717,9 @@
       </div>
     </div>
 
-    <div id="catalogList">
+        <div id="catalogList">
 
-      <!-- 1. FREE NATAL MATRIX (PROMINENT) -->
+      <!-- 1. FREE NATAL MATRIX (0 ₽) -->
       <div class="catalog-card" style="border: 1.5px solid rgba(229, 195, 120, 0.6); background: linear-gradient(135deg, rgba(38, 26, 68, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);" onclick="openMiniNatalModal()">
         <div>
           <span class="cat-badge" style="background: rgba(16, 185, 129, 0.25); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.4);">✨ 100% Бесплатно · Базовый разбор</span>
@@ -1727,7 +1729,7 @@
             <div class="cat-point">☀️ Глава 1: Солнце и истинное «Я»</div>
             <div class="cat-point">🌙 Глава 2: Луна, зона комфорта и эмоции</div>
             <div class="cat-point">↑ Глава 3: Асцендент и социальный образ</div>
-            <div class="cat-point">🔮 Глава 4: Синтез триады и 3 ключа силы</div>
+            <div class="cat-point">🔮 Глава 4: Синтез триады и баланс 4 стихий</div>
           </div>
         </div>
         <div class="cat-footer">
@@ -1739,12 +1741,12 @@
         </div>
       </div>
 
-      <!-- 2. TRIPWIRE PRODUCT (EXPRESS SCENARIO 99 ₽) -->
-      <div class="catalog-card" id="catTripwireCard" style="border: 1.5px solid rgba(243, 186, 47, 0.7); background: linear-gradient(135deg, rgba(46, 26, 71, 0.95) 0%, rgba(20, 14, 38, 0.98) 100%);" onclick="openTripwireModal()">
+      <!-- 2. TRIPWIRE PRODUCT (EXPRESS 99 ₽) -->
+      <div class="catalog-card" id="catTripwireCard" style="border: 1.5px solid rgba(243, 186, 47, 0.7); background: linear-gradient(135deg, rgba(46, 26, 71, 0.95) 0%, rgba(20, 14, 38, 0.98) 100%);" onclick="handleProductClick('tripwire')">
         <div>
           <span class="cat-badge" style="background: var(--gold-btn); color: #120C22; font-weight: 800;">⭐ Хит · Экспресс-аудит</span>
           <div class="cat-title">🎯 Разбор повторяющегося сценария</div>
-          <div class="cat-desc">Точечный интерактивный аудит: почему ситуация в отношениях, финансах или карьере повторяется по кругу, психологическая слепая зона и пошаговый алгоритм выхода.</div>
+          <div class="cat-desc">Точечный аудит: почему ситуация в отношениях, финансах или карьере повторяется по кругу, психологическая слепая зона и пошаговый алгоритм выхода.</div>
           <div class="cat-points">
             <div class="cat-point">🔍 Натальный корень паттерна по карте</div>
             <div class="cat-point">🏠 Учёт семейного статуса, детей и работы</div>
@@ -1757,16 +1759,16 @@
             <div style="font-size: 10px; color: #10B981; font-weight: 700; text-transform: uppercase;">Тестовая цена</div>
             <div class="cat-price" style="color: #FFE8A3;">99 ₽</div>
           </div>
-          <button class="cat-btn">Разобрать за 99 ₽ →</button>
+          <button class="cat-btn" id="btnCatTripwire">Разобрать за 99 ₽ →</button>
         </div>
       </div>
 
-      <!-- 3. FLAGSHIP PRODUCT (LUNA PRO BOOK 999 ₽) -->
-      <div class="catalog-card" id="catNatalProCard" style="border: 1.5px solid rgba(139, 92, 246, 0.6); background: linear-gradient(135deg, rgba(38, 22, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);" onclick="showProductModal('natal')">
+      <!-- 3. FLAGSHIP PRODUCT (LUNA PRO BOOK 37 CHAPTERS - 999 ₽ / 1449 ₽) -->
+      <div class="catalog-card" id="catNatalProCard" style="border: 1.5px solid rgba(139, 92, 246, 0.6); background: linear-gradient(135deg, rgba(38, 22, 60, 0.95) 0%, rgba(18, 12, 34, 0.98) 100%);" onclick="handleProductClick('natal')">
         <div>
           <span class="cat-badge" style="background: linear-gradient(135deg, #A855F7, #EC4899); color: #FFF; font-weight: 800;">⭐ Флагман · Полный разбор</span>
           <div class="cat-title">🪐 Персональная книга LUNA PRO</div>
-          <div class="cat-desc">37 полноценных разделов: характер, тень, сценарии, отношения, деньги, предназначение, периоды Vimshottari Dasha и 30-дневный план действий.</div>
+          <div class="cat-desc">37 полноценных глав: характер, тень, отношения, деньги, предназначение, периоды Vimshottari Dasha и 30-дневный план действий.</div>
           <div class="cat-points">
             <div class="cat-point">📖 37 глав глубокого ведического и психологического синтеза</div>
             <div class="cat-point">🪐 Расчет Накшатры, Лагны и периодов Vimshottari Dasha</div>
@@ -1776,16 +1778,80 @@
         </div>
         <div class="cat-footer">
           <div>
-            <div style="font-size: 10px; color: #10B981; font-weight: 700; text-transform: uppercase;">Стоимость</div>
+            <div style="font-size: 10px; color: #94A3B8; text-decoration: line-through;">1449 ₽</div>
             <div class="cat-price" style="color: #FFE8A3;">999 ₽</div>
           </div>
           <button class="cat-btn" id="btnCatLunaPro">999 ₽ / Открыть LUNA PRO →</button>
         </div>
       </div>
 
+      <!-- 4. SOLAR YEAR FORECAST PRO -->
+      <div class="catalog-card" id="catSolarCard" onclick="handleProductClick('solar')">
+        <div>
+          <span class="cat-badge">☀️ Прогноз на год</span>
+          <div class="cat-title">☀️ Соляр и Прогноз на 2025–2026 PRO</div>
+          <div class="cat-desc">Поквартальный натальный маршрут: ключевые даты, карьерные пики, финансовые окна и правила сохранения энергии.</div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-price">499 ₽</div>
+          <button class="cat-btn">Открыть прогноз →</button>
+        </div>
+      </div>
+
+      <!-- 5. SYNASTRY & RELATIONSHIPS PRO -->
+      <div class="catalog-card" id="catSynastryCard" onclick="handleProductClick('synastry')">
+        <div>
+          <span class="cat-badge">❤️ Любовь и Совместимость</span>
+          <div class="cat-title">❤️ Синастрия и Отношения PRO</div>
+          <div class="cat-desc">Глубокий анализ совместимости: язык чувств Венеры и Марса, зоны роста пары и 7 ключей к долгосрочному доверию.</div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-price">399 ₽</div>
+          <button class="cat-btn">Открыть разбор →</button>
+        </div>
+      </div>
+
+      <!-- 6. FINANCE & CAREER PRO -->
+      <div class="catalog-card" id="catFinanceCard" onclick="handleProductClick('finance')">
+        <div>
+          <span class="cat-badge">💰 Деньги и Масштаб</span>
+          <div class="cat-title">💰 Финансовый код и Карьера PRO</div>
+          <div class="cat-desc">Природные каналы дохода по 2-му и 8-му домам, снятие синдрома самозванца и стратегия роста чека.</div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-price">399 ₽</div>
+          <button class="cat-btn">Открыть разбор →</button>
+        </div>
+      </div>
+
+      <!-- 7. PURPOSE & DHARMA PRO -->
+      <div class="catalog-card" id="catPurposeCard" onclick="handleProductClick('purpose')">
+        <div>
+          <span class="cat-badge">🌟 Призвание и Таланты</span>
+          <div class="cat-title">🌟 Предназначение и Дхарма PRO</div>
+          <div class="cat-desc">Вектор кармической реализации (Раху / Кету), врожденные таланты и авторский стиль без выгорания.</div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-price">399 ₽</div>
+          <button class="cat-btn">Открыть разбор →</button>
+        </div>
+      </div>
+
+      <!-- 8. CHILDREN NATAL PRO -->
+      <div class="catalog-card" id="catKidsCard" onclick="handleProductClick('kids')">
+        <div>
+          <span class="cat-badge">👼 Для родителей</span>
+          <div class="cat-title">👼 Детский натальный разбор PRO</div>
+          <div class="cat-desc">Психологический портрет ребенка, врожденные таланты, скрытые уязвимости и бережные ключи для родителей.</div>
+        </div>
+        <div class="cat-footer">
+          <div class="cat-price">399 ₽</div>
+          <button class="cat-btn">Открыть разбор →</button>
+        </div>
+      </div>
+
     </div>
   </div>
-
 
   <!-- ================= 3. TAB: AI-ASTROLOGER CHAT ================= -->
   <div id="tab-chat" class="tab-view" style="display: none;">
@@ -3041,143 +3107,74 @@
     const numberOfDays = Math.floor((now - oneJan) / 86400000);
     const weekNum = Math.ceil((numberOfDays + oneJan.getDay() + 1) / 7);
 
-    const sunElem = ZODIAC_ELEMENTS[sun] || "earth";
-    const moonElem = ZODIAC_ELEMENTS[moon] || "earth";
-
-    const loveVariants = {
-      "fire": [
-        `Прояви мягкую инициативу: предложи партнеру совместный вечер без спешки. Избегай резких ультиматумов в спорах.`,
-        `Отличное время для свидания вне дома. Не пытайся всё контролировать — позволь партнеру проявить заботу.`
-      ],
-      "earth": [
-        `Укрепи доверие через практическую заботу и уютный домашний ужин. Не замалчивай мелкие обиды — проговори их спокойно.`,
-        `Благоприятно для обсуждения общих планов и бюджета семьи. Избегай критики и менторского тона.`
-      ],
-      "air": [
-        `Выдели время для открытого разговора по душам. Проясни давние недомолвки без эмоциональных претензий.`,
-        `Отличный период для совместных прогулок и новых впечатлений. Не закрывайся в себе при разногласиях.`
-      ],
-      "water": [
-        `Создай безопасную атмосферу для теплых бесед. Не принимай чужую эмоциональную усталость на свой счет.`,
-        `Подари партнеру искреннее принятие. Избегай манипуляций молчанием — говори прямо о своих чувствах.`
-      ]
+    // 12-Sign Specific Love Forecasts (Based on Moon Sign)
+    const loveSignSpecific = {
+      "Овен": "Импульсивность Луны в Овне просит открытого диалога. Предложи партнеру совместную активность, но избегай резких ультиматумов.",
+      "Телец": "Луна в Тельце ищет уюта и надежного тыла. Укрепите доверие через теплый домашний вечер и отказ от лишней бытовой критики.",
+      "Близнецы": "Луне в Близнецах нужны живые диалоги и новые впечатления. Обсудите совместные планы и проясните недомолвки без сарказма.",
+      "Рак": "Чувствительная Луна в Раке просит душевной безопасности. Говори прямо о своих потребностях через мягкое «Мне важно».",
+      "Лев": "Луна во Льве расцветает от искреннего восхищения и щедрости. Подари партнеру тепло, не требуя моментального признания взамен.",
+      "Дева": "Луна в Деве склонна замечать мелкие несовершенства. Снизь планку контроля: партнер выражает любовь заботой, а не инструкциями.",
+      "Весы": "Луна в Весах жаждет гармонии и эстетики. Устройте красивое свидание вне дома и избегайте замалчивания накопившихся обид.",
+      "Скорпион": "Глубокая Луна в Скорпионе считывает полутона. Отпусти подсознательное ожидание подвоха: доверие укрепляется поступками.",
+      "Стрелец": "Луна в Стрельце ищет простора и вдохновения. Разделите совместные цели и оставьте друг другу личное пространство.",
+      "Козерог": "Сдержанная Луна в Козероге привыкла всё контролировать. Разреши себе проявить уязвимость: партнер готов поддержать тебя.",
+      "Водолей": "Луна в Водолее ценит равенство и свободу. Поделитесь сокровенными мыслями о будущем, сохраняя теплое душевное созвучие.",
+      "Рыбы": "Интуитивная Луна в Рыбах чувствует настроение без слов. Защити свое сердце от чужого негатива и проведите вечер в тишине."
     };
 
-    const moneyVariants = {
-      "fire": [
-        `Зафиксируй договоренности на бумаге и не соглашайся на заниженный чек. Действуй смело, но без импульсивных трат.`,
-        `Отличное время для презентации своих услуг и запуска идей. Избегай спонтанных покупок под влиянием эмоций.`
-      ],
-      "earth": [
-        `Сфокусируйся на 1-2 главных задачах и заверши начатое. Время для аудита бюджета и структурирования расходов.`,
-        `Благоприятно для долгосрочных вложений и наведения порядка в счетах. Не форсируй сделки, если есть сомнения.`
-      ],
-      "air": [
-        `Используй нетворкинг и связи: проведи 2-3 ключевых диалога по проектам. Не распыляйся на пустую болтовню.`,
-        `Упакуй свои знания в понятный продукт или предложение. Избегай сомнительных быстрых обещаний дохода.`
-      ],
-      "water": [
-        `Продавай ценность и качество, а не свое рабочее время. Не работай через силу и выгорание.`,
-        `Принимай финансовые решения в спокойном состоянии. Избегай трат ради снятия эмоционального стресса.`
-      ]
+    // 12-Sign Specific Money Forecasts (Based on Sun Sign)
+    const moneySignSpecific = {
+      "Овен": "Солнце в Овне требует прямого прорыва: назови обоснованный чек и отправь коммерческие предложения до середины недели.",
+      "Телец": "Солнце в Тельце опирается на осязаемую ценность: время для структурирования расходов и запуска премиальных услуг.",
+      "Близнецы": "Солнце в Близнецах монетизирует связи: проведи 2–3 ключевых переговора и упакуй свой опыт в лаконичный продукт.",
+      "Рак": "Солнце в Раке усиливает интуицию на надежных клиентов: не соглашайся на сомнительные сделки из чувства дефицита.",
+      "Лев": "Солнце во Льве притягивает признание: заяви о своих достижениях открыто и не демпингуй на авторские проекты.",
+      "Дева": "Солнце в Деве дает ювелирную точность: оптимизируй рабочие процессы и делегируй рутину, чтобы освободить часы для стратегии.",
+      "Весы": "Солнце в Весах привлекает выгодные партнерства: заключай договоренности на равных условиях с четкой фиксацией обязанностей.",
+      "Скорпион": "Солнце в Скорпионе видит скрытые финансовые рычаги: избавься от неприбыльных задач и сфокусируйся на крупной цели.",
+      "Стрелец": "Солнце в Стрельце расширяет горизонты: масштабируй охваты, запланируй обучение или запуск нового масштабного проекта.",
+      "Козерог": "Солнце в Козероге кристаллизует статус: твой доход растет через долгосрочное качество и системный авторитет.",
+      "Водолей": "Солнце в Водолее рождает прорывные идеи: внедри технологичные решения и создавай уникальный авторский стиль.",
+      "Рыбы": "Солнце в Рыбах активирует творческий капитал: продавай не часы, а трансформацию и эмоциональное состояние клиентов."
     };
 
-    const energyVariants = {
-      "fire": [
-        `Чередуй активные спринты с паузами тишины. Выдели минимум 8 часов на ночной сон в темноте.`,
-        `Сбрось накопившийся огонь через спорт или долгую прогулку. Не спорь перед сном — береги нервную систему.`
-      ],
-      "earth": [
-        `Заземлись через теплое питание, массаж и контакт с природой. Не взваливай на себя двойную нагрузку.`,
-        `Тело просит физического покоя: навели порядок в спальне и устрой вечер без гаджетов.`
-      ],
-      "air": [
-        `Устрой цифровой детокс: отключи уведомления после 20:00. Проветривай комнату и гуляй на свежем воздухе.`,
-        `Ментальная разгрузка — главный приоритет. Не загружай голову чужими проблемами и новостями.`
-      ],
-      "water": [
-        `Водные процедуры (ванна с морской солью) и травяной чай снимут напряжение. Защити личные границы.`,
-        `Позволь себе замедлиться и побыть наедине с собой. Не кори себя за необходимость восстановиться.`
-      ]
+    // 12-Sign Specific Energy Forecasts (Based on Ascendant)
+    const energySignSpecific = {
+      "Овен": "Тонус высок, но есть риск перегруза. Сбрось лишнее напряжение через спорт и ложись спать до 23:30.",
+      "Телец": "Тело просит заземления: массаж, теплая еда и вечер без рабочих уведомлений восстановят ресурс.",
+      "Близнецы": "Ментальная гигиена — главный приоритет. Устрой цифровой детокс и гуляй на свежем воздухе.",
+      "Рак": "Водные процедуры и покой в личном гнезде мгновенно вернут спокойствие и душевную опору.",
+      "Лев": "Укрепляй сердечный центр: вдохновляющие прогулки и радость творчества наполнят энергией.",
+      "Дева": "Разгрузи график от второстепенных задач. Порядок в вещах мгновенно снимет внутреннюю тревогу.",
+      "Весы": "Избегай эмоциональных качелей: спокойная музыка и эстетика пространства гармонизируют нервы.",
+      "Скорпион": "Глубокий восстановительный сон в полной темноте обновит колоссальные скрытые резервы.",
+      "Стрелец": "Смени обстановку хотя бы на полдня: короткая поездка или новое место подарят прилив сил.",
+      "Козерог": "Не взваливай двойную нагрузку. Зафиксируй часы обязательного отдыха в расписании.",
+      "Водолей": "Свежий воздух и дыхательные практики снимут ментальное напряжение рабочих дней.",
+      "Рыбы": "Теплый травяной чай, тишина и уединение позволят восстановить тонкую интуитивную силу."
     };
 
     const themeVariants = {
-      "fire": `Смелое действие из чувства достоинства, отказ от суеты и защита своего времени.`,
-      "earth": `Кристаллизация главного приоритета, наведение порядка и опора на проверенное качество.`,
-      "air": `Ясность в коммуникациях, отсев лишнего информационного шума и запуск идей.`,
-      "water": `Доверие спокойной интуиции, бережность к своему ресурсу и мягкие границы.`
+      "Овен": "Смелое действие из чувства достоинства, отказ от суеты и защита своего времени.",
+      "Телец": "Кристаллизация главного приоритета, наведение порядка и опора на проверенное качество.",
+      "Близнецы": "Ясность в коммуникациях, отсев лишнего информационного шума и запуск идей.",
+      "Рак": "Бережность к своему ресурсу, мягкие границы и укрепление семейного тыла.",
+      "Лев": "Раскрытие авторского сияния, щедрость и вера в свой врожденный масштаб.",
+      "Дева": "Структурирование дел, оптимизация процессов и бережный фокус на здоровье.",
+      "Весы": "Дипломатический баланс, красота решений и гармоничные равноправные союзы.",
+      "Скорпион": "Трансформация препятствий в силу, отпускание контроля и тотальная честность.",
+      "Стрелец": "Расширение горизонтов, вдохновляющие цели и уверенность в будущем.",
+      "Козерог": "Фундаментальная зрелость, верность своим стандартам и спокойный триумф.",
+      "Водолей": "Свобода авторской мысли, инновационный подход и союз единомышленников.",
+      "Рыбы": "Доверие спокойной интуиции, созидательный покой и духовное наполнение."
     };
 
-    const lList = loveVariants[moonElem] || loveVariants["earth"];
-    const mList = moneyVariants[sunElem] || moneyVariants["earth"];
-    const eList = energyVariants[moonElem] || energyVariants["water"];
-
-    // 7-day practical breakdown
-    const dayPlan = [
-      {
-        day: "Понедельник",
-        theme: "Фокус и планирование",
-        energy: "Планетарный импульс требует четкости: голова работает быстро, но есть риск распылить силы.",
-        attention: "Не хватайся за 10 дел сразу — определи 1 главную задачу на день.",
-        toDo: "Составь письменный список приоритетов; начни утро без проверки соцсетей; сделай самый сложный звонок до обеда.",
-        avoid: "Пустых споров в чатах и обещаний, данных на эмоциях."
-      },
-      {
-        day: "Вторник",
-        theme: "Прорыв и реализация",
-        energy: "Марсианский тонус на максимуме: день прямого действия, переговоров и материальных решений.",
-        attention: "Твоя уверенность притягивает ресурсы — заявляй о своих условиях прямо.",
-        toDo: "Отправь важное коммерческое предложение; закрой зависшие задачи; проведи важный разговор с партнером.",
-        avoid: "Сомнений перед первым шагом и уступок из страха показаться неудобной."
-      },
-      {
-        day: "Среда",
-        theme: "Коммуникации и гибкость",
-        energy: "Меркурианский поток: информации много, легко договориться и найти нестандартный выход.",
-        attention: "Слушай не только слова собеседника, но и скрытые интонации.",
-        toDo: "Проведи нужные встречи; структурируй документы; обменяйся опытом с коллегами.",
-        avoid: "Перегрузки новостями и поспешных покупок под влиянием рекламы."
-      },
-      {
-        day: "Четверг",
-        theme: "Масштаб и авторитет",
-        energy: "Юпитерианский день: благоприятно для расширения горизонтов, обучения и стратегических целей.",
-        attention: "Смотри на ситуацию шире сиюминутных трудностей.",
-        toDo: "Запланируй обучение или поездку; подними вопрос о повышении чека/статуса; поблагодари себя за результаты.",
-        avoid: "Самокритики и застревания в мелкой механической рутине."
-      },
-      {
-        day: "Пятница",
-        theme: "Эстетика и гармония",
-        energy: "Венерианские энергии: время красоты, тепла в отношениях, вкусной еды и подведения итогов.",
-        attention: "Создай вокруг себя вдохновляющую и уютную атмосферу.",
-        toDo: "Устрой красивый романтический ужин или встречу с подругой; купи что-то приятное для дома; подведи итоги недели.",
-        avoid: "Выяснения отношений на повышенных тонах после тяжелой недели."
-      },
-      {
-        day: "Суббота",
-        theme: "Заземление и порядок",
-        energy: "Сатурнианская стабильность: очищение пространства и упорядочивание мыслей.",
-        attention: "Порядок вокруг мгновенно успокаивает внутреннюю тревогу Луны.",
-        toDo: "Разгрузи шкафы или рабочее место; проведи время на свежем воздухе; выспись без будильника.",
-        avoid: "Решения рабочих вопросов в выходной день."
-      },
-      {
-        day: "Воскресенье",
-        theme: "Ресурс и подготовка",
-        energy: "Солнечный день наполнения: восстановление витального огня перед новой неделей.",
-        attention: "Позволь себе несколько часов полной автономии и тишины.",
-        toDo: "Прими ванну с солью; почитай вдохновляющую книгу; настройся на спокойный темп.",
-        avoid: "Спешки и мыслей о понедельнике во второй половине дня."
-      }
-    ];
-
     return {
-      love: lList[weekNum % lList.length],
-      money: mList[weekNum % mList.length],
-      energy: eList[weekNum % eList.length],
-      theme: themeVariants[sunElem] || themeVariants["earth"],
-      days: dayPlan
+      love: loveSignSpecific[moon] || loveSignSpecific["Козерог"],
+      money: moneySignSpecific[sun] || moneySignSpecific["Козерог"],
+      energy: energySignSpecific[asc] || energySignSpecific["Стрелец"],
+      theme: themeVariants[sun] || themeVariants["Козерог"]
     };
   }
 
@@ -4662,9 +4659,7 @@
             <button class="btn-gold" style="padding: 11px 16px; font-size: 13.5px;" onclick="openPurchasedTripwireModal()">
               Читать мой разбор →
             </button>
-            <button class="btn-outline" style="padding: 11px 14px; font-size: 12px;" onclick="openTripwireModal()">
-              Пересчитать ✎
-            </button>
+
           </div>
         `;
       } else {
@@ -5961,6 +5956,46 @@
     });
   }
 
+  
+  function handleProductClick(prodKey) {
+    if (!userNatalData || !userNatalData.date) {
+      openMissingDataModal();
+      return;
+    }
+
+    // If already purchased, always open report regardless of mode
+    const purchased = getPurchasedReports();
+    if (prodKey === 'natal' && isLunaProPurchased()) {
+      showProductModal('natal');
+      return;
+    }
+    if (prodKey === 'tripwire' && isTripwirePurchased()) {
+      openPurchasedTripwireModal();
+      return;
+    }
+    if (purchased[prodKey] && purchased[prodKey].chaptersHtml) {
+      showProductModal(prodKey);
+      return;
+    }
+
+    // If NOT in tester mode, show Coming Soon modal
+    if (!isTesterMode) {
+      const prod = productsInfo[prodKey] || { title: 'Этот разбор' };
+      openComingSoonModal(prod.title || 'Платный натальный разбор');
+      return;
+    }
+
+    // Tester Mode: execute standard flow
+    if (prodKey === 'tripwire') {
+      openTripwireModal();
+    } else if (prodKey === 'natal') {
+      showProductModal('natal');
+    } else {
+      openProductQuestionnaire(prodKey);
+    }
+  }
+
+
   function showProductModal(prodKey) {
     if (!userNatalData || !userNatalData.date) {
       openMissingDataModal();
@@ -6752,6 +6787,54 @@
         'Еженедельные знаки и архетипы недели'
       ]
     };
+  }
+
+  
+  // ================= TESTER / ADMIN MODE & COMING SOON ENGINE =================
+  let isTesterMode = (localStorage.getItem('luna_tester_mode') === 'true') || (typeof URLSearchParams !== 'undefined' && typeof window !== 'undefined' && window.location && new URLSearchParams(window.location.search).get('admin') === '1');
+  let logoTapCount = 0;
+  let logoTapTimer = null;
+
+  function handleLogoMultiTap() {
+    logoTapCount++;
+    if (logoTapTimer) clearTimeout(logoTapTimer);
+    logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 2500);
+
+    if (logoTapCount >= 5) {
+      logoTapCount = 0;
+      isTesterMode = !isTesterMode;
+      localStorage.setItem('luna_tester_mode', isTesterMode ? 'true' : 'false');
+      haptic('success');
+      updateTesterBadgeUI();
+      alert(isTesterMode ? '⚡ Режим тестировщика АКТИВИРОВАН! Все платные разборы разблокированы для проверки.' : '🔒 Режим тестировщика выключен. Пользовательский режим (В разработке).');
+    }
+  }
+
+  function updateTesterBadgeUI() {
+    const badge = document.getElementById('testerModeBadge');
+    if (badge) badge.style.display = isTesterMode ? 'inline-block' : 'none';
+    updateCatalogCardsUI();
+  }
+
+  function openComingSoonModal(featureName = 'Этот раздел') {
+    haptic('warning');
+    openModal(`
+      <div style="text-align: center; padding: 20px 8px 24px;">
+        <div style="font-size: 42px; margin-bottom: 8px;">✨</div>
+        <div class="hero-natal-badge" style="margin-bottom: 8px; background: rgba(229, 195, 120, 0.2); color: #FFE8A3;">
+          ✨ СКОРО В LUNA
+        </div>
+        <div style="font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: #FFF; margin-bottom: 6px;">
+          ${escapeHtml(featureName)}
+        </div>
+        <p style="font-size: 13px; color: #CBD5E1; line-height: 1.55; margin-bottom: 20px; max-width: 320px; margin-left: auto; margin-right: auto;">
+          Мы финализируем этот глубокий астрологический разбор. Он станет доступен в ближайшем обновлении приложения!
+        </p>
+        <button class="btn-gold" style="width: 100%; padding: 13px; font-size: 14px; font-weight: 800;" onclick="closeModal()">
+          Понятно, буду ждать ✨
+        </button>
+      </div>
+    `);
   }
 
   function updateCreditDisplays() {
@@ -8021,6 +8104,11 @@
     haptic();
     trackLunaEvent('subscription_viewed');
 
+    if (!isTesterMode) {
+      openComingSoonModal('💎 Безлимитная подписка LUNA Plus');
+      return;
+    }
+
     const html = `
       <div style="padding: 6px 2px 14px;">
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 23px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px;">
@@ -8182,6 +8270,11 @@
   function openTopUpModal() {
     haptic();
     trackLunaEvent('topup_viewed');
+
+    if (!isTesterMode) {
+      openComingSoonModal('⚡ Докупка пакетов AI-запросов');
+      return;
+    }
 
     const html = `
       <div style="padding: 6px 2px 14px;">
