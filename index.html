@@ -744,22 +744,58 @@
       margin-bottom: 0;
     }
 
-    /* CHAT */
-        .chat-wrap {
+        /* CHAT */
+    #tab-chat {
+      height: calc(100vh - 120px - env(safe-area-inset-bottom, 0px));
+      height: calc(100dvh - 120px - env(safe-area-inset-bottom, 0px));
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    #tab-chat .chat-header-wrap {
+      flex-shrink: 0;
+      margin-bottom: 8px;
+    }
+    #tab-chat .chat-credit-bar {
+      flex-shrink: 0;
+      margin-bottom: 8px;
+    }
+    #tab-chat .chat-chips-scroll {
+      flex-shrink: 0;
+      margin-bottom: 8px;
+    }
+    #tab-chat .chat-wrap {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      height: calc(100vh - 270px);
-      height: calc(100dvh - 270px);
-      min-height: 380px;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
     }
-    .chat-messages {
+    #tab-chat .chat-messages {
       flex: 1;
+      min-height: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      padding-right: 4px;
+      padding-bottom: 8px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      padding-bottom: 10px;
+    }
+    #tab-chat .chat-input-bar {
+      flex-shrink: 0;
+      background: rgba(18, 13, 33, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.2px solid rgba(229, 195, 120, 0.45);
+      border-radius: 22px;
+      padding: 5px 6px 5px 14px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 12px rgba(229, 195, 120, 0.15);
+      margin-top: 6px;
     }
     .chat-bubble {
       max-width: 85%;
@@ -3034,8 +3070,13 @@
 
     const cont = document.querySelector('.container');
     if (cont) {
-      cont.style.paddingTop = tabId === 'chat' ? '12px' : '16px';
-      cont.style.paddingBottom = 'calc(100px + env(safe-area-inset-bottom, 0px))';
+      if (tabId === 'chat') {
+        cont.style.paddingTop = '10px';
+        cont.style.paddingBottom = '0px';
+      } else {
+        cont.style.paddingTop = '16px';
+        cont.style.paddingBottom = 'calc(130px + env(safe-area-inset-bottom, 0px))';
+      }
     }
 
     document.querySelectorAll('.tab-view').forEach(el => el.style.display = 'none');
@@ -3043,7 +3084,6 @@
     if (target) {
       if (tabId === 'chat') {
         target.style.display = 'flex';
-        target.style.flexDirection = 'column';
         const box = document.getElementById('chatBox');
         if (box) setTimeout(() => { box.scrollTop = box.scrollHeight; }, 60);
       } else {
@@ -3069,7 +3109,7 @@
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
       window.scrollTo(0, 0);
-    }, 30);
+    }, 20);
   }
 
   function openModal(contentHtml) {
@@ -4155,6 +4195,8 @@
     return canvas.toDataURL('image/png');
   }
 
+  let currentStoryDataUrl = null;
+
   function openShareStoryModal() {
     haptic('success');
     trackLunaEvent('share_story_opened');
@@ -4170,10 +4212,9 @@
     const moon = natal.moon || 'Козерог';
     const asc = natal.asc || 'Стрелец';
     const traffic = getPersonalDayTrafficLight(sun, moon, asc);
-    const storyImgData = generateStoryCanvas(name, sun, moon, asc, traffic.affirmation);
 
-    const html = `
-      <div style="padding: 4px 2px 20px;">
+    openModal(`
+      <div style="padding: 4px 2px 20px; text-align: center;">
         <div class="hero-natal-badge" style="margin-bottom: 8px;">
           📲 STORIES КАРТОЧКА · 9:16
         </div>
@@ -4184,31 +4225,159 @@
           💡 <b>На телефоне:</b> зажмите картинку пальцем на 1 секунду и выберите <b>«Сохранить в Фото»</b>.
         </p>
 
-        <!-- PREVIEW IMAGE -->
-        <div style="text-align: center; margin-bottom: 14px;">
-          <img id="storyPreviewImg" src="${storyImgData}" style="width: 100%; max-width: 270px; border-radius: 16px; border: 2px solid rgba(229, 195, 120, 0.6); box-shadow: 0 8px 25px rgba(0,0,0,0.6);" alt="LUNA Stories">
+        <div style="text-align: center; margin-bottom: 14px; min-height: 380px; display: flex; align-items: center; justify-content: center;" id="storyPreviewWrap">
+          <span style="font-size: 12px; color: var(--gold-light);">✨ Формируем золотую карточку...</span>
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 8px;">
-          <button class="btn-gold" style="padding: 13px; font-size: 14px; font-weight: 800;" onclick="downloadStoryImage('${storyImgData}', '${encodeURIComponent(name)}')">
+          <button id="btnDownloadStory" class="btn-gold" style="padding: 13px; font-size: 14px; font-weight: 800;" onclick="downloadStoryImageProgrammatic()">
             📥 Скачать картинку (PNG)
           </button>
           <button class="btn-outline" style="padding: 11px; font-size: 13px;" onclick="shareStoryToTelegram()">
-            📤 Поделиться ссылкой на LUNA
+            📤 Поделиться ссылкой на LUNA ✦ PRO
           </button>
           <button class="btn-outline" style="padding: 10px; font-size: 12px; opacity: 0.8;" onclick="closeModal()">
             Закрыть
           </button>
         </div>
       </div>
-    `;
-    openModal(html);
+    `);
+
+    renderStoryCanvasWithBg(name, sun, moon, asc, traffic.affirmation);
   }
 
-  function downloadStoryImage(dataUrl, name) {
+  function renderStoryCanvasWithBg(name, sun, moon, asc, affirmation) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 941;
+    canvas.height = 1672;
+    const ctx = canvas.getContext('2d');
+
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = 'story_bg.png';
+
+    const drawContent = () => {
+      if (img.complete && img.naturalWidth > 0) {
+        ctx.drawImage(img, 0, 0, 941, 1672);
+        const darkGrad = ctx.createLinearGradient(0, 800, 0, 1672);
+        darkGrad.addColorStop(0, 'rgba(8, 4, 18, 0)');
+        darkGrad.addColorStop(0.35, 'rgba(8, 4, 18, 0.75)');
+        darkGrad.addColorStop(1, 'rgba(8, 4, 18, 0.95)');
+        ctx.fillStyle = darkGrad;
+        ctx.fillRect(0, 800, 941, 872);
+      } else {
+        const bgGrad = ctx.createLinearGradient(0, 0, 0, 1672);
+        bgGrad.addColorStop(0, '#090514');
+        bgGrad.addColorStop(0.5, '#1B0F3A');
+        bgGrad.addColorStop(1, '#080410');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, 941, 1672);
+      }
+
+      // Ornate Golden Borders
+      ctx.strokeStyle = '#C49B45';
+      ctx.lineWidth = 6;
+      ctx.strokeRect(30, 30, 881, 1612);
+
+      // Top Monogram & User Name
+      ctx.fillStyle = '#E5C378';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('✦   L U N A   ✦   P R O   ✦', 470, 960);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 56px Georgia, serif';
+      ctx.fillText(name, 470, 1035);
+
+      // Triad Boxes
+      const boxY = 1080;
+      const boxH = 170;
+      const boxW = 240;
+      const gap = 20;
+      const startX = (941 - (boxW * 3 + gap * 2)) / 2;
+
+      const triadData = [
+        { icon: '☀️', label: 'Солнце', val: sun },
+        { icon: '🌙', label: 'Луна', val: moon },
+        { icon: '↑', label: 'Асцендент', val: asc }
+      ];
+
+      triadData.forEach((item, idx) => {
+        const bx = startX + idx * (boxW + gap);
+        ctx.fillStyle = 'rgba(16, 10, 32, 0.85)';
+        ctx.fillRect(bx, boxY, boxW, boxH);
+        ctx.strokeStyle = 'rgba(229, 195, 120, 0.55)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(bx, boxY, boxW, boxH);
+
+        ctx.font = '36px sans-serif';
+        ctx.fillText(item.icon, bx + boxW / 2, boxY + 50);
+
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '18px sans-serif';
+        ctx.fillText(item.label, bx + boxW / 2, boxY + 90);
+
+        ctx.fillStyle = '#FFE8A3';
+        ctx.font = 'bold 26px Georgia, serif';
+        ctx.fillText(item.val, bx + boxW / 2, boxY + 138);
+      });
+
+      // Affirmation Box
+      ctx.fillStyle = 'rgba(12, 7, 24, 0.9)';
+      ctx.fillRect(80, 1280, 781, 230);
+      ctx.strokeStyle = 'rgba(229, 195, 120, 0.35)';
+      ctx.strokeRect(80, 1280, 781, 230);
+
+      ctx.fillStyle = '#E5C378';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillText('ГЛАВНЫЙ МАНИФЕСТ СИЛЫ', 470, 1330);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'italic 24px Georgia, serif';
+      
+      const words = affirmation.split(' ');
+      let line = '';
+      let curY = 1385;
+      for (let w of words) {
+        const testLine = line + w + ' ';
+        if (ctx.measureText(testLine).width > 700) {
+          ctx.fillText(line.trim(), 470, curY);
+          line = w + ' ';
+          curY += 38;
+        } else {
+          line = testLine;
+        }
+      }
+      if (line) ctx.fillText(line.trim(), 470, curY);
+
+      // Footer
+      ctx.fillStyle = '#E5C378';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillText('Рассчитай свою натальную карту в LUNA ✦ PRO', 470, 1565);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '17px sans-serif';
+      ctx.fillText('https://nadinnchik.github.io/luna-app/', 470, 1600);
+
+      currentStoryDataUrl = canvas.toDataURL('image/png');
+      const wrap = document.getElementById('storyPreviewWrap');
+      if (wrap) {
+        wrap.innerHTML = `<img src="${currentStoryDataUrl}" style="width: 100%; max-width: 270px; border-radius: 16px; border: 2px solid rgba(229, 195, 120, 0.6); box-shadow: 0 8px 25px rgba(0,0,0,0.6);" alt="LUNA ✦ PRO Stories">`;
+      }
+    };
+
+    img.onload = drawContent;
+    img.onerror = drawContent;
+    if (img.complete) {
+      setTimeout(drawContent, 50);
+    }
+  }
+
+  function downloadStoryImageProgrammatic() {
     haptic('success');
+    if (!currentStoryDataUrl) return;
     try {
-      const arr = dataUrl.split(',');
+      const arr = currentStoryDataUrl.split(',');
       const mime = arr[0].match(/:(.*?);/)[1];
       const bstr = atob(arr[1]);
       let n = bstr.length;
@@ -4221,13 +4390,13 @@
 
       const link = document.createElement('a');
       link.href = blobUrl;
-      link.download = `LUNA_PRO_${name}_Stories.png`;
+      link.download = `LUNA_PRO_Stories.png`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
     } catch (e) {
-      window.open(dataUrl, '_blank');
+      window.open(currentStoryDataUrl, '_blank');
     }
   }
 
