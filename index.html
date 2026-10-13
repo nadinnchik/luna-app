@@ -1180,7 +1180,7 @@
       <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px;">
         <div style="display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: var(--gold); background: rgba(212, 175, 55, 0.12); border: 1px solid rgba(212, 175, 55, 0.3); padding: 2px 8px; border-radius: 12px;">
           <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10B981; box-shadow: 0 0 8px #10B981;"></span>
-          <span>v1.2.0 • Live</span>
+          <span>v1.3.1 • Live</span>
         </div>
         <div class="credit-header-pill" onclick="openTopUpModal()">
           ✨ <span id="headerCreditsCount">1</span> AI-запрос ⚡
@@ -1347,24 +1347,6 @@
             📋
           </button>
         </div>
-      </div>
-
-      <!-- 🎯 TRIPWIRE BANNER ON DASHBOARD (BLUEPRINT §4 & §8) -->
-      <div class="tripwire-card" id="homeTripwireCard">
-        <div class="tripwire-badge">🔥 Хит · Тест за 99 ₽</div>
-        <div class="tripwire-title">🎯 Разбор повторяющегося сценария</div>
-        <div class="tripwire-desc">
-          Почему ситуация в отношениях, финансах или работе повторяется по кругу? Разбери свой ключевой паттерн по натальной карте.
-        </div>
-        <div class="tripwire-chips">
-          <span class="tripwire-chip-item">❤️ Отношения</span>
-          <span class="tripwire-chip-item">💰 Финансы</span>
-          <span class="tripwire-chip-item">🎯 Реализация</span>
-          <span class="tripwire-chip-item">🧭 Выбор</span>
-        </div>
-        <button class="btn-gold" style="padding: 11px 16px; font-size: 13.5px;" onclick="openTripwireModal()">
-          Разобрать сценарий за 99 ₽ →
-        </button>
       </div>
 
       <!-- 2. ✨ МАГИЯ И ЗНАКИ НЕДЕЛИ (DYNAMIC SYMBOLS) -->
@@ -1795,7 +1777,7 @@
     <div class="card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
         <div class="card-title" style="margin-bottom: 0;">✨ Жизненный контекст</div>
-        <button style="background: none; border: none; color: var(--gold); font-size: 12px; font-weight: 600; cursor: pointer;" onclick="openTripwireModal()">Изменить ✎</button>
+        <button style="background: none; border: none; color: var(--gold); font-size: 12px; font-weight: 600; cursor: pointer;" onclick="openLifeQuizModal()">Изменить ✎</button>
       </div>
       <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
         Учитывается LUNA в каждом разборе и ответах в чате:
@@ -1805,7 +1787,7 @@
         <div style="font-size: 12.5px; color: #E2DFEC;">👶 <b>Дети:</b> <span id="profStatKids">Нет детей</span></div>
         <div style="font-size: 12.5px; color: #E2DFEC;">💼 <b>Деятельность:</b> <span id="profStatJob">Фриланс / практика</span></div>
       </div>
-      <button class="btn-outline" onclick="openTripwireModal()">
+      <button class="btn-outline" onclick="openLifeQuizModal()">
         ✨ Настроить жизненный контекст ✎
       </button>
     </div>
@@ -1814,7 +1796,7 @@
     <div class="card" style="border: 1px solid rgba(212, 175, 55, 0.2); background: rgba(22, 18, 38, 0.5); padding: 14px 16px;">
       <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; margin-bottom: 6px;">
         <span style="color: var(--text-muted);">Версия LUNA</span>
-        <span style="color: var(--gold-light); font-weight: 700; letter-spacing: 0.5px;">v1.3.0 · Celestial</span>
+        <span style="color: var(--gold-light); font-weight: 700; letter-spacing: 0.5px;">v1.3.1 · Pure Natal</span>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; margin-bottom: 6px;">
         <span style="color: var(--text-muted);">Сервер & База данных</span>
@@ -3797,7 +3779,7 @@
               📖 Открыть готовый разбор →
             </button>
           </div>
-        ` : `
+        ` : (isTesterMode ? `
           <div style="background: linear-gradient(135deg, rgba(46, 26, 71, 0.95) 0%, rgba(20, 14, 38, 0.98) 100%); border: 1.5px solid rgba(243, 186, 47, 0.6); border-radius: 16px; padding: 16px; text-align: center; margin-top: 16px;">
             <div class="tripwire-badge" style="margin-bottom: 6px;">🔥 Рекомендуемый следующий шаг</div>
             <div style="font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 700; color: #FFF; margin-bottom: 4px;">
@@ -3810,12 +3792,12 @@
               Разобрать мой сценарий за 99 ₽ →
             </button>
           </div>
-        `}
+        ` : '')}
 
         <div style="background: rgba(22, 18, 38, 0.6); border: 1px dashed rgba(229, 195, 120, 0.3); border-radius: 12px; padding: 12px; text-align: center; margin-top: 14px;">
           <span style="font-size: 10px; color: #A78BFA; font-weight: 700; text-transform: uppercase;">Скоро в LUNA</span>
           <div style="font-size: 12px; color: #CBD5E1; margin-top: 4px; line-height: 1.4;">
-            Фундаментальная Натальная книга PRO на 16 глав и тематические разборы появятся в следующих обновлениях.
+            Фундаментальная Натальная книга PRO на 16 глав и углубленные разборы появятся в следующих обновлениях.
           </div>
         </div>
       </div>
@@ -4636,43 +4618,6 @@
     const advText = document.getElementById('dailyAdviceText');
     if (advText) {
       advText.textContent = getPersonalDailyAdvice(userNatalData.sun, userNatalData.moon, userNatalData.asc, userNatalData.date);
-    }
-
-    // Update Home Tripwire Card based on purchased state
-    // homeTripwireCard removed from dashboard
-    if (twCard) {
-      if (isTripwirePurchased()) {
-        const twData = getPurchasedTripwireData();
-        const tTitle = twData ? twData.topicTitle : 'Разбор повторяющегося сценария';
-        twCard.innerHTML = `
-          <div class="tripwire-badge" style="background: rgba(16, 185, 129, 0.25); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.45);">✅ Твой разбор готов</div>
-          <div class="tripwire-title">🎯 ${escapeHtml(tTitle)}</div>
-          <div class="tripwire-desc">Твой персональный аудит натального сценария сохранён и готов к изучению в любое время.</div>
-          <div style="display: flex; gap: 8px; margin-top: 10px;">
-            <button class="btn-gold" style="padding: 11px 16px; font-size: 13.5px;" onclick="openPurchasedTripwireModal()">
-              Читать мой разбор →
-            </button>
-
-          </div>
-        `;
-      } else {
-        twCard.innerHTML = `
-          <div class="tripwire-badge">🔥 Хит · Экспресс-разбор 99 ₽</div>
-          <div class="tripwire-title">🎯 Разбор повторяющегося сценария</div>
-          <div class="tripwire-desc">
-            Почему ситуация в отношениях, финансах или работе повторяется по кругу? Разбери свой ключевой паттерн по натальной карте.
-          </div>
-          <div class="tripwire-chips">
-            <span class="tripwire-chip-item">❤️ Отношения</span>
-            <span class="tripwire-chip-item">💰 Финансы</span>
-            <span class="tripwire-chip-item">🎯 Реализация</span>
-            <span class="tripwire-chip-item">🧭 Выбор</span>
-          </div>
-          <button class="btn-gold" style="padding: 11px 16px; font-size: 13.5px;" onclick="openTripwireModal()">
-            Разобрать сценарий за 99 ₽ →
-          </button>
-        `;
-      }
     }
 
     // Update Profile Life Context pills
@@ -7082,6 +7027,23 @@
     const credits = getUserCredits();
     if (credits <= 0) {
       trackLunaEvent('credits_exhausted');
+      if (!isTesterMode) {
+        openModal(`
+          <div style="text-align: center; padding: 22px 10px 24px;">
+            <div style="font-size: 38px; margin-bottom: 8px;">✨</div>
+            <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); margin-bottom: 6px;">
+              Вводные вопросы к карте завершены
+            </div>
+            <p style="font-size: 13px; color: #CBD5E1; line-height: 1.55; margin-bottom: 18px;">
+              Мы готовим к открытию расширенные пакеты AI-запросов и углубленные PRO-разборы. Они станут доступны в ближайшем обновлении!
+            </p>
+            <button class="btn-gold" style="width: 100%; padding: 13px;" onclick="closeModal()">
+              Понятно, буду ждать ✨
+            </button>
+          </div>
+        `);
+        return;
+      }
       if (isTripwirePurchased()) {
         openModal(`
           <div style="text-align: center; padding: 22px 10px 24px;">
@@ -7183,7 +7145,7 @@
               Твой персональный разбор сценария сохранён в профиле. <span style="text-decoration: underline; font-weight: 800; cursor: pointer; color: #FFF;" onclick="openPurchasedTripwireModal()">Открыть готовый разбор →</span>
             </div>
           `;
-        } else {
+        } else if (isTesterMode) {
           finalHtml += `
             <div style="margin-top: 14px; padding: 10px 12px; background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.4); border-radius: 12px; font-size: 12px; color: #FFE8A3; line-height: 1.45;">
               ✨ <b>Бесплатный вопрос к карте завершен.</b><br>
@@ -7352,12 +7314,12 @@
             ✓ Твой подробный аудит сценария сохранён в профиле. 
             <span style="text-decoration: underline; font-weight: 700; cursor: pointer; color: #FFF;" onclick="openPurchasedTripwireModal()">Открыть разбор →</span>
           </div>
-        ` : `
+        ` : (isTesterMode ? `
           <div style="background: rgba(229, 195, 120, 0.1); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
             ❤️ Хочешь разобрать причины повторяющегося сценария в отношениях? 
             <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="openTripwireModal('relations')">Открыть разбор сценария за 99 ₽ →</div>
           </div>
-        `}
+        ` : '')}
       `;
     }
 
@@ -7385,12 +7347,12 @@
             ✓ Твой подробный аудит сценария сохранён в профиле. 
             <span style="text-decoration: underline; font-weight: 700; cursor: pointer; color: #FFF;" onclick="openPurchasedTripwireModal()">Открыть разбор →</span>
           </div>
-        ` : `
+        ` : (isTesterMode ? `
           <div style="background: rgba(229, 195, 120, 0.1); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
             💰 Хочешь разобрать свой денежный сценарий и снять блоки?
             <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="openTripwireModal('money')">Открыть разбор за 99 ₽ →</div>
           </div>
-        `}
+        ` : '')}
       `;
     }
 
@@ -7418,12 +7380,12 @@
             ✓ Твой подробный аудит сценария сохранён в профиле. 
             <span style="text-decoration: underline; font-weight: 700; cursor: pointer; color: #FFF;" onclick="openPurchasedTripwireModal()">Открыть разбор →</span>
           </div>
-        ` : `
+        ` : (isTesterMode ? `
           <div style="background: rgba(229, 195, 120, 0.1); border: 1px solid rgba(229, 195, 120, 0.3); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
             🎯 Хочешь разобрать тупик в карьере и реализации?
             <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="openTripwireModal('purpose')">Открыть разбор за 99 ₽ →</div>
           </div>
-        `}
+        ` : '')}
       `;
     }
 
@@ -7451,12 +7413,12 @@
             ✓ Твой подробный аудит сценария сохранён в профиле. 
             <span style="text-decoration: underline; font-weight: 700; cursor: pointer; color: #FFF;" onclick="openPurchasedTripwireModal()">Открыть разбор →</span>
           </div>
-        ` : `
+        ` : (isTesterMode ? `
           <div style="background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.35); border-radius: 10px; padding: 10px; font-size: 11.5px; color: #FFE8A3;">
             🔥 Хочешь глубокий персональный аудит повторяющегося сценария?
             <div style="margin-top: 4px; text-decoration: underline; font-weight: 700; cursor: pointer;" onclick="openTripwireModal()">Разобрать сценарий по карте за 99 ₽ →</div>
           </div>
-        `}
+        ` : '')}
       `;
     }
 
@@ -7742,6 +7704,11 @@
   function openTripwireModal(defaultTopic = 'relations') {
     haptic();
     trackLunaEvent('tripwire_viewed', { topic: defaultTopic });
+
+    if (!isTesterMode) {
+      openComingSoonModal('🎯 Экспресс-разбор повторяющегося сценария');
+      return;
+    }
 
     if (defaultTopic) twState.topic = defaultTopic;
 
