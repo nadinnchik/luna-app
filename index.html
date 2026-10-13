@@ -1730,7 +1730,7 @@
         👤 Твой натальный профиль
       </div>
       <div style="font-size: 12px; color: var(--text-muted);">
-        Данные карты, подписка, баланс запросов и дети
+        Данные карты, подписка и баланс запросов
       </div>
     </div>
 
@@ -1792,8 +1792,8 @@
       </button>
     </div>
 
-    <!-- CHILDREN ENTITY CARD -->
-    <div class="card">
+    <!-- CHILDREN ENTITY CARD (TEMPORARILY HIDDEN) -->
+    <div class="card" id="profChildrenCard" style="display: none;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
         <div class="card-title" style="margin-bottom: 0;">👧 Мои дети</div>
         <button style="background: none; border: none; color: var(--gold); font-size: 12px; font-weight: 600; cursor: pointer;" onclick="openAddChildModal()">+ Добавить</button>
@@ -1822,6 +1822,31 @@
       </div>
       <button class="btn-outline" onclick="openLifeQuizModal()">
         ✨ Настроить жизненный контекст ✎
+      </button>
+    </div>
+
+    <!-- 📸 INSTAGRAM SUPPORT & COMMUNITY CARD -->
+    <div class="card" style="border: 1.5px solid rgba(225, 48, 108, 0.4); background: linear-gradient(145deg, rgba(38, 16, 42, 0.9) 0%, rgba(18, 12, 34, 0.95) 100%); position: relative; overflow: hidden;">
+      <div style="position: absolute; right: -15px; top: -15px; width: 90px; height: 90px; background: radial-gradient(circle, rgba(225, 48, 108, 0.25) 0%, transparent 70%); pointer-events: none;"></div>
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+        <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(220, 39, 67, 0.35); flex-shrink: 0;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </div>
+        <div>
+          <div class="card-title" style="margin-bottom: 2px;">Мы в Instagram</div>
+          <div style="font-size: 11.5px; color: #FDA4AF; font-weight: 600;">@luna_pro_astro · Служба заботы</div>
+        </div>
+      </div>
+      <p style="font-size: 12px; color: #CBD5E1; line-height: 1.55; margin-bottom: 12px;">
+        Если у тебя возникли вопросы по расчётам, оплате или есть предложения по приложению — напиши нам в Direct. Мы всегда на связи и с радостью подскажем! ✨
+      </p>
+      <button class="btn-gold" style="width: 100%; padding: 11px; font-size: 13px; font-weight: 700; background: linear-gradient(135deg, #E5C378 0%, #C49B45 100%); display: flex; align-items: center; justify-content: center; gap: 8px;" onclick="openInstagramSupport()">
+        <span>Написать в Instagram</span>
+        <span>→</span>
       </button>
     </div>
 
@@ -1856,7 +1881,7 @@
           🚪 Закрыть LUNA
         </button>
         <button class="btn-outline" style="flex: 1; padding: 9px; font-size: 12px; border-color: rgba(239, 68, 68, 0.4); color: #FCA5A5;" onclick="resetUserProfileAndRestart()">
-          🔄 Сбросить профиль
+          🔄 Сбросить карту
         </button>
       </div>
     </div>
@@ -2190,6 +2215,17 @@
 
     const pUid = document.getElementById('profUserId');
     if (pUid) pUid.textContent = currentUserId;
+
+    // If user explicitly reset their natal calculations, don't resurrect old natal data
+    if (sessionStorage.getItem('luna_just_reset') === '1') {
+      sessionStorage.removeItem('luna_just_reset');
+      if (user.first_name || user.name) {
+        const obName = document.getElementById('obName');
+        if (obName) obName.value = user.name || user.first_name || '';
+      }
+      updateNatalUI();
+      return;
+    }
 
     if (user.birth_date && user.name) {
       userNatalData = {
@@ -9011,18 +9047,71 @@
     }
   }
 
+  function openInstagramSupport() {
+    haptic('light');
+    const url = 'https://instagram.com/luna_pro_astro';
+    try {
+      if (window.Telegram && Telegram.WebApp && typeof Telegram.WebApp.openLink === 'function') {
+        Telegram.WebApp.openLink(url);
+        return;
+      }
+    } catch(e) {}
+    window.open(url, '_blank');
+  }
+
   function resetUserProfileAndRestart() {
     haptic('warning');
-    if (confirm('Вы уверены, что хотите сбросить профиль и все сохранённые данные? Это очистит историю переписки, расчёты и создаст новую чистую сессию.')) {
+    if (confirm('Вы хотите сбросить расчёт карты и заполнить данные рождения заново? Ваш аккаунт, подписка и история покупок останутся привязаны к вам.')) {
       try {
-        localStorage.clear();
-        sessionStorage.clear();
+        // 1. Preserve permanent account ID, tokens, subscription, credits and purchases
+        const stableUid = localStorage.getItem('luna_stable_device_uid') || currentUserId;
+        const authToken = localStorage.getItem('luna_auth_jwt');
+        const userPlan = localStorage.getItem(getStorageKeyPlan());
+        const userCredits = localStorage.getItem(getStorageKeyCredits());
+        const userSub = localStorage.getItem(getStorageKeySubInfo());
+        const userReports = localStorage.getItem(getStorageKeyPurchasedReports());
+        const userTripwire = localStorage.getItem(getStorageKeyTripwire());
+
+        // 2. Remove ONLY natal calculations, quiz responses, and chat history
+        localStorage.removeItem(getStorageKeyNatal());
+        localStorage.removeItem('luna_user_natal_data');
+        localStorage.removeItem(getStorageKeyQuiz());
+        localStorage.removeItem('luna_user_quiz_profile');
+        localStorage.removeItem('luna_chat_history_' + currentUserId);
+        localStorage.removeItem('luna_chat_history_global');
+        localStorage.removeItem(getStorageKeyChildren());
+        localStorage.removeItem('luna_user_children_global');
+
+        // 3. Guarantee that user identity & purchases are safely retained
+        if (stableUid) localStorage.setItem('luna_stable_device_uid', stableUid);
+        if (authToken) localStorage.setItem('luna_auth_jwt', authToken);
+        if (userPlan) localStorage.setItem(getStorageKeyPlan(), userPlan);
+        if (userCredits) localStorage.setItem(getStorageKeyCredits(), userCredits);
+        if (userSub) localStorage.setItem(getStorageKeySubInfo(), userSub);
+        if (userReports) localStorage.setItem(getStorageKeyPurchasedReports(), userReports);
+        if (userTripwire) localStorage.setItem(getStorageKeyTripwire(), userTripwire);
+
+        sessionStorage.setItem('luna_just_reset', '1');
       } catch (e) {
-        console.error("Storage clear error", e);
+        console.error("Storage reset error", e);
       }
+
       userNatalData = null;
       userChildrenList = [];
-      lunaAuthToken = null;
+
+      // 4. Reset backend natal record asynchronously so it doesn't resurrect old birth date
+      try {
+        apiRequest('/api/v1/profile/natal', 'PUT', {
+          name: '',
+          birth_date: '',
+          birth_time: '12:00',
+          birth_city: '',
+          sun_sign: '',
+          moon_sign: '',
+          asc_sign: ''
+        });
+      } catch (e) {}
+
       window.location.href = window.location.pathname;
     }
   }
@@ -9081,13 +9170,18 @@
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('reset') === '1') {
+      const stableUid = localStorage.getItem('luna_stable_device_uid') || currentUserId;
+      const authToken = localStorage.getItem('luna_auth_jwt');
       try {
-        localStorage.clear();
-        sessionStorage.clear();
+        localStorage.removeItem(getStorageKeyNatal());
+        localStorage.removeItem('luna_user_natal_data');
+        localStorage.removeItem(getStorageKeyQuiz());
+        localStorage.removeItem('luna_user_quiz_profile');
+        if (stableUid) localStorage.setItem('luna_stable_device_uid', stableUid);
+        if (authToken) localStorage.setItem('luna_auth_jwt', authToken);
       } catch (e) {}
       userNatalData = null;
       userChildrenList = [];
-      lunaAuthToken = null;
     } else {
       const saved = localStorage.getItem(getStorageKeyNatal()) || localStorage.getItem('luna_user_natal_data');
       if (saved) {
