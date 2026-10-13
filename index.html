@@ -914,13 +914,45 @@
       flex-shrink: 0;
       background: rgba(18, 12, 34, 0.95);
       border: 1.5px solid rgba(229, 195, 120, 0.45);
-      border-radius: 20px;
+      border-radius: 24px;
       padding: 4px 6px 4px 14px;
       display: flex;
       gap: 8px;
       align-items: center;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
       margin-top: 4px;
+    }
+    #tab-chat .chat-input {
+      flex: 1;
+      height: 38px;
+      background: transparent;
+      border: none;
+      padding: 0 4px;
+      color: #fff;
+      font-size: 13.5px;
+      outline: none;
+    }
+    .chat-send-btn, #tab-chat .chat-send-btn {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #E5C378 0%, #C49B45 100%);
+      border: none;
+      color: #0E081D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(229, 195, 120, 0.35);
+      transition: all 0.2s ease;
+      padding: 0;
+    }
+    .chat-send-btn:active, #tab-chat .chat-send-btn:active {
+      transform: scale(0.92);
+      box-shadow: 0 1px 4px rgba(229, 195, 120, 0.2);
     }
     .chat-bubble {
       max-width: 85%;
@@ -1308,7 +1340,7 @@
           <div class="triad-hero-item">
             <div class="triad-hero-icon" id="triadAscIcon">♐</div>
             <div class="triad-hero-label">Асцендент</div>
-            <div class="triad-hero-val" id="triadAsc">♐ Стрелец</div>
+            <div class="triad-hero-val" id="triadAsc">Стрелец</div>
             <div class="triad-hero-sub" id="triadAscSub">Социальный код</div>
           </div>
         </div>
@@ -1339,7 +1371,7 @@
       <!-- 1. ⚡ СВЕТОФОР НЕДЕЛИ -->
       <div class="card" style="border: 1px solid rgba(229, 195, 120, 0.35); background: linear-gradient(160deg, rgba(30, 20, 52, 0.85) 0%, rgba(14, 10, 26, 0.95) 100%);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px;">
-          <div class="card-title" style="margin-bottom: 0; white-space: nowrap; font-size: 15.5px;">⚡ Светофор недели</div>
+          <div class="card-title" style="margin-bottom: 0; white-space: nowrap; font-size: 17.5px; font-weight: 700;">⚡ Светофор недели</div>
           <span id="dailyEnergyBadge" style="font-size: 11px; background: rgba(16, 185, 129, 0.18); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.35); padding: 3px 8px; border-radius: 8px; font-weight: 700; white-space: nowrap; flex-shrink: 0;">
             🔋 Тонус 89%
           </span>
@@ -1378,47 +1410,17 @@
       <!-- 2. 🌟 ПРОГНОЗ НА 7 ДНЕЙ (ПЕРЕМЕЩЕН ВЫШЕ МАГИИ) -->
       <div class="card" style="border: 1px solid rgba(139, 92, 246, 0.3); background: linear-gradient(160deg, rgba(26, 17, 46, 0.8) 0%, rgba(13, 9, 25, 0.94) 100%);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 8px;">
-          <div class="card-title" style="margin-bottom: 0; white-space: nowrap; font-size: 15.5px;">🌟 Прогноз на 7 дней</div>
+          <div class="card-title" style="margin-bottom: 0; white-space: nowrap; font-size: 17.5px; font-weight: 700;">🌟 Прогноз на 7 дней</div>
           <span style="font-size: 10px; color: #DDD6FE; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.35); padding: 2px 8px; border-radius: 8px; font-weight: 700; white-space: nowrap; flex-shrink: 0;">7 ДНЕЙ</span>
         </div>
-        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px;">
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
           Персональный астрологический срез по положению твоих планет:
         </p>
 
         <!-- 7-DAY MINI TIMELINE STRIP -->
-        <div id="homeWeekDaysRow" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 12px;"></div>
-        
-        <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 14px;">
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(229, 195, 120, 0.2); border-left: 3px solid #E5C378; border-radius: 12px; padding: 10px 12px;">
-            <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #FFE8A3; margin-bottom: 3px;">
-              <span>❤️</span> <span>Любовь & Отношения</span>
-            </div>
-            <div style="font-size: 12px; color: #E2DFEC; line-height: 1.45;" id="wprevLove">Период теплого контакта и взаимопонимания</div>
-          </div>
+        <div id="homeWeekDaysRow" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 14px;"></div>
 
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(139, 92, 246, 0.2); border-left: 3px solid #8B5CF6; border-radius: 12px; padding: 10px 12px;">
-            <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #DDD6FE; margin-bottom: 3px;">
-              <span>💎</span> <span>Деньги & Карьера</span>
-            </div>
-            <div style="font-size: 12px; color: #E2DFEC; line-height: 1.45;" id="wprevMoney">Благоприятно для запуска идей и авторских задач</div>
-          </div>
-
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(16, 185, 129, 0.2); border-left: 3px solid #10B981; border-radius: 12px; padding: 10px 12px;">
-            <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #6EE7B7; margin-bottom: 3px;">
-              <span>🌿</span> <span>Энергия & Ресурс</span>
-            </div>
-            <div style="font-size: 12px; color: #E2DFEC; line-height: 1.45;" id="wprevEnergy">Устойчивый тонус, важно беречь вечерний отдых</div>
-          </div>
-
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(59, 130, 246, 0.2); border-left: 3px solid #3B82F6; border-radius: 12px; padding: 10px 12px;">
-            <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #93C5FD; margin-bottom: 3px;">
-              <span>🧭</span> <span>Главный фокус</span>
-            </div>
-            <div style="font-size: 12px; color: #E2DFEC; line-height: 1.45;" id="wprevTheme">Внутренний баланс и верность своему вектору</div>
-          </div>
-        </div>
-
-        <button class="btn-outline" style="padding: 10px 14px; font-size: 12.5px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="openWeekForecastModal()">
+        <button class="btn-outline" style="padding: 11px 16px; font-size: 13px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 600;" onclick="openWeekForecastModal()">
           ✨ Развернуть подробный прогноз на 7 дней →
         </button>
       </div>
@@ -1426,7 +1428,7 @@
       <!-- 3. ✨ МАГИЯ И ЗНАКИ НЕДЕЛИ (ПЕРЕМЕЩЕНА НИЖЕ ПРОГНОЗА) -->
       <div class="card" style="border: 1px solid rgba(229, 195, 120, 0.28); background: linear-gradient(160deg, rgba(28, 18, 48, 0.75) 0%, rgba(14, 10, 26, 0.92) 100%);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 8px;">
-          <div class="card-title" style="margin-bottom: 0; white-space: nowrap; font-size: 15.5px;">✨ Магия и знаки недели</div>
+          <div class="card-title" style="margin-bottom: 0; white-space: nowrap; font-size: 17.5px; font-weight: 700;">✨ Магия и знаки недели</div>
           <span style="font-size: 10px; color: var(--gold); background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.3); padding: 2px 8px; border-radius: 8px; font-weight: 700; white-space: nowrap; flex-shrink: 0;">АРХЕТИПЫ</span>
         </div>
         <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px;">Символические ключи внимания для твоего натального профиля:</p>
@@ -1712,7 +1714,9 @@
       <div class="chat-input-bar">
         <input type="text" id="chatInput" class="chat-input" placeholder="Напиши свой вопрос к карте..." onkeypress="if(event.key==='Enter') sendChatMessage()">
         <button class="chat-send-btn" onclick="sendChatMessage()" title="Отправить">
-          ➤
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="#0E081D" style="margin-left: 2px; display: block;">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
         </button>
       </div>
     </div>
@@ -4356,9 +4360,22 @@
     }
   }
 
-  function getPersonalDayTrafficLight(sun, moon, asc) {
-    const sunElem = ZODIAC_ELEMENTS[sun] || 'earth';
-    const moonElem = ZODIAC_ELEMENTS[moon] || 'earth';
+  function getPersonalDayTrafficLight(sun, moon, asc, dateStr, nameStr) {
+    const sSign = sun || 'Козерог';
+    const mSign = moon || 'Козерог';
+    const aSign = asc || 'Стрелец';
+    const sunElem = ZODIAC_ELEMENTS[sSign] || 'earth';
+    const moonElem = ZODIAC_ELEMENTS[mSign] || 'earth';
+    const ascElem = ZODIAC_ELEMENTS[aSign] || 'fire';
+
+    // Unique deterministic seed based on user's birth date, name, and exact natal triad
+    const rawBirth = dateStr || (userNatalData && userNatalData.date) || '1990-01-01';
+    const rawName = nameStr || (userNatalData && userNatalData.name) || '';
+    const seedStr = `${rawBirth}_${rawName}_${sSign}_${mSign}_${aSign}`;
+    let userSeed = 0;
+    for (let i = 0; i < seedStr.length; i++) {
+      userSeed = (userSeed * 31 + seedStr.charCodeAt(i)) >>> 0;
+    }
 
     const now = new Date();
     const oneJan = new Date(now.getFullYear(), 0, 1);
@@ -4366,31 +4383,39 @@
     const weekNum = Math.ceil((numberOfDays + oneJan.getDay() + 1) / 7);
     const dayOfWeek = now.getDay();
 
-    // Weekly rotating sets of Dos & Don'ts tailored to elements & week number
+    // Rich weekly rotating sets of Dos & Don'ts tailored to elements & personal seed
     const weeklyDos = {
       fire: [
         ['Проявить смелую авторскую инициативу в проектах', 'Сделать решительный шаг без ожидания одобрения'],
         ['Сфокусироваться на одной стратегической цели недели', 'Защитить свои границы и четко назвать условия'],
         ['Направить импульс в спорт и физическую активность', 'Запустить назревший разговор о росте и масштабе'],
-        ['Делегировать утомляющую рутину ради главного вектора', 'Проявить щедрость и вдохновить окружающих']
+        ['Делегировать утомляющую рутину ради главного вектора', 'Проявить щедрость и вдохновить окружающих'],
+        ['Заявить о своих амбициях на открытой встрече', 'Отпраздновать победу и зарядить команду уверенностью'],
+        ['Действовать из позиции лидера и автора своей жизни', 'Смело выходить на новую аудиторию или рынок']
       ],
       earth: [
         ['Зафиксировать ключевые договоренности на бумаге', 'Навести структурный порядок в финансах и расписании'],
         ['Снизить спешку и опереться на качество и надежность', 'Укрепить материальный тыл и обустроить уют'],
         ['Заложить прочный фундамент под долгосрочный проект', 'Дать телу качественный массаж, отдых и заземление'],
-        ['Очистить рабочее пространство от незавершенных хвостов', 'Держать фокус на долгосрочной пользе решений']
+        ['Очистить рабочее пространство от незавершенных хвостов', 'Держать фокус на долгосрочной пользе решений'],
+        ['Инвестировать в проверенные инструменты и знания', 'Опереться на проверенные временем методики и факты'],
+        ['Сформировать четкую финансовую подушку безопасности', 'Позволить себе неспешный тактильный отдых на природе']
       ],
       air: [
         ['Провести ключевые созвоны и презентовать идеи', 'Упаковать разрозненные мысли в лаконичный план'],
         ['Очистить инфополе от чужого ментального шума', 'Обсудить совместные планы с надежными партнерами'],
         ['Использовать природную дипломатичность для решения спора', 'Запустить обучение или новый вдохновляющий навык'],
-        ['Дать себе информационный детокс после 20:00', 'Сформулировать свежую концепцию для будущих дел']
+        ['Дать себе информационный детокс после 20:00', 'Сформулировать свежую концепцию для будущих дел'],
+        ['Выйти на открытый диалог с ключевыми людьми', 'Зафиксировать свежие идеи в структурированную таблицу'],
+        ['Найти нестандартный угол зрения на привычную задачу', 'Окружить себя эстетичной и вдохновляющей информацией']
       ],
       water: [
         ['Довериться первому интуитивному отклику тела', 'Выделить вечер для тишины, заботы о себе и восстановления'],
         ['Мягко обозначить границы и отказаться от чужих долгов', 'Укрепить душевное тепло в близких отношениях'],
         ['Снять избыточный контроль и довериться потоку событий', 'Использовать контакт с водой и арт-практики для ресурса'],
-        ['Беречь эмоциональный баланс от резких токсичных людей', 'Слушать подсказки интуиции при принятии решений']
+        ['Беречь эмоциональный баланс от резких токсичных людей', 'Слушать подсказки интуиции при принятии решений'],
+        ['Позволить себе уязвимость и искренний душевный разговор', 'Создать вокруг себя пространство безопасности и нежности'],
+        ['Отпустить старые обиды через письмо прощения', 'Довериться естественному ритму и не торопить события']
       ]
     };
 
@@ -4399,25 +4424,33 @@
         ['Спешить с выводами на эмоциях и рубить сплеча', 'Вступать в бессмысленные споры за первенство'],
         ['Пытаться продавить сопротивление грубой силой', 'Брать на себя ответственность за чужую лень'],
         ['Распылять огонь на 10 мелких дел одновременно', 'Забывать о базовом сне из-за ночной суеты'],
-        ['Ждать мгновенных аплодисментов от каждого шага', 'Игнорировать сигналы усталости в теле']
+        ['Ждать мгновенных аплодисментов от каждого шага', 'Игнорировать сигналы усталости в теле'],
+        ['Сжигать мосты из-за мелких разногласий', 'Обесценивать чужой более медленный темп движения'],
+        ['Доказывать свою правоту тем, кто не готов слышать', 'Тратить энергию на пустые интернет-баталии']
       ],
       earth: [
         ['Тянуть чужую ответственность из чувства вины', 'Брать работу в ущерб ночному сну и здоровью'],
         ['Бояться перемен и цепляться за устаревшие формы', 'Уходить в глухую закрытость от близких людей'],
         ['Погружаться в тревожный перфекционизм и самоедство', 'Экономить на том, что наполняет тебя радостью'],
-        ['Контролировать каждую мелочь вокруг себя', 'Откладывать заботу о себе на «когда-нибудь потом»']
+        ['Контролировать каждую мелочь вокруг себя', 'Откладывать заботу о себе на «когда-нибудь потом»'],
+        ['Застревать в консервативном упрямстве', 'Отказываться от выгодных предложений из-за страха новизны'],
+        ['Копить материальный хлам из соображений «вдруг пригодится»', 'Жертвовать комфортом тела ради иллюзорного долга']
       ],
       air: [
         ['Распыляться на десятки мелких задач и созвонов', 'Зависать в тревожных лентах новостей и чатах'],
         ['Давать обещания из вежливости, не имея времени', 'Оставлять важные диалоги недосказанными'],
         ['Жить исключительно в голове, забывая о потребностях тела', 'Менять вектор каждый день без фиксации результата'],
-        ['Поддаваться на провокации чужого эмоционального хаоса', 'Тратить энергию на пустые споры в переписке']
+        ['Поддаваться на провокации чужого эмоционального хаоса', 'Тратить энергию на пустые споры в переписке'],
+        ['Разменивать глубокие отношения на поверхностный флирт', 'Перегружать мозг информацией перед сном'],
+        ['Пытаться угодить всем сторонам конфликта', 'Отказываться от личного мнения ради ложного мира']
       ],
       water: [
         ['Терпеть дискомфорт ради удобства других людей', 'Принимать важные решения в состоянии усталости'],
         ['Копить молчаливые обиды вместо спокойного диалога', 'Поглощать чужие переживания и тревоги как свои'],
         ['Проваливаться в сожаления о прошлом и самокопание', 'Искать одобрения у тех, кто тебя обесценивает'],
-        ['Игнорировать интуитивные звоночки в новых контактах', 'Отказывать себе в праве на уединение и покой']
+        ['Игнорировать интуитивные звоночки в новых контактах', 'Отказывать себе в праве на уединение и покой'],
+        ['Пытаться спасать тех, кто не просит о помощи', 'Манипулировать обиженным молчанием в отношениях'],
+        ['Жить воспоминаниями вместо наслаждения текущим днем', 'Бояться открыто заявить о своих желаниях']
       ]
     };
 
@@ -4425,22 +4458,30 @@
       fire: [
         '«Моя сила раскрывается через спокойное достоинство и веру в свой масштаб.»',
         '«Я действую точно и вовремя. Мой внутренний огонь созидает, а не сжигает.»',
-        '«Я выбираю смелость быть собой и позволяю пространству помогать мне.»'
+        '«Я выбираю смелость быть собой и позволяю пространству помогать мне.»',
+        '«Мое присутствие зажигает уверенность в тех, кто рядом со мной.»',
+        '«Я легко отпускаю суету и держу фокус на главном жизненном векторе.»'
       ],
       earth: [
         '«Я создаю прочный фундамент и позволяю изобилию приходить легко и вовремя.»',
         '«Мой темп идеален. Я спокойна, устойчива и уверена в своих результатах.»',
-        '«Качество моего присутствия меняет всё вокруг к лучшему.»'
+        '«Качество моего присутствия меняет всё вокруг к лучшему.»',
+        '«Я доверяю материальной щедрости мира и берегу свой внутренний покой.»',
+        '«Мое тело — мой главный храм силы, я забочусь о нем с любовью.»'
       ],
       air: [
         '«Мои мысли ясны, мои слова точны, я открыта вдохновляющим возможностям.»',
         '«Я легко отпускаю лишнее и фокусируюсь на главном смысле своей жизни.»',
-        '«Я доверяю своим идеям и воплощаю их с радостью и легкостью.»'
+        '«Я доверяю своим идеям и воплощаю их с радостью и легкостью.»',
+        '«Мой разум кристально чист, я привлекаю искренних и мудрых людей.»',
+        '«Я легко нахожу простые решения для самых сложных задач.»'
       ],
       water: [
         '«Я в безопасности. Моя интуиция безошибочно ведет меня к наивысшему благу.»',
         '«Мое сердце спокойно. Я принимаю заботу жизни и берегу свой драгоценный покой.»',
-        '«Я позволяю себе чувствовать силу своей мягкости и естественного ритма.»'
+        '«Я позволяю себе чувствовать силу своей мягкости и естественного ритма.»',
+        '«Я с любовью защищаю свои границы и впускаю только чистое душевное тепло.»',
+        '«Моя глубина — это моя суперсила, я доверяю течению жизни.»'
       ]
     };
 
@@ -4448,11 +4489,17 @@
     const dontsVariants = weeklyDonts[moonElem] || weeklyDonts['water'];
     const affVariants = weeklyAffirmations[sunElem] || weeklyAffirmations['earth'];
 
-    const dosChoice = dosVariants[weekNum % dosVariants.length];
-    const dontsChoice = dontsVariants[(weekNum + 1) % dontsVariants.length];
-    const affChoice = affVariants[weekNum % affVariants.length];
+    // Select distinct combinations based on personal userSeed + week rotation
+    const dosIdx = (userSeed + weekNum * 7 + dayOfWeek) % dosVariants.length;
+    const dontsIdx = (userSeed * 3 + weekNum * 11 + dayOfWeek * 5 + 3) % dontsVariants.length;
+    const affIdx = (userSeed + weekNum * 13 + sSign.length) % affVariants.length;
 
-    const energyScore = 86 + ((weekNum * 7 + (sun.length * 3) + dayOfWeek) % 11);
+    const dosChoice = dosVariants[dosIdx];
+    const dontsChoice = dontsVariants[dontsIdx];
+    const affChoice = affVariants[affIdx];
+
+    // Personal energy score between 83% and 98%, distinct per user and rotating across weeks
+    const energyScore = 83 + ((userSeed + weekNum * 19 + dayOfWeek * 7) % 16);
 
     return {
       dos: dosChoice,
@@ -4616,7 +4663,7 @@
     const sun = natal.sun || 'Козерог';
     const moon = natal.moon || 'Козерог';
     const asc = natal.asc || 'Стрелец';
-    const traffic = getPersonalDayTrafficLight(sun, moon, asc);
+    const traffic = getPersonalDayTrafficLight(sun, moon, asc, natal.date, natal.name);
 
     openModal(`
       <div style="padding: 4px 2px 20px; text-align: center;">
@@ -4665,12 +4712,12 @@
     const drawContent = () => {
       if (img.complete && img.naturalWidth > 0) {
         ctx.drawImage(img, 0, 0, 720, 1280);
-        const darkGrad = ctx.createLinearGradient(0, 510, 0, 1280);
+        const darkGrad = ctx.createLinearGradient(0, 545, 0, 1280);
         darkGrad.addColorStop(0, 'rgba(8, 4, 18, 0)');
         darkGrad.addColorStop(0.22, 'rgba(8, 4, 18, 0.82)');
         darkGrad.addColorStop(1, 'rgba(8, 4, 18, 0.98)');
         ctx.fillStyle = darkGrad;
-        ctx.fillRect(0, 510, 720, 770);
+        ctx.fillRect(0, 545, 720, 735);
       } else {
         const bgGrad = ctx.createLinearGradient(0, 0, 0, 1280);
         bgGrad.addColorStop(0, '#090514');
@@ -4690,15 +4737,15 @@
       ctx.fillStyle = '#E5C378';
       ctx.font = 'bold 18px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('✦   L U N A   ✦   P R O   ✦', 360, 580);
+      ctx.fillText('✦   L U N A   ✦   P R O   ✦', 360, 610);
 
       // Name
       ctx.fillStyle = '#FFFFFF';
       ctx.font = 'bold 36px Georgia, serif';
-      ctx.fillText(name, 360, 630);
+      ctx.fillText(name, 360, 660);
 
       // Triad Boxes (Sun, Moon, Ascendant) - PLACED COMFORTABLY LOWER TO RESPECT ARTWORK
-      const boxY = 672;
+      const boxY = 704;
       const boxH = 125;
       const boxW = 190;
       const gap = 15;
@@ -4736,7 +4783,7 @@
       });
 
       // Affirmation Box - ELEGANT BALANCED POSITION
-      const affY = 818;
+      const affY = 850;
       const affH = 175;
       drawCanvasRoundRect(ctx, 60, affY, 600, affH, 18);
       ctx.fillStyle = 'rgba(12, 7, 24, 0.92)';
@@ -4770,11 +4817,11 @@
       // Footer CTA (Safe zone buffer below!)
       ctx.fillStyle = '#E5C378';
       ctx.font = 'bold 16px sans-serif';
-      ctx.fillText('Рассчитай свою натальную карту в LUNA ✦ PRO', 360, 1025);
+      ctx.fillText('Рассчитай свою натальную карту в LUNA ✦ PRO', 360, 1052);
 
       ctx.fillStyle = '#FFE8A3';
       ctx.font = 'bold 17px sans-serif';
-      ctx.fillText('@luna_pro_astro', 360, 1058);
+      ctx.fillText('@luna_pro_astro', 360, 1082);
 
       // Y=1060 to 1280: 220px SAFE ZONE for Instagram / Telegram stories buttons!
 
@@ -4886,7 +4933,7 @@
 
     if (tSun) tSun.textContent = userNatalData.sun || '—';
     if (tMoon) tMoon.textContent = userNatalData.moon || '—';
-    if (tAsc) tAsc.textContent = `${ascGlyph} ${userNatalData.asc || '—'}`.trim();
+    if (tAsc) tAsc.textContent = userNatalData.asc || '—';
 
     const tAscIcon = document.getElementById('triadAscIcon');
     if (tAscIcon) tAscIcon.textContent = ascGlyph;
@@ -4976,7 +5023,7 @@
     // Deep personal daily advice tailored to user's Sun, Moon and Ascendant
     
     // Update Daily Traffic Light & Energy Meter
-    const traffic = getPersonalDayTrafficLight(userNatalData.sun, userNatalData.moon, userNatalData.asc);
+    const traffic = getPersonalDayTrafficLight(userNatalData.sun, userNatalData.moon, userNatalData.asc, userNatalData.date, userNatalData.name);
     const eBadge = document.getElementById('dailyEnergyBadge');
     const tDos = document.getElementById('trafficDosList');
     const tDonts = document.getElementById('trafficDontsList');
@@ -7651,7 +7698,275 @@
       `;
     }
 
-    // 4. RELATIONSHIPS & LOVE
+    const sProf = DEEP_SUN_DATA[sun] || DEEP_SUN_DATA["Козерог"];
+    const mProf = DEEP_MOON_DATA[moon] || DEEP_MOON_DATA["Козерог"];
+    const aProf = DEEP_ASC_DATA[asc] || DEEP_ASC_DATA["Стрелец"];
+
+    // 4. ZODIAC COMPATIBILITY & PARTNER MATCHING
+    const allSigns = ['Овен', 'Телец', 'Близнецы', 'Рак', 'Лев', 'Дева', 'Весы', 'Скорпион', 'Стрелец', 'Козерог', 'Водолей', 'Рыбы'];
+    const matchedPartnerSign = allSigns.find(s => lower.includes(s.toLowerCase().slice(0, 4)));
+    const isCompatQuery = matchedPartnerSign || lower.includes('совместим') || lower.includes('синастри') || lower.includes('подходит ли') || lower.includes('кто подходит') || lower.includes('какой знак');
+
+    if (isCompatQuery) {
+      const pSign = matchedPartnerSign || (sunElem === 'fire' ? 'Весы' : (sunElem === 'earth' ? 'Рак' : (sunElem === 'air' ? 'Стрелец' : 'Телец')));
+      const pElem = ZODIAC_ELEMENTS[pSign] || 'earth';
+      const isSameElem = sunElem === pElem;
+      const isComplementary = (sunElem === 'fire' && pElem === 'air') || (sunElem === 'air' && pElem === 'fire') ||
+                              (sunElem === 'earth' && pElem === 'water') || (sunElem === 'water' && pElem === 'earth');
+
+      let harmonyText = '';
+      if (isSameElem) {
+        harmonyText = `Общая стихия создает мгновенное взаимопонимание с полуслова: вы смотрите на мир под одним углом и не требуете друг от друга лишних объяснений.`;
+      } else if (isComplementary) {
+        harmonyText = `Это классический союз взаимного дополнения: качества одного знака наполняют и стабилизируют другого. Возникает мощное притяжение противоположностей.`;
+      } else {
+        harmonyText = `Разные стихии дают потенциал глубокого личностного роста: союз требует уважения к темпу и ценностям партнера без попыток переделать его под себя.`;
+      }
+
+      return `
+        <b>${name}</b>, разбираем астрологическую совместимость по твоей карте:
+        <br><br>
+        <b>1. Динамика пары (твой знак ☀️ ${sun} + ${pSign}):</b>
+        <br>
+        Твоя ключевая ось — <b>Солнце в знаке ${sun}</b> и <b>Луна в ${moon}</b>. В контакте со знаком <b>${pSign}</b>: ${harmonyText}
+        <br><br>
+        <b>2. Точки глубинного контакта & Возможные ловушки:</b>
+        <br>
+        • <b>Эмоциональный тыл:</b> Твоя Луна в ${moon} просит душевного спокойствия и надежности. Если партнер проявляет эмоциональную резкость, ты можешь закрываться под защитной маской Асцендента в ${asc}.<br>
+        • <b>Ключ к гармонии:</b> Не додумывай за партнера его мотивы — проговаривай ожидания мягко и прямо, без ультиматумов.
+        <br><br>
+        💡 <b>Практический совет для отношений:</b>
+        <br>
+        1. <b>Уважай личное пространство:</b> давай партнеру время на перезагрузку без ощущения отвержения.<br>
+        2. <b>Опирайся на свои сильные стороны:</b> ${sProf.superpower}<br>
+        3. <b>Не держи обиды:</b> открытый диалог в первые 24 часа предотвратит охлаждение чувств.
+      `;
+    }
+
+    // 5. USER'S MOON SIGN (эмоции, сон, отдых, внутренний тыл)
+    if (lower.includes('моя луна') || lower.includes('лунн') || (lower.includes('луна') && (lower.includes('значит') || lower.includes('показывает') || lower.includes('знак') || lower.includes('отвечает')))) {
+      return `
+        <b>${name}</b>, твоя <b>Луна находится в знаке ${moon}</b> (стихия: ${mProf.element || moonElem}):
+        <br><br>
+        <b>1. Внутреннее ядро и потребности души:</b>
+        <br>
+        ${mProf.need || 'Тебе жизненно необходим надежный эмоциональный тыл и ощущение безопасности.'}
+        <br><br>
+        <b>2. Реакция на стресс и теневая ловушка:</b>
+        <br>
+        • <b>Стресс-триггер:</b> ${mProf.stress || 'Эмоциональные перегрузки и попытка контролировать все вокруг.'}<br>
+        • <b>Теневой паттерн:</b> ${mProf.shadow || 'Привычка терпеть до последнего вместо своевременного отдыха.'}
+        <br><br>
+        🌿 <b>Твой персональный натальный ритуал восстановления:</b>
+        <br>
+        ${mProf.ritual || 'Теплая ванна, качественный сон, тишина и вечер без гаджетов.'}
+      `;
+    }
+
+    // 6. USER'S ASCENDANT SIGN (социальный код, первое впечатление, стиль)
+    if (lower.includes('асцендент') || lower.includes('асц') || lower.includes('восходящ') || lower.includes('первое впечатление') || lower.includes('как меня видят')) {
+      return `
+        <b>${name}</b>, твой <b>Асцендент находится в знаке ${asc}</b>:
+        <br><br>
+        <b>1. Твой социальный код и аура:</b>
+        <br>
+        Аура: <b>${aProf.aura || 'Притягательная, статусная и уверенная'}</b>. 
+        ${aProf.impression || 'Окружающие считывают в тебе сильную, интересную и наполненную личность.'}
+        <br><br>
+        <b>2. Как работает твой Асцендент:</b>
+        <br>
+        Асцендент — это твой главный фильтр проявления во внешнем мире. Когда ты транслируешь энергию знака <b>${asc}</b>, люди неосознанно проникаются к тебе доверием и уважением.
+        <br><br>
+        ✨ <b>Ключ к проявленности в социуме:</b>
+        <br>
+        ${aProf.socialKey || 'Будь верна своему природному стилю и заявляй о своих идеях с достоинством.'}
+      `;
+    }
+
+    // 7. USER'S SUN SIGN (ядро воли, харизма, эго)
+    if (lower.includes('мое солнце') || lower.includes('солнечн') || (lower.includes('солнце') && (lower.includes('значит') || lower.includes('сила') || lower.includes('характер') || lower.includes('знак')))) {
+      return `
+        <b>${name}</b>, твое <b>Солнце сияет в знаке ${sun}</b> (${sProf.element || sunElem}):
+        <br><br>
+        <b>1. Твой ведущий архетип:</b>
+        <br>
+        <b>${sProf.archetype || 'Созидатель и Творец'}</b>. ${sProf.desc ? sProf.desc.slice(0, 240) + '...' : ''}
+        <br><br>
+        <b>2. Твоя натальная суперсила:</b>
+        <br>
+        ${sProf.superpower || 'Способность трансформировать замыслы в осязаемый результат.'}
+        <br><br>
+        🔥 <b>Топливо твоей витальной энергии:</b>
+        <br>
+        ${sProf.fuel || 'Творческая свобода, масштабные цели и ощущение своего авторства.'}
+        <br><br>
+        🌱 <b>Главная точка роста:</b>
+        <br>
+        ${sProf.growthKey || 'Держать внутренний центр и не распыляться на мелочи.'}
+      `;
+    }
+
+    // 8. PURPOSE & KARMIC MISSION (предназначение, миссия, узлы, куда двигаться)
+    if (lower.includes('предназначен') || lower.includes('мисси') || lower.includes('смысл жизн') || lower.includes('карм') || lower.includes('узел') || lower.includes('куда двигат') || lower.includes('зачем я')) {
+      return `
+        <b>${name}</b>, смотрю на твое кармическое предназначение по натальной карте:
+        <br><br>
+        <b>1. Вектор высшей реализации:</b>
+        <br>
+        Твоя миссия строится на мосту между <b>Солнцем в ${sun}</b> (твое авторское ядро) и <b>Асцендентом в ${asc}</b> (способ служения миру). Тебе суждено быть не просто пассивным наблюдателем, а создателем ценности и вдохновляющим ориентиром для других.
+        <br><br>
+        <b>2. Что мешает раскрытию:</b>
+        <br>
+        Привычка соглашаться на меньшее из страха осуждения или ложного чувства скромности. С Луной в ${moon} важно помнить, что твоя безопасность растет тогда, когда ты честна со своими талантами.
+        <br><br>
+        🧭 <b>3 кармических шага на сейчас:</b>
+        <br>
+        1. <b>Определи свой главный авторский след:</b> ${sProf.superpower}<br>
+        2. <b>Перестань обесценивать свой опыт:</b> то, что дается тебе легко, для других — редкий дар.<br>
+        3. <b>Веди людей за собой:</b> проявляй инициативу первой через качества ${asc}.
+      `;
+    }
+
+    // 9. HEALTH, BODY, BEAUTY & HABITS (здоровье, тело, питание, спорт, похудение)
+    if (lower.includes('здоров') || lower.includes('тел') || lower.includes('красот') || lower.includes('питан') || lower.includes('спорт') || lower.includes('похуден') || lower.includes('вес') || lower.includes('кожа') || lower.includes('симптом') || lower.includes('болезн')) {
+      let somaticKey = '';
+      if (moonElem === 'water') {
+        somaticKey = 'Тело напрямую отражает невыраженные эмоции. Пей больше чистой теплой воды, солевые ванны и лимфодренаж снимут отеки и напряжение.';
+      } else if (moonElem === 'earth') {
+        somaticKey = 'Тело любит регулярность и качественную материю. Массажи, растяжка, сон по расписанию и простая цельная еда быстро возвращают форму.';
+      } else if (moonElem === 'fire') {
+        somaticKey = 'Энергия застаивается без движения. Регулярный спорт, кардио, прогулки в быстром темпе и баня помогают сжигать кортизол.';
+      } else {
+        somaticKey = 'Тело реагирует на ментальную перегрузку спазмами в шее и плечах. Дыхательные практики, пилатес и прогулки на свежем воздухе творят чудеса.';
+      }
+
+      return `
+        <b>${name}</b>, анализирую соматический код и ресурсы здоровья твоей карты:
+        <br><br>
+        <b>1. Как твое тело считывает нагрузку:</b>
+        <br>
+        Витальный тонус питается Солнцем в <b>${sun}</b>, а баланс нервной системы и восстановление зависят от Луны в <b>${moon}</b>. ${somaticKey}
+        <br><br>
+        <b>2. На что обратить внимание:</b>
+        <br>
+        Откажись от изнуряющих диет и стрессовых тренировок на силе воли: они истощают Луну и провоцируют срывы.
+        <br><br>
+        🌿 <b>3 шага к цветущему самочувствию:</b>
+        <br>
+        1. <b>Сон до 23:30:</b> гормональный баланс восстанавливается именно в первые часы ночи.<br>
+        2. <b>Движение в удовольствие:</b> выбирай нагрузку, после которой чувствуешь прилив сил, а не опустошение.<br>
+        3. <b>Ментальная пауза за едой:</b> не читай новости и не смотри ролики во время приема пищи.
+      `;
+    }
+
+    // 10. RELOCATION & TRAVEL (переезд, путешествия, эмиграция, другой город)
+    if (lower.includes('переезд') || lower.includes('город') || lower.includes('путешеств') || lower.includes('эмиграц') || lower.includes('страна') || lower.includes('жиль') || lower.includes('где жить')) {
+      return `
+        <b>${name}</b>, смотрю потенциал смены локации и переезда по твоей карте:
+        <br><br>
+        <b>1. Астрологический вектор перемещений:</b>
+        <br>
+        Асцендент в знаке <b>${asc}</b> наделяет тебя природной тягой к расширению горизонтов и знакомству с новыми культурами. Переезд или частые поездки включают в тебе новую волну вдохновения и обновляют окружение.
+        <br><br>
+        <b>2. Потребность в уюте (Луна в ${moon}):</b>
+        <br>
+        При смене места для тебя критически важно сразу обустроить свой личный безопасный угол, где можно восстановить силы. Если дом не дает покоя, адаптация на новом месте затягивается.
+        <br><br>
+        ✈️ <b>Рекомендации перед принятием решения:</b>
+        <br>
+        1. <b>Съезди на разведку:</b> проведи в новом месте 10–14 дней в обычном бытовом ритме, а не туристом.<br>
+        2. <b>Слушай телесный отклик:</b> чувствуешь ли ты легкость и прилив сил в этом пространстве?<br>
+        3. <b>Подготовь надежную подушку:</b> Луна в ${moon} требует финансового тыла для спокойного старта.
+      `;
+    }
+
+    // 11. TIMING & FUTURE & "WHEN" (когда, будущее, прогноз, что ждет, сроки)
+    if (lower.includes('когда') || lower.includes('будущ') || lower.includes('прогноз') || lower.includes('скоро') || lower.includes('выйду замуж') || lower.includes('разбогате') || lower.includes('закончит') || lower.includes('что ждет')) {
+      return `
+        <b>${name}</b>, смотрю на циклические планетарные ритмы твоего гороскопа:
+        <br><br>
+        <b>1. Время перемен и личной инициативы:</b>
+        <br>
+        Астрология — это не фатальное ожидание чуда, а знание точных сезонов жизни. Сейчас твой натальный цикл благоприятствует подготовке фундамента: посеянные тобой авторские семена в сфере <b>Солнца в ${sun}</b> дадут максимальный урожай при системных действиях.
+        <br><br>
+        <b>2. Главная ловушка ожидания:</b>
+        <br>
+        С Луной в ${moon} можно застрять в позиции «вот закончатся трудности, тогда и начну жить». Позволь себе радоваться и действовать уже в текущих обстоятельствах.
+        <br><br>
+        ⏳ <b>Что приблизит желаемый поворот событий:</b>
+        <br>
+        1. <b>Определи первый конкретный шаг:</b> начни с того, что полностью под твоим контролем сегодня.<br>
+        2. <b>Очисти место для нового:</b> заверши старые висящие обязательства и токсичные переписки.<br>
+        3. <b>Верь в свою натальную силу:</b> твое время раскрывается через последовательное достоинство.
+      `;
+    }
+
+    // 12. TALENTS & SUPERPOWERS (таланты, суперсила, способности, сильные стороны)
+    if (lower.includes('талант') || lower.includes('способност') || lower.includes('сильн') || lower.includes('суперсил') || lower.includes('дар') || lower.includes('потенциал') || lower.includes('плюсы')) {
+      return `
+        <b>${name}</b>, открываю карту твоих врожденных натальных даров:
+        <br><br>
+        💎 <b>Твоя главная суперсила (Солнце в ${sun}):</b>
+        <br>
+        ${sProf.superpower || 'Феноменальная созидательная мощь и умение доводить начатое до результата.'}
+        <br><br>
+        🌿 <b>Твой эмоциональный дар (Луна в ${moon}):</b>
+        <br>
+        ${mProf.need || 'Глубокая проницательность и способность создавать вокруг себя островок стабильности.'}
+        <br><br>
+        ✨ <b>Твой социальный магнетизм (Асцендент в ${asc}):</b>
+        <br>
+        ${aProf.impression || 'Люди уважают твою внутреннюю силу и интуитивно тянутся за твоим мнением.'}
+        <br><br>
+        💡 <b>Как монетизировать и применить этот потенциал:</b>
+        <br>
+        Создавай продукты и проекты на стыке своего видения (${sun}) и душевной пользы для людей (${moon}).
+      `;
+    }
+
+    // 13. BOUNDARIES, CONFLICTS & PARENTS / MOTHER (границы, обиды, мама, родители, свекровь)
+    if (lower.includes('границ') || lower.includes('обид') || lower.includes('ссора') || lower.includes('конфликт') || lower.includes('сказать нет') || lower.includes('мама') || lower.includes('матер') || lower.includes('родите') || lower.includes('свекров') || lower.includes('свекр')) {
+      return `
+        <b>${name}</b>, смотрю на тему личных границ и родовых связей в твоей карте:
+        <br><br>
+        <b>1. Что говорит положение Луны в ${moon}:</b>
+        <br>
+        Луна отвечает за связь с материнской фигурой и внутреннее право на автономию. Если в детстве тебе приходилось заслуживать любовь примерным поведением, во взрослом возрасте слово «нет» может вызывать ложное чувство вины.
+        <br><br>
+        <b>2. Как восстановить баланс:</b>
+        <br>
+        Асцендент в <b>${asc}</b> дает тебе право на собственную суверенную территорию. Твои границы — это не нападение на близких, а бережная забота о чистоте своего пространства.
+        <br><br>
+        🛡️ <b>3 правила экологичных границ:</b>
+        <br>
+        1. <b>«Нет» без длинных оправданий:</b> ты имеешь право отказать просто потому, что у тебя нет ресурса.<br>
+        2. <b>Сепарация с любовью:</b> ты не несешь ответственности за эмоциональные обиды взрослых людей.<br>
+        3. <b>Пауза перед согласием:</b> возьми привычку говорить «Я сверюсь со своим расписанием и отвечу позже».
+      `;
+    }
+
+    // 14. REAL ESTATE & BIG PURCHASES (квартира, машина, ипотека, недвижимость, сделка)
+    if (lower.includes('квартир') || lower.includes('недвижим') || lower.includes('машин') || lower.includes('инвестиц') || lower.includes('сделк') || lower.includes('ипотек') || lower.includes('покупк')) {
+      return `
+        <b>${name}</b>, анализирую финансово-имущественный сектор твоей карты:
+        <br><br>
+        <b>1. Потенциал крупных сделок и материализации:</b>
+        <br>
+        Солнце в знаке <b>${sun}</b> ориентировано на качественные, надежные и фундаментальные приобретения. Луна в <b>${moon}</b> расцветает, когда у тебя есть собственное осязаемое пространство силы.
+        <br><br>
+        <b>2. Астрологические предостережения:</b>
+        <br>
+        Не совершай крупных эмоциональных покупок в периоды ретроградности Меркурия или личной усталости. Твоя сила — в холодном расчете и юридической проверке каждого пункта.
+        <br><br>
+        🔑 <b>Критерии правильного выбора:</b>
+        <br>
+        1. <b>Пространство должно давать чувство безопасности:</b> зайди в помещение и прислушайся к телу.<br>
+        2. <b>Оставляй финансовый буфер:</b> не входи в сделку впритык, сохрани подушку на 3–6 месяцев.<br>
+        3. <b>Доверяй фактам, а не обещаниям риелторов:</b> скрупулезно проверяй документы.
+      `;
+    }
+
+    // 15. RELATIONSHIPS & LOVE
     if (lower.includes('отношен') || lower.includes('любов') || lower.includes('партнер') || lower.includes('муж') || lower.includes('парен') || lower.includes('брак') || lower.includes('чувств') || lower.includes('расстава') || lower.includes('одинок') || lower.includes('ревность')) {
       let styleText = "";
       if (moonElem === "water") {
@@ -7695,7 +8010,7 @@
       `;
     }
 
-    // 5. MONEY & FINANCES
+    // 16. MONEY & FINANCES
     if (lower.includes('деньг') || lower.includes('доход') || lower.includes('финанс') || lower.includes('заработ') || lower.includes('богат') || lower.includes('чек') || lower.includes('стоимост') || lower.includes('потолок') || lower.includes('долг') || lower.includes('кредит')) {
       return `
         <b>${name}</b>, анализирую финансовый код твоей натальной карты:
@@ -7728,8 +8043,8 @@
       `;
     }
 
-    // 6. CAREER & PURPOSE & WORK
-    if (lower.includes('работ') || lower.includes('карьер') || lower.includes('призван') || lower.includes('реализац') || lower.includes('бизнес') || lower.includes('найм') || lower.includes('проект') || lower.includes('професси') || lower.includes('свое дело')) {
+    // 17. CAREER & WORK
+    if (lower.includes('работ') || lower.includes('карьер') || lower.includes('реализац') || lower.includes('бизнес') || lower.includes('найм') || lower.includes('проект') || lower.includes('професси') || lower.includes('свое дело')) {
       return `
         <b>${name}</b>, разбираем профессиональный вектор твоей карты:
         <br><br>
@@ -7761,7 +8076,7 @@
       `;
     }
 
-    // 7. RECURRING PATTERNS & SCENARIOS
+    // 18. RECURRING PATTERNS & SCENARIOS
     if (lower.includes('сценар') || lower.includes('повторя') || lower.includes('по кругу') || lower.includes('грабли') || lower.includes('тупик') || lower.includes('ошибк') || lower.includes('почему я') || lower.includes('блоки') || lower.includes('страх')) {
       return `
         <b>${name}</b>, разбор повторяющегося сценария по натальной карте:
@@ -7794,8 +8109,8 @@
       `;
     }
 
-    // 8. ENERGY & REST & BURNOUT
-    if (lower.includes('энерг') || lower.includes('устал') || lower.includes('выгоран') || lower.includes('сил нет') || lower.includes('сон') || lower.includes('ресурс') || lower.includes('тревог') || lower.includes('тело') || lower.includes('отдых') || lower.includes('апати')) {
+    // 19. ENERGY & REST & BURNOUT
+    if (lower.includes('энерг') || lower.includes('устал') || lower.includes('выгоран') || lower.includes('сил нет') || lower.includes('сон') || lower.includes('ресурс') || lower.includes('тревог') || lower.includes('отдых') || lower.includes('апати')) {
       let restAdvice = "";
       if (moonElem === "water") {
         restAdvice = "Контакт с водой (ванна с морской солью), уединение в тишине и отсутствие необходимости отвечать на звонки.";
@@ -7826,7 +8141,7 @@
       `;
     }
 
-    // 9. CHILDREN & FAMILY
+    // 20. CHILDREN & FAMILY
     if (lower.includes('ребенок') || lower.includes('дет') || lower.includes('сын') || lower.includes('дочь') || lower.includes('воспитани') || lower.includes('малыш')) {
       return `
         <b>${name}</b>, смотрю сектор родительства и семьи в твоей карте:
@@ -7847,25 +8162,26 @@
       `;
     }
 
-    // 10. GENERAL & DEFAULT ASTROLOGICAL SYNTHESIS
+    // 21. SMART DYNAMIC ASTROLOGICAL SYNTHESIS (FALLBACK FOR ANY OTHER QUESTION)
+    const topicFocus = words.slice(0, 4).join(' ') || 'волнующую тему';
     return `
-      <b>${name}</b>, смотрю на твой вопрос через призму натальной карты (☀️ <b>${sun}</b> • 🌙 <b>${moon}</b> • ↑ <b>${asc}</b>):
+      <b>${name}</b>, смотрю на твой вопрос про <i>«${escapeHtml(topicFocus)}»</i> через призму натальной карты (☀️ <b>${sun}</b> • 🌙 <b>${moon}</b> • ↑ <b>${asc}</b>):
       <br><br>
-      <b>1. Что происходит по карте:</b>
+      <b>1. Что говорит положение планет:</b>
       <br>
-      В этой теме карта советует опираться на зрелую силу Солнца в знаке ${sun} и природную интуицию Луны в ${moon}.
+      В этой ситуации карта рекомендует соединить ядро воли <b>Солнца в знаке ${sun}</b> с природной интуицией <b>Луны в ${moon}</b>. Твоя суперсила — ${sProf.superpower || 'умение видеть истинную суть и принимать взвешенные решения'}.
       <br><br>
       <b>2. На что обратить внимание:</b>
       <br>
-      Не поддавайся спешке и сомнениям: твой Асцендент в ${asc} помогает видеть общую картину на несколько шагов вперед.
+      Твой Асцендент в <b>${asc}</b> напоминает: не пытайся соответствовать чужим ожиданиям. Опирайся на внутреннее достоинство и не соглашайся на компромиссы, ущемляющие твой покой.
       <br><br>
-      💡 <b>Что делать / Практический совет:</b>
+      💡 <b>3 точных шага по карте:</b>
       <br>
-      1. <b>Доверяй первому спокойному решению:</b> там, где чувствуется достоинство и внутреннее расширение.<br>
-      2. <b>Действуй пошагово:</b> разбей сложную задачу на 2–3 понятных действия на сегодня.<br>
-      3. <b>Сохраняй внутренний центр:</b> не позволяй чужой суете сбивать твой натальный компас.
+      1. <b>Сверься со своими ценностями:</b> спроси себя, ведет ли это решение к твоему расширению или к сжатию.<br>
+      2. <b>Действуй пошагово:</b> разбей сложный вопрос на 2 понятных действия на ближайшие 48 часов.<br>
+      3. <b>Сохраняй внутренний центр:</b> твой натальный компас работает безошибочно, когда ты спокойна.
       <br><br>
-      <i>Если хочешь углубиться в конкретные детали — уточни свой вопрос в чате!</i>
+      <i>Если хочешь глубже раскрыть эту тему — уточни детали ситуации или нажми на подсказки выше!</i>
     `;
   }
 
