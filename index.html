@@ -61,17 +61,42 @@
       height: 100%;
       pointer-events: none;
       z-index: 0;
+      overflow: hidden;
       background-image: 
-        radial-gradient(1px 1px at 20px 30px, #FFF, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 75px 120px, rgba(212,175,55,0.8), rgba(0,0,0,0)),
-        radial-gradient(1.5px 1.5px at 160px 45px, #FFF, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 240px 190px, rgba(139,92,246,0.9), rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 320px 80px, #FFF, rgba(0,0,0,0)),
-        radial-gradient(1.5px 1.5px at 390px 240px, rgba(212,175,55,0.7), rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 110px 310px, #FFF, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 280px 370px, rgba(139,92,246,0.8), rgba(0,0,0,0));
-      background-size: 450px 450px;
-      opacity: 0.65;
+        radial-gradient(1.2px 1.2px at 25px 35px, #FFFFFF, rgba(0,0,0,0)),
+        radial-gradient(1.8px 1.8px at 85px 130px, #FFE8A3, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 155px 55px, #FFFFFF, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 230px 185px, #E5C378, rgba(0,0,0,0)),
+        radial-gradient(1.2px 1.2px at 310px 75px, #DDD6FE, rgba(0,0,0,0)),
+        radial-gradient(2.2px 2.2px at 380px 235px, #FFE8A3, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 115px 315px, #FFFFFF, rgba(0,0,0,0)),
+        radial-gradient(1.8px 1.8px at 275px 375px, #C084FC, rgba(0,0,0,0)),
+        radial-gradient(1.2px 1.2px at 50px 480px, #FFFFFF, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 190px 530px, #E5C378, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 340px 490px, #DDD6FE, rgba(0,0,0,0)),
+        radial-gradient(1.8px 1.8px at 420px 620px, #FFE8A3, rgba(0,0,0,0)),
+        radial-gradient(1.2px 1.2px at 80px 690px, #FFFFFF, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 260px 740px, #E5C378, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 370px 810px, #FFFFFF, rgba(0,0,0,0));
+      background-size: 450px 850px;
+      opacity: 0.88;
+      animation: celestialTwinkle 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes celestialTwinkle {
+      0% { opacity: 0.78; }
+      50% { opacity: 0.96; }
+      100% { opacity: 0.78; }
+    }
+
+    .constellations-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.75;
     }
 
     .container {
@@ -149,6 +174,8 @@
       margin-top: 8px;
       backdrop-filter: blur(10px);
       box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .status-dot {
@@ -1195,7 +1222,7 @@
       </div>
       <div class="status-badge">
         <div class="status-dot"></div>
-        <span>LUNA PRO в сети · Персональный диалог</span>
+        <span>LUNA PRO в сети</span>
       </div>
     </div>
 
@@ -1261,28 +1288,27 @@
           <div class="hero-natal-badge">
             <span class="badge-star">✨</span> БЕСПЛАТНЫЙ РАЗБОР ЛИЧНОСТИ
           </div>
-          <button style="background: none; border: none; color: var(--gold); font-size: 11.5px; cursor: pointer; text-decoration: underline; padding-top: 2px;" onclick="openEditNatalModal()">Изменить ✎</button>
         </div>
         <div class="hero-natal-title" id="greetingName">✨ Твоя натальная матрица & Код силы</div>
         <div class="hero-natal-subtitle">Персональный астрологический разбор по дате и времени рождения:</div>
 
         <div class="triad-box-hero">
           <div class="triad-hero-item">
-            <div class="triad-hero-icon">☀️</div>
+            <div class="triad-hero-icon" id="triadSunIcon">☀️</div>
             <div class="triad-hero-label">Солнце</div>
             <div class="triad-hero-val" id="triadSun">Козерог</div>
             <div class="triad-hero-sub" id="triadSunSub">Ядро воли</div>
           </div>
           <div class="triad-hero-item">
-            <div class="triad-hero-icon">🌙</div>
+            <div class="triad-hero-icon" id="triadMoonIcon">🌙</div>
             <div class="triad-hero-label">Луна</div>
             <div class="triad-hero-val" id="triadMoon">Козерог</div>
             <div class="triad-hero-sub" id="triadMoonSub">Эмоции & Тыл</div>
           </div>
           <div class="triad-hero-item">
-            <div class="triad-hero-icon">↑</div>
+            <div class="triad-hero-icon" id="triadAscIcon">♐</div>
             <div class="triad-hero-label">Асцендент</div>
-            <div class="triad-hero-val" id="triadAsc">Стрелец</div>
+            <div class="triad-hero-val" id="triadAsc">♐ Стрелец</div>
             <div class="triad-hero-sub" id="triadAscSub">Социальный код</div>
           </div>
         </div>
@@ -1310,11 +1336,11 @@
       </div>
 
       
-      <!-- 1. ⚡ ФОКУС И СВЕТОФОР НЕДЕЛИ -->
+      <!-- 1. ⚡ СВЕТОФОР НЕДЕЛИ -->
       <div class="card" style="border: 1px solid rgba(229, 195, 120, 0.35); background: linear-gradient(160deg, rgba(30, 20, 52, 0.85) 0%, rgba(14, 10, 26, 0.95) 100%);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <div class="card-title" style="margin-bottom: 0;">⚡ Фокус и Светофор недели</div>
-          <span id="dailyEnergyBadge" style="font-size: 11px; background: rgba(16, 185, 129, 0.2); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.4); padding: 3px 8px; border-radius: 10px; font-weight: 800;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px;">
+          <div class="card-title" style="margin-bottom: 0; white-space: nowrap; font-size: 15.5px;">⚡ Светофор недели</div>
+          <span id="dailyEnergyBadge" style="font-size: 11px; background: rgba(16, 185, 129, 0.18); color: #6EE7B7; border: 1px solid rgba(16, 185, 129, 0.35); padding: 3px 8px; border-radius: 8px; font-weight: 700; white-space: nowrap; flex-shrink: 0;">
             🔋 Тонус 89%
           </span>
         </div>
@@ -1349,45 +1375,18 @@
         </div>
       </div>
 
-      <!-- 2. ✨ МАГИЯ И ЗНАКИ НЕДЕЛИ (DYNAMIC SYMBOLS) -->
-      <div class="card" style="border: 1px solid rgba(229, 195, 120, 0.28); background: linear-gradient(160deg, rgba(28, 18, 48, 0.75) 0%, rgba(14, 10, 26, 0.92) 100%);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <div class="card-title" style="margin-bottom: 0;">✨ Магия и знаки недели</div>
-          <span style="font-size: 10px; color: var(--gold); background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.3); padding: 2px 8px; border-radius: 10px; font-weight: 700;">АРХЕТИПЫ</span>
-        </div>
-        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px;">Символические ключи внимания для твоего натального профиля:</p>
-        
-        <div class="magic-grid">
-          <div class="magic-card" onclick="showMagicModal('sync')">
-            <div class="magic-tag">Синхрон</div>
-            <div class="magic-icon" id="magicSyncIcon">🪐</div>
-            <div class="magic-val" id="magicSyncVal">—</div>
-            <div class="magic-link">Узнать силу →</div>
-          </div>
-          <div class="magic-card" onclick="showMagicModal('symbol')">
-            <div class="magic-tag">Символ</div>
-            <div class="magic-icon" id="magicSymbolIcon">🪶</div>
-            <div class="magic-val" id="magicSymbolVal">—</div>
-            <div class="magic-link">Узнать силу →</div>
-          </div>
-          <div class="magic-card" onclick="showMagicModal('totem')">
-            <div class="magic-tag">Тотем</div>
-            <div class="magic-icon" id="magicTotemIcon">🌿</div>
-            <div class="magic-val" id="magicTotemVal">—</div>
-            <div class="magic-link">Узнать силу →</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. ✨ ТВОЯ ПЕРСОНАЛЬНАЯ НЕДЕЛЯ (EDITORIAL DARK SPREAD) -->
+      <!-- 2. 🌟 ПРОГНОЗ НА 7 ДНЕЙ (ПЕРЕМЕЩЕН ВЫШЕ МАГИИ) -->
       <div class="card" style="border: 1px solid rgba(139, 92, 246, 0.3); background: linear-gradient(160deg, rgba(26, 17, 46, 0.8) 0%, rgba(13, 9, 25, 0.94) 100%);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <div class="card-title" style="margin-bottom: 0;">🌟 Твоя неделя: прогноз на 7 дней</div>
-          <span style="font-size: 10px; color: #DDD6FE; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.35); padding: 2px 8px; border-radius: 10px; font-weight: 700;">ПРОГНОЗ 7 ДНЕЙ</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 8px;">
+          <div class="card-title" style="margin-bottom: 0; white-space: nowrap; font-size: 15.5px;">🌟 Прогноз на 7 дней</div>
+          <span style="font-size: 10px; color: #DDD6FE; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.35); padding: 2px 8px; border-radius: 8px; font-weight: 700; white-space: nowrap; flex-shrink: 0;">7 ДНЕЙ</span>
         </div>
-        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px;">
+        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px;">
           Персональный астрологический срез по положению твоих планет:
         </p>
+
+        <!-- 7-DAY MINI TIMELINE STRIP -->
+        <div id="homeWeekDaysRow" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 12px;"></div>
         
         <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 14px;">
           <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(229, 195, 120, 0.2); border-left: 3px solid #E5C378; border-radius: 12px; padding: 10px 12px;">
@@ -1413,15 +1412,45 @@
 
           <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(59, 130, 246, 0.2); border-left: 3px solid #3B82F6; border-radius: 12px; padding: 10px 12px;">
             <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: #93C5FD; margin-bottom: 3px;">
-              <span>🧭</span> <span>Главный фокус недели</span>
+              <span>🧭</span> <span>Главный фокус</span>
             </div>
             <div style="font-size: 12px; color: #E2DFEC; line-height: 1.45;" id="wprevTheme">Внутренний баланс и верность своему вектору</div>
           </div>
         </div>
 
-        <button class="btn-outline" style="padding: 10px 14px; font-size: 12.5px;" onclick="openWeekForecastModal()">
-          ✨ Развернуть прогноз на 7 дней →
+        <button class="btn-outline" style="padding: 10px 14px; font-size: 12.5px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="openWeekForecastModal()">
+          ✨ Развернуть подробный прогноз на 7 дней →
         </button>
+      </div>
+
+      <!-- 3. ✨ МАГИЯ И ЗНАКИ НЕДЕЛИ (ПЕРЕМЕЩЕНА НИЖЕ ПРОГНОЗА) -->
+      <div class="card" style="border: 1px solid rgba(229, 195, 120, 0.28); background: linear-gradient(160deg, rgba(28, 18, 48, 0.75) 0%, rgba(14, 10, 26, 0.92) 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 8px;">
+          <div class="card-title" style="margin-bottom: 0; white-space: nowrap; font-size: 15.5px;">✨ Магия и знаки недели</div>
+          <span style="font-size: 10px; color: var(--gold); background: rgba(229, 195, 120, 0.12); border: 1px solid rgba(229, 195, 120, 0.3); padding: 2px 8px; border-radius: 8px; font-weight: 700; white-space: nowrap; flex-shrink: 0;">АРХЕТИПЫ</span>
+        </div>
+        <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px;">Символические ключи внимания для твоего натального профиля:</p>
+        
+        <div class="magic-grid">
+          <div class="magic-card" onclick="showMagicModal('sync')">
+            <div class="magic-tag">Синхрон</div>
+            <div class="magic-icon" id="magicSyncIcon">🪐</div>
+            <div class="magic-val" id="magicSyncVal">—</div>
+            <div class="magic-link">Узнать силу →</div>
+          </div>
+          <div class="magic-card" onclick="showMagicModal('symbol')">
+            <div class="magic-tag">Символ</div>
+            <div class="magic-icon" id="magicSymbolIcon">🪶</div>
+            <div class="magic-val" id="magicSymbolVal">—</div>
+            <div class="magic-link">Узнать силу →</div>
+          </div>
+          <div class="magic-card" onclick="showMagicModal('totem')">
+            <div class="magic-tag">Тотем</div>
+            <div class="magic-icon" id="magicTotemIcon">🌿</div>
+            <div class="magic-val" id="magicTotemVal">—</div>
+            <div class="magic-link">Узнать силу →</div>
+          </div>
+        </div>
       </div>
 
       <!-- 4. 💬 СПРОСИТЬ LUNA (FAST AI ASTROLOGER ENTRY) -->
@@ -1624,16 +1653,16 @@
   <!-- ================= 3. TAB: AI-ASTROLOGER CHAT ================= -->
   <div id="tab-chat" class="tab-view" style="display: none;">
     <div class="chat-header-wrap">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <div style="font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold-light); display: flex; align-items: center; gap: 6px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+        <div style="min-width: 0; flex: 1;">
+          <div style="font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; color: var(--gold-light); display: flex; align-items: center; gap: 6px; white-space: nowrap;">
             <span>🔮</span> <span>Астролог LUNA PRO</span>
           </div>
-          <div style="font-size: 11px; color: var(--text-muted); margin-top: 1px;">
-            Персональный AI-диалог с LUNA PRO на основе твоей натальной карты
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            Диалог на основе твоей натальной карты
           </div>
         </div>
-        <div class="status-badge" style="margin-top: 0; padding: 3px 10px; font-size: 10px;">
+        <div class="status-badge" style="margin-top: 0; padding: 3px 10px; font-size: 10.5px; white-space: nowrap; flex-shrink: 0;">
           <div class="status-dot"></div>
           <span>В сети</span>
         </div>
@@ -2191,6 +2220,13 @@
         sunSign: c.sun_sign
       }));
       localStorage.setItem(getStorageKeyChildren(), JSON.stringify(userChildrenList));
+      localStorage.setItem('luna_user_children_global', JSON.stringify(userChildrenList));
+      if (typeof renderChildrenList === 'function') renderChildrenList();
+    } else {
+      const localKids = localStorage.getItem(getStorageKeyChildren()) || localStorage.getItem('luna_user_children_global');
+      if (localKids) {
+        try { userChildrenList = JSON.parse(localKids) || []; } catch(e) { userChildrenList = []; }
+      }
       if (typeof renderChildrenList === 'function') renderChildrenList();
     }
 
@@ -2231,6 +2267,12 @@
     "Козерог": "Сатурн (фундаментальная опора, авторитет и выдержка)",
     "Водолей": "Уран (инновационный взгляд, свобода и прозрения)",
     "Рыбы": "Нептун (тонкое чутье, образность и безусловное принятие)"
+  };
+
+  const ZODIAC_GLYPHS = {
+    "Овен": "♈", "Телец": "♉", "Близнецы": "♊", "Рак": "♋",
+    "Лев": "♌", "Дева": "♍", "Весы": "♎", "Скорпион": "♏",
+    "Стрелец": "♐", "Козерог": "♑", "Водолей": "♒", "Рыбы": "♓"
   };
 
   function escapeHtml(str) {
@@ -3080,8 +3122,11 @@
             personalEnergyNote += ` Водная чуткость знака (${sun}) безошибочно подскажет верное решение.`;
           }
 
+          const shortDays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
           arr.push({
             day: dayTitle,
+            weekdayShort: shortDays[i],
+            dayNum: dayDate.getDate(),
             theme: arch.theme,
             energy: personalEnergyNote,
             attention: arch.attention,
@@ -3345,6 +3390,9 @@
 
     updateCreditDisplays();
     updateCatalogCardsUI();
+    if (tabId === 'profile') {
+      renderChildrenList();
+    }
 
     setTimeout(() => {
       document.documentElement.scrollTop = 0;
@@ -3759,9 +3807,9 @@
             <div style="font-size: 12px; font-weight: 800; color: #DDD6FE;">${moon}</div>
           </div>
           <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: 12px; padding: 8px 4px; text-align: center;">
-            <div style="font-size: 14px;">↑</div>
+            <div style="font-size: 14px;">${ZODIAC_GLYPHS[asc] || '♐'}</div>
             <div style="font-size: 10px; color: var(--text-sub);">Асцендент</div>
-            <div style="font-size: 12px; font-weight: 800; color: #93C5FD;">${asc}</div>
+            <div style="font-size: 12px; font-weight: 800; color: #93C5FD;">${ZODIAC_GLYPHS[asc] || '♐'} ${asc}</div>
           </div>
         </div>
 
@@ -3832,7 +3880,7 @@
         <div style="margin-bottom: 16px; background: rgba(255,255,255,0.03); border: 1.2px solid rgba(59, 130, 246, 0.35); border-radius: 16px; padding: 16px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <div style="font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; color: #93C5FD;">
-              ↑ Глава 3. Асцендент в знаке ${asc}
+              ${ZODIAC_GLYPHS[asc] || '♐'} Глава 3. Асцендент в знаке ${asc}
             </div>
             <span style="font-size: 10px; background: rgba(59, 130, 246, 0.2); color: #93C5FD; padding: 3px 8px; border-radius: 8px; font-weight: 700;">СОЦИАЛЬНЫЙ КОД</span>
           </div>
@@ -4078,22 +4126,31 @@
       ascSign: natal.asc
     };
 
+    if (!userChildrenList || !Array.isArray(userChildrenList)) {
+      userChildrenList = [];
+    }
     userChildrenList.push(newChild);
-    localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(userChildrenList));
+    localStorage.setItem(getStorageKeyChildren(), JSON.stringify(userChildrenList));
+    localStorage.setItem('luna_user_children_global', JSON.stringify(userChildrenList));
     renderChildrenList();
     closeModal();
 
     // Async sync with FastAPI Backend
-    const res = await apiRequest('/api/v1/children', 'POST', {
-      name: newChild.name,
-      birth_date: newChild.birthDate,
-      birth_time: newChild.birthTime,
-      birth_city: newChild.birthCity,
-      sun_sign: newChild.sunSign
-    });
-    if (res && res.id) {
-      newChild.id = res.id;
-      localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(userChildrenList));
+    try {
+      const res = await apiRequest('/api/v1/children', 'POST', {
+        name: newChild.name,
+        birth_date: newChild.birthDate,
+        birth_time: newChild.birthTime,
+        birth_city: newChild.birthCity,
+        sun_sign: newChild.sunSign
+      });
+      if (res && res.id) {
+        newChild.id = res.id;
+        localStorage.setItem(getStorageKeyChildren(), JSON.stringify(userChildrenList));
+        localStorage.setItem('luna_user_children_global', JSON.stringify(userChildrenList));
+      }
+    } catch(e) {
+      console.log('Child saved locally:', e);
     }
   }
 
@@ -4101,11 +4158,14 @@
     if (confirm('Удалить профиль ребёнка?')) {
       const targetChild = userChildrenList[idx];
       userChildrenList.splice(idx, 1);
-      localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(userChildrenList));
+      localStorage.setItem(getStorageKeyChildren(), JSON.stringify(userChildrenList));
+      localStorage.setItem('luna_user_children_global', JSON.stringify(userChildrenList));
       renderChildrenList();
 
       if (targetChild && typeof targetChild.id === 'number') {
-        apiRequest(`/api/v1/children/${targetChild.id}`, 'DELETE');
+        try {
+          apiRequest(`/api/v1/children/${targetChild.id}`, 'DELETE');
+        } catch(e) {}
       }
     }
   }
@@ -4445,28 +4505,32 @@
     ctx.fillStyle = '#E5C378';
     ctx.font = 'bold 34px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('✦   L U N A   ✦   P R O   ✦', 540, 230);
+    ctx.fillText('✦   L U N A   ✦   P R O   ✦', 540, 330);
 
     ctx.fillStyle = '#CBD5E1';
     ctx.font = '24px sans-serif';
-    ctx.fillText('ПЕРСОНАЛЬНЫЙ КОД ДУШИ', 540, 280);
+    ctx.fillText('ПЕРСОНАЛЬНЫЙ КОД ДУШИ', 540, 390);
 
     // User Name
     ctx.fillStyle = '#FFFFFF';
     ctx.font = 'bold 64px Georgia, serif';
-    ctx.fillText(name, 540, 400);
+    ctx.fillText(name, 540, 510);
 
-    // 3 Boxes for Sun, Moon, Ascendant (placed higher with rounded corners)
-    const boxY = 475;
-    const boxH = 200;
+    // 3 Boxes for Sun, Moon, Ascendant (elegantly placed with rounded corners)
+    const boxY = 600;
+    const boxH = 210;
     const boxW = 270;
     const gap = 30;
     const startX = (1080 - (boxW * 3 + gap * 2)) / 2;
 
+    const ascGlyph = ZODIAC_GLYPHS[asc] || '♐';
+    const sunGlyph = ZODIAC_GLYPHS[sun] || '♑';
+    const moonGlyph = ZODIAC_GLYPHS[moon] || '♑';
+
     const triadData = [
-      { icon: '☀️', label: 'Солнце', val: sun },
-      { icon: '🌙', label: 'Луна', val: moon },
-      { icon: '↑', label: 'Асцендент', val: asc }
+      { icon: '☀️', label: 'Солнце', val: `${sunGlyph} ${sun}` },
+      { icon: '🌙', label: 'Луна', val: `${moonGlyph} ${moon}` },
+      { icon: ascGlyph, label: 'Асцендент', val: `${ascGlyph} ${asc}` }
     ];
 
     triadData.forEach((item, idx) => {
@@ -4478,23 +4542,23 @@
       ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      ctx.font = '46px sans-serif';
-      ctx.fillText(item.icon, bx + boxW / 2, boxY + 60);
+      ctx.font = '48px sans-serif';
+      ctx.fillText(item.icon, bx + boxW / 2, boxY + 65);
 
       ctx.fillStyle = '#94A3B8';
       ctx.font = '20px sans-serif';
-      ctx.fillText(item.label, bx + boxW / 2, boxY + 105);
+      ctx.fillText(item.label, bx + boxW / 2, boxY + 110);
 
       ctx.fillStyle = '#FFE8A3';
-      ctx.font = 'bold 30px Georgia, serif';
-      ctx.fillText(item.val, bx + boxW / 2, boxY + 155);
+      ctx.font = 'bold 28px Georgia, serif';
+      ctx.fillText(item.val, bx + boxW / 2, boxY + 162);
     });
 
-    // Affirmation Box (placed higher with rounded corners)
-    const affY = 715;
+    // Affirmation Box (placed lower with rounded corners)
+    const affY = 855;
     const affH = 290;
     drawCanvasRoundRect(ctx, 110, affY, 860, affH, 28);
-    ctx.fillStyle = 'rgba(10, 6, 22, 0.8)';
+    ctx.fillStyle = 'rgba(10, 6, 22, 0.85)';
     ctx.fill();
     ctx.strokeStyle = 'rgba(229, 195, 120, 0.35)';
     ctx.lineWidth = 2;
@@ -4525,13 +4589,13 @@
     // Footer CTA (well above safe zone)
     ctx.fillStyle = '#E5C378';
     ctx.font = 'bold 28px sans-serif';
-    ctx.fillText('Рассчитай свою натальную карту в LUNA ✦ PRO', 540, 1100);
+    ctx.fillText('Рассчитай свою натальную карту в LUNA ✦ PRO', 540, 1210);
 
     ctx.fillStyle = '#FFE8A3';
     ctx.font = 'bold 26px sans-serif';
-    ctx.fillText('@luna_pro_astro', 540, 1150);
+    ctx.fillText('@luna_pro_astro', 540, 1260);
 
-    // Large safe zone from 1200 down to 1920 (720px safe space)
+    // Safe zone from 1300 down to 1920
 
     return canvas.toDataURL('image/png');
   }
@@ -4601,12 +4665,12 @@
     const drawContent = () => {
       if (img.complete && img.naturalWidth > 0) {
         ctx.drawImage(img, 0, 0, 720, 1280);
-        const darkGrad = ctx.createLinearGradient(0, 360, 0, 1280);
+        const darkGrad = ctx.createLinearGradient(0, 510, 0, 1280);
         darkGrad.addColorStop(0, 'rgba(8, 4, 18, 0)');
-        darkGrad.addColorStop(0.25, 'rgba(8, 4, 18, 0.75)');
-        darkGrad.addColorStop(1, 'rgba(8, 4, 18, 0.96)');
+        darkGrad.addColorStop(0.22, 'rgba(8, 4, 18, 0.82)');
+        darkGrad.addColorStop(1, 'rgba(8, 4, 18, 0.98)');
         ctx.fillStyle = darkGrad;
-        ctx.fillRect(0, 360, 720, 920);
+        ctx.fillRect(0, 510, 720, 770);
       } else {
         const bgGrad = ctx.createLinearGradient(0, 0, 0, 1280);
         bgGrad.addColorStop(0, '#090514');
@@ -4626,36 +4690,40 @@
       ctx.fillStyle = '#E5C378';
       ctx.font = 'bold 18px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('✦   L U N A   ✦   P R O   ✦', 360, 480);
+      ctx.fillText('✦   L U N A   ✦   P R O   ✦', 360, 580);
 
       // Name
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 38px Georgia, serif';
-      ctx.fillText(name, 360, 530);
+      ctx.font = 'bold 36px Georgia, serif';
+      ctx.fillText(name, 360, 630);
 
-      // Triad Boxes (Sun, Moon, Ascendant) - PLACED HIGHER WITH ROUNDED CORNERS
-      const boxY = 565;
+      // Triad Boxes (Sun, Moon, Ascendant) - PLACED COMFORTABLY LOWER TO RESPECT ARTWORK
+      const boxY = 672;
       const boxH = 125;
       const boxW = 190;
       const gap = 15;
       const startX = (720 - (boxW * 3 + gap * 2)) / 2;
 
+      const ascGlyph = ZODIAC_GLYPHS[asc] || '♐';
+      const sunGlyph = ZODIAC_GLYPHS[sun] || '♑';
+      const moonGlyph = ZODIAC_GLYPHS[moon] || '♑';
+
       const triadData = [
-        { icon: '☀️', label: 'Солнце', val: sun },
-        { icon: '🌙', label: 'Луна', val: moon },
-        { icon: '↑', label: 'Асцендент', val: asc }
+        { icon: '☀️', label: 'Солнце', val: `${sunGlyph} ${sun}` },
+        { icon: '🌙', label: 'Луна', val: `${moonGlyph} ${moon}` },
+        { icon: ascGlyph, label: 'Асцендент', val: `${ascGlyph} ${asc}` }
       ];
 
       triadData.forEach((item, idx) => {
         const bx = startX + idx * (boxW + gap);
         drawCanvasRoundRect(ctx, bx, boxY, boxW, boxH, 16);
-        ctx.fillStyle = 'rgba(16, 10, 32, 0.88)';
+        ctx.fillStyle = 'rgba(16, 10, 32, 0.9)';
         ctx.fill();
         ctx.strokeStyle = 'rgba(229, 195, 120, 0.55)';
         ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        ctx.font = '26px sans-serif';
+        ctx.font = '28px sans-serif';
         ctx.fillText(item.icon, bx + boxW / 2, boxY + 36);
 
         ctx.fillStyle = '#94A3B8';
@@ -4663,15 +4731,15 @@
         ctx.fillText(item.label, bx + boxW / 2, boxY + 66);
 
         ctx.fillStyle = '#FFE8A3';
-        ctx.font = 'bold 19px Georgia, serif';
+        ctx.font = 'bold 18px Georgia, serif';
         ctx.fillText(item.val, bx + boxW / 2, boxY + 102);
       });
 
-      // Affirmation Box - PLACED HIGHER WITH ROUNDED CORNERS
-      const affY = 710;
+      // Affirmation Box - ELEGANT BALANCED POSITION
+      const affY = 818;
       const affH = 175;
       drawCanvasRoundRect(ctx, 60, affY, 600, affH, 18);
-      ctx.fillStyle = 'rgba(12, 7, 24, 0.9)';
+      ctx.fillStyle = 'rgba(12, 7, 24, 0.92)';
       ctx.fill();
       ctx.strokeStyle = 'rgba(229, 195, 120, 0.35)';
       ctx.lineWidth = 1.5;
@@ -4679,14 +4747,14 @@
 
       ctx.fillStyle = '#E5C378';
       ctx.font = 'bold 15px sans-serif';
-      ctx.fillText('ГЛАВНЫЙ МАНИФЕСТ СИЛЫ', 360, affY + 38);
+      ctx.fillText('ГЛАВНЫЙ МАНИФЕСТ СИЛЫ', 360, affY + 36);
 
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'italic 17px Georgia, serif';
+      ctx.font = 'italic 16.5px Georgia, serif';
       
       const words = affirmation.split(' ');
       let line = '';
-      let curY = affY + 76;
+      let curY = affY + 74;
       for (let w of words) {
         const testLine = line + w + ' ';
         if (ctx.measureText(testLine).width > 530) {
@@ -4702,13 +4770,13 @@
       // Footer CTA (Safe zone buffer below!)
       ctx.fillStyle = '#E5C378';
       ctx.font = 'bold 16px sans-serif';
-      ctx.fillText('Рассчитай свою натальную карту в LUNA ✦ PRO', 360, 935);
+      ctx.fillText('Рассчитай свою натальную карту в LUNA ✦ PRO', 360, 1025);
 
       ctx.fillStyle = '#FFE8A3';
       ctx.font = 'bold 17px sans-serif';
-      ctx.fillText('@luna_pro_astro', 360, 968);
+      ctx.fillText('@luna_pro_astro', 360, 1058);
 
-      // Y=980 to 1280: 300px SAFE ZONE for Instagram / Telegram stories buttons!
+      // Y=1060 to 1280: 220px SAFE ZONE for Instagram / Telegram stories buttons!
 
       currentStoryDataUrl = canvas.toDataURL('image/png');
       const wrap = document.getElementById('storyPreviewWrap');
@@ -4812,9 +4880,16 @@
     const tMoon = document.getElementById('triadMoon');
     const tAsc = document.getElementById('triadAsc');
 
+    const ascGlyph = ZODIAC_GLYPHS[userNatalData.asc] || '♐';
+    const sunGlyph = ZODIAC_GLYPHS[userNatalData.sun] || '☀️';
+    const moonGlyph = ZODIAC_GLYPHS[userNatalData.moon] || '🌙';
+
     if (tSun) tSun.textContent = userNatalData.sun || '—';
     if (tMoon) tMoon.textContent = userNatalData.moon || '—';
-    if (tAsc) tAsc.textContent = userNatalData.asc || '—';
+    if (tAsc) tAsc.textContent = `${ascGlyph} ${userNatalData.asc || '—'}`.trim();
+
+    const tAscIcon = document.getElementById('triadAscIcon');
+    if (tAscIcon) tAscIcon.textContent = ascGlyph;
 
     const sProf = DEEP_SUN_DATA[userNatalData.sun] || DEEP_SUN_DATA["Козерог"];
     const mProf = DEEP_MOON_DATA[userNatalData.moon] || DEEP_MOON_DATA["Козерог"];
@@ -4851,6 +4926,18 @@
     if (wpM) wpM.textContent = wfore.money;
     if (wpE) wpE.textContent = wfore.energy;
     if (wpT) wpT.textContent = wfore.theme;
+
+    // Populate 7-day mini-timeline strip on home dashboard
+    const daysRow = document.getElementById('homeWeekDaysRow');
+    if (daysRow && wfore.days) {
+      daysRow.innerHTML = wfore.days.map(d => `
+        <div onclick="openWeekForecastModal()" style="text-align: center; padding: 6px 2px; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; background: ${d.isToday ? 'linear-gradient(145deg, rgba(229, 195, 120, 0.22), rgba(139, 92, 246, 0.28))' : 'rgba(255, 255, 255, 0.03)'}; border: 1px solid ${d.isToday ? '#E5C378' : 'rgba(255, 255, 255, 0.08)'}; box-shadow: ${d.isToday ? '0 0 10px rgba(229, 195, 120, 0.2)' : 'none'};">
+          <div style="font-size: 9.5px; color: ${d.isToday ? '#FFE8A3' : '#94A3B8'}; font-weight: 700;">${escapeHtml(d.weekdayShort || d.day.slice(0, 2))}</div>
+          <div style="font-size: 13px; font-weight: 800; color: ${d.isToday ? '#FFF' : '#E2DFEC'}; margin: 2px 0;">${escapeHtml(String(d.dayNum || d.day.replace(/\D/g, '')))}</div>
+          <div style="font-size: 8px; color: ${d.isToday ? '#10B981' : '#64748B'};">${d.isToday ? '●' : '○'}</div>
+        </div>
+      `).join('');
+    }
 
     // Dynamic magic items calculated from user's element and date
     const magic = getPersonalMagicItems(userNatalData.date, userNatalData.name, userNatalData.sun, userNatalData.moon);
@@ -4895,7 +4982,7 @@
     const tDonts = document.getElementById('trafficDontsList');
     const tAff = document.getElementById('dailyAffirmationText');
 
-    if (eBadge) eBadge.textContent = `🔋 Тонус недели ${traffic.energyScore}%`;
+    if (eBadge) eBadge.textContent = `🔋 Тонус ${traffic.energyScore}%`;
     if (tDos) tDos.innerHTML = traffic.dos.map(d => `• ${escapeHtml(d)}`).join('<br>');
     if (tDonts) tDonts.innerHTML = traffic.donts.map(d => `• ${escapeHtml(d)}`).join('<br>');
     if (tAff) tAff.textContent = traffic.affirmation;
@@ -8695,7 +8782,7 @@
         }
       }
 
-      const savedChildren = localStorage.getItem(getStorageKeyChildren());
+      const savedChildren = localStorage.getItem(getStorageKeyChildren()) || localStorage.getItem('luna_user_children_global');
       if (savedChildren) {
         try {
           userChildrenList = JSON.parse(savedChildren) || [];
@@ -8728,6 +8815,10 @@
     updateCreditDisplays();
     updateCatalogCardsUI();
     loadChatHistory();
+    renderChildrenList();
+
+    // Start rich celestial particles & constellations canvas
+    initCelestialCanvas();
 
     // Setup Onboarding City Autocomplete
     setupCityAutocomplete('obCity', 'obCityDropdown', 'obCityConfirmedBadge', 'obCityConfirmedText');
